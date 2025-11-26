@@ -2,6 +2,8 @@
 
 Did you know that ComfyUI supports so called output lists, which tell downstream nodes to execute multiple times and retrieve values sequentially, all within one and the same run?
 
+https://github.com/user-attachments/assets/303115d3-7c28-42e8-bb52-d02e7cc1022b
+
 *Wait, what?*
 
 This feature seems very under-utilized but it allows values to be collected and processed without crazy workaround like for-loops or external API calls from python scripts. This project implements some core custom nodes which makes working with output lists easier, provides prompt-combinations and easier use of XYZ-gridplots.
@@ -33,6 +35,7 @@ Create a OutputList by separating the string in the textfield.
 * count: the number of items in the list
 * inspect_combo: a dummy output only used to pre-fill the list with values from a COMBO input and will automatically disconnect again.
 
+https://github.com/user-attachments/assets/a8aed46e-3d95-4422-a60e-7f62641ef036
 
 ### Number OutputList
 
