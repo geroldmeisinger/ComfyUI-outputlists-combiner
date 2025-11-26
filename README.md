@@ -2,7 +2,7 @@
 
 Did you know that ComfyUI supports so called output lists which emit values one-by-one and cause a node to be processed multiple times within the same run?
 
-![OutputList runs the KSampler multiple times](media/OutputLists.mp4)
+[![OutputList runs the KSampler multiple times](OutputLists.mp4.png)](https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/media/OutputLists.mp4)
 
 *Wait, what?*
 
@@ -19,45 +19,45 @@ This feature seems very under-utilized but it allows values like images to be co
 
 ### String OutputList
 
-![Basic String OutputList](media/String OutputList.png)
+![Basic String OutputList](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/StringOutputList.png)
 
 Use the `inspect_combo` output to retrieve all values from a `COMBO` input. Then connect `value` to the `COMBO` to iterate over the values:
 
-![inspect_combo](media/StringOutputList inspect_combo.mp4)
+![inspect_combo](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/StringOutputList_inspect_combo.mp4)
 
 ### Number OutputList
 
-![Basic Number OutputList](media/Number OutputList.png)
+![Basic Number OutputList](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/NumberOutputList.png)
 
 ### OutputList Combinations
 
-![Two OutputLists combined](media/OutputListCombinations.png)
+![Two OutputLists combined](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/OutputListCombinations.png)
 
 ### Formatted String
 
-![Using OutputList combinations two create a formatted string](media/FormattedString.png)
+![Using OutputList combinations two create a formatted string](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/FormattedString.png)
 
 ## Examples
 
 ### Simple Example
 
-![Simple example](media/Example_00_Simple_OutputList.png)
+![Simple example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_00_Simple_OutputList.png)
 
 ### Combine prompts
 
-![Combine prompts example](media/Example_01_Combine_Prompts.png)
+![Combine prompts example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_01_Combine_Prompts.png)
 
 ### Combine samplers and schedulers
 
-![Combine samplers and schedulers example](media/Example_02_Combine_Samplers_Schedulers.png)
+![Combine samplers and schedulers example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_02_Combine_Samplers_Schedulers.png)
 
 ### Combine numbers
 
-![Combine numbers example](media/Example_03_Combine_Numbers.png)
+![Combine numbers example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_03_Combine_Numbers.png)
 
-### Integrating in (LEv145/images-grid-comfy-plugin)[https://github.com/LEv145/images-grid-comfy-plugin]
+### Integrating in [LEv145/images-grid-comfy-plugin](https://github.com/LEv145/images-grid-comfy-plugin)
 
-![ImageGrids example](media/Example_04_ImageGrids.png)
+![ImageGrids example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_04_ImageGrids.png)
 
 ## Debugging OutputLists
 
@@ -66,7 +66,7 @@ Use the `inspect_combo` output to retrieve all values from a `COMBO` input. Then
 
 ### Rebatching images
 
-![Rebatching example](media/Example_05_Rebatching.png)
+![Rebatching example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_05_Rebatching.png)
 
 ## TODO
 
