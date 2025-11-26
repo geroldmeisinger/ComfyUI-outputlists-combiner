@@ -6,7 +6,7 @@ Did you know that ComfyUI supports so called output lists which emit values one-
 
 *Wait, what?*
 
-This feature seems very under-utilized but it allows values like images to be collected and processed without crazy workaround like for-loops or external API calls from python scripts. These project implements some core custom nodes which makes working with output lists easier, provides prompt-combinations and easy use of XYZ-gridplots.
+This feature seems very under-utilized but it allows values like images to be collected and processed without crazy workaround like for-loops or external API calls from python scripts. This project implements some core custom nodes which makes working with output lists easier, provides prompt-combinations and easier use of XYZ-gridplots.
 
 ## Installation
 
@@ -72,11 +72,5 @@ Use the `inspect_combo` output to retrieve all values from a `COMBO` input. Then
 
 - StringOutputList
   - from string input
-  - auto-reconnect inspect_combo but only when value not already connected
-  - add count output
-- NumberOutputList
-  - add count output
-- CombineOutputLists
-  - add count output
 - add rebatcher which supports multiple batch sizes
 - add list collector for better integration with other custom nodes
