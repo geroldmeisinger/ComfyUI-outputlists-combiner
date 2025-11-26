@@ -2,7 +2,7 @@
 
 Did you know that ComfyUI supports so called output lists which emit values one-by-one and cause a node to be processed multiple times within the same run?
 
-[![OutputList runs the KSampler multiple times](OutputLists.mp4.png)](https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/media/OutputLists.mp4)
+https://github.com/user-attachments/assets/4a341bd6-0024-4b10-8ae2-920a2f482bdf
 
 *Wait, what?*
 
@@ -23,7 +23,7 @@ This feature seems very under-utilized but it allows values like images to be co
 
 Use the `inspect_combo` output to retrieve all values from a `COMBO` input. Then connect `value` to the `COMBO` to iterate over the values:
 
-![inspect_combo](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/StringOutputList_inspect_combo.mp4)
+https://github.com/user-attachments/assets/c1db3736-525b-4f94-88d3-8ce74080ce13
 
 ### Number OutputList
 
