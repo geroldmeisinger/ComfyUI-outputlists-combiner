@@ -12,18 +12,14 @@ Yes, I didn't know about it either. Apparently everytime you see this symbol: `ð
 
 ![Full Example](/media/FullExample.png)
 
-
 * OutputList Combinations: create all possible combinations of multiple lists, e.g. prompt combinations, image size variants
-* Formatted String: insert variable placeholders to create custom prompts, e.g. `a {animal} with a {colored} hat`
+* Formatted String: insert variable placeholders to create custom prompts, e.g. `a {animal} with a {colored} hat`, filename prefixes
 * Inspect Combo: connect to a COMBO input (like sampler or scheduler) and retrieve all values as a string list, e.g. sampler+scheduler testing, copy+paste model names
 * Delimited Strings and FullList: to add backwards compatibility and integrate well with other custom nodes, e.g. grid annotations
 
 ## Installation
 
-1. Install [ComfyUI](https://docs.comfy.org/get_started).
-1. Install [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager)
-1. Look up this extension in ComfyUI-Manager. If you are installing manually, clone this repository under `ComfyUI/custom_nodes`.
-1. Restart ComfyUI.
+Either with [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager) or manually with: `git clone https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner` into `ComfyUI/custom_nodes`
 
 ## Custom nodes
 
@@ -93,7 +89,11 @@ Empty lists are replaced with units of None and unused inputs will always emit N
 ![Using OutputList combinations two create a formatted string](/media/FormattedString.png)
 (workflow included)
 
-Create string with variable placeholders. Uses python's `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax . A commonly used format syntax is `{a:.2f}` to round off a float to 2 decimals.
+Create string with variable placeholders. Uses python's `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax .
+
+* Use `{a:.2f}` to round off a float to 2 decimals.
+* Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png
+* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`
 
 **outputs**
 * `string`: the formatted string with all placeholders replaced with their respective values.
@@ -135,7 +135,7 @@ Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] 
 ![ImageGrids example](/workflows/Example_04_ImageGrids.png)
 (workflow included)
 
-Makes use of `delimited_str` to correctly file the annotation labels for the grid.
+Makes use of `delimited_str` to correctly fit the annotation labels for the grid.
 
 Note that with OutputLists the images from the KSampler are individual items, i.e. `batch_size=1`. But the image-grid node expects batches, that's why we need to rebatch them into `batch_size=9` with the `Rebatch images` core node.
 
@@ -158,6 +158,8 @@ Tensor shape required for images-grid:
 ```
 [[9, 512, 512, 3]]
 ```
+
+## Advanced Examples
 
 ### Rebatching images for subgrids
 
@@ -196,3 +198,30 @@ Tensor Shape Debug required for second images-grid:
 ```
 [[9, 1024, 1024, 3]]
 ```
+
+### Baking Values Into Workflow
+
+You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image. Sometimes you want to know which exact prompt or values resulted in this image. So we need store the individual values in the metadata. The following workflow makes use of https://github.com/crystian/ComfyUI-Crystools `Save image with Metadata` and `Load image with Metadata` and https://github.com/ltdrdata/ComfyUI-Impact-Pack `Select Nth Item`.
+
+![Save Index in Metadata](/workflows/Example_06a_IndexInMetadata.png)
+(workflow included)
+
+This example uses `Number OutputList` to create a index range corresponding to the prompt list and stores it as a JSON `{ "index": 123 }` in the metadata of the image with `Save image with Metadata`. You can extend it to also include the prompt string. Note that this also uses `{c:02d}` to store the files with 0-padded indices, so they are correctly sorted by your file manager.
+
+![Load Index from Metadata](/workflows/Example_06b_IndexFromMetadata.png)
+(workflow included)
+
+This example reads the index from the metadata with `Load Image with Metadata` and selects the index using `Select Nth Item`.
+
+If you work a lot with image grids you might want to include both of this patterns in your workflow. This example is not perfect because in the end you still have to manually put the image in `Load Image` and hook up the values from `Select Nth Item` to get this one exact image.
+
+**TODO** If someone knows a clever way how to use node expansion and native way to include metadata please let me know!
+
+### Load all images from grid
+
+Let's say you generated a lot of images for your grid and (hopefully) stored the with some clever naming scheme, e.g. `xy_{c:02d}_{a}_{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of any of these `Load Image by Path` node, like https://github.com/WASasquatch/was-node-suite-comfyui , https://github.com/KosinkadinkComfyUI-VideoHelperSuite or https://github.com/1038lab/ComfyUI-RMBG .
+
+![Load Image with Formatted String](/workflows/Example_07_LoadWithFormattedString.png)
+(workflow included)
+
+**TODO** Make the combo work with native `Load Image` (but my `string to any` approach always resulted in `NoneType could not call function endsWith`)

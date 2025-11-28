@@ -35,13 +35,14 @@ outputs:
 				"values"	: ("STRING",
 					{
 						"multiline" : True,
-						"default" : "String separated with newlines. Or try to connect inspect_combo with a COMBO input."
+						"default" : "",
+						"placeholder"	: "String separated with newlines. Or try to connect inspect_combo with a COMBO input."
 					}),
 			},
 		}
 
 	RETURN_NAMES	=	("value"	, "delimited_str"	, "full_list"	, "count"	, "inspect_combo"	)
-	RETURN_TYPES	=	(any	, "STRING"	, "LIST"	, "INT"	, "COMBO"	)
+	RETURN_TYPES	=	(any	, "STRING"	, "STRING"	, "INT"	, "COMBO"	)
 	OUTPUT_IS_LIST	=	(True	, False	, False	, False	, False	)
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
@@ -81,8 +82,8 @@ All the values from the list use OUTPUT_IS_LIST=True and will be processed seque
 			"required": {
 				"start"	:	("FLOAT"	, { "default" :	0	}),
 				"stop"	:	("FLOAT"	, { "default" :	10	}),
-				"num"	:	("INT"	, { "default" :	10	}),
-				"endpoint"	:	("BOOLEAN"	, { "default" :	False	}),
+				"num"	:	("FLOAT"	, { "default" :	10	}),
+				"endpoint"	:	("BOOLEAN"	, { "default" :	False, "label_on": "include", "label_off": "exclude"	}),
 				"delimiter"	:	("STRING"	, { "default" :	";"	}),
 				}
 		}
@@ -94,7 +95,7 @@ All the values from the list use OUTPUT_IS_LIST=True and will be processed seque
 	CATEGORY = "Utility"
 
 	def execute(self, start, stop, num, endpoint, delimiter):
-		values	= list(numpy.linspace(start, stop, num, endpoint))
+		values	= list(numpy.linspace(start, stop, int(num), endpoint))
 		ints	= [int (v) for v in values]
 		floats	= [float (v) for v in values]
 		strs	= [str (v) for v in values]
@@ -128,9 +129,9 @@ outputs:
 		}
 
 	INPUT_IS_LIST = True
-	RETURN_NAMES	=	("unzip_a"	, "unzip_b"	, "unzip_c"	, "unzip_d"	, "count"	)
-	RETURN_TYPES	=	(any	, any	, any	, any	, "INT"	)
-	OUTPUT_IS_LIST	=	(True	, True	, True	, True	, False)
+	RETURN_NAMES	=	("unzip_a"	, "unzip_b"	, "unzip_c"	, "unzip_d"	, "count"	, "full_list"	)
+	RETURN_TYPES	=	(any	, any	, any	, any	, "INT"	, "LIST"	)
+	OUTPUT_IS_LIST	=	(True	, True	, True	, True	, False	, False	)
 	FUNCTION = "compute"
 	CATEGORY = "Utility"
 
@@ -138,7 +139,7 @@ outputs:
 		normalized	= [lst if len(lst) > 0 else [None] for lst in [list_a, list_b, list_c, list_d]]
 		product	= list(itertools.product(*normalized))
 		transposed	= tuple(map(list, zip(*product)))
-		return (*transposed, len(product))
+		return (*transposed, len(product), transposed)
 
 class FormattedString:
 	DESCRIPTION = """Uses python str.format() internally, see https://docs.python.org/3/library/string.html#format-string-syntax .
@@ -165,24 +166,68 @@ outputs:
 				}
 		}
 
-	RETURN_NAMES	= ("string",)
-	RETURN_TYPES	= ("STRING",)
+	RETURN_NAMES	= ("string"	, "any"	)
+	RETURN_TYPES	= ("STRING"	, any	)
+	OUTPUT_IS_LIST	= (False	, False	)
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
 
 	def execute(self, fstring, a = "", b = "", c = "", d = ""):
-		ret = fstring.format(a=str(a), b=str(b), c=str(c), d=str(d))
-		return (ret, )
+		ret = fstring.format(a=a, b=b, c=c, d=d)
+		return (ret, ret)
+
+class ConvertNumberToIntFloatStr:
+	@classmethod
+	def INPUT_TYPES(cls):
+		return {
+			"required": {
+				"number": ("FLOAT,INT",),
+			}
+		}
+
+	RETURN_NAMES	=	("int"	, "float"	, "string"	)
+	RETURN_TYPES	=	("INT"	, "FLOAT"	, "STRING"	)
+	FUNCTION = "execute"
+	CATEGORY = "Utility"
+
+	def execute(self, number):
+		return (int(number), number, str(number))
+
+class StringToCombo:
+	DESCRIPTION = """
+"""
+
+	@classmethod
+	def INPUT_TYPES(cls):
+		return {
+			"required": {
+				"string": ("STRING",),
+				},
+		}
+
+	RETURN_NAMES	= ("combo",	"any"	)
+	RETURN_TYPES	= ("COMBO",	any	)
+	OUTPUT_IS_LIST	= (True, True	)
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
+
+	def execute(self, string):
+		ret = (str(string))
+		return ([ret], [ret])
 
 NODE_CLASS_MAPPINGS = {
 	"StringOutputList"	: StringOutputList,
 	"NumberOutputList"	: NumberOutputList,
 	"CombineOutputLists"	: CombineOutputLists,
 	"FormattedString"	: FormattedString,
+	"ConvertNumberToIntFloatStr"	: ConvertNumberToIntFloatStr,
+	"StringToCombo"	: StringToCombo,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
 	"StringOutputList"	: "String OutputList",
 	"NumberOutputList"	: "Number OutputList",
 	"CombineOutputLists"	: "OutputList Combinations",
 	"FormattedString"	: "Formatted String",
+	"ConvertNumberToIntFloatStr"	: "Convert any number to Int Float String",
+	"StringToCombo"	: "String To Combo",
 }
