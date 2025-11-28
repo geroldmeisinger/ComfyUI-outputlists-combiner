@@ -1,12 +1,22 @@
 # ComfyUI-outputlists-combiner
 
-Did you know that ComfyUI supports so called output lists, which tell downstream nodes to execute multiple times and retrieve values sequentially, all within one and the same run?
+Did you know that ComfyUI supports so called output lists which tell downstream nodes to execute multiple times within the same run?
 
 https://github.com/user-attachments/assets/303115d3-7c28-42e8-bb52-d02e7cc1022b
 
 *Wait, what?*
 
-This feature seems very under-utilized but it allows values to be collected and processed without crazy workaround like for-loops or external API calls from python scripts. This project implements some core custom nodes which makes working with output lists easier, provides prompt-combinations and easier use of XYZ-gridplots.
+Yes, I didn't know about it either. Apparently everytime you see this symbol: `𝌠` , it means it's an [OutputList](https://docs.comfy.org/custom-nodes/backend/lists) and nodes process the items sequentially. This feature seems very under-utilized but it allows values to be split-up, combined and process sequentially without weird workarounds like for-loops, increment counters or python scripts which make external API calls. This project tries to make good use of output lists and integrate well with other custom nodes without enforcing an opionated paradigm:
+
+**Features**
+
+![OutputList Combinations and Formatted String](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/FormattedString_small.png)
+![Inspect COMBO inputs](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/InspectCombo.png)
+
+* OutputList Combinations: create all possible combinations of multiple lists, e.g. prompt combinations, image size variants
+* Inspect Combo: connect to a COMBO input (like sampler or scheduler) and retrieve all values as a string list, e.g. sampler+scheduler testing, copy+paste model names
+* Formatted String: insert variable placeholders to create custom prompts, e.g. `a {animal} with a {colored} hat`
+* Delimited Strings and FullList: to add backwards compatibility and integrate well with other custom nodes, e.g. grid annotations
 
 ## Installation
 
@@ -87,12 +97,14 @@ Create string with variable placeholders. Uses python's `str.format()` internall
 ### Simple Example
 
 ![Simple example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_00_Simple_OutputList.png)
+(workflow included)
 
 Just uses a `String OutputList` to separate a string and produce 4 images in one run.
 
 ### Combine prompts
 
 ![Combine prompts example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_01_Combine_Prompts.png)
+(workflow included)
 
 Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Formatted String`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue]` (`3x3=9`)
 
@@ -101,18 +113,21 @@ To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as i
 ### Combine samplers and schedulers
 
 ![Combine samplers and schedulers example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_02_Combine_Samplers_Schedulers.png)
+(workflow included)
 
 Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entries were deleted) and connects to the COMBO inputs `samplers` and `schedulers`. It iterates over all combinations of `[euler, heunpp2, uni_pc_bh2] x [simple, karras, beta]` (`3x3=9`)
 
 ### Combine numbers
 
 ![Combine numbers example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_03_Combine_Numbers.png)
+(workflow included)
 
 Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] x [768, 512, 256]` and connects them to the image width and height to produce image variants in portrait, square and landscape.
 
 ### Integrating [LEv145/images-grid-comfy-plugin](https://github.com/LEv145/images-grid-comfy-plugin)
 
 ![ImageGrids example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_04_ImageGrids.png)
+(workflow included)
 
 Makes use of `delimited_str` to correctly file the annotation labels for the grid.
 
@@ -133,11 +148,13 @@ Shapes found: [[1, 512, 512, 3]]
 Shapes found: [[1, 512, 512, 3]]
 ```
 
-Tensor shape required for images-grid: `[[9, 512, 512, 3]]`
+Tensor shape required for images-grid:
+```[[9, 512, 512, 3]]```
 
 ### Rebatching images for subgrids
 
 ![Rebatching example](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/workflows/Example_05_SubImageGrids.png)
+(workflow included)
 
 Makes use of an additional images-grid to convert a image `batch_size=4` into a 2x2 grid and then rebatches them for main-grid.
 
@@ -167,4 +184,5 @@ Shapes found: [[1, 1024, 1024, 3]]
 Shapes found: [[1, 1024, 1024, 3]]
 ```
 
-Tensor Shape Debug required for second images-grid: `[[9, 1024, 1024, 3]]`
+Tensor Shape Debug required for second images-grid:
+```[[9, 1024, 1024, 3]]```
