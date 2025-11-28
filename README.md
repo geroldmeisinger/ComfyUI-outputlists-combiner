@@ -10,12 +10,15 @@ Yes, I didn't know about it either. Apparently everytime you see this symbol: `ð
 
 **Features**
 
+* OutputList Combinations: create all possible combinations of multiple lists, e.g. prompt combinations, image size variants
+* Formatted String: insert variable placeholders to create custom prompts, e.g. `a {animal} with a {colored} hat`
+
 ![OutputList Combinations and Formatted String](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/FormattedString_small.png)
+
+* Inspect Combo: connect to a COMBO input (like sampler or scheduler) and retrieve all values as a string list, e.g. sampler+scheduler testing, copy+paste model names
+
 ![Inspect COMBO inputs](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/InspectCombo.png)
 
-* OutputList Combinations: create all possible combinations of multiple lists, e.g. prompt combinations, image size variants
-* Inspect Combo: connect to a COMBO input (like sampler or scheduler) and retrieve all values as a string list, e.g. sampler+scheduler testing, copy+paste model names
-* Formatted String: insert variable placeholders to create custom prompts, e.g. `a {animal} with a {colored} hat`
 * Delimited Strings and FullList: to add backwards compatibility and integrate well with other custom nodes, e.g. grid annotations
 
 ## Installation
@@ -30,6 +33,7 @@ Yes, I didn't know about it either. Apparently everytime you see this symbol: `ð
 ### String OutputList
 
 ![Basic String OutputList](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/StringOutputList.png)
+(workflow included)
 
 Create a OutputList by separating the string in the textfield.
 
@@ -50,6 +54,7 @@ https://github.com/user-attachments/assets/a8aed46e-3d95-4422-a60e-7f62641ef036
 ### Number OutputList
 
 ![Basic Number OutputList](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/NumberOutputList.png)
+(workflow included)
 
 Create a OutputList by generating a numbers of values in a range.
 Uses `numpy.linspace` internally because it works more reliably with floating-point values.
@@ -72,6 +77,7 @@ All the values from the list use `OUTPUT_IS_LIST=True` and will be processed seq
 ### OutputList Combinations
 
 ![Two OutputLists combined](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/OutputListCombinations.png)
+(workflow included)
 
 Takes up to 4 OutputLists, computes the Cartesian product and outputs each combination splitted up into their elements (unzip).
 Empty lists are replaced with units of None and unused inputs will always emit None on the respective output.
@@ -86,6 +92,7 @@ Empty lists are replaced with units of None and unused inputs will always emit N
 ### Formatted String
 
 ![Using OutputList combinations two create a formatted string](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/blob/main/media/FormattedString.png)
+(workflow included)
 
 Create string with variable placeholders. Uses python's `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax . A commonly used format syntax is `{a:.2f}` to round off a float to 2 decimals.
 
@@ -149,7 +156,9 @@ Shapes found: [[1, 512, 512, 3]]
 ```
 
 Tensor shape required for images-grid:
-```[[9, 512, 512, 3]]```
+```
+[[9, 512, 512, 3]]
+```
 
 ### Rebatching images for subgrids
 
@@ -185,4 +194,6 @@ Shapes found: [[1, 1024, 1024, 3]]
 ```
 
 Tensor Shape Debug required for second images-grid:
-```[[9, 1024, 1024, 3]]```
+```
+[[9, 1024, 1024, 3]]
+```
