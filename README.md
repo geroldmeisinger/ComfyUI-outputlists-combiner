@@ -1,12 +1,12 @@
 # ComfyUI-outputlists-combiner
 
-Did you know that ComfyUI supports so called output lists which tell downstream nodes to execute multiple times within the same run?
+Did you know that ComfyUI supports so called output lists which tell nodes downstream to execute multiple times within the same run? Notice how this output lists emits four strings and causes the KSampler to run four times:
 
 https://github.com/user-attachments/assets/303115d3-7c28-42e8-bb52-d02e7cc1022b
 
 *Wait, what?*
 
-Yes, I didn't know about it either. Apparently everytime you see this symbol: `𝌠` , it means it's an [OutputList](https://docs.comfy.org/custom-nodes/backend/lists) and a node fetches the items sequentially. This feature seems very under-utilized but it allows values to be split-up, combined and processed sequentially without weird workarounds like for-loops, increment counters or python scripts with external API calls. This project tries to make good use of output lists and integrate well with other custom nodes without enforcing an opionated paradigm:
+Yes, I didn't know about it either. Apparently everytime you see the symbol `𝌠` it's an [output list](https://docs.comfy.org/custom-nodes/backend/lists). This feature seems very underutilized but it allows values to be processed sequentially without weird workarounds (like for-loops, increment counters or external python scripts) which makes them perfect for prompt combinations and XYZ-gridplots. I always found grids a hazzle in ComfyUI whereas they were straightforward in Automatic1111. Mist custom nodes either require a lot of manual work or you have to use some extra-special nodes (like custom KSamplers). This project tries to make good use of output lists, integrate well with the ComfyUI's paradigm and finally makes XYZ-gridplots easy to use again.
 
 **Features**
 
@@ -15,7 +15,6 @@ Yes, I didn't know about it either. Apparently everytime you see this symbol: `�
 * OutputList Combinations: create all possible combinations of multiple lists, e.g. prompt combinations, image size variants
 * Formatted String: insert variable placeholders to create custom prompts, e.g. `a {animal} with a {colored} hat`, filename prefixes
 * Inspect Combo: connect to a COMBO input (like sampler or scheduler) and retrieve all values as a string list, e.g. sampler+scheduler testing, copy+paste model names
-* Delimited Strings and FullList: to add backwards compatibility and integrate well with other custom nodes, e.g. grid annotations
 
 ## Installation
 
@@ -38,7 +37,6 @@ Create a OutputList by separating the string in the textfield.
 **outputs**
 * `value`: the values from the list. uses `OUTPUT_IS_LIST=True` internally and will be processed sequentially by corresponding nodes.
 * `delimited_str`: the list joined together by the delimiter, which is often useful for other nodes (like grid annotations).
-* `full_list`: the whole list with `OUTPUT_IS_LIST=False` in case some nodes require it (you probably don't need this).
 * `count`: the number of items in the list
 * `inspect_combo`: a dummy output only used to pre-fill the list with values from a `COMBO` input.
 
@@ -64,7 +62,6 @@ All the values from the list use `OUTPUT_IS_LIST=True` and will be processed seq
 * `int`: the value converted to int (rounded down/floored)
 * `float`: the value as a float
 * `str`: the value as a string
-* `full_list`: the whole list with `OUTPUT_IS_LIST=False` in case some nodes require it (you probably don't need this).
 * `count`: the number of items in the list
 
 ### OutputList Combinations
@@ -130,7 +127,7 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 
 Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] x [768, 512, 256]` and connects them to the image width and height to produce image variants in portrait, square and landscape.
 
-### Integrating [LEv145/images-grid-comfy-plugin](https://github.com/LEv145/images-grid-comfy-plugin)
+### Integrate [LEv145/images-grid-comfy-plugin](https://github.com/LEv145/images-grid-comfy-plugin)
 
 ![ImageGrids example](/workflows/Example_04_ImageGrids.png)
 (workflow included)
@@ -199,9 +196,11 @@ Tensor Shape Debug required for second images-grid:
 [[9, 1024, 1024, 3]]
 ```
 
+- **TODO** This is kinda surprising if don't know what's going own. Maybe we should developer a "Rebatch Images: shape=4x9" node.
+
 ### Baking Values Into Workflow
 
-You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image. Sometimes you want to know which exact prompt or values resulted in this image. So we need store the individual values in the metadata. The following workflow makes use of https://github.com/crystian/ComfyUI-Crystools `Save image with Metadata` and `Load image with Metadata` and https://github.com/ltdrdata/ComfyUI-Impact-Pack `Select Nth Item`.
+You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but Sometimes you want to know which exact prompt or values resulted in this image. So we need store the individual values in the metadata. The following workflow makes use of https://github.com/crystian/ComfyUI-Crystools `Save image with Metadata` and `Load image with Metadata` and https://github.com/ltdrdata/ComfyUI-Impact-Pack `Select Nth Item`.
 
 ![Save Index in Metadata](/workflows/Example_06a_IndexInMetadata.png)
 (workflow included)
@@ -213,15 +212,16 @@ This example uses `Number OutputList` to create a index range corresponding to t
 
 This example reads the index from the metadata with `Load Image with Metadata` and selects the index using `Select Nth Item`.
 
-If you work a lot with image grids you might want to include both of this patterns in your workflow. This example is not perfect because in the end you still have to manually put the image in `Load Image` and hook up the values from `Select Nth Item` to get this one exact image.
+It's is not perfect because in the end you still have to manually put the image in `Load Image` and hook up the values from `Select Nth Item` to get this one exact image. If you work a lot with image grids you might want to include both of this patterns in one workflow.
 
-**TODO** If someone knows a clever way how to use node expansion and native way to include metadata please let me know!
+- **TODO** This is unsatisfactory and requires a lot of manual work
+- **TODO** If someone knows a clever way how to use node expansion and native way to include metadata please let me know!
 
 ### Load all images from grid
 
-Let's say you generated a lot of images for your grid and (hopefully) stored the with some clever naming scheme, e.g. `xy_{c:02d}_{a}_{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of any of these `Load Image by Path` node, like https://github.com/WASasquatch/was-node-suite-comfyui , https://github.com/KosinkadinkComfyUI-VideoHelperSuite or https://github.com/1038lab/ComfyUI-RMBG .
+Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `xy_{c:02d}_{a}_{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of one of these `Load Image by Path` nodes, like https://github.com/WASasquatch/was-node-suite-comfyui , https://github.com/KosinkadinkComfyUI-VideoHelperSuite or https://github.com/1038lab/ComfyUI-RMBG .
 
 ![Load Image with Formatted String](/workflows/Example_07_LoadWithFormattedString.png)
 (workflow included)
 
-**TODO** Make the combo work with native `Load Image` (but my `string to any` approach always resulted in `NoneType could not call function endsWith`)
+**TODO** Make the combo work with native `Load Image` (but my `string to any` approach always resulted in `NoneType object has no attribute 'endsWith'`)

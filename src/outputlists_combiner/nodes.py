@@ -20,7 +20,6 @@ inputs:
 outputs:
 * value: the values from the list. uses OUTPUT_IS_LIST=True and will be processed sequentially by corresponding nodes.
 * delimited_str: the list joined together by the delimiter, which is often useful for other nodes (like grid annotations).
-* full_list: the whole list without OUTPUT_IS_LIST=False in case some nodes require it.
 * count: the number of items in the list
 * inspect_combo: a dummy output only used to pre-fill the list with values from a COMBO input and will automatically disconnect again.
 """
@@ -41,9 +40,9 @@ outputs:
 			},
 		}
 
-	RETURN_NAMES	=	("value"	, "delimited_str"	, "full_list"	, "count"	, "inspect_combo"	)
-	RETURN_TYPES	=	(any	, "STRING"	, "STRING"	, "INT"	, "COMBO"	)
-	OUTPUT_IS_LIST	=	(True	, False	, False	, False	, False	)
+	RETURN_NAMES	=	("value"	, "delimited_str"	, "count"	, "inspect_combo"	)
+	RETURN_TYPES	=	(any	, "STRING"	, "INT"	, "COMBO"	)
+	OUTPUT_IS_LIST	=	(True	, False	, False	, False	)
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
 
@@ -53,7 +52,7 @@ outputs:
 		value	= [s.strip() for s in values.split(unescaped_separator) if s.strip()]
 		delimited_str	= delimiter.join(value)
 		count	= len(value)
-		ret	= (value, delimited_str, value, count, inspect_combo)
+		ret	= (value, delimited_str, count, inspect_combo)
 		return ret
 
 class NumberOutputList:
@@ -72,7 +71,6 @@ All the values from the list use OUTPUT_IS_LIST=True and will be processed seque
 * int: the value converted to int (rounded down/floored)
 * float: the value as a float
 * str: the value as a string
-* full_list: the whole list without OUTPUT_IS_LIST=False in case some nodes require it.
 * count: the number of items in the list
 """
 
@@ -88,9 +86,9 @@ All the values from the list use OUTPUT_IS_LIST=True and will be processed seque
 				}
 		}
 
-	RETURN_NAMES	=	("int"	, "float"	, "string"	, "full_list"	, "delimited_str"	)
-	RETURN_TYPES	=	("INT"	, "FLOAT"	, "STRING"	, "LIST"	, "STRING"	)
-	OUTPUT_IS_LIST	=	(True	, True	, True	, False	, False	)
+	RETURN_NAMES	=	("int"	, "float"	, "string"	, "delimited_str"	)
+	RETURN_TYPES	=	("INT"	, "FLOAT"	, "STRING"	, "STRING"	)
+	OUTPUT_IS_LIST	=	(True	, True	, True	, False	)
 	FUNCTION = "execute"
 	CATEGORY = "Utility"
 
@@ -100,7 +98,7 @@ All the values from the list use OUTPUT_IS_LIST=True and will be processed seque
 		floats	= [float (v) for v in values]
 		strs	= [str (v) for v in values]
 		delimited_str	= delimiter.join(strs)
-		ret	= (ints, floats, strs, values, delimited_str)
+		ret	= (ints, floats, strs, delimited_str)
 		return ret
 
 class CombineOutputLists:
@@ -129,9 +127,9 @@ outputs:
 		}
 
 	INPUT_IS_LIST = True
-	RETURN_NAMES	=	("unzip_a"	, "unzip_b"	, "unzip_c"	, "unzip_d"	, "count"	, "full_list"	)
-	RETURN_TYPES	=	(any	, any	, any	, any	, "INT"	, "LIST"	)
-	OUTPUT_IS_LIST	=	(True	, True	, True	, True	, False	, False	)
+	RETURN_NAMES	=	("unzip_a"	, "unzip_b"	, "unzip_c"	, "unzip_d"	, "count"	)
+	RETURN_TYPES	=	(any	, any	, any	, any	, "INT"	)
+	OUTPUT_IS_LIST	=	(True	, True	, True	, True	, False	)
 	FUNCTION = "compute"
 	CATEGORY = "Utility"
 
@@ -139,7 +137,8 @@ outputs:
 		normalized	= [lst if len(lst) > 0 else [None] for lst in [list_a, list_b, list_c, list_d]]
 		product	= list(itertools.product(*normalized))
 		transposed	= tuple(map(list, zip(*product)))
-		return (*transposed, len(product), transposed)
+		ret	= (*transposed, len(product))
+		return ret
 
 class FormattedString:
 	DESCRIPTION = """Uses python str.format() internally, see https://docs.python.org/3/library/string.html#format-string-syntax .
@@ -166,15 +165,15 @@ outputs:
 				}
 		}
 
-	RETURN_NAMES	= ("string"	, "any"	)
-	RETURN_TYPES	= ("STRING"	, any	)
-	OUTPUT_IS_LIST	= (False	, False	)
+	RETURN_NAMES	= ("string",	)
+	RETURN_TYPES	= ("STRING",	)
+	OUTPUT_IS_LIST	= (False   ,	)
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
 
 	def execute(self, fstring, a = "", b = "", c = "", d = ""):
-		ret = fstring.format(a=a, b=b, c=c, d=d)
-		return (ret, ret)
+		ret = (fstring.format(a=a, b=b, c=c, d=d),)
+		return ret
 
 class ConvertNumberToIntFloatStr:
 	@classmethod
@@ -191,29 +190,30 @@ class ConvertNumberToIntFloatStr:
 	CATEGORY = "Utility"
 
 	def execute(self, number):
-		return (int(number), number, str(number))
+		ret = (int(number), number, str(number))
+		return ret
 
-class StringToCombo:
-	DESCRIPTION = """
-"""
+# class StringToCombo:
+#	DESCRIPTION = """
+# """
 
-	@classmethod
-	def INPUT_TYPES(cls):
-		return {
-			"required": {
-				"string": ("STRING",),
-				},
-		}
+#	@classmethod
+#	def INPUT_TYPES(cls):
+#		return {
+#			"required": {
+#				"string": ("STRING",),
+#				},
+#		}
 
-	RETURN_NAMES	= ("combo",	"any"	)
-	RETURN_TYPES	= ("COMBO",	any	)
-	OUTPUT_IS_LIST	= (True, True	)
-	FUNCTION	= "execute"
-	CATEGORY	= "Utility"
+#	RETURN_NAMES	= ("combo",	"any"	)
+#	RETURN_TYPES	= ("COMBO",	any	)
+#	OUTPUT_IS_LIST	= (True, True	)
+#	FUNCTION	= "execute"
+#	CATEGORY	= "Utility"
 
-	def execute(self, string):
-		ret = (str(string))
-		return ([ret], [ret])
+#	def execute(self, string):
+#		ret = (str(string))
+#		return ([ret], [ret])
 
 NODE_CLASS_MAPPINGS = {
 	"StringOutputList"	: StringOutputList,
@@ -221,7 +221,7 @@ NODE_CLASS_MAPPINGS = {
 	"CombineOutputLists"	: CombineOutputLists,
 	"FormattedString"	: FormattedString,
 	"ConvertNumberToIntFloatStr"	: ConvertNumberToIntFloatStr,
-	"StringToCombo"	: StringToCombo,
+	#"StringToCombo"	: StringToCombo,
 }
 NODE_DISPLAY_NAME_MAPPINGS = {
 	"StringOutputList"	: "String OutputList",
@@ -229,5 +229,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
 	"CombineOutputLists"	: "OutputList Combinations",
 	"FormattedString"	: "Formatted String",
 	"ConvertNumberToIntFloatStr"	: "Convert any number to Int Float String",
-	"StringToCombo"	: "String To Combo",
+	#"StringToCombo"	: "String To Combo",
 }
