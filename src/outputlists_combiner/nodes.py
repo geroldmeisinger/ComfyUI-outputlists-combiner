@@ -1,6 +1,7 @@
 import itertools
 
 import numpy
+import nums_from_string
 
 
 class AnyType(str):
@@ -176,21 +177,36 @@ outputs:
 		return ret
 
 class ConvertNumberToIntFloatStr:
+	DESCRIPTION = """Convert anything number-like to int float string.
+Uses `nums-from-string.get_nums` internally which is very permissive in the numbers it accepts.
+Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
+
+outputs:
+* int: all the numbers found in the string with the decimals truncated (floored)
+* float: all the numbers found in the string as floats
+* string: all the numbers found in the string converted to string
+"""
+
 	@classmethod
 	def INPUT_TYPES(cls):
 		return {
 			"required": {
-				"number": ("FLOAT,INT",),
+				"number": (any,),
 			}
 		}
 
-	RETURN_NAMES	=	("int"	, "float"	, "string"	)
-	RETURN_TYPES	=	("INT"	, "FLOAT"	, "STRING"	)
-	FUNCTION = "execute"
-	CATEGORY = "Utility"
+	RETURN_NAMES	= ("int"	, "float"	, "string"	)
+	RETURN_TYPES	= ("INT"	, "FLOAT"	, "STRING"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	)
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
 
 	def execute(self, number):
-		ret = (int(number), number, str(number))
+		number_str	= str(number)
+		floats	= nums_from_string.get_nums(number_str)
+		ints	= [int(f) for f in floats]
+		strs	= [str(f) for f in floats]
+		ret	= (ints, floats, strs)
 		return ret
 
 # class StringToCombo:

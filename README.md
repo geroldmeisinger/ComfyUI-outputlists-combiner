@@ -1,20 +1,20 @@
 # ComfyUI-outputlists-combiner
 
-Did you know that ComfyUI supports so called output lists which tell nodes downstream to execute multiple times within the same run? Notice how this output lists emits four strings and causes the KSampler to run four times:
+Did you know that ComfyUI supports so called output lists which tell nodes downstream to execute multiple times within the same run? Notice how this output list emits four strings and causes the KSampler to run four times:
 
 https://github.com/user-attachments/assets/303115d3-7c28-42e8-bb52-d02e7cc1022b
 
 *Wait, what?*
 
-Yes, I didn't know about it either. Apparently everytime you see the symbol `𝌠` it's an [output list](https://docs.comfy.org/custom-nodes/backend/lists). This feature seems very underutilized but it allows values to be processed sequentially without weird workarounds (like for-loops, increment counters or external python scripts) which makes them perfect for prompt combinations and XYZ-gridplots. I always found grids a hazzle in ComfyUI whereas they were straightforward in Automatic1111. Mist custom nodes either require a lot of manual work or you have to use some extra-special nodes (like custom KSamplers). This project tries to make good use of output lists, integrate well with the ComfyUI's paradigm and finally makes XYZ-gridplots easy to use again.
+Yeah, I didn't know about it either. Apparently everytime you see the symbol `𝌠` it's an [output list](https://docs.comfy.org/custom-nodes/backend/lists). This feature seems very underutilized but it allows values to be processed sequentially without weird workarounds (like for-loops, increment counters or external python scripts) which makes them perfect for prompt combinations and XYZ-gridplots. I always found grids a hazzle in ComfyUI whereas they were straightforward in Automatic1111. Most custom nodes either require a lot of manual work or you have to use some extra-special nodes (like custom KSamplers). This project tries to make good use of output lists, integrate well with the ComfyUI's paradigm and finally makes XYZ-gridplots easy to use again.
 
 **Features**
 
 ![Full Example](/media/FullExample.png)
 
-* OutputList Combinations: create all possible combinations of multiple lists, e.g. prompt combinations, image size variants
-* Formatted String: insert variable placeholders to create custom prompts, e.g. `a {animal} with a {colored} hat`, filename prefixes
-* Inspect Combo: connect to a COMBO input (like sampler or scheduler) and retrieve all values as a string list, e.g. sampler+scheduler testing, copy+paste model names
+* **OutputList Combinations:** create all possible combinations of multiple lists, e.g. prompt combinations, image size variants
+* **Formatted String:** insert variable placeholders to create custom prompts, e.g. `a {animal} with a {colored} hat`, filename prefixes
+* **Inspect Combo:** connect to a COMBO input (like sampler or scheduler) and retrieve all values as a string list, e.g. sampler+scheduler testing, copy+paste model names
 
 ## Installation
 
@@ -96,6 +96,18 @@ Create string with variable placeholders. Uses python's `str.format()` internall
 
 **outputs**
 * `string`: the formatted string with all placeholders replaced with their respective values.
+
+### Convert any number to Int Float String
+
+![Convert any number to Int Float String](/media/ConvertNumberToIntFloatStr.png)
+(workflow included)
+
+Convert anything number-like to int float string. Uses `nums-from-string.get_nums` internally which is very permissive in the numbers it accepts. Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
+
+outputs:
+* **int:** all the numbers found in the string with the decimals truncated (floored)
+* **float:** all the numbers found in the string as floats
+* **string:** all the numbers found in the string as floats converted to string
 
 ## Examples
 
