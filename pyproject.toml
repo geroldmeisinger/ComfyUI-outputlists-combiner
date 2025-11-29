@@ -1,5 +1,5 @@
 [build-system]
-requires	= ["setuptools>	=70.0"]
+requires	= ["setuptools>=70.0"]
 build-backend	= "setuptools.build_meta"
 
 [project]
@@ -30,8 +30,8 @@ Documentation	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 
 [tool.comfy]
 PublisherId	= "geroldmeisinger"
-DisplayName	= "OutputLists outputlists_combiner"
-Icon	= ""
+DisplayName	= "OutputLists Combiner"
+Icon	= "logo.png"
 Tags	= []
 Repository	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"
 includes	= []
