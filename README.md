@@ -179,6 +179,17 @@ Tensor shape required for images-grid:
 
 ## Advanced Examples
 
+### Immediately save intermediate images of image grid
+
+One thing you may have noticed when you make a large image grid is that you have to wait for ALL intermediate images to be processed before anything is saved and the grid created. Thus you could loose a lot of processed images when something happens or you cancel the job (though ComfyUI keeps them in cache and should pick up immediately). If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` node.
+
+![ImageGrids example](/workflows/Example_04b_ImageGridsImmediateSave.png)
+(workflow included)
+
+Technically this node is implemented as [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `KSampler`, `VAE Decode` and `Save Image`.
+
+- **TODO** I'm not happy that this node exists at all as I wanted to avoid custom KSampler nodes. Unfortunately I haven't found a way to [use subgraphs to force immediate processing](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) yet.
+
 ### Rebatching images for subgrids
 
 ![Rebatching example](/workflows/Example_05_SubImageGrids.png)
@@ -221,7 +232,7 @@ Tensor Shape Debug required for second images-grid:
 
 ### Baking Values Into Workflow
 
-You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but Sometimes you want to know which exact prompt or values resulted in this image. So we need store the individual values in the metadata. The following workflow makes use of https://github.com/crystian/ComfyUI-Crystools `Save image with Metadata` and `Load image with Metadata` and https://github.com/ltdrdata/ComfyUI-Impact-Pack `Select Nth Item`.
+You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. So we need store the individual values in the metadata. The following workflow makes use of https://github.com/crystian/ComfyUI-Crystools `Save image with Metadata` and `Load image with Metadata` and https://github.com/ltdrdata/ComfyUI-Impact-Pack `Select Nth Item`.
 
 ![Save Index in Metadata](/workflows/Example_06a_IndexInMetadata.png)
 (workflow included)
