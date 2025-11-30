@@ -141,6 +141,13 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 
 Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] x [768, 512, 256]` and connects them to the image width and height to produce image variants in portrait, square and landscape.
 
+### Combine row/column for filename
+
+![Combine numbers example](/workflows/Example_01b_Combine_RowCol_Filename.png)
+(workflow included)
+
+Makes use of two `Number OutputList` combined the same way as the prommpts, and a `Convert any number to Int Float String` connect with the respective list count to synchronize the list size, which gives as the rows and columns. `Formatted String` produces the filename prefix `row_{a}_col{b}`.
+
 ### Integrate [LEv145/images-grid-comfy-plugin](https://github.com/LEv145/images-grid-comfy-plugin)
 
 ![ImageGrids example](/workflows/Example_04_ImageGrids.png)
