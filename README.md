@@ -102,7 +102,7 @@ Create string with variable placeholders. Uses python's `str.format()` internall
 ![Convert any number to Int Float String](/media/ConvertNumberToIntFloatStr.png)
 (workflow included)
 
-Convert anything number-like to int float string. Uses `nums-from-string.get_nums` internally which is very permissive in the numbers it accepts. Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
+Convert anything number-like to int float string. Uses `nums-from-string.get_nums()` internally which is very permissive in the numbers it accepts. Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
 
 outputs:
 * **int:** all the numbers found in the string with the decimals truncated (floored)
@@ -123,7 +123,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 ![Combine prompts example](/workflows/Example_01_Combine_Prompts.png)
 (workflow included)
 
-Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Formatted String`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue]` (`3x3=9`)
+Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Formatted String`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue] = 3 x 3 = 9`)
 
 To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as it outputs a new line for each emitted item.
 
@@ -132,7 +132,7 @@ To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as i
 ![Combine samplers and schedulers example](/workflows/Example_02_Combine_Samplers_Schedulers.png)
 (workflow included)
 
-Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entries were deleted) and connects to the COMBO inputs `samplers` and `schedulers`. It iterates over all combinations of `[euler, heunpp2, uni_pc_bh2] x [simple, karras, beta]` (`3x3=9`)
+Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entries were deleted) and connects to the COMBO inputs `samplers` and `schedulers`. It iterates over all combinations of `[euler, heunpp2, uni_pc_bh2] x [simple, karras, beta] = 3 x 3 = 9`)
 
 ### Combine numbers
 
@@ -146,7 +146,7 @@ Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] 
 ![Combine numbers example](/workflows/Example_01b_Combine_RowCol_Filename.png)
 (workflow included)
 
-Makes use of two `Number OutputList` combined the same way as the prommpts, and a `Convert any number to Int Float String` connect with the respective list count to synchronize the list size, which gives as the rows and columns. `Formatted String` produces the filename prefix `row_{a}_col{b}`.
+Makes use of two `Number OutputList` combined the same way as the prommpts, and a `Convert any number to Int Float String` connect with the respective list count to synchronize the list size, which gives as the rows and columns. `Formatted String` produces the filename prefix `row_{a:02d}_col_{b:02d}`.
 
 ### Integrate [LEv145/images-grid-comfy-plugin](https://github.com/LEv145/images-grid-comfy-plugin)
 
@@ -186,7 +186,7 @@ One thing you may have noticed when you make a large image grid is that you have
 ![ImageGrids example](/workflows/Example_04b_ImageGridsImmediateSave.png)
 (workflow included)
 
-Technically this node is implemented as [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `KSampler`, `VAE Decode` and `Save Image`.
+Technically this node is implemented as a [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `KSampler`, `VAE Decode` and `Save Image`.
 
 - **TODO** I'm not happy that this node exists at all as I wanted to avoid custom KSampler nodes. Unfortunately I haven't found a way to [use subgraphs to force immediate processing](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) yet.
 
@@ -228,16 +228,16 @@ Tensor Shape Debug required for second images-grid:
 [[9, 1024, 1024, 3]]
 ```
 
-- **TODO** This is kinda surprising if don't know what's going own. Maybe we should developer a "Rebatch Images: shape=4x9" node.
+- **TODO** This is kinda surprising if don't know what's going own. Maybe we should develop a "Rebatch Images: shape=4x9" node.
 
 ### Baking Values Into Workflow
 
-You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. So we need store the individual values in the metadata. The following workflow makes use of https://github.com/crystian/ComfyUI-Crystools `Save image with Metadata` and `Load image with Metadata` and https://github.com/ltdrdata/ComfyUI-Impact-Pack `Select Nth Item`.
+You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. Thus we need store the individual values in the metadata. The following workflow makes use of https://github.com/crystian/ComfyUI-Crystools `Save image with Metadata` and `Load image with Metadata` and https://github.com/ltdrdata/ComfyUI-Impact-Pack `Select Nth Item`.
 
 ![Save Index in Metadata](/workflows/Example_06a_IndexInMetadata.png)
 (workflow included)
 
-This example uses `Number OutputList` to create a index range corresponding to the prompt list and stores it as a JSON `{ "index": 123 }` in the metadata of the image with `Save image with Metadata`. You can extend it to also include the prompt string. Note that this also uses `{c:02d}` to store the files with 0-padded indices, so they are correctly sorted by your file manager.
+This example uses `Number OutputList` to create a index range corresponding to the prompt list and stores it as a JSON `{ "index": 123 }` in the metadata of the image with `Save image with Metadata`. You can extend it to also include the prompt string, row, column, etc. if you hook them up in the `Formatted String` `{{ "index": {a}, "row": {b}, "column": {c}, "prompt": {d} }}`.
 
 ![Load Index from Metadata](/workflows/Example_06b_IndexFromMetadata.png)
 (workflow included)
@@ -247,7 +247,7 @@ This example reads the index from the metadata with `Load Image with Metadata` a
 It's is not perfect because in the end you still have to manually put the image in `Load Image` and hook up the values from `Select Nth Item` to get this one exact image. If you work a lot with image grids you might want to include both of this patterns in one workflow.
 
 - **TODO** This is unsatisfactory and requires a lot of manual work
-- **TODO** If someone knows a clever way how to use node expansion and native way to include metadata please let me know!
+- **TODO** If someone knows a native way include metadata please let me know (node expansion?, hidden extra pnginfo?)!
 
 ### Load all images from grid
 
