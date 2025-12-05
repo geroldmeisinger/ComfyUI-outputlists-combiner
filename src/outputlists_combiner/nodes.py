@@ -32,30 +32,30 @@ outputs:
 		return {
 			"required":
 			{
-				"separator" : ("STRING", { "default": "\\n" }),
-				"delimiter" : ("STRING", { "default": ";" }),
-				"values" : ("STRING",
+				"separator"	: ("STRING", { "default": "\\n" }),
+				"delimiter"	: ("STRING", { "default": ";" }),
+				"values"	: ("STRING",
 					{
-						"multiline" : True,
-						"default" : "",
-						"placeholder" : "String separated with newlines. Or try to connect inspect_combo with a COMBO input."
+						"multiline"	: True,
+						"default"	: "",
+						"placeholder"	: "String separated with newlines. Or try to connect inspect_combo with a COMBO input."
 					}),
 			},
 		}
 
-	RETURN_NAMES = ("value" , "delimited_str" , "count" , "inspect_combo" )
-	RETURN_TYPES = (any , "STRING" , "INT" , "COMBO" )
-	OUTPUT_IS_LIST = (True , False , False , False )
-	FUNCTION = "execute"
-	CATEGORY = "Utility"
+	RETURN_NAMES	= ("value" , "delimited_str" , "count" , "inspect_combo" )
+	RETURN_TYPES	= (any , "STRING" , "INT" , "COMBO" )
+	OUTPUT_IS_LIST	= (True , False , False , False )
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
 
 	def execute(self, separator, delimiter, values):
-		inspect_combo = None
-		unescaped_separator = separator.encode().decode('unicode_escape')
-		value = [s.strip() for s in values.split(unescaped_separator) if s.strip()]
-		delimited_str = delimiter.join(value)
-		count = len(value)
-		ret = (value, delimited_str, count, inspect_combo)
+		inspect_combo	= None
+		unescaped_separator	= separator.encode().decode('unicode_escape')
+		value	= [s.strip() for s in values.split(unescaped_separator) if s.strip()]
+		delimited_str	= delimiter.join(value)
+		count	= len(value)
+		ret	= (value, delimited_str, count, inspect_combo)
 		return ret
 
 class NumberOutputList:
@@ -81,27 +81,27 @@ All the values from the list use OUTPUT_IS_LIST=True and will be processed seque
 	def INPUT_TYPES(cls):
 		return {
 			"required": {
-				"start" : ("FLOAT" , { "default" : 0 }),
-				"stop" : ("FLOAT" , { "default" : 10 }),
-				"num" : ("FLOAT" , { "default" : 10 }),
-				"endpoint" : ("BOOLEAN" , { "default" : False, "label_on": "include", "label_off": "exclude" }),
-				"delimiter" : ("STRING" , { "default" : ";" }),
+				"start"	: ("FLOAT"	, { "default"	: 0 }),
+				"stop"	: ("FLOAT"	, { "default"	: 10 }),
+				"num"	: ("FLOAT"	, { "default"	: 10, "min": 1 }),
+				"endpoint"	: ("BOOLEAN"	, { "default"	: False, "label_on"	: "include", "label_off"	: "exclude" }),
+				"delimiter"	: ("STRING"	, { "default"	: ";" }),
 				}
 		}
 
-	RETURN_NAMES = ("int" , "float" , "string" , "delimited_str" )
-	RETURN_TYPES = ("INT" , "FLOAT" , "STRING" , "STRING" )
-	OUTPUT_IS_LIST = (True , True , True , False )
-	FUNCTION = "execute"
-	CATEGORY = "Utility"
+	RETURN_NAMES	= ("int" , "float" , "string" , "delimited_str" )
+	RETURN_TYPES	= ("INT" , "FLOAT" , "STRING" , "STRING" )
+	OUTPUT_IS_LIST	= (True , True , True , False )
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
 
 	def execute(self, start, stop, num, endpoint, delimiter):
-		values = list(numpy.linspace(start, stop, int(num), endpoint))
-		ints = [int (v) for v in values]
-		floats = [float (v) for v in values]
-		strs = [str (v) for v in values]
-		delimited_str = delimiter.join(strs)
-		ret = (ints, floats, strs, delimited_str)
+		values	= list(numpy.linspace(start, stop, int(num), endpoint))
+		ints	= [int (v) for v in values]
+		floats	= [float (v) for v in values]
+		strs	= [str (v) for v in values]
+		delimited_str	= delimiter.join(strs)
+		ret	= (ints, floats, strs, delimited_str)
 		return ret
 
 class CombineOutputLists:
@@ -122,25 +122,25 @@ outputs:
 			"required": {
 			},
 			"optional": {
-				"list_a" : (any, ),
-				"list_b" : (any, ),
-				"list_c" : (any, ),
-				"list_d" : (any, ),
+				"list_a"	: (any, ),
+				"list_b"	: (any, ),
+				"list_c"	: (any, ),
+				"list_d"	: (any, ),
 			}
 		}
 
-	INPUT_IS_LIST = True
-	RETURN_NAMES = ("unzip_a" , "unzip_b" , "unzip_c" , "unzip_d" , "count" )
-	RETURN_TYPES = (any , any , any , any , "INT" )
-	OUTPUT_IS_LIST = (True , True , True , True , False )
-	FUNCTION = "compute"
-	CATEGORY = "Utility"
+	INPUT_IS_LIST	= True
+	RETURN_NAMES	= ("unzip_a" , "unzip_b" , "unzip_c" , "unzip_d" , "count" )
+	RETURN_TYPES	= (any , any , any , any , "INT" )
+	OUTPUT_IS_LIST	= (True , True , True , True , False )
+	FUNCTION	= "compute"
+	CATEGORY	= "Utility"
 
 	def compute(self, list_a = [], list_b = [], list_c = [], list_d = []):
-		normalized = [lst if len(lst) > 0 else [None] for lst in [list_a, list_b, list_c, list_d]]
-		product = list(itertools.product(*normalized))
-		transposed = tuple(map(list, zip(*product)))
-		ret = (*transposed, len(product))
+		normalized	= [lst if len(lst) > 0 else [None] for lst in [list_a, list_b, list_c, list_d]]
+		product	= list(itertools.product(*normalized))
+		transposed	= tuple(map(list, zip(*product)))
+		ret	= (*transposed, len(product))
 		return ret
 
 class FormattedString:
@@ -156,23 +156,23 @@ outputs:
 		return {
 			"required": {
 				"fstring": ("STRING", {
-					"multiline" : True,
-					"default" : "{a}_{b}_{c}_{d}"
+					"multiline"	: True,
+					"default"	: "{a}_{b}_{c}_{d}"
 					}),
 				},
 			"optional": {
-				"a" : (any, ),
-				"b" : (any, ),
-				"c" : (any, ),
-				"d" : (any, ),
+				"a"	: (any, ),
+				"b"	: (any, ),
+				"c"	: (any, ),
+				"d"	: (any, ),
 				}
 		}
 
-	RETURN_NAMES = ("string", )
-	RETURN_TYPES = ("STRING", )
-	OUTPUT_IS_LIST = (False   , )
-	FUNCTION = "execute"
-	CATEGORY = "Utility"
+	RETURN_NAMES	= ("string", )
+	RETURN_TYPES	= ("STRING", )
+	OUTPUT_IS_LIST	= (False   , )
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
 
 	def execute(self, fstring, a = "", b = "", c = "", d = ""):
 		ret = (fstring.format(a=a, b=b, c=c, d=d),)
@@ -197,18 +197,18 @@ outputs:
 			}
 		}
 
-	RETURN_NAMES = ("int" , "float" , "string" )
-	RETURN_TYPES = ("INT" , "FLOAT" , "STRING" )
-	OUTPUT_IS_LIST = (True , True , True )
-	FUNCTION = "execute"
-	CATEGORY = "Utility"
+	RETURN_NAMES	= ("int" , "float" , "string" )
+	RETURN_TYPES	= ("INT" , "FLOAT" , "STRING" )
+	OUTPUT_IS_LIST	= (True , True , True )
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
 
 	def execute(self, number):
-		number_str = str(number)
-		floats = nums_from_string.get_nums(number_str)
-		ints = [int(f) for f in floats]
-		strs = [str(f) for f in floats]
-		ret = (ints, floats, strs)
+		number_str	= str(number)
+		floats	= nums_from_string.get_nums(number_str)
+		ints	= [int(f) for f in floats]
+		strs	= [str(f) for f in floats]
+		ret	= (ints, floats, strs)
 		return ret
 
 # class StringToCombo:
@@ -269,7 +269,7 @@ This is useful if you want to save the intermediate images for grids immediately
 	OUTPUT_TOOLTIPS	= ("The decoded image.",) # from ComfyUI/nodes.py VAEDecode
 	OUTPUT_NODE	= True
 	FUNCTION	= "execute"
-	CATEGORY	= "Utility"
+	CATEGORY	= "_for_testing"
 
 	def execute(self, model, positive, negative, latent_image, vae, seed, steps, cfg, sampler_name, scheduler, denoise, filename_prefix):
 		graph	= GraphBuilder()

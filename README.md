@@ -181,7 +181,7 @@ Tensor shape required for images-grid:
 
 ### Immediately save intermediate images of image grid
 
-One thing you may have noticed when you make a large image grid is that you have to wait for ALL intermediate images to be processed before anything is saved and the grid created. Thus you could loose a lot of processed images when something happens or you cancel the job (though ComfyUI keeps them in cache and should pick up immediately). If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` node.
+One thing you may have noticed when you make a large image grid is that you have to wait for ALL intermediate images to be processed before anything is saved and the grid created. Thus you could loose a lot of processed images when something happens or you cancel the job (though ComfyUI keeps them in cache and should pick up immediately). If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` beta-node. For this node to be visible in the node searchbox you need to activate `Settings -> Comfy -> Show experimental nodes in search`.
 
 ![ImageGrids example](/workflows/Example_04b_ImageGridsImmediateSave.png)
 (workflow included)
@@ -256,4 +256,5 @@ Let's say you generated a lot of images for your grid and (hopefully) stored the
 ![Load Image with Formatted String](/workflows/Example_07_LoadWithFormattedString.png)
 (workflow included)
 
-**TODO** Make the combo work with native `Load Image` (but my `string to any` approach always resulted in `NoneType object has no attribute 'endsWith'`)
+**TODO** Make the combo work with native `Load Image` (but my `string to any` approach always resulted in `NoneType object has no attribute 'endsWith'`). I filled a bugreport https://github.com/comfyanonymous/ComfyUI/issues/11017
+

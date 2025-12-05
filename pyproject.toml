@@ -8,7 +8,7 @@ version	= "0.0.3"
 description	= "Quick OutputLists from strings and numbers. Inspect COMBO to make lists for samplers, schedulers etc. Easy combinations of list and prompts. Support usage of XYZ-Gridplots. "
 authors	= [{name = "Gerold Meisinger"}]
 readme	= "README.md"
-license	= {text	= "GNU General Public License v3"}
+license	= { text="GNU General Public License v3" }
 requires-python	= ">=3.10"
 classifiers	= []
 dependencies	= ["nums-from-string==0.1.2"]
@@ -31,7 +31,7 @@ Documentation	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 [tool.comfy]
 PublisherId	= "geroldmeisinger"
 DisplayName	= "OutputLists Combiner"
-Icon	= "logo.png"
+Icon	= "https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/logo.png"
 Tags	= []
 Repository	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"
 includes	= []
