@@ -1,9 +1,12 @@
 import itertools
+from json import dumps, loads
 
 import comfy.samplers
 import numpy
-import nums_from_string
 from comfy_execution.graph_utils import GraphBuilder
+from fastnumbers import fast_float
+from jsonpath_ng import parse as jsonpath_parse
+from nums_from_string import get_nums
 
 
 class AnyType(str):
@@ -12,19 +15,11 @@ class AnyType(str):
 
 any = AnyType("*")
 
+OUTPUTLIST_NOTE = "uses OUTPUT_IS_LIST=True (indicated by the symbol 𝌠) and will be processed sequentially by corresponding nodes"
+
 class StringOutputList:
-	DESCRIPTION = """Create a OutputList by separating the string in the textfield.
-
-inputs:
-* separator: the string to split the textfield values.
-* delimiter: only used for delimited_str.
-* values: the string which will be separated. note that the string is stripped of whitespace before splitting, and each item is again stripped.
-
-outputs:
-* value: the values from the list. uses OUTPUT_IS_LIST=True and will be processed sequentially by corresponding nodes.
-* delimited_str: the list joined together by the delimiter, which is often useful for other nodes (like grid annotations).
-* count: the number of items in the list
-* inspect_combo: a dummy output only used to pre-fill the list with values from a COMBO input and will automatically disconnect again.
+	DESCRIPTION = f"""Create a OutputList by separating the string in the textfield.
+value and index {OUTPUTLIST_NOTE}
 """
 
 	@classmethod
@@ -32,88 +27,181 @@ outputs:
 		return {
 			"required":
 			{
-				"separator"	: ("STRING", { "default": "\\n" }),
-				"delimiter"	: ("STRING", { "default": ";" }),
+				"separator"	: ("STRING", { "default": "\\n", "tooltip": "the string to split the textfield values" }),
 				"values"	: ("STRING",
 					{
 						"multiline"	: True,
 						"default"	: "",
-						"placeholder"	: "String separated with newlines. Or try to connect inspect_combo with a COMBO input."
+						"placeholder"	: "String separated with newlines. Try to connect inspect_combo with a COMBO input!",
+						"tooltip"	: "the string which will be separated. note that the string is trimmed of whitespace before splitting, and each item is again trimmed",
 					}),
 			},
 		}
 
-	RETURN_NAMES	= ("value" , "delimited_str" , "count" , "inspect_combo" )
-	RETURN_TYPES	= (any , "STRING" , "INT" , "COMBO" )
-	OUTPUT_IS_LIST	= (True , False , False , False )
+	RETURN_NAMES	=	("value"	, "index"	, "count"	, "inspect_combo"	)
+	RETURN_TYPES	=	(any	, "STRING"	, "INT"	, "COMBO"	)
+	OUTPUT_IS_LIST	=	(True	, True	, False	, False	)
+	OUTPUT_TOOLTIPS	= (
+		f"the values from the list. {OUTPUTLIST_NOTE}",
+		f"the number of items in the list. {OUTPUTLIST_NOTE}",
+		f"range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}",
+		"a dummy output only used to pre-fill the list with values from a COMBO input and will automatically disconnect again",
+		)
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
 
-	def execute(self, separator, delimiter, values):
-		inspect_combo	= None
+	def execute(self, separator, values):
 		unescaped_separator	= separator.encode().decode('unicode_escape')
 		value	= [s.strip() for s in values.split(unescaped_separator) if s.strip()]
-		delimited_str	= delimiter.join(value)
 		count	= len(value)
-		ret	= (value, delimited_str, count, inspect_combo)
+		index	= range(count)
+		inspect_combo	= None
+		ret	= (value, index, count, inspect_combo)
 		return ret
 
 class NumberOutputList:
-	DESCRIPTION = """Create a OutputList by generating a numbers of values in a range.
+	DESCRIPTION = f"""Create a OutputList by generating a numbers of values in a range.
 Uses numpy.linspace internally because it works more reliably with floatingpoint values.
-
-inputs:
-* start: start value to generate the range from
-* stop: end value. if endpoint=True this number will be included in the list.
-* num: the number of items in the list (not to be confused with a step).
-* endpoint: decides if the stop value should be included or excluded in the items.
-* delimiter: only used for delimited_str.
-
-outputs:
-All the values from the list use OUTPUT_IS_LIST=True and will be processed sequentially by corresponding nodes.
-* int: the value converted to int (rounded down/floored)
-* float: the value as a float
-* str: the value as a string
-* count: the number of items in the list
+int, float, string and index {OUTPUTLIST_NOTE}.
 """
 
 	@classmethod
 	def INPUT_TYPES(cls):
 		return {
 			"required": {
-				"start"	: ("FLOAT"	, { "default"	: 0 }),
-				"stop"	: ("FLOAT"	, { "default"	: 10 }),
-				"num"	: ("FLOAT"	, { "default"	: 10, "min": 1 }),
-				"endpoint"	: ("BOOLEAN"	, { "default"	: False, "label_on"	: "include", "label_off"	: "exclude" }),
-				"delimiter"	: ("STRING"	, { "default"	: ";" }),
+				"start"	: ("FLOAT"	, { "default"	:	0,	"tooltip": "start value to generate the range from" }),
+				"stop"	: ("FLOAT"	, { "default"	:	10,	"tooltip": "end value. if endpoint=include this number will be included in the list" }),
+				"num"	: ("FLOAT"	, { "default"	:	10, "min": 1,	"tooltip": "the number of items in the list (not to be confused with a step)" }),
+				"endpoint"	: ("BOOLEAN"	, { "default"	:	False, "label_on": "include", "label_off": "exclude",	"tooltip": "decides if the stop value should be included or excluded in the items" }),
 				}
 		}
 
-	RETURN_NAMES	= ("int" , "float" , "string" , "delimited_str" )
-	RETURN_TYPES	= ("INT" , "FLOAT" , "STRING" , "STRING" )
-	OUTPUT_IS_LIST	= (True , True , True , False )
+	RETURN_NAMES	= ("int"	, "float"	, "string"	, "index"	, "count"	)
+	RETURN_TYPES	= ("INT"	, "FLOAT"	, "STRING"	, "INT"	, "INT"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, True	, False	)
+	OUTPUT_TOOLTIPS	= (
+		f"the value converted to int (rounded down/floored). {OUTPUTLIST_NOTE}",
+		f"the value as a float. {OUTPUTLIST_NOTE}",
+		f"the value as a string. {OUTPUTLIST_NOTE}",
+		f"range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}",
+		"same as num",
+		)
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
 
-	def execute(self, start, stop, num, endpoint, delimiter):
+	def execute(self, start, stop, num, endpoint):
 		values	= list(numpy.linspace(start, stop, int(num), endpoint))
-		ints	= [int (v) for v in values]
-		floats	= [float (v) for v in values]
-		strs	= [str (v) for v in values]
-		delimited_str	= delimiter.join(strs)
-		ret	= (ints, floats, strs, delimited_str)
+		ints	= [int	(v) for v in values]
+		floats	= [float	(v) for v in values]
+		strs	= [str	(v) for v in values]
+		ret	= (ints, floats, strs, num)
+		return ret
+
+class JSONOutputList:
+	DESCRIPTION = f"""Create a OutputList by extracting arrays or dictionaries from JSON objects.
+Uses JSONPath syntax to extract the values, see https://en.wikipedia.org/wiki/JSONPath .
+All matched values will be flattend into one list.
+key, value, int, float {OUTPUTLIST_NOTE}.
+"""
+
+	@classmethod
+	def INPUT_TYPES(cls):
+		return {
+			"required":
+			{
+				"jsonpath"	: ("STRING", { "default": "$.dict", "tooltip": "the string to split the textfield values" }),
+				"json"	: ("STRING",
+					{
+						"multiline"	: True,
+						"default"	: dumps(loads('{ "dict": { "a": 0.12, "b": 3.45, "c": 6.78 }, "arr": [0.12, 3.45, 6.78] }'), indent=4),
+						"placeholder"	: "object or JSON string",
+						"tooltip"	: "any object or a string which will be parsed as JSON",
+					}),
+			},
+			"optional": {
+				"obj": (any, { "tooltip": "object of any type which will replace the JSON string" }),
+			}
+		}
+
+	RETURN_NAMES	= ("key"	, "value"	, "int"	, "float"	, "count"	, "debug"	)
+	RETURN_TYPES	= ("STRING"	, "STRING"	, "INT"	, "FLOAT"	, "INT"	, "STRING"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, True	, False	, False	)
+	OUTPUT_TOOLTIPS	= (
+		f"the key for dictionaries or index for arrays (as string). {OUTPUTLIST_NOTE}. Technically it's a global index of the flattened list for all non-keys",
+		f"the value as a string. {OUTPUTLIST_NOTE}",
+		f"the value as a int (if not parseable number default to 0). {OUTPUTLIST_NOTE}",
+		f"the value as a float (if not parseable number default to 0). {OUTPUTLIST_NOTE}",
+		"total number of items in the flattened list",
+		"debug output of all matched objects as a formatted JSON string",
+		)
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
+
+	def execute(self, jsonpath, json, obj = None):
+		# parse JSON
+		if isinstance(json, str):
+			try:
+				data = loads(json)
+			except Exception:
+				data = json	# treat raw string as value
+		else:
+			data = json
+
+		# jsonpath
+		try:
+			expr	= jsonpath_parse(jsonpath)
+			matches	= expr.find(data)
+		except Exception:
+			return ([], [], [], [], 0, dumps([], indent=4))
+
+		if not matches:
+			return ([], [], [], [], 0, dumps([], indent=4))
+
+		# outputs
+		keys	= []
+		values	= []
+		ints	= []
+		floats	= []
+		count	= 0
+		debug	= [m.value for m in matches]
+
+		def append(key, value):
+			f = fast_float(value, default=0.0, allow_underscores=True)
+
+			keys	.append(str(key))
+			values	.append(str(value))
+			floats	.append(f)
+			ints	.append(int(f))
+
+		# iterate and flatten matches
+		for m in matches:
+			target = m.value
+
+			if isinstance(target, dict):
+				for key, value in target.items():
+					append(key, value)
+					count += 1
+			elif isinstance(target, list):
+				for value in target:
+					append(count, value)
+					count += 1
+			else: # scalar
+				append(count, target)
+				count += 1
+
+		debug_json = dumps(debug, indent=4)
+
+		ret = (keys, values, ints, floats, count, debug_json)
 		return ret
 
 class CombineOutputLists:
-	DESCRIPTION = """Takes up to 4 OutputLists, computes the Cartesian product and outputs each combination splitted up into their elements (unzip).
-Empty lists are replaced with units of None and unused inputs will always emit None on the respective output.
+	DESCRIPTION = f"""Takes up to 4 OutputLists, computes the Cartesian product and outputs each combination splitted up into their elements (unzip).
+Example: [1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
+All the unzip values and index {OUTPUTLIST_NOTE}.
+All lists are optional and empty lists will be ignored.
 
-Examples:
-[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
-[1, 2] x [] x ["A", B"] = [(1, None, "A"), (1, None, "B"), (2, None, "A"), (2, None, "B")]
-
-outputs:
-* count: the total number of combinations
+Technically empty lists will be replaced with units of None and they will emit None on the respective output.
+Example: [1, 2] x [] x ["A", B"] = [(1, None, "A"), (1, None, "B"), (2, None, "A"), (2, None, "B")]
 """
 
 	@classmethod
@@ -122,17 +210,25 @@ outputs:
 			"required": {
 			},
 			"optional": {
-				"list_a"	: (any, ),
-				"list_b"	: (any, ),
-				"list_c"	: (any, ),
-				"list_d"	: (any, ),
+				"list_a"	: (any, { "tooltip": "ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_b"	: (any, { "tooltip": "ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_c"	: (any, { "tooltip": "ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_d"	: (any, { "tooltip": "ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
 			}
 		}
 
 	INPUT_IS_LIST	= True
-	RETURN_NAMES	= ("unzip_a" , "unzip_b" , "unzip_c" , "unzip_d" , "count" )
-	RETURN_TYPES	= (any , any , any , any , "INT" )
-	OUTPUT_IS_LIST	= (True , True , True , True , False )
+	RETURN_NAMES	= ("unzip_a"	, "unzip_b"	, "unzip_c"	, "unzip_d"	, "index"	, "count"	)
+	RETURN_TYPES	= (any	, any	, any	, any	, "INT"	, "INT"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, True	, True	, False	)
+	OUTPUT_TOOLTIPS	= (
+		f"value of the combinations corresponding to list_a. {OUTPUTLIST_NOTE}",
+		f"value of the combinations corresponding to list_b. {OUTPUTLIST_NOTE}",
+		f"value of the combinations corresponding to list_c. {OUTPUTLIST_NOTE}",
+		f"value of the combinations corresponding to list_d. {OUTPUTLIST_NOTE}",
+		f"range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}",
+		"total number of combinations",
+		)
 	FUNCTION	= "compute"
 	CATEGORY	= "Utility"
 
@@ -140,15 +236,16 @@ outputs:
 		normalized	= [lst if len(lst) > 0 else [None] for lst in [list_a, list_b, list_c, list_d]]
 		product	= list(itertools.product(*normalized))
 		transposed	= tuple(map(list, zip(*product)))
-		ret	= (*transposed, len(product))
+		count	= len(product)
+		index	= range(count)
+		ret	= (*transposed, index, count)
 		return ret
 
 class FormattedString:
-	DESCRIPTION = """Uses python str.format() internally, see https://docs.python.org/3/library/string.html#format-string-syntax .
-A commonly used format syntax is {a:.2f} to round of a float to 2 decimals.
-
-outputs:
-* string: the formatted string with all placeholders replaced with their respective values.
+	DESCRIPTION = """Uses python `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax .
+Use `{a:.2f}` to round off a float to 2 decimals.
+Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`
+If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`
 """
 
 	@classmethod
@@ -161,16 +258,17 @@ outputs:
 					}),
 				},
 			"optional": {
-				"a"	: (any, ),
-				"b"	: (any, ),
-				"c"	: (any, ),
-				"d"	: (any, ),
+				"a"	: (any, { "tooltip": FormattedString.DESCRIPTION }),
+				"b"	: (any, { "tooltip": FormattedString.DESCRIPTION }),
+				"c"	: (any, { "tooltip": FormattedString.DESCRIPTION }),
+				"d"	: (any, { "tooltip": FormattedString.DESCRIPTION }),
 				}
 		}
 
 	RETURN_NAMES	= ("string", )
 	RETURN_TYPES	= ("STRING", )
 	OUTPUT_IS_LIST	= (False   , )
+	OUTPUT_TOOLTIPS	= ("the formatted string with all placeholders replaced with their respective values", )
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
 
@@ -179,33 +277,35 @@ outputs:
 		return ret
 
 class ConvertNumberToIntFloatStr:
-	DESCRIPTION = """Convert anything number-like to int float string.
+	DESCRIPTION = f"""Convert anything number-like to int float string.
 Uses `nums-from-string.get_nums` internally which is very permissive in the numbers it accepts.
 Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
-
-outputs:
-* int: all the numbers found in the string with the decimals truncated (floored)
-* float: all the numbers found in the string as floats
-* string: all the numbers found in the string converted to string
+int, float and string {OUTPUTLIST_NOTE}.
 """
 
 	@classmethod
 	def INPUT_TYPES(cls):
 		return {
 			"required": {
-				"number": (any,),
+				"number": (any, { "tooltip": "anything that can be converted to a string" }),
 			}
 		}
 
-	RETURN_NAMES	= ("int" , "float" , "string" )
-	RETURN_TYPES	= ("INT" , "FLOAT" , "STRING" )
-	OUTPUT_IS_LIST	= (True , True , True )
+	RETURN_NAMES	=	("int"	, "float"	, "string"	, "count"	)
+	RETURN_TYPES	=	("INT"	, "FLOAT"	, "STRING"	, "int"	)
+	OUTPUT_IS_LIST	=	(True	, True	, True	, False	)
+	OUTPUT_TOOLTIPS	= (
+		f"all the numbers found in the string with the decimals truncated. {OUTPUTLIST_NOTE}",
+		f"all the numbers found in the string as floats. {OUTPUTLIST_NOTE}",
+		f"all the numbers found in the string as floats converted to string. {OUTPUTLIST_NOTE}",
+		"amount of numbers found in the string, which in most cases will be 1",
+		)
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
 
 	def execute(self, number):
 		number_str	= str(number)
-		floats	= nums_from_string.get_nums(number_str)
+		floats	= get_nums(number_str)
 		ints	= [int(f) for f in floats]
 		strs	= [str(f) for f in floats]
 		ret	= (ints, floats, strs)
@@ -284,6 +384,7 @@ This is useful if you want to save the intermediate images for grids immediately
 NODE_CLASS_MAPPINGS = {
 	"StringOutputList"	: StringOutputList,
 	"NumberOutputList"	: NumberOutputList,
+	"JSONOutputList"	: JSONOutputList,
 	"CombineOutputLists"	: CombineOutputLists,
 	"FormattedString"	: FormattedString,
 	"ConvertNumberToIntFloatStr"	: ConvertNumberToIntFloatStr,
@@ -293,6 +394,7 @@ NODE_CLASS_MAPPINGS = {
 NODE_DISPLAY_NAME_MAPPINGS = {
 	"StringOutputList"	: "String OutputList",
 	"NumberOutputList"	: "Number OutputList",
+	"JSONOutputList"	: "JSON OutputList",
 	"CombineOutputLists"	: "OutputList Combinations",
 	"FormattedString"	: "Formatted String",
 	"ConvertNumberToIntFloatStr"	: "Convert to Int Float String",

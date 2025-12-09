@@ -11,7 +11,7 @@ readme	= "README.md"
 license	= { text="GNU General Public License v3" }
 requires-python	= ">=3.10"
 classifiers	= []
-dependencies	= ["nums-from-string==0.1.2"]
+dependencies	= ["nums-from-string", "fastnumbers", "jsonpath_ng"]
 
 [project.optional-dependencies]
 dev = [
