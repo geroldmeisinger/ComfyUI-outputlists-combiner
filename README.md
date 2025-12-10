@@ -42,6 +42,7 @@ Create a OutputList by separating the string in the textfield.
 * `count`: the number of items in the list
 * `inspect_combo`: a dummy output only used to pre-fill the list with values from a COMBO input and will automatically disconnect again
 
+https://github.com/user-attachments/assets/b2bc09f8-6cb2-47af-bcf5-0fa380c2ef7e
 
 ### Number OutputList
 
@@ -76,7 +77,7 @@ Create a OutputList by extracting arrays or dictionaries from JSON objects.
 Uses JSONPath syntax to extract the values, see https://en.wikipedia.org/wiki/JSONPath .
 All matched values will be flattend into one list.
 
-***input**
+**input**
 * `jsonpath`: JSONPath used to extract the values
 * `json`: a string which will be parsed as JSON
 * `obj`: (optional) object of any type which will replace the JSON string
@@ -97,11 +98,18 @@ All the values from the list use `OUTPUT_IS_LIST=True` and will be processed seq
 (workflow included)
 
 Takes up to 4 OutputLists, generates all combinations between them and emits each combination as separate items.
-Example: ```[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]```
+Example:
+```
+[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
+```
+
 All lists are optional and empty lists will be ignored.
 
 Technically it computes the Cartesian product and outputs each combination splitted up into their elements (unzip), whereas empty lists will be replaced with units of None and they will emit None on the respective output.
-Example: ```[1, 2] x [] x ["A", B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]```
+Example:
+```
+[1, 2] x [] x ["A", B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
+```
 
 **inputs**
 
@@ -156,7 +164,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 
 ### Combine prompts
 
-![Combine prompts example](/workflows/Example_01_Combine_Prompts.png)
+![Combine prompts example](/workflows/Example_01a_Combine_Prompts.png)
 (workflow included)
 
 Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Formatted String`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue] = 3 x 3 = 9`)
@@ -193,7 +201,7 @@ Custom nodes:
 * [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
 * [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials) (optional)
 
-![ImageGrids example](/workflows/Example_04_ImageGrids.png)
+![ImageGrids example](/workflows/Example_04a_ImageGrids.png)
 
 (workflow included)
 
