@@ -1,1 +1,4 @@
-nums-from-string==0.1.2
+nums-from-string
+fastnumbers
+jsonpath_ng
+
