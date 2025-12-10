@@ -2,85 +2,8 @@
     "id": "409461d3-9236-4d34-bfc6-f50135f49c46",
     "revision": 0,
     "last_node_id": 27,
-    "last_link_id": 46,
+    "last_link_id": 47,
     "nodes": [
-        {
-            "id": 19,
-            "type": "ImagesGridByColumns",
-            "pos": [
-                1450,
-                400
-            ],
-            "size": [
-                210,
-                102
-            ],
-            "flags": {},
-            "order": 14,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "images",
-                    "name": "images",
-                    "type": "IMAGE",
-                    "link": 33
-                },
-                {
-                    "localized_name": "annotation",
-                    "name": "annotation",
-                    "shape": 7,
-                    "type": "GRID_ANNOTATION",
-                    "link": 28
-                },
-                {
-                    "localized_name": "gap",
-                    "name": "gap",
-                    "type": "INT",
-                    "widget": {
-                        "name": "gap"
-                    },
-                    "link": 45
-                },
-                {
-                    "localized_name": "max_columns",
-                    "name": "max_columns",
-                    "type": "INT",
-                    "widget": {
-                        "name": "max_columns"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "IMAGE",
-                    "name": "IMAGE",
-                    "type": "IMAGE",
-                    "links": [
-                        29
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "images-grid-comfy-plugin",
-                "ver": "2.6.0",
-                "Node name for S&R": "ImagesGridByColumns",
-                "ue_properties": {
-                    "widget_ue_connectable": {
-                        "gap": true,
-                        "max_columns": true
-                    },
-                    "version": "7.5.1",
-                    "input_ue_unconnectable": {}
-                }
-            },
-            "widgets_values": [
-                0,
-                3
-            ],
-            "color": "#223",
-            "bgcolor": "#335"
-        },
         {
             "id": 5,
             "type": "EmptyLatentImage",
@@ -1025,7 +948,7 @@
                     "name": "count",
                     "type": "INT",
                     "links": [
-                        45
+                        47
                     ]
                 },
                 {
@@ -1172,6 +1095,83 @@
             "widgets_values": [],
             "color": "#432",
             "bgcolor": "#653"
+        },
+        {
+            "id": 19,
+            "type": "ImagesGridByColumns",
+            "pos": [
+                1450,
+                400
+            ],
+            "size": [
+                210,
+                102
+            ],
+            "flags": {},
+            "order": 14,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "images",
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 33
+                },
+                {
+                    "localized_name": "annotation",
+                    "name": "annotation",
+                    "shape": 7,
+                    "type": "GRID_ANNOTATION",
+                    "link": 28
+                },
+                {
+                    "localized_name": "gap",
+                    "name": "gap",
+                    "type": "INT",
+                    "widget": {
+                        "name": "gap"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "max_columns",
+                    "name": "max_columns",
+                    "type": "INT",
+                    "widget": {
+                        "name": "max_columns"
+                    },
+                    "link": 47
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "IMAGE",
+                    "name": "IMAGE",
+                    "type": "IMAGE",
+                    "links": [
+                        29
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "images-grid-comfy-plugin",
+                "ver": "2.6.0",
+                "Node name for S&R": "ImagesGridByColumns",
+                "ue_properties": {
+                    "widget_ue_connectable": {
+                        "gap": true,
+                        "max_columns": true
+                    },
+                    "version": "7.5.1",
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": [
+                0,
+                3
+            ],
+            "color": "#223",
+            "bgcolor": "#335"
         }
     ],
     "links": [
@@ -1352,19 +1352,19 @@
             "STRING"
         ],
         [
-            45,
-            22,
-            2,
-            19,
-            2,
-            "INT"
-        ],
-        [
             46,
             15,
             5,
             21,
             1,
+            "INT"
+        ],
+        [
+            47,
+            22,
+            2,
+            19,
+            3,
             "INT"
         ]
     ],
