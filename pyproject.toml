@@ -4,8 +4,8 @@ build-backend	= "setuptools.build_meta"
 
 [project]
 name	= "ComfyUI-outputlists_combiner"
-version	= "0.0.3"
-description	= "Quick OutputLists from strings and numbers. Inspect COMBO to make lists for samplers, schedulers etc. Easy combinations of list and prompts. Support usage of XYZ-Gridplots. "
+version	= "0.0.4"
+description	= "Quick OutputLists from multiline textstrings, number ranges or JSON for sequential processing. Inspect COMBO to make lists from sampler, scheduler, LoRas, models etc. Combinations of lists and prompts. Formatted string with variable placeholders. Easy XYZ-Gridplots."
 authors	= [{name = "Gerold Meisinger"}]
 readme	= "README.md"
 license	= { text="GNU General Public License v3" }
