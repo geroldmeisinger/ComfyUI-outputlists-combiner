@@ -4,7 +4,7 @@ from json import dumps, loads
 import comfy.samplers
 import numpy
 from comfy_execution.graph_utils import GraphBuilder
-from fastnumbers import fast_float
+from fastnumbers import try_float
 from jsonpath_ng import parse as jsonpath_parse
 from nums_from_string import get_nums
 
@@ -32,7 +32,7 @@ value and index {OUTPUTLIST_NOTE}
 					{
 						"multiline"	: True,
 						"default"	: "",
-						"placeholder"	: "String separated with newlines. Try to connect inspect_combo with a COMBO input!",
+						"placeholder"	: "string separated with newlines. Try to connect inspect_combo with a COMBO input!",
 						"tooltip"	: "the string which will be separated. note that the string is trimmed of whitespace before splitting, and each item is again trimmed",
 					}),
 			},
@@ -43,8 +43,8 @@ value and index {OUTPUTLIST_NOTE}
 	OUTPUT_IS_LIST	=	(True	, True	, False	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"the values from the list. {OUTPUTLIST_NOTE}",
-		f"the number of items in the list. {OUTPUTLIST_NOTE}",
 		f"range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}",
+		f"the number of items in the list. {OUTPUTLIST_NOTE}",
 		"a dummy output only used to pre-fill the list with values from a COMBO input and will automatically disconnect again",
 		)
 	FUNCTION	= "execute"
@@ -71,7 +71,7 @@ int, float, string and index {OUTPUTLIST_NOTE}.
 			"required": {
 				"start"	: ("FLOAT"	, { "default"	:	0,	"tooltip": "start value to generate the range from" }),
 				"stop"	: ("FLOAT"	, { "default"	:	10,	"tooltip": "end value. if endpoint=include this number will be included in the list" }),
-				"num"	: ("FLOAT"	, { "default"	:	10, "min": 1,	"tooltip": "the number of items in the list (not to be confused with a step)" }),
+				"num"	: ("INT"	, { "default"	:	10, "min": 1,	"tooltip": "the number of items in the list (not to be confused with a step)" }),
 				"endpoint"	: ("BOOLEAN"	, { "default"	:	False, "label_on": "include", "label_off": "exclude",	"tooltip": "decides if the stop value should be included or excluded in the items" }),
 				}
 		}
@@ -90,17 +90,19 @@ int, float, string and index {OUTPUTLIST_NOTE}.
 	CATEGORY	= "Utility"
 
 	def execute(self, start, stop, num, endpoint):
-		values	= list(numpy.linspace(start, stop, int(num), endpoint))
+		values	= list(numpy.linspace(start, stop, num, endpoint))
 		ints	= [int	(v) for v in values]
 		floats	= [float	(v) for v in values]
 		strs	= [str	(v) for v in values]
-		ret	= (ints, floats, strs, num)
+		index	= range(num)
+		ret	= (ints, floats, strs, index, num)
 		return ret
 
 class JSONOutputList:
 	DESCRIPTION = f"""Create a OutputList by extracting arrays or dictionaries from JSON objects.
 Uses JSONPath syntax to extract the values, see https://en.wikipedia.org/wiki/JSONPath .
 All matched values will be flattend into one list.
+You can also use this node to create objects from literal strings like `[1, 2, 3]`.
 key, value, int, float {OUTPUTLIST_NOTE}.
 """
 
@@ -109,17 +111,17 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 		return {
 			"required":
 			{
-				"jsonpath"	: ("STRING", { "default": "$.dict", "tooltip": "the string to split the textfield values" }),
+				"jsonpath"	: ("STRING", { "default": "$.dict", "tooltip": "JSONPath used to extract the values" }),
 				"json"	: ("STRING",
 					{
 						"multiline"	: True,
 						"default"	: dumps(loads('{ "dict": { "a": 0.12, "b": 3.45, "c": 6.78 }, "arr": [0.12, 3.45, 6.78] }'), indent=4),
 						"placeholder"	: "object or JSON string",
-						"tooltip"	: "any object or a string which will be parsed as JSON",
+						"tooltip"	: "a string which will be parsed as JSON",
 					}),
 			},
 			"optional": {
-				"obj": (any, { "tooltip": "object of any type which will replace the JSON string" }),
+				"obj": (any, { "tooltip": "(optional) object of any type which will replace the JSON string" }),
 			}
 		}
 
@@ -136,26 +138,36 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 		)
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
+	OUTPUT_NODE	= True
 
 	def execute(self, jsonpath, json, obj = None):
 		# parse JSON
-		if isinstance(json, str):
-			try:
-				data = loads(json)
-			except Exception:
-				data = json	# treat raw string as value
+		if obj:
+			if isinstance(obj, str):
+				try:
+					data = loads(obj)
+				except Exception:
+					data = obj	# treat raw string as value
+			else:
+				data = obj
 		else:
-			data = json
+			if isinstance(json, str):
+				try:
+					data = loads(json)
+				except Exception:
+					data = json	# treat raw string as value
+			else:
+				data = json
 
 		# jsonpath
 		try:
 			expr	= jsonpath_parse(jsonpath)
 			matches	= expr.find(data)
 		except Exception:
-			return ([], [], [], [], 0, dumps([], indent=4))
+			return { "ui": { "obj": [dumps(obj, indent=4)] }, "result": ([], [], [], [], 0, "[]") }
 
 		if not matches:
-			return ([], [], [], [], 0, dumps([], indent=4))
+			return { "ui": { "obj": [dumps(obj, indent=4)] }, "result": ([], [], [], [], 0, "[]") }
 
 		# outputs
 		keys	= []
@@ -166,8 +178,7 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 		debug	= [m.value for m in matches]
 
 		def append(key, value):
-			f = fast_float(value, default=0.0, allow_underscores=True)
-
+			f = try_float(value, allow_underscores=True, nan=0.0, inf=0.0, on_fail=0.0, on_type_error=0.0)
 			keys	.append(str(key))
 			values	.append(str(value))
 			floats	.append(f)
@@ -185,23 +196,24 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 				for value in target:
 					append(count, value)
 					count += 1
-			else: # scalar
+			else: # scalar1
 				append(count, target)
 				count += 1
 
 		debug_json = dumps(debug, indent=4)
 
-		ret = (keys, values, ints, floats, count, debug_json)
+		result	= (keys, values, ints, floats, count, debug_json)
+		ret	=  { "ui": { "obj": [dumps(data, indent=4)] }, "result": result }
 		return ret
 
 class CombineOutputLists:
-	DESCRIPTION = f"""Takes up to 4 OutputLists, computes the Cartesian product and outputs each combination splitted up into their elements (unzip).
+	DESCRIPTION = f"""Takes up to 4 OutputLists, generates all combinations between them and emits each combination as separate items.
 Example: [1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
 All the unzip values and index {OUTPUTLIST_NOTE}.
 All lists are optional and empty lists will be ignored.
 
-Technically empty lists will be replaced with units of None and they will emit None on the respective output.
-Example: [1, 2] x [] x ["A", B"] = [(1, None, "A"), (1, None, "B"), (2, None, "A"), (2, None, "B")]
+Technically it computes the Cartesian product and outputs each combination splitted up into their elements (unzip), whereas empty lists will be replaced with units of None and they will emit None on the respective output.
+Example: [1, 2] x [] x ["A", B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
 """
 
 	@classmethod
@@ -210,10 +222,10 @@ Example: [1, 2] x [] x ["A", B"] = [(1, None, "A"), (1, None, "B"), (2, None, "A
 			"required": {
 			},
 			"optional": {
-				"list_a"	: (any, { "tooltip": "ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
-				"list_b"	: (any, { "tooltip": "ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
-				"list_c"	: (any, { "tooltip": "ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
-				"list_d"	: (any, { "tooltip": "ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_a"	: (any, { "tooltip": "(optional) ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_b"	: (any, { "tooltip": "(optional) ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_c"	: (any, { "tooltip": "(optional) ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_d"	: (any, { "tooltip": "(optional) ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
 			}
 		}
 
@@ -242,8 +254,8 @@ Example: [1, 2] x [] x ["A", B"] = [(1, None, "A"), (1, None, "B"), (2, None, "A
 		return ret
 
 class FormattedString:
-	DESCRIPTION = """Uses python `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax .
-Use `{a:.2f}` to round off a float to 2 decimals.
+	DESCRIPTION = """Uses python `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax
+Use `{a:.2f}` to round off a float to 2 decimals
 Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`
 If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`
 """
@@ -254,14 +266,15 @@ If you want to write `{ }` within your strings (e.g. for JSONs) you have to doub
 			"required": {
 				"fstring": ("STRING", {
 					"multiline"	: True,
-					"default"	: "{a}_{b}_{c}_{d}"
+					"default"	: "{a}_{b}_{c}_{d}",
+					"tooltip"	: FormattedString.DESCRIPTION,
 					}),
 				},
 			"optional": {
-				"a"	: (any, { "tooltip": FormattedString.DESCRIPTION }),
-				"b"	: (any, { "tooltip": FormattedString.DESCRIPTION }),
-				"c"	: (any, { "tooltip": FormattedString.DESCRIPTION }),
-				"d"	: (any, { "tooltip": FormattedString.DESCRIPTION }),
+				"a"	: (any, { "tooltip": "(optional) value that will be converted to string with the {a} placeholder" }),
+				"b"	: (any, { "tooltip": "(optional) value that will be converted to string with the {b} placeholder" }),
+				"c"	: (any, { "tooltip": "(optional) value that will be converted to string with the {c} placeholder" }),
+				"d"	: (any, { "tooltip": "(optional) value that will be converted to string with the {d} placeholder" }),
 				}
 		}
 

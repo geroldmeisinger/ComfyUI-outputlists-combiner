@@ -50,5 +50,15 @@ app.registerExtension(
 				}
 			}
 		}
-	}
+
+		if (node.comfyClass === "JSONOutputList")
+		{
+			node.onExecuted = function (ui)
+			{
+				const jsonWidget = node.widgets.find(w => w.name === "json")
+				if (!jsonWidget) { return }
+				jsonWidget.value = ui.obj
+			}
+		}
+	},
 })
