@@ -289,6 +289,51 @@ If you want to write `{ }` within your strings (e.g. for JSONs) you have to doub
 		ret = (fstring.format(a=a, b=b, c=c, d=d),)
 		return ret
 
+class PickOutputLists:
+	DESCRIPTION = f"""Takes up to 4 OutputLists but only passes on the items where the corresponding entry in the pick_list isn't empty.
+"""
+
+	@classmethod
+	def INPUT_TYPES(cls):
+		return {
+			"required": {
+				"pick_list"	: (any, { "tooltip": "" }),
+			},
+			"optional": {
+				"list_a"	: (any, { "tooltip": "(optional) ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_b"	: (any, { "tooltip": "(optional) ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_c"	: (any, { "tooltip": "(optional) ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+				"list_d"	: (any, { "tooltip": "(optional) ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠" }),
+			}
+		}
+
+	INPUT_IS_LIST	= True
+	RETURN_NAMES	= ("list_a"	, "list_b"	, "list_c"	, "list_d"	, "index"	, "count"	)
+	RETURN_TYPES	= (any	, any	, any	, any	, "INT"	, "INT"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, True	, True	, False	)
+	OUTPUT_TOOLTIPS	= (
+		f"list_a. {OUTPUTLIST_NOTE}",
+		f"list_b. {OUTPUTLIST_NOTE}",
+		f"list_c. {OUTPUTLIST_NOTE}",
+		f"list_d. {OUTPUTLIST_NOTE}",
+		f"range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}",
+		"total number of new items",
+		)
+	FUNCTION	= "compute"
+	CATEGORY	= "Utility"
+
+	def compute(self, pick_list, list_a = [], list_b = [], list_c = [], list_d = []):
+		indices	= [i for i in range(len(pick_list)) if pick_list[i] != ""]
+		print(indices)
+		out_a	= [list_a[i] for i in indices if i < len(list_a)]
+		out_b	= [list_b[i] for i in indices if i < len(list_b)]
+		out_c	= [list_c[i] for i in indices if i < len(list_c)]
+		out_d	= [list_d[i] for i in indices if i < len(list_d)]
+		count	= len(indices)
+		index	= range(count)
+		ret	= (out_a, out_b, out_c, out_d, index, count)
+		return ret
+
 class ConvertNumberToIntFloatStr:
 	DESCRIPTION = f"""Convert anything number-like to int float string.
 Uses `nums-from-string.get_nums` internally which is very permissive in the numbers it accepts.
@@ -401,6 +446,7 @@ NODE_CLASS_MAPPINGS = {
 	"NumberOutputList"	: NumberOutputList,
 	"JSONOutputList"	: JSONOutputList,
 	"CombineOutputLists"	: CombineOutputLists,
+	"PickOutputLists"	: PickOutputLists,
 	"FormattedString"	: FormattedString,
 	"ConvertNumberToIntFloatStr"	: ConvertNumberToIntFloatStr,
 	#"StringToCombo"	: StringToCombo,
@@ -411,6 +457,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
 	"NumberOutputList"	: "Number OutputList",
 	"JSONOutputList"	: "JSON OutputList",
 	"CombineOutputLists"	: "OutputList Combinations",
+	"PickOutputLists"	: "Pick OutputLists",
 	"FormattedString"	: "Formatted String",
 	"ConvertNumberToIntFloatStr"	: "Convert to Int Float String",
 	"KSamplerImmediateSave"	: "KSampler Immediate Save Image",
