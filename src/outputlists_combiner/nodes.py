@@ -33,13 +33,13 @@ value and index {OUTPUTLIST_NOTE}
 						"multiline"	: True,
 						"default"	: "",
 						"placeholder"	: "string separated with newlines. Try to connect inspect_combo with a COMBO input!",
-						"tooltip"	: "the string which will be separated. note that the string is trimmed of whitespace before splitting, and each item is again trimmed",
+						"tooltip"	: "the string which will be separated. note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed",
 					}),
 			},
 		}
 
 	RETURN_NAMES	=	("value"	, "index"	, "count"	, "inspect_combo"	)
-	RETURN_TYPES	=	(any	, "STRING"	, "INT"	, "COMBO"	)
+	RETURN_TYPES	=	(any	, "INT"	, "INT"	, "COMBO"	)
 	OUTPUT_IS_LIST	=	(True	, True	, False	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"the values from the list. {OUTPUTLIST_NOTE}",
@@ -52,7 +52,7 @@ value and index {OUTPUTLIST_NOTE}
 
 	def execute(self, separator, values):
 		unescaped_separator	= separator.encode().decode('unicode_escape')
-		value	= [s.strip() for s in values.split(unescaped_separator) if s.strip()]
+		value	= [s.strip() for s in values.rstrip().split(unescaped_separator)]
 		count	= len(value)
 		index	= range(count)
 		inspect_combo	= None
@@ -304,8 +304,9 @@ int, float and string {OUTPUTLIST_NOTE}.
 			}
 		}
 
+	INPUT_IS_LIST	= True
 	RETURN_NAMES	=	("int"	, "float"	, "string"	, "count"	)
-	RETURN_TYPES	=	("INT"	, "FLOAT"	, "STRING"	, "int"	)
+	RETURN_TYPES	=	("INT"	, "FLOAT"	, "STRING"	, "INT"	)
 	OUTPUT_IS_LIST	=	(True	, True	, True	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"all the numbers found in the string with the decimals truncated. {OUTPUTLIST_NOTE}",
@@ -321,7 +322,8 @@ int, float and string {OUTPUTLIST_NOTE}.
 		floats	= get_nums(number_str)
 		ints	= [int(f) for f in floats]
 		strs	= [str(f) for f in floats]
-		ret	= (ints, floats, strs)
+		count	= len(floats)
+		ret	= (ints, floats, strs, count)
 		return ret
 
 # class StringToCombo:
