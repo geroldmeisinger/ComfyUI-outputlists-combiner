@@ -1,4 +1,9 @@
 nums-from-string
 fastnumbers
 jsonpath_ng
-
+pandas
+odfpy
+openpyxl
+xlrd
+pyxlsb
+chardet
