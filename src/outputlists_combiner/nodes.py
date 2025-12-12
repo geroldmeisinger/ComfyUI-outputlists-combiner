@@ -138,7 +138,6 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 		)
 	FUNCTION	= "execute"
 	CATEGORY	= "Utility"
-	OUTPUT_NODE	= True
 
 	def execute(self, jsonpath, json, obj = None):
 		# parse JSON
