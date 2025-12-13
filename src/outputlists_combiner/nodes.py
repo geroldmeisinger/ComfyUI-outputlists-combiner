@@ -2,6 +2,7 @@ import base64
 import hashlib
 import io
 import itertools
+import math
 import re
 from json import dumps, loads
 
@@ -11,13 +12,15 @@ import folder_paths
 import node_helpers
 import numpy
 import numpy as np
+import nums_from_string
 import pandas as pd
+import skia
 import torch
 from comfy_execution.graph_utils import GraphBuilder
 from fastnumbers import try_float
 from jsonpath_ng import parse as jsonpath_parse
-from nums_from_string import get_nums
 from PIL import Image, ImageOps, ImageSequence, UnidentifiedImageError
+from skia import textlayout as tl
 
 
 class AnyType	(str	)	:
@@ -218,10 +221,10 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 		return ret
 
 class SpreadsheetOutputList:
-	DESCRIPTION = f"""Create a OutputLists from a spreadsheet file.
+	DESCRIPTION = f"""Create a OutputLists from a spreadsheet (CSV, TSV, ODS, XLSX and XLS).
 Use `Load any File` node to load a file as base64.
 Internally uses pandas to load spreadsheet files.
-key, value, int, float {OUTPUTLIST_NOTE}.
+Lists {OUTPUTLIST_NOTE}.
 """
 
 	@classmethod
@@ -389,6 +392,290 @@ Example: [1, 2] x [] x ["A", B"] x [] = [(1, None, "A", None), (1, None, "B", No
 		ret	= (*transposed, index, count)
 		return ret
 
+class XyzGridPlot:
+	DESCRIPTION = f"""Generate a XYZ-Gridplot from a list of images
+"""
+
+	@classmethod
+	def INPUT_TYPES(cls):
+		return {
+			"required": {
+				"images"	: ("IMAGE"	, { "tooltip": "" }),
+				"row_labels"	: ("STRING"	, { "tooltip": "" }),
+				"col_labels"	: ("STRING"	, { "tooltip": "" }),
+				"row_label_orientation"	: (["horizontal", "vertical"]	, { "tooltip": "" }),
+				"gap"	: ("INT"	, { "default":	0, "min": 0, "max":	128, "tooltip": "" }),
+				"font_size"	: ("FLOAT"	, { "default":	50, "min": 6, "max":	1000, "tooltip": "" }),
+				"output_is_list"	: ("BOOLEAN"	, { "default": False, "label_on": "True", "label_off": "False", "tooltip": "" })
+			},
+		}
+
+	INPUT_IS_LIST	= True
+	RETURN_NAMES	= ("image"	, )
+	RETURN_TYPES	= ("IMAGE"	, )
+	OUTPUT_IS_LIST	= (True	, )
+	OUTPUT_TOOLTIPS	= ("xyz-gridplot"	, )
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
+
+	@staticmethod
+	def make_paragraph(text, font_size, width, para_style, text_style, font_coll):
+		text_style.setFontSize(font_size)
+		para_style.setTextStyle(text_style)
+		builder = tl.ParagraphBuilder.make(para_style, font_coll, skia.Unicode())
+		builder.addText(text)
+		paragraph = builder.Build()
+		paragraph.layout(width)
+		return paragraph
+
+	@staticmethod
+	def header_font_fits(labels, font_size, width, height_max, para_style, text_style, font_coll):
+		paragraphs = []
+		for t in labels:
+			p = XyzGridPlot.make_paragraph(t, font_size, width, para_style, text_style, font_coll)
+			if p.Height > height_max: return None
+			paragraphs.append(p)
+		return paragraphs
+
+	@staticmethod
+	def find_uniform_header_font_size(labels, width, height_max, font_size_min, font_size_target, para_style, text_style, font_coll):
+		EPS = 0.1
+
+		lo	= float(font_size_min)
+		hi	= float(font_size_target)
+		best_fs	= lo
+		best_paragraphs	= None
+
+		while (hi - lo) > EPS:
+			mid	= (lo + hi) / 2.0
+			paragraphs	= XyzGridPlot.header_font_fits(labels, mid, width, height_max, para_style, text_style, font_coll)
+			if paragraphs:
+				best_fs	= mid
+				best_paragraphs	= paragraphs
+				lo	= mid
+			else:
+				hi = mid
+
+		return best_fs, best_paragraphs
+
+	# -------------------------
+	# header analysis
+	# -------------------------
+
+	@staticmethod
+	def all_numeric(labels):
+		for l in labels:
+			tokens = nums_from_string.get_numeric_string_tokens(l)
+			if len(tokens) != 1	: return False
+			if not l.rstrip().endswith(tokens[0])	: return False
+		return True
+
+	@staticmethod
+	def all_single_line(paragraphs, width):
+		ret = all(p.LongestLine <= width for p in paragraphs)
+		return ret
+
+	@staticmethod
+	def tile_images_in_cell(images, cell_w, cell_h):
+		n = len(images)
+		if n == 1: return [(images[0], 0, 0, cell_w, cell_h)]
+
+		# estimate grid
+		cols = math.ceil(math.sqrt(n))
+		rows = math.ceil(n / cols)
+
+		# swap if images are landscape-heavy
+		if images[0].shape[2] > images[0].shape[1]:
+			rows, cols = cols, rows
+
+		tile_w = cell_w / cols
+		tile_h = cell_h / rows
+
+		ret = []
+		idx = 0
+		for r in range(rows):
+			for c in range(cols):
+				if idx >= n: break
+				ret.append((images[idx], c * tile_w, r * tile_h, tile_w, tile_h))
+				idx += 1
+		return ret
+
+	@staticmethod
+	def tensor_to_skia_image(img):
+		# remove batch dim if present
+		if img.ndim == 4:
+			img = img[0]
+
+		np_img = img.detach().cpu().numpy()
+		np_img = np.clip(np_img * 255.0, 0, 255).astype(np.uint8)
+
+		# ensure HWC
+		assert np_img.ndim == 3
+
+		# if RGB, expand to RGBA for Skia
+		if np_img.shape[2] == 3:
+			alpha = np.full((np_img.shape[0], np_img.shape[1], 1), 255, dtype=np.uint8)
+			np_img = np.concatenate([np_img, alpha], axis=2)
+
+		# must be C-contiguous
+		np_img = np.ascontiguousarray(np_img)
+
+		return skia.Image.fromarray(np_img)
+
+	@staticmethod
+	def skia_to_tensor(sk_img):
+		"""
+		Convert a skia.Image to a ComfyUI tensor (BHWC)
+		"""
+		arr	= sk_img.toarray()	# uint8, HWC RGBA
+		arr	= arr[...,	:3]	# drop alpha, RGB
+		arr	= arr.astype(np.float32) / 255.0	# normalize [0,1]
+		tensor	= torch.from_numpy(arr)	# HWC float32
+		tensor	= tensor.unsqueeze(0)	# BHWC
+		return tensor
+
+	# -------------------------
+	# main execute
+	# -------------------------
+
+	def execute(self, images, col_labels, row_labels, row_label_orientation, gap, font_size, output_is_list):
+		PADDING = 8
+
+		row_label_orientation	= row_label_orientation	[0]
+		gap	= gap	[0]
+		font_size	= font_size	[0]
+		output_is_list	= output_is_list	[0]
+
+		# flatten images
+		flat_images = []
+		for item in images:
+			if isinstance(item, list):
+				flat_images.extend(item)
+			else:
+				flat_images.append(item)
+
+		# image sizes (assume all equal)
+		img_h, img_w = flat_images[0].shape[1:3]
+
+		cols	= len(col_labels)
+		rows	= len(row_labels)
+		batch_size	= len(flat_images) // (rows * cols)
+
+		# font infra
+		font_mgr	= skia.FontMgr()
+		font_coll	= tl.FontCollection()
+		font_coll.setDefaultFontManager(font_mgr)
+
+		base_text_style = tl.TextStyle()
+		base_text_style.setFontFamilies(["DejaVu Sans"])
+		base_text_style.setColor(skia.ColorBLACK)
+
+		# -------------------------
+		# header specs
+		# -------------------------
+
+		header_specs = [
+			{
+				"labels"	: col_labels,
+				"is_column"	: True,
+				"rotation"	: 0,
+				"height_max"	: max(font_size + 2 * PADDING, img_h / 2),
+				"width"	: img_w - 2 * PADDING,
+				"pos"	: lambda c, _	: (row_label_w + gap * (c + 1) + img_w * c + PADDING, gap + PADDING),
+			},
+			{
+				"labels"	: row_labels,
+				"is_column"	: False,
+				"rotation"	: -90 if row_label_orientation == "vertical" else 0,
+				"height_max"	: img_h,
+				"width"	: max(256, img_w / 2) - 2 * PADDING,
+				"pos"	: lambda _, r	: (gap + PADDING, col_label_h + gap * (r + 1) + img_h * r),
+			},
+		]
+
+		# compute row label width and col label height later
+		row_label_w = max(256	, img_w // 2)
+		col_label_h = max(font_size + 2 * PADDING	, img_h // 2)
+
+		# -------------------------
+		# determine header layouts
+		# -------------------------
+
+		header_results = []
+
+		for spec in header_specs:
+			para_style = tl.ParagraphStyle()
+			para_style.setTextAlign(tl.TextAlign.kLeft)
+
+			fs, paragraphs = self.find_uniform_header_font_size(spec["labels"], spec["width"], spec["height_max"], 6, font_size, para_style, base_text_style, font_coll)
+
+			# decide alignment
+			if   self.all_numeric(spec["labels"])	: align = tl.TextAlign.kRight
+			#elif self.all_single_line(paragraphs, spec["width"])	: align = tl.TextAlign.kCenter
+			else	: align = tl.TextAlign.kJustify
+
+			para_style.setTextAlign(align)
+
+			# rebuild final paragraphs with final alignment
+			final_paragraphs = [self.make_paragraph(t, fs, spec["width"], para_style, base_text_style, font_coll) for t in spec["labels"]]
+
+			header_results.append((spec, fs, final_paragraphs))
+
+		# -------------------------
+		# render outputs
+		# -------------------------
+
+		outputs = []
+
+		grid_w = int(row_label_w + cols * img_w + (cols + 1) * gap)
+		grid_h = int(col_label_h + rows * img_h + (rows + 1) * gap)
+
+		num_outputs = batch_size if output_is_list else 1
+
+		for b in range(num_outputs):
+			surface	= skia.Surface(grid_w, grid_h)
+			canvas	= surface.getCanvas()
+			canvas.clear(skia.ColorWHITE)
+
+			# draw headers
+			for spec, fs, paragraphs in header_results:
+				for i, p in enumerate(paragraphs):
+					x, y = spec["pos"](i, i)
+
+					canvas.save()
+					canvas.translate(x, y)
+					canvas.rotate(spec["rotation"])
+					canvas.clipRect(skia.Rect.MakeWH(spec["width"], spec["height_max"] - 2 * PADDING))
+					p.paint(canvas, 0, 0)
+					canvas.restore()
+
+			# draw images
+			for r in range(rows):
+				for c in range(cols):
+					idx = (r * cols + c) * batch_size
+					cell_imgs = flat_images[idx:idx + batch_size]
+
+					if output_is_list: cell_imgs = [cell_imgs[b]]
+
+					placements = self.tile_images_in_cell(cell_imgs, img_w, img_h)
+
+					for img, ox, oy, w, h in placements:
+						sk_img = XyzGridPlot.tensor_to_skia_image(img)
+
+						canvas.drawImageRect(sk_img,
+							skia.Rect.MakeXYWH(
+								row_label_w + gap * (c + 1) + img_w * c + ox,
+								col_label_h + gap * (r + 1) + img_h * r + oy,
+								w, h,
+							),
+						)
+
+		snap = surface.makeImageSnapshot()
+		output = XyzGridPlot.skia_to_tensor(snap)
+		outputs.append(output)
+
+		return (outputs, )
+
 class FormattedString:
 	DESCRIPTION = """Uses python `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax
 Use `{a:.2f}` to round off a float to 2 decimals
@@ -427,7 +714,7 @@ If you want to write `{ }` within your strings (e.g. for JSONs) you have to doub
 
 class ConvertNumberToIntFloatStr:
 	DESCRIPTION = f"""Convert anything number-like to int float string.
-Uses `nums-from-string.get_nums` internally which is very permissive in the numbers it accepts.
+Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts.
 Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
 int, float and string {OUTPUTLIST_NOTE}.
 """
@@ -455,7 +742,7 @@ int, float and string {OUTPUTLIST_NOTE}.
 
 	def execute(self, number):
 		number_str	= str(number)
-		floats	= get_nums(number_str)
+		floats	= nums_from_string.get_nums(number_str)
 		ints	= [int(f) for f in floats]
 		strs	= [str(f) for f in floats]
 		count	= len(floats)
@@ -646,6 +933,7 @@ NODE_CLASS_MAPPINGS = {
 	"JSONOutputList"	: JSONOutputList,
 	"SpreadsheetOutputList"	: SpreadsheetOutputList,
 	"CombineOutputLists"	: CombineOutputLists,
+	"XyzGridPlot"	: XyzGridPlot,
 	"FormattedString"	: FormattedString,
 	"ConvertNumberToIntFloatStr"	: ConvertNumberToIntFloatStr,
 	"LoadFile"	: LoadFile,
@@ -657,6 +945,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
 	"JSONOutputList"	: "JSON OutputList",
 	"SpreadsheetOutputList"	: "Spreadsheet OutputList",
 	"CombineOutputLists"	: "OutputList Combinations",
+	"XyzGridPlot"	: "XYZ-Gridplot",
 	"FormattedString"	: "Formatted String",
 	"ConvertNumberToIntFloatStr"	: "Convert to Int Float String",
 	"LoadFile"	: "Load any File",
