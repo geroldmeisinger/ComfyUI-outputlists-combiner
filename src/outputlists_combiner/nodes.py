@@ -502,37 +502,39 @@ class XyzGridPlot:
 
 	@staticmethod
 	def tensor_to_skia_image(img):
-		# remove batch dim if present
 		if img.ndim == 4:
-			img = img[0]
+			img = img[0]  # Remove batch dim
+		np_img = img.detach().cpu().numpy().astype(np.float32)
+		rgb = np.clip(np_img * 255.0, 0, 255).astype(np.uint8)  # HWC, RGB
+		alpha = np.full((rgb.shape[0], rgb.shape[1], 1), 255, dtype=np.uint8)
+		rgba = np.concatenate([rgb, alpha], axis=2)  # HWC, RGBA
+		return skia.Image.fromarray(rgba, skia.kRGBA_8888_ColorType)
 
-		np_img = img.detach().cpu().numpy()
-		np_img = np.clip(np_img * 255.0, 0, 255).astype(np.uint8)
-
-		# ensure HWC
-		assert np_img.ndim == 3
-
-		# if RGB, expand to RGBA for Skia
-		if np_img.shape[2] == 3:
-			alpha = np.full((np_img.shape[0], np_img.shape[1], 1), 255, dtype=np.uint8)
-			np_img = np.concatenate([np_img, alpha], axis=2)
-
-		# must be C-contiguous
-		np_img = np.ascontiguousarray(np_img)
-
-		return skia.Image.fromarray(np_img)
-
-	@staticmethod
 	def skia_to_tensor(sk_img):
-		"""
-		Convert a skia.Image to a ComfyUI tensor (BHWC)
-		"""
-		arr	= sk_img.toarray()	# uint8, HWC RGBA
-		arr	= arr[...,	:3]	# drop alpha, RGB
-		arr	= arr.astype(np.float32) / 255.0	# normalize [0,1]
-		tensor	= torch.from_numpy(arr)	# HWC float32
-		tensor	= tensor.unsqueeze(0)	# BHWC
-		return tensor
+		arr = sk_img.toarray()  # uint8, shape (H, W, 4), premultiplied
+		if arr.shape[2] != 4:
+			raise ValueError("Expected RGBA image from Skia")
+		# Un-premultiply
+		rgb = arr[:, :, :3].astype(np.float32)  # Likely BGR
+		alpha = arr[:, :, 3:4].astype(np.float32)
+		rgb_unpremul = np.where(alpha > 0, rgb / (alpha / 255.0), 0.0)
+		rgb_unpremul = np.clip(rgb_unpremul, 0, 255) / 255.0
+		# Fix channel order: BGR -> RGB
+		rgb_unpremul = rgb_unpremul[:, :, ::-1].copy()
+		return torch.from_numpy(rgb_unpremul).unsqueeze(0)  # BHWC
+
+	def skia_to_pil(sk_img):
+		arr = sk_img.toarray()  # uint8, shape (H, W, 4), premultiplied
+		if arr.shape[2] != 4:
+			raise ValueError("Expected RGBA image from Skia")
+		# Un-premultiply
+		rgb = arr[:, :, :3].astype(np.float32)  # Likely BGR
+		alpha = arr[:, :, 3:4].astype(np.float32)
+		rgb_unpremul = np.where(alpha > 0, rgb / (alpha / 255.0), 0.0)
+		rgb_unpremul = np.clip(rgb_unpremul, 0, 255).astype(np.uint8)
+		# Fix channel order: BGR -> RGB
+		rgb_unpremul = rgb_unpremul[:, :, ::-1]
+		return Image.fromarray(rgb_unpremul, mode="RGB")
 
 	# -------------------------
 	# main execute
@@ -671,6 +673,9 @@ class XyzGridPlot:
 						)
 
 		snap = surface.makeImageSnapshot()
+		snap.save("skia.png", skia.kPNG)
+		XyzGridPlot.skia_to_pil(snap).save("skia_pil.png")
+		#Image.fromarray(snap.toarray(), mode="RGB").show()
 		output = XyzGridPlot.skia_to_tensor(snap)
 		outputs.append(output)
 
