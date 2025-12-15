@@ -1,67 +1,67 @@
 [build-system]
-requires	= ["setuptools>=70.0"]
+requires     	= ["setuptools>=70.0"]
 build-backend	= "setuptools.build_meta"
 
 [project]
-name	= "ComfyUI-outputlists_combiner"
-version	= "0.0.5"
-description	= "Quick OutputLists from multiline textstrings, number ranges or JSON for sequential processing. Inspect COMBO to make lists from sampler, scheduler, LoRas, models etc. Combinations of lists and prompts. Formatted string with variable placeholders. Easy XYZ-Gridplots."
-authors	= [{name = "Gerold Meisinger"}]
-readme	= "README.md"
-license	= { text="GNU General Public License v3" }
+name           	= "ComfyUI-outputlists_combiner"
+version        	= "0.0.5"
+description    	= "Quick OutputLists from multiline textstrings, number ranges or JSON for sequential processing. Inspect COMBO to make lists from sampler, scheduler, LoRas, models etc. Combinations of lists and prompts. Formatted string with variable placeholders. Easy XYZ-Gridplots."
+authors        	= [{name = "Gerold Meisinger"}]
+readme         	= "README.md"
+license        	= { text="GNU General Public License v3" }
 requires-python	= ">=3.10"
-classifiers	= []
-dependencies	= []
+classifiers    	= []
+dependencies   	= []
 
 [project.optional-dependencies]
 dev = [
 	"bump-my-version"	,
-	"coverage"	, # testing
-	"mypy"	, # linting
-	"pre-commit"	, # runs linting on commit
-	"pytest"	, # testing
-	"ruff"	, # linting
+	"coverage"       	, # testing
+	"mypy"           	, # linting
+	"pre-commit"     	, # runs linting on commit
+	"pytest"         	, # testing
+	"ruff"           	, # linting
 ]
 
 [project.urls]
-Repository	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"
-BugTracker	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/issues"
+Repository   	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"
+BugTracker   	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/issues"
 Documentation	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner/wiki"
 
 [tool.comfy]
 PublisherId	= "geroldmeisinger"
 DisplayName	= "OutputLists Combiner"
-Icon	= "https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/logo.png"
-Tags	= []
-Repository	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"
-includes	= []
+Icon       	= "https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/logo.png"
+Tags       	= []
+Repository 	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"
+includes   	= []
 
 [tool.setuptools.package-data]
 "*" = ["*.*"]
 
 [tool.pytest.ini_options]
 minversion	= "8.0"
-testpaths	= ["tests",]
+testpaths 	= ["tests",]
 
 [tool.mypy]
 files = "."
 
 # Use strict defaults
-strict	= true
+strict          	= true
 warn_unreachable	= true
-warn_no_return	= true
+warn_no_return  	= true
 
 [[tool.mypy.overrides]]
 # Don't require test functions to include types
-module	= "tests.*"
+module            	= "tests.*"
 allow_untyped_defs	= true
 disable_error_code	= "attr-defined"
 
 [tool.ruff]
 # extend-exclude	= ["static", "ci/templates"]
-line-length	= 140
-src	= ["src"]
-target-version	= "py39"
+line-length     	= 140
+src             	= ["src", "tests"]
+target-version  	= "py39"
 
 # Add rules to ban exec/eval
 [tool.ruff.lint]
@@ -69,7 +69,7 @@ select = [
 	"S102"	, # exec-builtin
 	"S307"	, # eval-used
 	"W293"	,
-	"F"	, # The "F" series in Ruff stands for "Pyflakes" rules, which catch various Python syntax errors and undefined names.
+	"F"   	, # The "F" series in Ruff stands for "Pyflakes" rules, which catch various Python syntax errors and undefined names.
 	# See all rules here: https://docs.astral.sh/ruff/rules/#pyflakes-f
 ]
 

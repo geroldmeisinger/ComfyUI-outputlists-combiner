@@ -1,15 +1,26 @@
+import base64
+import hashlib
+import io
 import itertools
+import re
 from json import dumps, loads
 
+import chardet
 import comfy.samplers
+import folder_paths
+import node_helpers
 import numpy
+import numpy as np
+import nums_from_string
+import pandas as pd
+import torch
 from comfy_execution.graph_utils import GraphBuilder
 from fastnumbers import try_float
 from jsonpath_ng import parse as jsonpath_parse
-from nums_from_string import get_nums
+from PIL import Image, ImageOps, ImageSequence, UnidentifiedImageError
 
 
-class AnyType(str):
+class AnyType	(str	)	:
 	def __ne__(self, __value: object) -> bool:
 		return False
 
@@ -205,6 +216,131 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 		ret	=  { "ui": { "obj": [dumps(data, indent=4)] }, "result": result }
 		return ret
 
+class SpreadsheetOutputList:
+	DESCRIPTION = f"""Create a OutputLists from a spreadsheet (CSV, TSV, ODS, XLSX and XLS).
+Use `Load any File` node to load a file as base64.
+Internally uses pandas to load spreadsheet files.
+Lists {OUTPUTLIST_NOTE}.
+"""
+
+	@classmethod
+	def INPUT_TYPES(cls):
+		return {
+			"required":
+			{
+				"rows_and_cols"	: ("STRING"	, { "default": "A B C D"			, "tooltip": "Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based." }),
+				"header_rows"	: ("INT"	, { "default":	1, "min":	0, "max": 65535	, "tooltip": "Ignore the first x rows in the list. Only used if you specify a col in rows_and_cols." }),
+				"header_cols"	: ("INT"	, { "default":	1, "min":	0, "max": 65535	, "tooltip": "Ignore the first x cols in the list. Only used if you specify a row in rows_and_cols." }),
+				"select_nth"	: ("INT"	, { "default":	-1, "min":	-1, "max": 65535	, "tooltip": "Only select the nth entry. Useful in combination with the PrimitiveInt+control_after_generate=increment pattern." }),
+				"string_or_base64"	: ("STRING"	, {
+						"multiline"	: True,
+						"default"	: "",
+						"placeholder"	: "CSV/TSV string or spreadsheet file in base64 (ODS, XLSX, XLS). Use `Load any File` node to load a file as base64.",
+						"tooltip"	: "CSV/TSV string or spreadsheet file in base64 (ODS, XLSX, XLS). Use `Load any File` node to load a file as base64.",
+					}
+				),
+			},
+		}
+
+	RETURN_NAMES	= ("list_a"	, "list_b"	, "list_c"	, "list_d"	, "count"	)
+	RETURN_TYPES	= ("STRING"	, "STRING"	, "STRING"	, "STRING"	, "INT"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, True	, False	)
+	OUTPUT_TOOLTIPS	= (
+		f"{OUTPUTLIST_NOTE}",
+		f"{OUTPUTLIST_NOTE}",
+		f"{OUTPUTLIST_NOTE}",
+		f"{OUTPUTLIST_NOTE}",
+		"number of items in the longest list",
+		)
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
+
+	@staticmethod
+	def is_valid_selector(re, sel):
+		ret = re.match(sel) is not None
+		return ret
+
+	@staticmethod
+	def col_to_index(col):
+		total = 0
+		for c in col.upper():
+			total = total * 26 + (ord(c) - 64)
+		return total - 1
+
+	def execute(self, string_or_base64, rows_and_cols, header_rows, header_cols, select_nth):
+		limit	= 4
+		data	= string_or_base64.strip()
+
+		# load spreadsheet with pandas
+		try:
+			decoded	= base64.b64decode(data, validate=True)
+			xls	= pd.read_excel(io.BytesIO(decoded), sheet_name=None, header=None)
+		except Exception:
+			try:
+				df	= pd.read_csv(io.StringIO(data), sep=None, engine="python", header=None)
+				xls	= {None: df}
+			except Exception:
+				return ([[] for _ in range(limit)], 0)
+
+		sheet_names	= list(xls.keys())
+		default_sheet	= sheet_names[0]
+
+		# regex to select rows and columns with optional sheet reference (e.g. A, 1, AB, $MySheet.123, $'My Sheet'.ABC)
+		re_sheet_row_and_col = re.compile(r"""
+^(?:\$
+	(?:
+		'([^']+)' |
+		"([^"]+)" |
+		([^.]+)
+	)
+	\.
+)?
+([A-Za-z]+|\d+)
+$""", re.VERBOSE)
+
+		raw = re.split(r"[^A-Za-z0-9$.'\"]+", rows_and_cols or "")
+		raw = [s for s in raw if s]
+
+		if not raw:
+			selectors = ["A", "B", "C", "D"][:limit]
+		else:
+			selectors = []
+			for sel in raw:
+				if re_sheet_row_and_col.match(sel) is not None:
+					selectors.append(sel)
+				if len(selectors) >= limit: break
+
+		results = [[] for _ in range(len(selectors))]
+
+		# select lists from rows and columns
+		for i, sel in enumerate(selectors):
+			m = re_sheet_row_and_col.match(sel)
+			if not m: continue
+
+			sheet	= m.group(1) or m.group(2) or m.group(3) or default_sheet
+			key	= m.group(4)
+
+			if sheet not in xls: continue
+
+			df = xls[sheet]
+			if key.isdigit(): # select by row
+				row = int(key) - 1 # row selector (1-based)
+				if 0 <= row < df.shape[0]:
+					results[i] = ["" if (x != x or x is None) else str(x) for x in df.iloc[row, header_cols:].tolist()]
+			else: # select by column
+				col = SpreadsheetOutputList.col_to_index(key)
+				if 0 <= col < df.shape[1]:
+					results[i] = ["" if (x != x or x is None) else str(x) for x in df.iloc[header_rows:, col].tolist() ]
+
+		lists = (results + [[]] * limit)[:limit] # pad unused slots with empty lists
+
+		# select nth entry if specified
+		if select_nth >= 0: lists = [[lst[select_nth]] if select_nth < len(lst) else [] for lst in lists]
+
+		count = max(map(len, lists), default=0) # longest list
+
+		return (*lists, count)
+
 class CombineOutputLists:
 	DESCRIPTION = f"""Takes up to 4 OutputLists, generates all combinations between them and emits each combination as separate items.
 Example: [1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
@@ -290,7 +426,7 @@ If you want to write `{ }` within your strings (e.g. for JSONs) you have to doub
 
 class ConvertNumberToIntFloatStr:
 	DESCRIPTION = f"""Convert anything number-like to int float string.
-Uses `nums-from-string.get_nums` internally which is very permissive in the numbers it accepts.
+Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts.
 Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
 int, float and string {OUTPUTLIST_NOTE}.
 """
@@ -304,9 +440,9 @@ int, float and string {OUTPUTLIST_NOTE}.
 		}
 
 	INPUT_IS_LIST	= True
-	RETURN_NAMES	=	("int"	, "float"	, "string"	, "count"	)
-	RETURN_TYPES	=	("INT"	, "FLOAT"	, "STRING"	, "INT"	)
-	OUTPUT_IS_LIST	=	(True	, True	, True	, False	)
+	RETURN_NAMES	= ("int"	, "float"	, "string"	, "count"	)
+	RETURN_TYPES	= ("INT"	, "FLOAT"	, "STRING"	, "INT"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"all the numbers found in the string with the decimals truncated. {OUTPUTLIST_NOTE}",
 		f"all the numbers found in the string as floats. {OUTPUTLIST_NOTE}",
@@ -318,34 +454,142 @@ int, float and string {OUTPUTLIST_NOTE}.
 
 	def execute(self, number):
 		number_str	= str(number)
-		floats	= get_nums(number_str)
+		floats	= nums_from_string.get_nums(number_str)
 		ints	= [int(f) for f in floats]
 		strs	= [str(f) for f in floats]
 		count	= len(floats)
 		ret	= (ints, floats, strs, count)
 		return ret
 
-# class StringToCombo:
-# DESCRIPTION = """
-# """
+class LoadFile:
+	DESCRIPTION = f"""Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a IMAGE.
+"""
 
-# @classmethod
-# def INPUT_TYPES(cls):
-#  return {
-#   "required": {
-#    "string": ("STRING",),
-#    },
-#  }
+	@classmethod
+	def INPUT_TYPES(s):
+		return {
+			"required": {
+					"annotated_filepath": ("STRING", { "tooltip": "Base directory defaults to input directory. Use suffix [input] [output] [temp] to specify a different ComfyUI user directory." }),
+				},
+			}
 
-# RETURN_NAMES = ("combo", "any" )
-# RETURN_TYPES = ("COMBO", any )
-# OUTPUT_IS_LIST = (True, True )
-# FUNCTION = "execute"
-# CATEGORY = "Utility"
+	CATEGORY = "Utility"
 
-# def execute(self, string):
-#  ret = (str(string))
-#  return ([ret], [ret])
+	RETURN_NAMES	= ("string"	, "image"	, "mask"	)
+	RETURN_TYPES	= ("STRING"	, "IMAGE"	, "MASK"	)
+	OUTPUT_TOOLTIPS	= (
+		"file content for text files, base64 for binary files.",
+		"image batch tensor",
+		"mask batch tensor",
+		)
+	FUNCTION = "execute"
+
+	def load_image(self, image_data):
+		img = node_helpers.pillow(Image.open, image_data)
+
+		# from ComfyUI/nodes.py LoadImage
+		output_images	= []
+		output_masks	= []
+		w, h	= None, None
+
+		excluded_formats = ['MPO']
+
+		for i in ImageSequence.Iterator(img):
+			i = node_helpers.pillow(ImageOps.exif_transpose, i)
+
+			if i.mode == 'I':
+				i = i.point(lambda i: i * (1 / 255))
+			image = i.convert("RGB")
+
+			if len(output_images) == 0:
+				w = image.size[0]
+				h = image.size[1]
+
+			if image.size[0] != w or image.size[1] != h:
+				continue
+
+			image = np.array(image).astype(np.float32) / 255.0
+			image = torch.from_numpy(image)[None,]
+			if 'A' in i.getbands():
+				mask = np.array(i.getchannel('A')).astype(np.float32) / 255.0
+				mask = 1. - torch.from_numpy(mask)
+			elif i.mode == 'P' and 'transparency' in i.info:
+				mask = np.array(i.convert('RGBA').getchannel('A')).astype(np.float32) / 255.0
+				mask = 1. - torch.from_numpy(mask)
+			else:
+				mask = torch.zeros((64,64), dtype=torch.float32, device="cpu")
+			output_images	.append(image)
+			output_masks	.append(mask.unsqueeze(0))
+
+		if len(output_images) > 1 and img.format not in excluded_formats:
+			output_image	= torch.cat(output_images, dim	=0)
+			output_mask	= torch.cat(output_masks, dim	=0)
+		else:
+			output_image	= output_images[0]
+			output_mask	= output_masks[0]
+
+		return (output_image, output_mask)
+
+	def execute(self, annotated_filepath):
+		file_path = folder_paths.get_annotated_filepath(annotated_filepath)
+
+		with open(file_path, "rb") as f:
+			raw_data = f.read()
+
+		# check if binary
+		try:
+			result	= chardet.detect(raw_data)
+			encoding	= result["encoding"]
+			if encoding:
+				filecontent = raw_data.decode(encoding)
+			else:
+				filecontent = None
+		except (UnicodeDecodeError, TypeError):
+			filecontent = None
+
+		# check if base64
+		if filecontent is not None:
+			try:
+				_ = base64.b64decode(filecontent, validate=True)
+				is_binary = False
+			except (base64.binascii.Error, ValueError):
+				is_binary = True
+		else:
+			is_binary = True
+
+		# get file content as text or base64
+		if is_binary or filecontent is None:
+			filecontent = base64.b64encode(raw_data).decode("utf-8")
+			image_data = raw_data
+		else:
+			image_data = filecontent.encode("utf-8")
+
+		# try to load binary or base64 as image
+		try:
+			image, mask = self.load_image(io.BytesIO(image_data))
+		except (UnidentifiedImageError, OSError, ValueError):
+			# fallback to black 64x64 tensors
+			image	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
+			mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
+
+		return (filecontent, image, mask)
+
+	@classmethod
+	def IS_CHANGED(s, annotated_filepath):
+		path	= folder_paths.get_annotated_filepath(annotated_filepath)
+		m	= hashlib.sha256()
+		with open(path, 'rb') as f:
+			m.update(f.read())
+		ret = m.digest().hex()
+		return ret
+
+	@classmethod
+	def VALIDATE_INPUTS(s, annotated_filepath):
+		path = folder_paths.get_annotated_filepath(annotated_filepath)
+		if not folder_paths.exists_annotated_filepath(path):
+			return "Invalid file: {}".format(path)
+
+		return True
 
 class KSamplerImmediateSave:
 	DESCRIPTION="""Node Expansion of default KSampler, VAE Decode and Save Image to process as one.
@@ -394,23 +638,3 @@ This is useful if you want to save the intermediate images for grids immediately
 			"result" : (images.out(0),),
 			"expand" : graph.finalize(),
 		}
-
-NODE_CLASS_MAPPINGS = {
-	"StringOutputList"	: StringOutputList,
-	"NumberOutputList"	: NumberOutputList,
-	"JSONOutputList"	: JSONOutputList,
-	"CombineOutputLists"	: CombineOutputLists,
-	"FormattedString"	: FormattedString,
-	"ConvertNumberToIntFloatStr"	: ConvertNumberToIntFloatStr,
-	#"StringToCombo"	: StringToCombo,
-	"KSamplerImmediateSave"	: KSamplerImmediateSave,
-}
-NODE_DISPLAY_NAME_MAPPINGS = {
-	"StringOutputList"	: "String OutputList",
-	"NumberOutputList"	: "Number OutputList",
-	"JSONOutputList"	: "JSON OutputList",
-	"CombineOutputLists"	: "OutputList Combinations",
-	"FormattedString"	: "Formatted String",
-	"ConvertNumberToIntFloatStr"	: "Convert to Int Float String",
-	"KSamplerImmediateSave"	: "KSampler Immediate Save Image",
-}

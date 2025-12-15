@@ -194,40 +194,21 @@ Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] 
 
 Makes use of the `index` combined the same way as the prompts, which gives as the rows and columns. `Formatted String` produces the filename prefix `cell_{c:02d}_row_{a:02d}_col_{b:02d}`.
 
-### Integrate LEv145/images-grid-comfy-plugin
+### XYZ-GridPlots
 
-Custom nodes:
-* [images-grid-comfy-plugin](https://github.com/LEv145/images-grid-comfy-plugin)
-* [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
-* [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials) (optional)
+![XYZ-Gridplots](/workflows/Example_04a_XYZ-GridPlots.png)
 
-![ImageGrids example](/workflows/Example_04a_ImageGrids.png)
+Uses `String OutputLists + OutputLists Combinations + Fomratted String` to generate multiple prompts for an image grid. The values of the `String OutputLists` are directly used a labels for the `XYZ-GridPlot` and they also define how the grid should be shaped.
 
-(workflow included)
+Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` you get a image grid with the batch as sub-grids. If you also set `output_is_list=True` the sub-images will not be arranged together but you will get 4 separate images instead.
 
-Makes use of images-grid-comfy-plugin's `ImagesGridByColumn` + `GridAnnotation` and Impact-Pack's `String List to String` to fit the annotation labels for the grid.
+### XYZ-GridPlots with sub-grids
 
-Note that with OutputLists the images from the KSampler are individual items, i.e. `batch_size=1`. But the image-grid node expects batches, that's why we need to rebatch them into `batch_size=9` with the `Rebatch images` core node.
+I recommend to start ComfyUI with ``--cache-ram` for this example if you want to experiment with the settings alot!
 
-To understand batch_sizes use comfyui_essentials' `Debug Tensor Shape` which outputs the tensor shape of the image batch in the console (click the `>_` button in the lower left corner).
+![XYZ-Gridplots with sub-grids](/workflows/Example_04b_XYZ-GridPlots-Subgrids.png)
 
-Tensor Shape Debug after KSampler output:
-```
-Shapes found: [[1, 512, 512, 3]]
-Shapes found: [[1, 512, 512, 3]]
-Shapes found: [[1, 512, 512, 3]]
-Shapes found: [[1, 512, 512, 3]]
-Shapes found: [[1, 512, 512, 3]]
-Shapes found: [[1, 512, 512, 3]]
-Shapes found: [[1, 512, 512, 3]]
-Shapes found: [[1, 512, 512, 3]]
-Shapes found: [[1, 512, 512, 3]]
-```
-
-Tensor shape required for images-grid:
-```
-[[9, 512, 512, 3]]
-```
+Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For more complex image grids the question always is: How should the axis be ordered and in which way the images be shuffled, e.g. do we want to show `cat|dog|rat` x `red|blue|green` and then the batch next to each other in a subgrid (`RxCxB`), or four separate images each with a grid of `cat|dog|rat` x `red|blue|green` (`BxCxR`). To achieve this you can play around with the options `order=outside-in|inside-out` and `output_is_list=False|True`, but make sure the `row_labels` and `col_labels` match what you want to achieve, as this info is also used how the grid is shaped.
 
 ## Advanced Examples
 
@@ -246,53 +227,8 @@ Custom nodes:
 
 Technically this node is implemented as a [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `KSampler`, `VAE Decode` and `Save Image`.
 
+- **TODO** Update workflow with new `XYZ-GridPlot` node
 - **TODO** I'm not happy that this node exists at all as I wanted to avoid custom KSampler nodes. Unfortunately I haven't found a way to [use subgraphs to force immediate processing](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) yet.
-
-### Rebatching images for subgrids
-
-Custom nodes:
-* [images-grid-comfy-plugin](https://github.com/LEv145/images-grid-comfy-plugin)
-* [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
-* [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials) (optional)
-
-![Rebatching example](/workflows/Example_05_SubImageGrids.png)
-
-(workflow included)
-
-Makes use of an additional images-grid to convert a image `batch_size=4` into a 2x2 grid and then rebatches them for main-grid.
-
-Tensor Shape Debug after KSampler output:
-```
-Shapes found: [[4, 512, 512, 3]]
-Shapes found: [[4, 512, 512, 3]]
-Shapes found: [[4, 512, 512, 3]]
-Shapes found: [[4, 512, 512, 3]]
-Shapes found: [[4, 512, 512, 3]]
-Shapes found: [[4, 512, 512, 3]]
-Shapes found: [[4, 512, 512, 3]]
-Shapes found: [[4, 512, 512, 3]]
-Shapes found: [[4, 512, 512, 3]]
-```
-
-Tensor Shape Debug after first images-grid:
-```
-Shapes found: [[1, 1024, 1024, 3]]
-Shapes found: [[1, 1024, 1024, 3]]
-Shapes found: [[1, 1024, 1024, 3]]
-Shapes found: [[1, 1024, 1024, 3]]
-Shapes found: [[1, 1024, 1024, 3]]
-Shapes found: [[1, 1024, 1024, 3]]
-Shapes found: [[1, 1024, 1024, 3]]
-Shapes found: [[1, 1024, 1024, 3]]
-Shapes found: [[1, 1024, 1024, 3]]
-```
-
-Tensor Shape Debug required for second images-grid:
-```
-[[9, 1024, 1024, 3]]
-```
-
-- **TODO** This is kinda surprising if don't know what's going own. Maybe we should develop a "Rebatch Images: shape=4x9" node.
 
 ### Baking Values Into Workflow
 
