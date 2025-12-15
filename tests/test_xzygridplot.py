@@ -12,12 +12,13 @@ from src.outputlists_combiner import XyzGridPlot
 LABELS_INT_SHORT	= [1, 2, 3]
 LABELS_INT_LONG	= [1234567890, 42, 3141592]
 LABELS_FLOATS	= [0.5, 1.99, 3.141592]
+LABELS_NUMERIC	= ["CFG: 1.0", "CFG: 12.0", "CFG: 123.0"]
 LABELS_STRINGS_SHORT	= ["euler", "dpmpp_2m", "uni_pc_bh2"]
 LABELS_PROMPTS_SHORT	= ["a cat on a table", "portrait photo, studio lighting", "high detail, cinematic"]
 LABELS_PROMPTS_LONG	= [
-                    	"a highly detailed cinematic photograph of a futuristic city at sunset with flying cars",
-                    	"masterpiece, best quality, ultra detailed, 8k, sharp focus, dramatic lighting, fantasy art",
-                    	"an oil painting of a medieval village during winter, snow falling, warm lights in windows",
+	"a highly detailed cinematic photograph of a futuristic city at sunset with flying cars",
+	"masterpiece, best quality, ultra detailed, 8k, sharp focus, dramatic lighting, fantasy art",
+	"an oil painting of a medieval village during winter, snow falling, warm lights in windows",
 ]
 
 @pytest.fixture
@@ -47,7 +48,7 @@ def test_main(xyzgridplot_node):
 			i += 1
 
 	# # execute(self, images, col_labels, row_labels, row_label_orientation, gap, font_size, output_is_list):
-	images_out = xyzgridplot_node.execute(images, [str(l) for l in LABELS_PROMPTS_SHORT], [str(l) for l in LABELS_STRINGS_SHORT], ["horizontal"], [8], [50], [True])
+	images_out = xyzgridplot_node.execute(images, [str(l) for l in LABELS_NUMERIC], [str(l) for l in LABELS_PROMPTS_SHORT], [8], [50], [True])
 	for image_out in images_out:
 		for (batch_number, image) in enumerate(image_out):
 			pil_img = tensor_to_pil(image)
