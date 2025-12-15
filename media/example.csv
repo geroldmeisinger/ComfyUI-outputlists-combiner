@@ -1,0 +1,5 @@
+id;name;prompt;seed;steps;cfg;sampler
+0;cat;cat with a hat;123;5;1;euler
+1;dog;dog with a hat;234;10;2;dpmpp_2m
+2;rat;rat with a hat;456;15;3;uni_pc
+3;bat;bat with a hat;567;20;4;uni_pc_bh2

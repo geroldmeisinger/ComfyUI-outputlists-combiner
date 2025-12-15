@@ -29,12 +29,12 @@ def find_uniform_font_size(texts, width_max, height_max, font_size_target, font_
 		return font_size_target
 
 	# Binary search between target size and min size
-	font_size_low	= font_size_min
+	font_size_low 	= font_size_min
 	font_size_high	= font_size_target
 
 	while (font_size_high - font_size_low) > EPS:
 		font_size_mid	= (font_size_low + font_size_high) / 2
-		fits	= fit_texts(texts, font_size_mid, width_max, height_max, font_coll, para_style, text_style)
+		fits         	= fit_texts(texts, font_size_mid, width_max, height_max, font_coll, para_style, text_style)
 		if fits:
 			font_size_low = font_size_mid
 		else:
@@ -49,7 +49,7 @@ def get_texts_type(texts, paragraphs, width):
 	is_numeric = True
 	for t in texts:
 		tokens = nums_from_string.get_numeric_string_tokens(t)
-		if len(tokens) != 1	: is_numeric = False; break
+		if len(tokens) != 1                  	: is_numeric = False; break
 		if not t.rstrip().endswith(tokens[0])	: is_numeric = False; break
 
 	if is_numeric: return "numeric"
@@ -80,7 +80,7 @@ def find_imgs_rectangularpack(imgs_num, img_w, img_h):
 	return [rows_best, cols_best]
 
 def get_vertical_offset(paragraph, width, height, alignment, rotation):
-	if	alignment == "top"	: return 0
+	if  	alignment == "top"   	: return 0
 	elif	alignment == "middle"	: return (height - paragraph.Height) / 2
 	elif	alignment == "bottom"	: return (height - paragraph.Height)
 	else: return 0
@@ -93,36 +93,36 @@ class XyzGridPlot:
 	def INPUT_TYPES(cls):
 		return {
 			"required": {
-				"images"	: ("IMAGE"	, { "tooltip": "" }),
-				"row_labels"	: ("STRING"	, { "tooltip": "" }),
-				"col_labels"	: ("STRING"	, { "tooltip": "" }),
+				"images"                	: ("IMAGE"                   	, { "tooltip": "" }),
+				"row_labels"            	: ("STRING"                  	, { "tooltip": "" }),
+				"col_labels"            	: ("STRING"                  	, { "tooltip": "" }),
 				#"row_label_orientation"	: (["horizontal", "vertical"]	, { "tooltip": "" }),
-				"gap"	: ("INT"	, { "default":	0, "min": 0, "max":	128, "tooltip": "" }),
-				"font_size"	: ("FLOAT"	, { "default":	50, "min": 6, "max":	1000, "tooltip": "" }),
-				"order"	: ("BOOLEAN"	, { "default": True, "label_on": "outside-in", "label_off": "inside-out", "tooltip": "Defines in which order the images should be processed. This is only relevant if you have sub-images." }),
-				"output_is_list"	: ("BOOLEAN"	, { "default": False, "label_on": "True", "label_off": "False", "tooltip": "This is only relevant if you have sub-images." })
+				"gap"                   	: ("INT"                     	, { "default": 	0, "min": 0, "max": 	128, "tooltip": "" }),
+				"font_size"             	: ("FLOAT"                   	, { "default":	50, "min": 6, "max":	1000, "tooltip": "" }),
+				"order"                 	: ("BOOLEAN"                 	, { "default": True, "label_on": "outside-in", "label_off": "inside-out", "tooltip": "Defines in which order the images should be processed. This is only relevant if you have sub-images." }),
+				"output_is_list"        	: ("BOOLEAN"                 	, { "default": False, "label_on": "True", "label_off": "False", "tooltip": "This is only relevant if you have sub-images." })
 			},
 		}
 
-	INPUT_IS_LIST	= True
-	RETURN_NAMES	= ("image"	, )
-	RETURN_TYPES	= ("IMAGE"	, )
-	OUTPUT_IS_LIST	= (True	, )
+	INPUT_IS_LIST  	= True
+	RETURN_NAMES   	= ("image"       	, )
+	RETURN_TYPES   	= ("IMAGE"       	, )
+	OUTPUT_IS_LIST 	= (True          	, )
 	OUTPUT_TOOLTIPS	= ("xyz-gridplot"	, )
-	FUNCTION	= "execute"
-	CATEGORY	= "Utility"
+	FUNCTION       	= "execute"
+	CATEGORY       	= "Utility"
 
 	#def execute(self, images, row_labels, col_labels, row_label_orientation, gap, font_size, output_is_list):
 	def execute(self, images, row_labels, col_labels, gap, font_size, order, output_is_list):
 		FONT_SIZE_MIN	= 6
-		PADDING	= 18
+		PADDING      	= 18
 
 		#row_label_orientation	= row_label_orientation	[0]
-		row_label_orientation	= "horizontal"
-		gap	= gap	[0]
-		font_size	= font_size	[0]
-		order	= order	[0]
-		output_is_list	= output_is_list	[0]
+		row_label_orientation 	= "horizontal"
+		gap                   	= gap           	[0]
+		font_size             	= font_size     	[0]
+		order                 	= order         	[0]
+		output_is_list        	= output_is_list	[0]
 
 		# flatten images
 		images_flat = []
@@ -137,46 +137,46 @@ class XyzGridPlot:
 					images_flat.append(img[b:b+1])
 
 		img_h, img_w	= images[0].shape[1:3]
-		cols	= max(1, len(col_labels))
-		rows	= max(1, len(row_labels))
-		subs_num	= len(images_flat) // (rows * cols)
-		outputs_num	= subs_num if output_is_list else 1
+		cols        	= max(1, len(col_labels))
+		rows        	= max(1, len(row_labels))
+		subs_num    	= len(images_flat) // (rows * cols)
+		outputs_num 	= subs_num if output_is_list else 1
 		subs_rows, subs_cols = find_imgs_rectangularpack(1 if output_is_list else subs_num, img_w, img_h)
 
 		# labels
 		labels_rows_w	= 0.0
 		labels_cols_h	= 0.0
-		labels_data	= []
+		labels_data  	= []
 		if len(col_labels) > 0:
 			labels_data.append({
-				"texts"	: col_labels,
-				"is_column"	: True,
-				"rotation"	: 0,
-				"align"	: { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight },
-				"valign"	: { "singleline": "bottom"	, "multiline": "top"	, "numeric": "bottom" },
+				"texts"     	: col_labels,
+				"is_column" 	: True,
+				"rotation"  	: 0,
+				"align"     	: { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight },
+				"valign"    	: { "singleline": "bottom"            	, "multiline": "top"                	, "numeric": "bottom" },
 				"height_max"	: max(font_size + 2 * PADDING, subs_cols * img_h / 2 - 2 * PADDING),
-				"width_max"	: subs_cols * img_w - 2 * PADDING,
-				"pos"	: lambda i: (labels_rows_w + PADDING + (i + 1) * gap + i * subs_cols * img_w, PADDING),
+				"width_max" 	: subs_cols * img_w - 2 * PADDING,
+				"pos"       	: lambda i: (labels_rows_w + PADDING + (i + 1) * gap + i * subs_cols * img_w, PADDING),
 			})
 
 		if len(row_labels) > 0:
-			is_horz	= row_label_orientation == "horizontal"
-			align_horz	= { "singleline": tl.TextAlign.kRight	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight	}
-			align_vert	= { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kCenter	}
-			valign_horz	= { "singleline": "middle"	, "multiline": "top"	, "numeric": "middle" }
-			valign_vert	= { "singleline": "middle"	, "multiline": "bottom"	, "numeric": "middle" }
+			is_horz             	= row_label_orientation == "horizontal"
+			align_horz          	= { "singleline": tl.TextAlign.kRight 	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight 	}
+			align_vert          	= { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kCenter	}
+			valign_horz         	= { "singleline": "middle"            	, "multiline": "top"                	, "numeric": "middle" }
+			valign_vert         	= { "singleline": "middle"            	, "multiline": "bottom"             	, "numeric": "middle" }
 			label_row_height_max	= subs_rows * img_h - 2 * PADDING
-			label_row_width_max	= max(256, subs_cols * img_w) - 2 * PADDING
+			label_row_width_max 	= max(256, subs_cols * img_w) - 2 * PADDING
 
 			labels_data.append({
-				"texts"	: row_labels,
-				"is_column"	: False,
-				"rotation"	: 0	if is_horz else -90,
-				"align"	: align_horz	if is_horz else align_vert,
-				"valign"	: valign_horz	if is_horz else valign_vert,
+				"texts"     	: row_labels,
+				"is_column" 	: False,
+				"rotation"  	: 0                   	if is_horz else -90,
+				"align"     	: align_horz          	if is_horz else align_vert,
+				"valign"    	: valign_horz         	if is_horz else valign_vert,
 				"height_max"	: label_row_height_max	if is_horz else label_row_width_max,
-				"width_max"	: label_row_width_max	if is_horz else label_row_height_max,
-				"pos"	: lambda i: (PADDING, labels_cols_h + PADDING + (i + 1) * gap + i * subs_rows * img_h),
+				"width_max" 	: label_row_width_max 	if is_horz else label_row_height_max,
+				"pos"       	: lambda i: (PADDING, labels_cols_h + PADDING + (i + 1) * gap + i * subs_rows * img_h),
 			})
 
 		font_coll = tl.FontCollection()
@@ -189,7 +189,7 @@ class XyzGridPlot:
 		labels_layout = []
 		for label_data in labels_data:
 			align_default	= tl.TextAlign.kLeft
-			is_column	= label_data["is_column"]
+			is_column    	= label_data["is_column"]
 
 			para_style = tl.ParagraphStyle()
 			para_style.setTextAlign(align_default)
@@ -197,18 +197,18 @@ class XyzGridPlot:
 
 			paragraphs_ = [make_paragraph(text, font_size_fit, label_data["width_max"], font_coll, para_style, text_style_base) for text in label_data["texts"]]
 
-			width_max	= max((max(p.LongestLine, p.MinIntrinsicWidth)	for p in paragraphs_)	, default=0.0) + 1
-			height_max	= max((p.Height	for p in paragraphs_)	, default=0.0)
+			width_max 	= max((max(p.LongestLine, p.MinIntrinsicWidth)	for p in paragraphs_)	, default=0.0) + 1
+			height_max	= max((p.Height                               	for p in paragraphs_)	, default=0.0)
 
 			texts_type	= get_texts_type(label_data["texts"], paragraphs_, label_data["width_max"])
-			align	= label_data["align"][texts_type]
+			align     	= label_data["align"][texts_type]
 
 			para_style.setTextAlign(align)
 			paragraphs = [make_paragraph(text, font_size_fit, label_data["width_max"] if is_column else width_max, font_coll, para_style, text_style_base) for text in label_data["texts"]]
 			#paragraphs = paragraphs_
 
 			if is_column	: labels_cols_h = min(height_max, label_data["height_max"]) + 2 * PADDING
-			else	: labels_rows_w = min(width_max , label_data["width_max" ]) + 2 * PADDING
+			else        	: labels_rows_w = min(width_max , label_data["width_max" ]) + 2 * PADDING
 
 			labels_layout.append((label_data, paragraphs, texts_type))
 
@@ -219,16 +219,16 @@ class XyzGridPlot:
 		outputs = []
 		for b in range(outputs_num):
 			surface	= skia.Surface(grid_w, grid_h)
-			canvas	= surface.getCanvas()
+			canvas 	= surface.getCanvas()
 			canvas.clear(skia.ColorWHITE)
 
 			# draw labels
 			for label_data, paragraphs, texts_type in labels_layout:
-				width_max	= label_data["width_max"]	if label_data["is_column"] else labels_rows_w
-				height_max	= labels_cols_h	if label_data["is_column"] else label_data["height_max"]
+				width_max 	= label_data["width_max"]	if label_data["is_column"] else labels_rows_w
+				height_max	= labels_cols_h          	if label_data["is_column"] else label_data["height_max"]
 				for i, paragraph in enumerate(paragraphs):
 					x, y	= label_data["pos"](i) #, paragraph.Width, paragraph.Height)
-					oy	= get_vertical_offset(paragraph, width_max, height_max - 2 * PADDING, label_data["valign"][texts_type], label_data["rotation"])
+					oy  	= get_vertical_offset(paragraph, width_max, height_max - 2 * PADDING, label_data["valign"][texts_type], label_data["rotation"])
 
 					canvas.save()
 					canvas.translate(x, y + oy)
@@ -250,8 +250,8 @@ class XyzGridPlot:
 						for sc in range(subs_cols):
 							if idx_m >= len(cell_imgs): continue
 
-							img	= cell_imgs[idx_m]
-							sk_img	= tensor_to_skia_image(img)
+							img    	= cell_imgs[idx_m]
+							sk_img 	= tensor_to_skia_image(img)
 							sk_rect	= skia.Rect.MakeXYWH(
 								labels_rows_w + (c + 1) * gap + c * subs_cols * img_w + sc * img_w,
 								labels_cols_h + (r + 1) * gap + r * subs_rows * img_h + sr * img_h,
@@ -261,7 +261,7 @@ class XyzGridPlot:
 					idx_M += subs_num
 
 			skia_img	= surface.makeImageSnapshot()
-			output	= skia_to_tensor(skia_img)
+			output  	= skia_to_tensor(skia_img)
 			outputs.append(output)
 
 		return (outputs, )

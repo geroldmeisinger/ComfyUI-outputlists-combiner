@@ -33,10 +33,12 @@ Yeah, I didn't know about it either. Apparently everytime you see the symbol `ù
 Create a OutputList by separating the string in the textfield.
 
 **inputs**
+
 * `separator`: the string to split the textfield values
 * `values`: the string which will be separated. note that the string is trimmed of whitespace before splitting, and each item is again trimmed
 
 **outputs**
+
 * `value`: the values from the list
 * `index`: range of 0..count which can be used as an index
 * `count`: the number of items in the list
@@ -50,16 +52,18 @@ https://github.com/user-attachments/assets/b2bc09f8-6cb2-47af-bcf5-0fa380c2ef7e
 
 (workflow included)
 
-reate a OutputList by generating a numbers of values in a range.
+Create a OutputList by generating a numbers of values in a range.
 Uses numpy.linspace internally because it works more reliably with floatingpoint values.
 
 **inputs**
+
 * `start`: start value to generate the range from
 * `stop`: end value. if `endpoint=include` this number will be included in the list
 * `num`: the number of items in the list (not to be confused with a step)
 * `endpoint`: decides if the stop value should be included or excluded in the items
 
 **outputs**
+
 All the values from the list use `OUTPUT_IS_LIST=True` and will be processed sequentially by corresponding nodes.
 * `int`: the value converted to int (rounded down/floored)
 * `float`: the value as a float
@@ -77,12 +81,16 @@ Create a OutputList by extracting arrays or dictionaries from JSON objects.
 Uses JSONPath syntax to extract the values, see https://en.wikipedia.org/wiki/JSONPath .
 All matched values will be flattend into one list.
 
-**input**
+You can also use this node as a python `literal_eval` to quickly define simple types or arrays like so `[1, 2, 3]`.
+
+**inputs**
+
 * `jsonpath`: JSONPath used to extract the values
 * `json`: a string which will be parsed as JSON
 * `obj`: (optional) object of any type which will replace the JSON string
 
 **outputs**
+
 All the values from the list use `OUTPUT_IS_LIST=True` and will be processed sequentially by corresponding nodes.
 * `key`: the key for dictionaries or index for arrays (as string). Technically it's a global index of the flattened list for all non-keys
 * `value`: the value as a string
@@ -90,6 +98,44 @@ All the values from the list use `OUTPUT_IS_LIST=True` and will be processed seq
 * `float`: the value as a float (if not parseable number default to 0)
 * `count`: total number of items in the flattened list
 * `debug`: debug output of all matched objects as a formatted JSON string
+
+### Spreadsheet OutputList
+
+![Basic Spreadsheet OutputList](/media/SpreadsheetOutputList.png)
+
+(workflow included)
+
+Create a OutputLists from a spreadsheet (CSV, TSV, ODS, XLSX and XLS).
+Use `Load any File` node to load a file as base64.
+Internally uses pandas to parse spreadsheet files.
+
+**inputs**
+
+* `rows_and_cols`: Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based.
+* `header_rows`: Ignore the first x rows in the list. Only used if you specify a col in rows_and_cols.
+* `header_cols`: Ignore the first x cols in the list. Only used if you specify a row in rows_and_cols.
+* `select_nth` Only select the nth entry. Useful in combination with the PrimitiveInt+control_after_generate=increment pattern.
+* `string_or_base64`: CSV/TSV string or spreadsheet file in base64 (ODS, XLSX, XLS). Use `Load any File` node to load a file as base64
+
+**outputs**
+
+* `list_a` .. `list_d`: values from the selected spreadsheet column or row
+* `count`: number of items in the longest list
+
+### Load any File
+
+![Load any File](/media/LoadAnyFile.png)
+
+(workflow included)
+
+Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE` and `MASK`.
+
+**inputs**
+
+* `annotated_filepath`: Base directory defaults to input directory. Use suffix `[input]` `[output]` or `[temp]` to specify a different ComfyUI user directory.
+* `string`:	file content for text files, base64 for binary files.
+* `image`: image batch tensor
+* `mask`: mask batch tensor
 
 ### OutputList Combinations
 
@@ -116,6 +162,7 @@ Example:
 * `list_a` .. `list_d`: (optional) ideally connected to a node with `OUTPUT_IS_LIST=True` indicated by the symbol `ùå†`
 
 **outputs**
+
 * `unzip_a` .. `unzip_d`: value of the combinations corresponding to `list_a` .. `list_d`
 * `index`: range of 0..count which can be used as an index
 * `count`: the total number of combinations
@@ -132,9 +179,11 @@ Uses python `str.format()` internally, see https://docs.python.org/3/library/str
 * If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`
 
 **inputs**
+
 * `a` .. `d`: (optional) value that will be converted to string with the `{a}` .. `{d}` placeholder
 
 **outputs**
+
 * `string`: the formatted string with all placeholders replaced with their respective values
 
 ### Convert any number to Int Float String
@@ -186,6 +235,8 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 
 Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] x [768, 512, 256]` and connects them to the image width and height to produce image variants in portrait, square and landscape.
 
+Notice that images within a batch always have to be same width and height, wheras here each image has a different image size. This is only possible because it is a list of images.
+
 ### Combine row/column for filename
 
 ![Combine numbers example](/workflows/Example_01b_Combine_RowCol_Filename.png)
@@ -204,7 +255,7 @@ Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` y
 
 ### XYZ-GridPlots with sub-grids
 
-I recommend to start ComfyUI with ``--cache-ram` for this example if you want to experiment with the settings alot!
+I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
 
 ![XYZ-Gridplots with sub-grids](/workflows/Example_04b_XYZ-GridPlots-Subgrids.png)
 

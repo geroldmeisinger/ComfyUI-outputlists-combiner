@@ -80,5 +80,3 @@ Tensor Shape Debug required for second images-grid:
 ```
 [[9, 1024, 1024, 3]]
 ```
-
-- **TODO** This is kinda surprising if don't know what's going own. Maybe we should develop a "Rebatch Images: shape=4x9" node.
