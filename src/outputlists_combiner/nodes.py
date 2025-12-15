@@ -39,19 +39,19 @@ value and index {OUTPUTLIST_NOTE}
 			"required":
 			{
 				"separator"	: ("STRING", { "default": "\\n", "tooltip": "the string to split the textfield values" }),
-				"values"   	: ("STRING",
+				"values"	: ("STRING",
 					{
-						"multiline"  	: True,
-						"default"    	: "",
+						"multiline"	: True,
+						"default"	: "",
 						"placeholder"	: "string separated with newlines. Try to connect inspect_combo with a COMBO input!",
-						"tooltip"    	: "the string which will be separated. note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed",
+						"tooltip"	: "the string which will be separated. note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed",
 					}),
 			},
 		}
 
-	RETURN_NAMES   	=	("value"	, "index"	, "count"	, "inspect_combo"	)
-	RETURN_TYPES   	=	(any    	, "INT"  	, "INT"  	, "COMBO"        	)
-	OUTPUT_IS_LIST 	=	(True   	, True   	, False  	, False          	)
+	RETURN_NAMES	=	("value"	, "index"	, "count"	, "inspect_combo"	)
+	RETURN_TYPES	=	(any	, "INT"	, "INT"	, "COMBO"	)
+	OUTPUT_IS_LIST	=	(True	, True	, False	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"the values from the list. {OUTPUTLIST_NOTE}",
 		f"range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}",
@@ -63,11 +63,11 @@ value and index {OUTPUTLIST_NOTE}
 
 	def execute(self, separator, values):
 		unescaped_separator	= separator.encode().decode('unicode_escape')
-		value              	= [s.strip() for s in values.rstrip().split(unescaped_separator)]
-		count              	= len(value)
-		index              	= range(count)
-		inspect_combo      	= None
-		ret                	= (value, index, count, inspect_combo)
+		value	= [s.strip() for s in values.rstrip().split(unescaped_separator)]
+		count	= len(value)
+		index	= range(count)
+		inspect_combo	= None
+		ret	= (value, index, count, inspect_combo)
 		return ret
 
 class NumberOutputList:
@@ -80,16 +80,16 @@ int, float, string and index {OUTPUTLIST_NOTE}.
 	def INPUT_TYPES(cls):
 		return {
 			"required": {
-				"start"   	: ("FLOAT"  	, { "default"	: 	0,                                                  	"tooltip": "start value to generate the range from" }),
-				"stop"    	: ("FLOAT"  	, { "default"	:	10,                                                  	"tooltip": "end value. if endpoint=include this number will be included in the list" }),
-				"num"     	: ("INT"    	, { "default"	:	10, "min": 1,                                        	"tooltip": "the number of items in the list (not to be confused with a step)" }),
+				"start"	: ("FLOAT"	, { "default"	:	0,	"tooltip": "start value to generate the range from" }),
+				"stop"	: ("FLOAT"	, { "default"	:	10,	"tooltip": "end value. if endpoint=include this number will be included in the list" }),
+				"num"	: ("INT"	, { "default"	:	10, "min": 1,	"tooltip": "the number of items in the list (not to be confused with a step)" }),
 				"endpoint"	: ("BOOLEAN"	, { "default"	:	False, "label_on": "include", "label_off": "exclude",	"tooltip": "decides if the stop value should be included or excluded in the items" }),
 				}
 		}
 
-	RETURN_NAMES   	= ("int"	, "float"	, "string"	, "index"	, "count"	)
-	RETURN_TYPES   	= ("INT"	, "FLOAT"	, "STRING"	, "INT"  	, "INT"  	)
-	OUTPUT_IS_LIST 	= (True 	, True   	, True    	, True   	, False  	)
+	RETURN_NAMES	= ("int"	, "float"	, "string"	, "index"	, "count"	)
+	RETURN_TYPES	= ("INT"	, "FLOAT"	, "STRING"	, "INT"	, "INT"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, True	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"the value converted to int (rounded down/floored). {OUTPUTLIST_NOTE}",
 		f"the value as a float. {OUTPUTLIST_NOTE}",
@@ -102,11 +102,11 @@ int, float, string and index {OUTPUTLIST_NOTE}.
 
 	def execute(self, start, stop, num, endpoint):
 		values	= list(numpy.linspace(start, stop, num, endpoint))
-		ints  	= [int  	(v) for v in values]
+		ints	= [int	(v) for v in values]
 		floats	= [float	(v) for v in values]
-		strs  	= [str  	(v) for v in values]
-		index 	= range(num)
-		ret   	= (ints, floats, strs, index, num)
+		strs	= [str	(v) for v in values]
+		index	= range(num)
+		ret	= (ints, floats, strs, index, num)
 		return ret
 
 class JSONOutputList:
@@ -123,12 +123,12 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 			"required":
 			{
 				"jsonpath"	: ("STRING", { "default": "$.dict", "tooltip": "JSONPath used to extract the values" }),
-				"json"    	: ("STRING",
+				"json"	: ("STRING",
 					{
-						"multiline"  	: True,
-						"default"    	: dumps(loads('{ "dict": { "a": 0.12, "b": 3.45, "c": 6.78 }, "arr": [0.12, 3.45, 6.78] }'), indent=4),
+						"multiline"	: True,
+						"default"	: dumps(loads('{ "dict": { "a": 0.12, "b": 3.45, "c": 6.78 }, "arr": [0.12, 3.45, 6.78] }'), indent=4),
 						"placeholder"	: "object or JSON string",
-						"tooltip"    	: "a string which will be parsed as JSON",
+						"tooltip"	: "a string which will be parsed as JSON",
 					}),
 			},
 			"optional": {
@@ -136,9 +136,9 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 			}
 		}
 
-	RETURN_NAMES   	= ("key"   	, "value" 	, "int"	, "float"	, "count"	, "debug" 	)
-	RETURN_TYPES   	= ("STRING"	, "STRING"	, "INT"	, "FLOAT"	, "INT"  	, "STRING"	)
-	OUTPUT_IS_LIST 	= (True    	, True    	, True 	, True   	, False  	, False   	)
+	RETURN_NAMES	= ("key"	, "value"	, "int"	, "float"	, "count"	, "debug"	)
+	RETURN_TYPES	= ("STRING"	, "STRING"	, "INT"	, "FLOAT"	, "INT"	, "STRING"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, True	, False	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"the key for dictionaries or index for arrays (as string). {OUTPUTLIST_NOTE}. Technically it's a global index of the flattened list for all non-keys",
 		f"the value as a string. {OUTPUTLIST_NOTE}",
@@ -147,8 +147,8 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 		"total number of items in the flattened list",
 		"debug output of all matched objects as a formatted JSON string",
 		)
-	FUNCTION   	= "execute"
-	CATEGORY   	= "Utility"
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
 	OUTPUT_NODE	= True
 
 	def execute(self, jsonpath, json, obj = None):
@@ -172,7 +172,7 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 
 		# jsonpath
 		try:
-			expr   	= jsonpath_parse(jsonpath)
+			expr	= jsonpath_parse(jsonpath)
 			matches	= expr.find(data)
 		except Exception:
 			return { "ui": { "obj": [dumps(obj, indent=4)] }, "result": ([], [], [], [], 0, "[]") }
@@ -181,19 +181,19 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 			return { "ui": { "obj": [dumps(obj, indent=4)] }, "result": ([], [], [], [], 0, "[]") }
 
 		# outputs
-		keys  	= []
+		keys	= []
 		values	= []
-		ints  	= []
+		ints	= []
 		floats	= []
-		count 	= 0
-		debug 	= [m.value for m in matches]
+		count	= 0
+		debug	= [m.value for m in matches]
 
 		def append(key, value):
 			f = try_float(value, allow_underscores=True, nan=0.0, inf=0.0, on_fail=0.0, on_type_error=0.0)
-			keys  	.append(str(key))
+			keys	.append(str(key))
 			values	.append(str(value))
 			floats	.append(f)
-			ints  	.append(int(f))
+			ints	.append(int(f))
 
 		# iterate and flatten matches
 		for m in matches:
@@ -214,7 +214,7 @@ key, value, int, float {OUTPUTLIST_NOTE}.
 		debug_json = dumps(debug, indent=4)
 
 		result	= (keys, values, ints, floats, count, debug_json)
-		ret   	=  { "ui": { "obj": [dumps(data, indent=4)] }, "result": result }
+		ret	=  { "ui": { "obj": [dumps(data, indent=4)] }, "result": result }
 		return ret
 
 class SpreadsheetOutputList:
@@ -229,23 +229,23 @@ Lists {OUTPUTLIST_NOTE}.
 		return {
 			"required":
 			{
-				"rows_and_cols"   	: ("STRING"	, { "default": "A B C D"			, "tooltip": "Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based." }),
-				"header_rows"     	: ("INT"   	, { "default":           	1, "min": 	0, "max": 65535	, "tooltip": "Ignore the first x rows in the list. Only used if you specify a col in rows_and_cols." }),
-				"header_cols"     	: ("INT"   	, { "default":           	1, "min": 	0, "max": 65535	, "tooltip": "Ignore the first x cols in the list. Only used if you specify a row in rows_and_cols." }),
-				"select_nth"      	: ("INT"   	, { "default":          	-1, "min":	-1, "max": 65535	, "tooltip": "Only select the nth entry. Useful in combination with the PrimitiveInt+control_after_generate=increment pattern." }),
+				"rows_and_cols"	: ("STRING"	, { "default": "A B C D"			, "tooltip": "Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based." }),
+				"header_rows"	: ("INT"	, { "default":	1, "min":	0, "max": 65535	, "tooltip": "Ignore the first x rows in the list. Only used if you specify a col in rows_and_cols." }),
+				"header_cols"	: ("INT"	, { "default":	1, "min":	0, "max": 65535	, "tooltip": "Ignore the first x cols in the list. Only used if you specify a row in rows_and_cols." }),
+				"select_nth"	: ("INT"	, { "default":	-1, "min":	-1, "max": 65535	, "tooltip": "Only select the nth entry. Useful in combination with the PrimitiveInt+control_after_generate=increment pattern." }),
 				"string_or_base64"	: ("STRING"	, {
-						"multiline"  	: True,
-						"default"    	: "",
+						"multiline"	: True,
+						"default"	: "",
 						"placeholder"	: "CSV/TSV string or spreadsheet file in base64 (ODS, XLSX, XLS). Use `Load any File` node to load a file as base64.",
-						"tooltip"    	: "CSV/TSV string or spreadsheet file in base64 (ODS, XLSX, XLS). Use `Load any File` node to load a file as base64.",
+						"tooltip"	: "CSV/TSV string or spreadsheet file in base64 (ODS, XLSX, XLS). Use `Load any File` node to load a file as base64.",
 					}
 				),
 			},
 		}
 
-	RETURN_NAMES   	= ("list_a"	, "list_b"	, "list_c"	, "list_d"	, "count"	)
-	RETURN_TYPES   	= ("STRING"	, "STRING"	, "STRING"	, "STRING"	, "INT"  	)
-	OUTPUT_IS_LIST 	= (True    	, True    	, True    	, True    	, False  	)
+	RETURN_NAMES	= ("list_a"	, "list_b"	, "list_c"	, "list_d"	, "count"	)
+	RETURN_TYPES	= ("STRING"	, "STRING"	, "STRING"	, "STRING"	, "INT"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, True	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"{OUTPUTLIST_NOTE}",
 		f"{OUTPUTLIST_NOTE}",
@@ -270,20 +270,20 @@ Lists {OUTPUTLIST_NOTE}.
 
 	def execute(self, string_or_base64, rows_and_cols, header_rows, header_cols, select_nth):
 		limit	= 4
-		data 	= string_or_base64.strip()
+		data	= string_or_base64.strip()
 
 		# load spreadsheet with pandas
 		try:
 			decoded	= base64.b64decode(data, validate=True)
-			xls    	= pd.read_excel(io.BytesIO(decoded), sheet_name=None, header=None)
+			xls	= pd.read_excel(io.BytesIO(decoded), sheet_name=None, header=None)
 		except Exception:
 			try:
-				df 	= pd.read_csv(io.StringIO(data), sep=None, engine="python", header=None)
+				df	= pd.read_csv(io.StringIO(data), sep=None, engine="python", header=None)
 				xls	= {None: df}
 			except Exception:
 				return ([[] for _ in range(limit)], 0)
 
-		sheet_names  	= list(xls.keys())
+		sheet_names	= list(xls.keys())
 		default_sheet	= sheet_names[0]
 
 		# regex to select rows and columns with optional sheet reference (e.g. A, 1, AB, $MySheet.123, $'My Sheet'.ABC)
@@ -319,7 +319,7 @@ $""", re.VERBOSE)
 			if not m: continue
 
 			sheet	= m.group(1) or m.group(2) or m.group(3) or default_sheet
-			key  	= m.group(4)
+			key	= m.group(4)
 
 			if sheet not in xls: continue
 
@@ -365,10 +365,10 @@ Example: [1, 2] x [] x ["A", B"] x [] = [(1, None, "A", None), (1, None, "B", No
 			}
 		}
 
-	INPUT_IS_LIST  	= True
-	RETURN_NAMES   	= ("unzip_a"	, "unzip_b"	, "unzip_c"	, "unzip_d"	, "index"	, "count"	)
-	RETURN_TYPES   	= (any      	, any      	, any      	, any      	, "INT"  	, "INT"  	)
-	OUTPUT_IS_LIST 	= (True     	, True     	, True     	, True     	, True   	, False  	)
+	INPUT_IS_LIST	= True
+	RETURN_NAMES	= ("unzip_a"	, "unzip_b"	, "unzip_c"	, "unzip_d"	, "index"	, "count"	)
+	RETURN_TYPES	= (any	, any	, any	, any	, "INT"	, "INT"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, True	, True	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"value of the combinations corresponding to list_a. {OUTPUTLIST_NOTE}",
 		f"value of the combinations corresponding to list_b. {OUTPUTLIST_NOTE}",
@@ -382,11 +382,11 @@ Example: [1, 2] x [] x ["A", B"] x [] = [(1, None, "A", None), (1, None, "B", No
 
 	def compute(self, list_a = [], list_b = [], list_c = [], list_d = []):
 		normalized	= [lst if len(lst) > 0 else [None] for lst in [list_a, list_b, list_c, list_d]]
-		product   	= list(itertools.product(*normalized))
+		product	= list(itertools.product(*normalized))
 		transposed	= tuple(map(list, zip(*product)))
-		count     	= len(product)
-		index     	= range(count)
-		ret       	= (*transposed, index, count)
+		count	= len(product)
+		index	= range(count)
+		ret	= (*transposed, index, count)
 		return ret
 
 class FormattedString:
@@ -402,8 +402,8 @@ If you want to write `{ }` within your strings (e.g. for JSONs) you have to doub
 			"required": {
 				"fstring": ("STRING", {
 					"multiline"	: True,
-					"default"  	: "{a}_{b}_{c}_{d}",
-					"tooltip"  	: FormattedString.DESCRIPTION,
+					"default"	: "{a}_{b}_{c}_{d}",
+					"tooltip"	: FormattedString.DESCRIPTION,
 					}),
 				},
 			"optional": {
@@ -414,12 +414,12 @@ If you want to write `{ }` within your strings (e.g. for JSONs) you have to doub
 				}
 		}
 
-	RETURN_NAMES   	= ("string", )
-	RETURN_TYPES   	= ("STRING", )
-	OUTPUT_IS_LIST 	= (False   , )
+	RETURN_NAMES	= ("string", )
+	RETURN_TYPES	= ("STRING", )
+	OUTPUT_IS_LIST	= (False   , )
 	OUTPUT_TOOLTIPS	= ("the formatted string with all placeholders replaced with their respective values", )
-	FUNCTION       	= "execute"
-	CATEGORY       	= "Utility"
+	FUNCTION	= "execute"
+	CATEGORY	= "Utility"
 
 	def execute(self, fstring, a = "", b = "", c = "", d = ""):
 		ret = (fstring.format(a=a, b=b, c=c, d=d),)
@@ -440,10 +440,10 @@ int, float and string {OUTPUTLIST_NOTE}.
 			}
 		}
 
-	INPUT_IS_LIST  	= True
-	RETURN_NAMES   	= ("int"	, "float"	, "string"	, "count"	)
-	RETURN_TYPES   	= ("INT"	, "FLOAT"	, "STRING"	, "INT"  	)
-	OUTPUT_IS_LIST 	= (True 	, True   	, True    	, False  	)
+	INPUT_IS_LIST	= True
+	RETURN_NAMES	= ("int"	, "float"	, "string"	, "count"	)
+	RETURN_TYPES	= ("INT"	, "FLOAT"	, "STRING"	, "INT"	)
+	OUTPUT_IS_LIST	= (True	, True	, True	, False	)
 	OUTPUT_TOOLTIPS	= (
 		f"all the numbers found in the string with the decimals truncated. {OUTPUTLIST_NOTE}",
 		f"all the numbers found in the string as floats. {OUTPUTLIST_NOTE}",
@@ -455,11 +455,11 @@ int, float and string {OUTPUTLIST_NOTE}.
 
 	def execute(self, number):
 		number_str	= str(number)
-		floats    	= nums_from_string.get_nums(number_str)
-		ints      	= [int(f) for f in floats]
-		strs      	= [str(f) for f in floats]
-		count     	= len(floats)
-		ret       	= (ints, floats, strs, count)
+		floats	= nums_from_string.get_nums(number_str)
+		ints	= [int(f) for f in floats]
+		strs	= [str(f) for f in floats]
+		count	= len(floats)
+		ret	= (ints, floats, strs, count)
 		return ret
 
 class LoadFile:
@@ -476,8 +476,8 @@ class LoadFile:
 
 	CATEGORY = "Utility"
 
-	RETURN_NAMES   	= ("string"	, "image"	, "mask"	)
-	RETURN_TYPES   	= ("STRING"	, "IMAGE"	, "MASK"	)
+	RETURN_NAMES	= ("string"	, "image"	, "mask"	)
+	RETURN_TYPES	= ("STRING"	, "IMAGE"	, "MASK"	)
 	OUTPUT_TOOLTIPS	= (
 		"file content for text files, base64 for binary files.",
 		"image batch tensor",
@@ -490,8 +490,8 @@ class LoadFile:
 
 		# from ComfyUI/nodes.py LoadImage
 		output_images	= []
-		output_masks 	= []
-		w, h         	= None, None
+		output_masks	= []
+		w, h	= None, None
 
 		excluded_formats = ['MPO']
 
@@ -520,14 +520,14 @@ class LoadFile:
 			else:
 				mask = torch.zeros((64,64), dtype=torch.float32, device="cpu")
 			output_images	.append(image)
-			output_masks 	.append(mask.unsqueeze(0))
+			output_masks	.append(mask.unsqueeze(0))
 
 		if len(output_images) > 1 and img.format not in excluded_formats:
 			output_image	= torch.cat(output_images, dim	=0)
-			output_mask 	= torch.cat(output_masks, dim 	=0)
+			output_mask	= torch.cat(output_masks, dim	=0)
 		else:
 			output_image	= output_images[0]
-			output_mask 	= output_masks[0]
+			output_mask	= output_masks[0]
 
 		return (output_image, output_mask)
 
@@ -539,7 +539,7 @@ class LoadFile:
 
 		# check if binary
 		try:
-			result  	= chardet.detect(raw_data)
+			result	= chardet.detect(raw_data)
 			encoding	= result["encoding"]
 			if encoding:
 				filecontent = raw_data.decode(encoding)
@@ -571,14 +571,14 @@ class LoadFile:
 		except (UnidentifiedImageError, OSError, ValueError):
 			# fallback to black 64x64 tensors
 			image	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
-			mask 	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
+			mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 
 		return (filecontent, image, mask)
 
 	@classmethod
 	def IS_CHANGED(s, annotated_filepath):
 		path	= folder_paths.get_annotated_filepath(annotated_filepath)
-		m   	= hashlib.sha256()
+		m	= hashlib.sha256()
 		with open(path, 'rb') as f:
 			m.update(f.read())
 		ret = m.digest().hex()
@@ -602,18 +602,18 @@ This is useful if you want to save the intermediate images for grids immediately
 		return {
 			"required": {
 				# from ComfyUI/nodes.py KSampler
-				"model"       	: ("MODEL"       	, { "tooltip" : "The model used for denoising the input latent." } ) ,
-				"positive"    	: ("CONDITIONING"	, { "tooltip" : "The conditioning describing the attributes you want to include in the image." } ) ,
-				"negative"    	: ("CONDITIONING"	, { "tooltip" : "The conditioning describing the attributes you want to exclude from the image." } ) ,
-				"latent_image"	: ("LATENT"      	, { "tooltip" : "The latent image to denoise." } ) ,
-				"vae"         	: ("VAE"         	, { "tooltip" : "The VAE model used for decoding the latent." } ) ,
+				"model"	: ("MODEL"	, { "tooltip" : "The model used for denoising the input latent." } ) ,
+				"positive"	: ("CONDITIONING"	, { "tooltip" : "The conditioning describing the attributes you want to include in the image." } ) ,
+				"negative"	: ("CONDITIONING"	, { "tooltip" : "The conditioning describing the attributes you want to exclude from the image." } ) ,
+				"latent_image"	: ("LATENT"	, { "tooltip" : "The latent image to denoise." } ) ,
+				"vae"	: ("VAE"	, { "tooltip" : "The VAE model used for decoding the latent." } ) ,
 
-				"seed"        	: ("INT"                             	, {"default" : 	0  	, "min" :	0  	, "max" :	0xfffffffffffffff  	, "control_after_generate" : True,	"tooltip" : "The random seed used for creating the noise." } ) ,
-				"steps"       	: ("INT"                             	, {"default" :	20  	, "min" :	1  	, "max" :            	10000  	,                                 	"tooltip" : "The number of steps used in the denoising process." } ) ,
-				"cfg"         	: ("FLOAT"                           	, {"default" : 	8.0	, "min" :	0.0	, "max" :              	100.0	, "step" : 0.1, "round" : 0.01,   	"tooltip" : "The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality." } ) ,
-				"sampler_name"	: (comfy.samplers.KSampler.SAMPLERS  	, {"tooltip" : "The algorithm used when sampling , this can affect the quality , speed , and style of the generated output." } ) ,
-				"scheduler"   	: (comfy.samplers.KSampler.SCHEDULERS	, {"tooltip" : "The scheduler controls how noise is gradually removed to form the image." } ) ,
-				"denoise"     	: ("FLOAT"                           	, {"default" :	1.0	, "min" :	0.0	, "max" :	1.0	, "step" : 0.01,	"tooltip" : "The amount of denoising applied , lower values will maintain the structure of the initial image allowing for image to image sampling." } ) ,
+				"seed"	: ("INT"	, {"default" :	0	, "min" :	0	, "max" :	0xfffffffffffffff	, "control_after_generate" : True,	"tooltip" : "The random seed used for creating the noise." } ) ,
+				"steps"	: ("INT"	, {"default" :	20	, "min" :	1	, "max" :	10000	,	"tooltip" : "The number of steps used in the denoising process." } ) ,
+				"cfg"	: ("FLOAT"	, {"default" :	8.0	, "min" :	0.0	, "max" :	100.0	, "step" : 0.1, "round" : 0.01,	"tooltip" : "The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality." } ) ,
+				"sampler_name"	: (comfy.samplers.KSampler.SAMPLERS	, {"tooltip" : "The algorithm used when sampling , this can affect the quality , speed , and style of the generated output." } ) ,
+				"scheduler"	: (comfy.samplers.KSampler.SCHEDULERS	, {"tooltip" : "The scheduler controls how noise is gradually removed to form the image." } ) ,
+				"denoise"	: ("FLOAT"	, {"default" :	1.0	, "min" :	0.0	, "max" :	1.0	, "step" : 0.01,	"tooltip" : "The amount of denoising applied , lower values will maintain the structure of the initial image allowing for image to image sampling." } ) ,
 
 				# from ComfyUI/nodes.py SaveImage
 				"filename_prefix"	: ("STRING", {"default" : "ComfyUI", "tooltip" : "The prefix for the file to save. This may include formatting information such as %date :yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes."}),
@@ -623,18 +623,18 @@ This is useful if you want to save the intermediate images for grids immediately
 			# },
 		}
 
-	RETURN_NAMES   	= ("image", )
-	RETURN_TYPES   	= ("IMAGE", )
+	RETURN_NAMES	= ("image", )
+	RETURN_TYPES	= ("IMAGE", )
 	OUTPUT_TOOLTIPS	= ("The decoded image.",) # from ComfyUI/nodes.py VAEDecode
-	OUTPUT_NODE    	= True
-	FUNCTION       	= "execute"
-	CATEGORY       	= "_for_testing"
+	OUTPUT_NODE	= True
+	FUNCTION	= "execute"
+	CATEGORY	= "_for_testing"
 
 	def execute(self, model, positive, negative, latent_image, vae, seed, steps, cfg, sampler_name, scheduler, denoise, filename_prefix):
-		graph 	= GraphBuilder()
+		graph	= GraphBuilder()
 		latent	= graph.node("KSampler" , model=model, positive=positive, negative=negative, latent_image=latent_image, seed=seed, steps=steps, cfg=cfg, sampler_name=sampler_name, scheduler=scheduler, denoise=denoise)
 		images	= graph.node("VAEDecode", samples=latent.out(0), vae=vae)
-		save  	= graph.node("SaveImage", images=images.out(0), filename_prefix=filename_prefix)
+		save	= graph.node("SaveImage", images=images.out(0), filename_prefix=filename_prefix)
 		return {
 			"result" : (images.out(0),),
 			"expand" : graph.finalize(),

@@ -99,7 +99,8 @@ class XyzGridPlot:
 				#"row_label_orientation"	: (["horizontal", "vertical"]	, { "tooltip": "" }),
 				"gap"	: ("INT"	, { "default":	0, "min": 0, "max":	128, "tooltip": "" }),
 				"font_size"	: ("FLOAT"	, { "default":	50, "min": 6, "max":	1000, "tooltip": "" }),
-				"output_is_list"	: ("BOOLEAN"	, { "default": False, "label_on": "True", "label_off": "False", "tooltip": "" })
+				"order"	: ("BOOLEAN"	, { "default": True, "label_on": "outside-in", "label_off": "inside-out", "tooltip": "Defines in which order the images should be processed. This is only relevant if you have sub-images." }),
+				"output_is_list"	: ("BOOLEAN"	, { "default": False, "label_on": "True", "label_off": "False", "tooltip": "This is only relevant if you have sub-images." })
 			},
 		}
 
@@ -112,7 +113,7 @@ class XyzGridPlot:
 	CATEGORY	= "Utility"
 
 	#def execute(self, images, row_labels, col_labels, row_label_orientation, gap, font_size, output_is_list):
-	def execute(self, images, row_labels, col_labels, gap, font_size, output_is_list):
+	def execute(self, images, row_labels, col_labels, gap, font_size, order, output_is_list):
 		FONT_SIZE_MIN	= 6
 		PADDING	= 18
 
@@ -120,14 +121,20 @@ class XyzGridPlot:
 		row_label_orientation	= "horizontal"
 		gap	= gap	[0]
 		font_size	= font_size	[0]
+		order	= order	[0]
 		output_is_list	= output_is_list	[0]
 
 		# flatten images
 		images_flat = []
-		for img in images:
-			# img: [B, H, W, C]
-			for b in range(img.shape[0]):
-				images_flat.append(img[b:b+1])
+		if order: # outside-in
+			for img in images:
+				for b in range(img.shape[0]):
+					images_flat.append(img[b:b+1])
+		else:  # inside-out
+			batch_size = images[0].shape[0]
+			for b in range(batch_size):
+				for img in images:
+					images_flat.append(img[b:b+1])
 
 		img_h, img_w	= images[0].shape[1:3]
 		cols	= max(1, len(col_labels))
