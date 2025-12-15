@@ -1,6 +1,7 @@
 import numpy as np
 import skia
 import torch
+from PIL import Image
 
 
 def tensor_to_skia_image(img):
@@ -10,6 +11,7 @@ def tensor_to_skia_image(img):
 	rgb = np.clip(np_img * 255.0, 0, 255).astype(np.uint8)  # HWC, RGB
 	alpha = np.full((rgb.shape[0], rgb.shape[1], 1), 255, dtype=np.uint8)
 	rgba = np.concatenate([rgb, alpha], axis=2)  # HWC, RGBA
+	rgba = np.ascontiguousarray(rgba)
 	return skia.Image.fromarray(rgba, skia.kRGBA_8888_ColorType)
 
 def skia_to_tensor(sk_img):
