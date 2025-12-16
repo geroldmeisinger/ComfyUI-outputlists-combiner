@@ -1,4 +1,78 @@
-# ComfyUI-outputlists-combiner
+<div align="center">
+	<img src="/media/promo.jpg" alt="OutputLists Combiner Promo" width="600" />
+</div>
+
+<h2 align="center">Supercharge multiprompt and grid control!</h2>
+
+<h3 align="center">
+	<a href="#features" target="_blank">Features</a> ·
+	<a href="#installation" target="_blank">Installation</a> ·
+	<a href="#changelog" target="_blank">Changelog</a> ·
+	<a href="#nodes" target="_blank">Nodes</a> ·
+	<a href="#examples" target="_blank">Examples</a>
+</h3>
+
+# Features
+
+- **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird custom samplers required! No node black magic!
+- **Inspect combo** to iterate lists of LoRas, samplers, checkpoints, schedulers etc.
+- **List combinations** fully customizable with all native features including LoRa strength, image size-variants, prompt combinations etc.
+- **Quick lists** from CSV and Excel Spreadsheets, JSON data, multiline texts and number ranges etc.
+- **Formatted strings** for flexible and beautiful filenames, labels, additional metadata etc.
+
+If this custom node helps you in your work..
+- ⭐ **Star the repo** to make others discover the project and motivate the developer!
+- 💰 **[Donate](https://github.com/sponsors/geroldmeisinger)** for further development and greatly appreciate my efforts!
+
+# Table of Content
+
+- [Features](#features)
+- [Table of Content](#table-of-content)
+- [Installation](#installation)
+- [Changelog](#changelog)
+- [Background](#background)
+- [Nodes](#nodes)
+	- [String OutputList](#string-outputlist)
+	- [Number OutputList](#number-outputlist)
+	- [JSON OutputList](#json-outputlist)
+	- [Spreadsheet OutputList](#spreadsheet-outputlist)
+	- [Load any File](#load-any-file)
+	- [OutputList Combinations](#outputlist-combinations)
+	- [Formatted String](#formatted-string)
+	- [Convert any number to Int Float String](#convert-any-number-to-int-float-string)
+- [Examples](#examples)
+	- [Simple Example](#simple-example)
+	- [Combine prompts](#combine-prompts)
+	- [Combine samplers and schedulers](#combine-samplers-and-schedulers)
+	- [Combine numbers](#combine-numbers)
+	- [Combine row/column for filename](#combine-rowcolumn-for-filename)
+	- [XYZ-GridPlots](#xyz-gridplots)
+	- [XYZ-GridPlots with sub-grids](#xyz-gridplots-with-sub-grids)
+- [Advanced Examples](#advanced-examples)
+	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
+	- [Baking Values Into Workflow](#baking-values-into-workflow)
+	- [Load all images from grid](#load-all-images-from-grid)
+	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
+
+# Installation
+
+- [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager): search for ```OutputLists Combiner```
+- [comfy-cli](https://github.com/Comfy-Org/comfy-cli): ```comfy node install ComfyUI-outputlists_combiner```
+- manual:
+```
+cd custom_nodes
+git clone https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
+```
+
+# Changelog
+
+- 0.0.6 SpreadsheetOutputList, XYZGridPlot
+- 0.0.4 restructured outputs, JsonOutputList,
+- 0.0.3 ConvertAnyToIntFloatString, KSamplerImmediateSave
+- 0.0.2 restructured outputs
+- 0.0.1 StringOutputList, NumberOutputList, CombineOutputLists, FormattedString
+
+# Background
 
 Did you know that ComfyUI supports so called output lists which tell nodes downstream to execute multiple times within the same run? Notice how this output list emits four strings and causes the KSampler to run four times:
 
@@ -8,27 +82,9 @@ https://github.com/user-attachments/assets/303115d3-7c28-42e8-bb52-d02e7cc1022b
 
 Yeah, I didn't know about it either. Apparently everytime you see the symbol `𝌠` it's an [output list](https://docs.comfy.org/custom-nodes/backend/lists). This feature seems very underutilized but it allows values to be processed sequentially without weird workarounds (like for-loops, increment counters or external python scripts) which makes them perfect for prompt combinations and XYZ-gridplots. I always found grids a hazzle in ComfyUI whereas they were straightforward in Automatic1111. Most custom nodes either require a lot of manual work or you have to use some extra-special nodes (like custom KSamplers). This project tries to make good use of output lists, integrate well with the ComfyUI's paradigm and finally makes XYZ-gridplots easy to use again.
 
-**Features**
+# Nodes
 
-![Full Example](/media/FullExample.png)
-
-* **OutputList Combinations:** create all possible combinations of multiple lists, e.g. prompt combinations, image size variants
-* **Formatted String:** insert variable placeholders to create custom prompts, e.g. `a {animal} with a {colored} hat`, filename prefixes for grids `cell_{c:02d}_row_{a:02d}_col_{b:02d}`
-* **Inspect Combo:** connect to a `COMBO` input (like sampler, scheduler, lora, checkpoint etc.) and retrieve all values as a string list, e.g. sampler+scheduler testing, test all loras, copy+paste model names
-
-## Installation
-
-- [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager): ```OutputLists Combiner```
-- Comfy CLI: ```comfy node install ComfyUI-outputlists_combiner```
-- manual:
-```
-cd custom_nodes
-git clone https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
-```
-
-## Custom nodes
-
-### String OutputList
+## String OutputList
 
 ![Basic String OutputList](/media/StringOutputList.png)
 
@@ -50,7 +106,7 @@ Create a OutputList by separating the string in the textfield.
 
 https://github.com/user-attachments/assets/b2bc09f8-6cb2-47af-bcf5-0fa380c2ef7e
 
-### Number OutputList
+## Number OutputList
 
 ![Basic Number OutputList](/media/NumberOutputList.png)
 
@@ -75,7 +131,7 @@ All the values from the list use `OUTPUT_IS_LIST=True` and will be processed seq
 * `index`: range of 0..count which can be used as an index
 * `count`: same as num
 
-### JSON OutputList
+## JSON OutputList
 
 ![Basic JSON OutputList](/media/JSONOutputList.png)
 
@@ -103,7 +159,7 @@ All the values from the list use `OUTPUT_IS_LIST=True` and will be processed seq
 * `count`: total number of items in the flattened list
 * `debug`: debug output of all matched objects as a formatted JSON string
 
-### Spreadsheet OutputList
+## Spreadsheet OutputList
 
 ![Basic Spreadsheet OutputList](/media/SpreadsheetOutputList.png)
 
@@ -126,7 +182,7 @@ Internally uses pandas to parse spreadsheet files.
 * `list_a` .. `list_d`: values from the selected spreadsheet column or row
 * `count`: number of items in the longest list
 
-### Load any File
+## Load any File
 
 ![Load any File](/media/LoadAnyFile.png)
 
@@ -141,7 +197,7 @@ Load any text or binary file and provide the file content as string or base64 st
 * `image`: image batch tensor
 * `mask`: mask batch tensor
 
-### OutputList Combinations
+## OutputList Combinations
 
 ![Two OutputLists combined](/media/OutputListCombinations.png)
 
@@ -171,7 +227,7 @@ Example:
 * `index`: range of 0..count which can be used as an index
 * `count`: the total number of combinations
 
-### Formatted String
+## Formatted String
 
 ![Using OutputList combinations two create a formatted string](/media/FormattedString.png)
 
@@ -190,7 +246,7 @@ Uses python `str.format()` internally, see https://docs.python.org/3/library/str
 
 * `string`: the formatted string with all placeholders replaced with their respective values
 
-### Convert any number to Int Float String
+## Convert any number to Int Float String
 
 ![Convert any number to Int Float String](/media/ConvertNumberToIntFloatStr.png)
 
@@ -206,16 +262,16 @@ outputs:
 * `string`: all the numbers found in the string as floats converted to string
 * `count`: amount of numbers found in the string, which in most cases will be 1
 
-## Examples
+# Examples
 
-### Simple Example
+## Simple Example
 
 ![Simple example](/workflows/Example_00_Simple_OutputList.png)
 (workflow included)
 
 Just uses a `String OutputList` to separate a string and produce 4 images in one run.
 
-### Combine prompts
+## Combine prompts
 
 ![Combine prompts example](/workflows/Example_01a_Combine_Prompts.png)
 (workflow included)
@@ -224,7 +280,7 @@ Combines two `String OutputList` with a `OutputList Combinations` and merges the
 
 To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as it outputs a new line for each emitted item.
 
-### Combine samplers and schedulers
+## Combine samplers and schedulers
 
 ![Combine samplers and schedulers example](/workflows/Example_02_Combine_Samplers_Schedulers.png)
 
@@ -232,7 +288,7 @@ To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as i
 
 Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entries were deleted) and connects to the COMBO inputs `samplers` and `schedulers`. It iterates over all combinations of `[euler, dpmpp_2m, uni_pc_bh2] x [simple, karras, beta] = 3 x 3 = 9`)
 
-### Combine numbers
+## Combine numbers
 
 ![Combine numbers example](/workflows/Example_03_Combine_Numbers.png)
 (workflow included)
@@ -241,7 +297,7 @@ Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] 
 
 Notice that images within a batch always have to be same width and height, wheras here each image has a different image size. This is only possible because it is a list of images.
 
-### Combine row/column for filename
+## Combine row/column for filename
 
 ![Combine numbers example](/workflows/Example_01b_Combine_RowCol_Filename.png)
 
@@ -249,7 +305,7 @@ Notice that images within a batch always have to be same width and height, whera
 
 Makes use of the `index` combined the same way as the prompts, which gives as the rows and columns. `Formatted String` produces the filename prefix `cell_{c:02d}_row_{a:02d}_col_{b:02d}`.
 
-### XYZ-GridPlots
+## XYZ-GridPlots
 
 ![XYZ-Gridplots](/workflows/Example_04a_XYZ-GridPlots.png)
 
@@ -257,7 +313,7 @@ Uses `String OutputLists + OutputLists Combinations + Fomratted String` to gener
 
 Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` you get a image grid with the batch as sub-grids. If you also set `output_is_list=True` the sub-images will not be arranged together but you will get 4 separate images instead.
 
-### XYZ-GridPlots with sub-grids
+## XYZ-GridPlots with sub-grids
 
 I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
 
@@ -265,9 +321,9 @@ I recommend to start ComfyUI with `--cache-ram` for this example if you want to 
 
 Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For more complex image grids the question always is: How should the axis be ordered and in which way the images be shuffled, e.g. do we want to show `cat|dog|rat` x `red|blue|green` and then the batch next to each other in a subgrid (`RxCxB`), or four separate images each with a grid of `cat|dog|rat` x `red|blue|green` (`BxCxR`). To achieve this you can play around with the options `order=outside-in|inside-out` and `output_is_list=False|True`, but make sure the `row_labels` and `col_labels` match what you want to achieve, as this info is also used how the grid is shaped.
 
-## Advanced Examples
+# Advanced Examples
 
-### Immediately save intermediate images of image grid
+## Immediately save intermediate images of image grid
 
 One thing you may have noticed when you make a large image grid is that you have to wait for ALL intermediate images to be processed before anything is saved and the grid created. Thus you could loose a lot of processed images when something happens or you cancel the job (though ComfyUI keeps them in cache and should pick up immediately). If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` beta-node. For this node to be visible in the node searchbox you need to activate `Settings -> Comfy -> Show experimental nodes in search`.
 
@@ -285,7 +341,7 @@ Technically this node is implemented as a [node expansion](https://docs.comfy.or
 - **TODO** Update workflow with new `XYZ-GridPlot` node
 - **TODO** I'm not happy that this node exists at all as I wanted to avoid custom KSampler nodes. Unfortunately I haven't found a way to [use subgraphs to force immediate processing](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) yet.
 
-### Baking Values Into Workflow
+## Baking Values Into Workflow
 
 Custom nodes:
 * [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
@@ -310,7 +366,7 @@ It's is not perfect because in the end you still have to manually put the image 
 - **TODO** This is unsatisfactory and requires a lot of manual work
 - **TODO** If someone knows a native way include metadata please let me know (node expansion?, hidden extra pnginfo?, dynprompt?)!
 
-### Load all images from grid
+## Load all images from grid
 
 Custom nodes, one of the following:
 * [was-ns](https://github.com/ltdrdata/was-node-suite-comfyui)/[was-node-suite-comfyui (old)](https://github.com/WASasquatch/was-node-suite-comfyui)
@@ -325,7 +381,7 @@ Let's say you generated a lot of images for your grid and (hopefully) stored the
 
 **TODO** Make the combo work with native `Load Image` (but my `string to any` approach always resulted in `NoneType object has no attribute 'endsWith'`). I filled a bugreport https://github.com/comfyanonymous/ComfyUI/issues/11017
 
-### Iterate prompts from PromptManager
+## Iterate prompts from PromptManager
 
 Custom nodes:
 * [PromptManager](https://github.com/ComfyAssets/ComfyUI_PromptManager)
