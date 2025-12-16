@@ -18,9 +18,13 @@ Yeah, I didn't know about it either. Apparently everytime you see the symbol `ğ
 
 ## Installation
 
-- [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager) search for `ComfyUI-outputlists-combiner`
-- `Comfy CLI`: `comfy node install ComfyUI-outputlists-combiner`
-- manual: `git clone https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner` into `ComfyUI/custom_nodes`
+- [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager): ```OutputLists Combiner```
+- Comfy CLI: ```comfy node install ComfyUI-outputlists_combiner```
+- manual:
+```
+cd custom_nodes
+git clone https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
+```
 
 ## Custom nodes
 
