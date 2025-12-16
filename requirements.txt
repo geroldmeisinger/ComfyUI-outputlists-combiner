@@ -7,5 +7,5 @@ openpyxl
 xlrd
 pyxlsb
 chardet
-skia
+skia-python
 
