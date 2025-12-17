@@ -1,8 +1,8 @@
 <div align="center">
-	<img src="/media/promo.jpg" alt="OutputLists Combiner Promo" width="600" />
+	<img src="/media/promo.png" alt="OutputLists Combiner Promo" width="600" />
 </div>
 
-<h2 align="center">Supercharge multiprompt and grid control!</h2>
+<h2 align="center">Supercharge multiprompts and grid control!</h2>
 
 <h3 align="center">
 	<a href="#features" target="_blank">Features</a> ·
@@ -12,13 +12,17 @@
 	<a href="#examples" target="_blank">Examples</a>
 </h3>
 
-# Features
+<div align="center">
+    <a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+</div>
 
-- **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird custom samplers required! No node black magic!
-- **Inspect combo** to iterate lists of LoRas, samplers, checkpoints, schedulers etc.
-- **List combinations** fully customizable with all native features including LoRa strength, image size-variants, prompt combinations etc.
-- **Quick lists** from CSV and Excel Spreadsheets, JSON data, multiline texts and number ranges etc.
-- **Formatted strings** for flexible and beautiful filenames, labels, additional metadata etc.
+# Overview
+
+- **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird custom samplers! No node black magic!
+- **Inspect combo** to iterate lists of LoRas, samplers, checkpoints, schedulers...
+- **List combinations** with native support for LoRa strength, image size-variants, prompt combinations...
+- **Quick OutputLists** from CSV and Excel Spreadsheets, JSON data, multiline texts, number ranges...
+- **Formatted strings** for flexible and beautiful filenames, labels, additional metadata...
 
 If this custom node helps you in your work..
 - ⭐ **Star the repo** to make others discover the project and motivate the developer!
@@ -26,9 +30,13 @@ If this custom node helps you in your work..
 
 # Table of Content
 
-- [Features](#features)
+- [Overview](#overview)
 - [Table of Content](#table-of-content)
+- [Features](#features)
 - [Installation](#installation)
+	- [ComfyUI-Manager (recommended!)](#comfyui-manager-recommended)
+	- [comfy-cli](#comfy-cli)
+	- [Manual](#manual)
 - [Changelog](#changelog)
 - [Background](#background)
 - [Nodes](#nodes)
@@ -47,21 +55,39 @@ If this custom node helps you in your work..
 	- [Combine numbers](#combine-numbers)
 	- [Combine row/column for filename](#combine-rowcolumn-for-filename)
 	- [XYZ-GridPlots](#xyz-gridplots)
-	- [XYZ-GridPlots with sub-grids](#xyz-gridplots-with-sub-grids)
 - [Advanced Examples](#advanced-examples)
+	- [XYZ-GridPlots with sub-grids](#xyz-gridplots-with-sub-grids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
 	- [Baking Values Into Workflow](#baking-values-into-workflow)
 	- [Load all images from grid](#load-all-images-from-grid)
 	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
+- [Credits](#credits)
+
+# Features
+
+TODO
 
 # Installation
 
-- [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager): search for ```OutputLists Combiner```
-- [comfy-cli](https://github.com/Comfy-Org/comfy-cli): ```comfy node install ComfyUI-outputlists_combiner```
-- manual:
+## [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager) (recommended!)
+
+Search for ```OutputLists Combiner```
+
+![Search OutputLists Combiner in ComfyUI-Manager](/media/ComfyUIManager.png)
+
+## [comfy-cli](https://github.com/Comfy-Org/comfy-cli)
+
+```bash
+comfy-cli node install ComfyUI-outputlists_combiner
 ```
-cd custom_nodes
+
+## Manual
+
+```bash
+cd custom_nodes # in ComfyUI/
 git clone https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
+cd ComfyUI-outputlists-combiner
+uv pip install -r requirements.txt
 ```
 
 # Changelog
@@ -71,6 +97,15 @@ git clone https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 - 0.0.3 ConvertAnyToIntFloatString, KSamplerImmediateSave
 - 0.0.2 restructured outputs
 - 0.0.1 StringOutputList, NumberOutputList, CombineOutputLists, FormattedString
+
+<!---
+<details>
+<summary><b>0.0.0</b></summary>
+- feature 1
+- feature 2
+- feature 3
+</details>
+-->
 
 # Background
 
@@ -313,6 +348,8 @@ Uses `String OutputLists + OutputLists Combinations + Fomratted String` to gener
 
 Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` you get a image grid with the batch as sub-grids. If you also set `output_is_list=True` the sub-images will not be arranged together but you will get 4 separate images instead.
 
+# Advanced Examples
+
 ## XYZ-GridPlots with sub-grids
 
 I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
@@ -320,8 +357,6 @@ I recommend to start ComfyUI with `--cache-ram` for this example if you want to 
 ![XYZ-Gridplots with sub-grids](/workflows/Example_04b_XYZ-GridPlots-Subgrids.png)
 
 Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For more complex image grids the question always is: How should the axis be ordered and in which way the images be shuffled, e.g. do we want to show `cat|dog|rat` x `red|blue|green` and then the batch next to each other in a subgrid (`RxCxB`), or four separate images each with a grid of `cat|dog|rat` x `red|blue|green` (`BxCxR`). To achieve this you can play around with the options `order=outside-in|inside-out` and `output_is_list=False|True`, but make sure the `row_labels` and `col_labels` match what you want to achieve, as this info is also used how the grid is shaped.
-
-# Advanced Examples
 
 ## Immediately save intermediate images of image grid
 
@@ -394,3 +429,17 @@ PromptManager keeps track of all the prompt you generated in a database which yo
 (workflow included)
 
 Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search API route and `JSON OutputList` to extract the `text` field using a JSONPath. The prompts are emitted as an OutputList and will be processed sequentially.
+
+# Credits
+
+- [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+- [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
+- [rgthree](https://github.com/rgthree/rgthree-comfy)
+- [ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials)
+- [Impackt-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
+- [Crystools](https://github.com/crystian/ComfyUI-Crystools)
+- [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
+
+<div align="center">
+    <a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+</div>
