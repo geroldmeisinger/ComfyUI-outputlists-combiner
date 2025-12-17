@@ -1,14 +1,16 @@
-__all__ = [
-    "NODE_CLASS_MAPPINGS",
-    "NODE_DISPLAY_NAME_MAPPINGS",
-    "WEB_DIRECTORY",
-]
+from comfy_api.latest import ComfyExtension, io
 
-__author__ = """Gerold Meisinger"""
-__email__ = "you@gmail.com"
-__version__ = "0.0.1"
-
-from .src.outputlists_combiner import (NODE_CLASS_MAPPINGS,
-                                       NODE_DISPLAY_NAME_MAPPINGS)
+from outputlists_combiner.nodes import StringOutputList
 
 WEB_DIRECTORY = "./web"
+
+__all__ = ["WEB_DIRECTORY"]
+
+async def comfy_entrypoint() -> ComfyExtension:
+	class OutputListsCombiner(ComfyExtension):
+		async def get_node_list(self) -> list[type[io.ComfyNode]]:
+			return [
+				StringOutputList,
+			]
+
+	return OutputListsCombiner()

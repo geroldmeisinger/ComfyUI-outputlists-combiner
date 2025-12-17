@@ -2,6 +2,7 @@ import math
 
 import nums_from_string
 import skia
+from comfy_api.latest import io
 from skia import textlayout as tl
 
 from .util import *
@@ -85,33 +86,31 @@ def get_vertical_offset(paragraph, width, height, alignment, rotation):
 	elif	alignment == "bottom"	: return (height - paragraph.Height)
 	else: return 0
 
-class XyzGridPlot:
-	DESCRIPTION = f"""Generate a XYZ-Gridplot from a list of images
-"""
+class XyzGridPlot(io.ComfyNode):
+	@classmethod
+	def define_schema(cls) -> io.Schema:
+		ret = io.Schema(
+			description  	= """Generate a XYZ-Gridplot from a list of images""",
+			node_id      	= "XyzGridPlot",
+			display_name 	= "XYZ-GridPlot",
+			category     	= "Utility",
+			is_input_list	= True,
+			inputs=[
+				io.Image  	.Input("images"        	, display_name="images"        	,                                                             	tooltip=""),
+				io.String 	.Input("row_labels"    	, display_name="row_labels"    	,                                                             	tooltip=""),
+				io.String 	.Input("col_labels"    	, display_name="col_labels"    	,                                                             	tooltip=""),
+				io.Int    	.Input("gap"           	, display_name="gap"           	, default=0, min=0, max=128,                                  	tooltip=""),
+				io.Float  	.Input("font_size"     	, display_name="font_size"     	, default=50, min=6, max=1000,                                	tooltip=""),
+				io.Boolean	.Input("order"         	, display_name="order"         	, default=True, label_on="outside-in", label_off="inside-out",	tooltip="Defines in which order the images should be processed. This is only relevant if you have sub-images."),
+				io.Boolean	.Input("output_is_list"	, display_name="output_is_list"	, default=False, label_on="True", label_off="False",          	tooltip="This is only relevant if you have sub-images."),
+			],
+			outputs=[
+				io.Image.Output("image", is_outputList=True, tooltip="xyz-gridplot"),
+			],
+		)
+		return ret
 
 	@classmethod
-	def INPUT_TYPES(cls):
-		return {
-			"required": {
-				"images"                	: ("IMAGE"                   	, { "tooltip": "" }),
-				"row_labels"            	: ("STRING"                  	, { "tooltip": "" }),
-				"col_labels"            	: ("STRING"                  	, { "tooltip": "" }),
-				#"row_label_orientation"	: (["horizontal", "vertical"]	, { "tooltip": "" }),
-				"gap"                   	: ("INT"                     	, { "default": 	0, "min": 0, "max": 	128, "tooltip": "" }),
-				"font_size"             	: ("FLOAT"                   	, { "default":	50, "min": 6, "max":	1000, "tooltip": "" }),
-				"order"                 	: ("BOOLEAN"                 	, { "default": True, "label_on": "outside-in", "label_off": "inside-out", "tooltip": "Defines in which order the images should be processed. This is only relevant if you have sub-images." }),
-				"output_is_list"        	: ("BOOLEAN"                 	, { "default": False, "label_on": "True", "label_off": "False", "tooltip": "This is only relevant if you have sub-images." })
-			},
-		}
-
-	INPUT_IS_LIST  	= True
-	RETURN_NAMES   	= ("image"       	, )
-	RETURN_TYPES   	= ("IMAGE"       	, )
-	OUTPUT_IS_LIST 	= (True          	, )
-	OUTPUT_TOOLTIPS	= ("xyz-gridplot"	, )
-	FUNCTION       	= "execute"
-	CATEGORY       	= "Utility"
-
 	#def execute(self, images, row_labels, col_labels, row_label_orientation, gap, font_size, output_is_list):
 	def execute(self, images, row_labels, col_labels, gap, font_size, order, output_is_list):
 		FONT_SIZE_MIN	= 6

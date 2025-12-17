@@ -18,7 +18,7 @@
 
 # Overview
 
-- **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird custom samplers! No node black magic!
+- **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird samplers! No node black magic!
 - **Inspect combo** to iterate lists of LoRas, samplers, checkpoints, schedulers...
 - **List combinations** with native support for LoRa strength, image size-variants, prompt combinations...
 - **Quick OutputLists** from CSV and Excel Spreadsheets, JSON data, multiline texts, number ranges...
@@ -34,8 +34,8 @@ If this custom node helps you in your work..
 - [Table of Content](#table-of-content)
 - [Features](#features)
 - [Installation](#installation)
-	- [ComfyUI-Manager (recommended!)](#comfyui-manager-recommended)
-	- [comfy-cli](#comfy-cli)
+	- [ComfyUI-Manager (recommended)](#comfyui-manager-recommended)
+	- [Comfy-CLI](#comfy-cli)
 	- [Manual](#manual)
 - [Changelog](#changelog)
 - [Background](#background)
@@ -69,13 +69,17 @@ TODO
 
 # Installation
 
-## [ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager) (recommended!)
+## ComfyUI-Manager (recommended)
+
+[ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager)
 
 Search for ```OutputLists Combiner```
 
 ![Search OutputLists Combiner in ComfyUI-Manager](/media/ComfyUIManager.png)
 
-## [comfy-cli](https://github.com/Comfy-Org/comfy-cli)
+## Comfy-CLI
+
+[Comfy-CLI](https://github.com/Comfy-Org/comfy-cli)
 
 ```bash
 comfy-cli node install ComfyUI-outputlists_combiner
@@ -440,6 +444,4 @@ Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search AP
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools)
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
 
-<div align="center">
-    <a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-</div>
+<a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
