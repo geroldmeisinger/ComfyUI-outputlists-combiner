@@ -1,8 +1,13 @@
 import numpy as np
 import skia
 import torch
+#from comfy_api.latest import ANY
 from PIL import Image
 
+#any = io.Custom(ANY)
+
+OUTPUTLIST_NOTE	= "uses OUTPUT_IS_LIST=True (indicated by the symbol 𝌠) and will be processed sequentially by corresponding nodes"
+INPUTLIST_NOTE 	= "ideally connected to a node with OUTPUT_IS_LIST=True indicated by the symbol 𝌠"
 
 def tensor_to_skia_image(img):
 	if img.ndim == 4:

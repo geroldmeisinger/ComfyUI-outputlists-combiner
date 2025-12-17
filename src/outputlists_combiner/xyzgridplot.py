@@ -105,7 +105,7 @@ class XyzGridPlot(io.ComfyNode):
 				io.Boolean	.Input("output_is_list"	, display_name="output_is_list"	, default=False, label_on="True", label_off="False",          	tooltip="This is only relevant if you have sub-images."),
 			],
 			outputs=[
-				io.Image.Output("image", is_outputList=True, tooltip="xyz-gridplot"),
+				io.Image.Output("image", is_output_list=True, tooltip="xyz-gridplot"),
 			],
 		)
 		return ret

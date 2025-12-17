@@ -4,7 +4,8 @@ import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+repo_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, repo_dir)
 
 from src.outputlists_combiner import *
 
@@ -43,22 +44,27 @@ def test_generate_docs():
 	for node_cls in nodes:
 		schema = node_cls.define_schema()
 
-		md_lines.append(f"## {schema.display_name}\n")
-		md_lines.append("### Description\n")
+		md_lines.append(f"## {schema.display_name or schema.node_id}\n")
+		#md_lines.append("### Description\n")
+		md_lines.append(f"![{schema.display_name or schema.node_id}](/media/{schema.node_id}.png)\n\n(workflow included)\n")
 		md_lines.append((schema.description or "").strip() + "\n")
 
 		# Inputs
 		md_lines.append("### Inputs\n")
 		input_rows = []
 		for input in schema.inputs or []:
-			input_rows.append((input.display_name or input.id, input.__class__.__name__, getattr(input, "tooltip", "")))
+			type	= "COMBO" if isinstance(input.io_type, list) else str(input.io_type)
+			tooltip	= getattr(input, "tooltip", "").replace(INPUTLIST_NOTE, "").strip()
+			input_rows.append((input.display_name or input.id, type, tooltip))
 		md_lines.extend(generate_table(input_rows))
 
 		# Outputs
 		md_lines.append("### Outputs\n")
 		output_rows = []
 		for out in schema.outputs or []:
-			output_rows.append((out.display_name or out.id, out.__class__.__name__, getattr(out, "tooltip", "")))
+			type	= "COMBO" if isinstance(out.io_type, list) else str(out.io_type)
+			tooltip	= getattr(out, "tooltip", "").replace(OUTPUTLIST_NOTE, "").strip()
+			output_rows.append((out.display_name or out.id, type, tooltip))
 		md_lines.extend(generate_table(output_rows))
 
 	# Ensure output directory exists
@@ -66,5 +72,7 @@ def test_generate_docs():
 
 	# Write markdown file
 	text = "\n".join(md_lines)
-	Path("docs.md").write_text(text, encoding="utf-8")
 	print(text)
+	readme_src	= Path(f"{repo_dir}/src_README.md").read_text()
+	readme	= readme_src.replace('{NODES}', text)
+	Path(f"{repo_dir}/README.md").write_text(readme, encoding="utf-8")

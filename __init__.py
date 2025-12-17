@@ -1,6 +1,7 @@
 from comfy_api.latest import ComfyExtension, io
 
-from outputlists_combiner.nodes import StringOutputList
+from outputlists_combiner.nodes import *
+from outputlists_combiner.xyzgridplot import XyzGridPlot
 
 WEB_DIRECTORY = "./web"
 
@@ -11,6 +12,15 @@ async def comfy_entrypoint() -> ComfyExtension:
 		async def get_node_list(self) -> list[type[io.ComfyNode]]:
 			return [
 				StringOutputList,
+				NumberOutputList,
+				JSONOutputList,
+				SpreadsheetOutputList,
+				CombineOutputLists,
+				XyzGridPlot,
+				FormattedString,
+				ConvertNumberToIntFloatStr,
+				LoadAnyFile,
+				KSamplerImmediateSave,
 			]
 
 	return OutputListsCombiner()
