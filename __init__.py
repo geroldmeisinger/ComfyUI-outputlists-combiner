@@ -1,7 +1,7 @@
 from comfy_api.latest import ComfyExtension, io
 
-from outputlists_combiner.nodes import *
-from outputlists_combiner.xyzgridplot import XyzGridPlot
+from .src.outputlists_combiner.nodes import *
+from .src.outputlists_combiner.xyzgridplot import XyzGridPlot
 
 WEB_DIRECTORY = "./web"
 

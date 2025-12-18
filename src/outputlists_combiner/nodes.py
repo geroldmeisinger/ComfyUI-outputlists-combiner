@@ -20,7 +20,7 @@ from fastnumbers import try_float
 from jsonpath_ng import parse as jsonpath_parse
 from PIL import Image, ImageOps, ImageSequence, UnidentifiedImageError
 
-from outputlists_combiner.util import INPUTLIST_NOTE, OUTPUTLIST_NOTE
+from .util import INPUTLIST_NOTE, OUTPUTLIST_NOTE
 
 
 class StringOutputList(io.ComfyNode):
