@@ -1,3 +1,5 @@
+<!--- Auto-generated from src_README.md! Don't edit this file! Edit src_README.md instead! -->
+
 <div align="center">
 	<img src="/media/promo.png" alt="OutputLists Combiner Promo" width="600" />
 </div>
@@ -40,14 +42,15 @@ If this custom node helps you in your work..
 - [Changelog](#changelog)
 - [Background](#background)
 - [Nodes](#nodes)
-	- [String OutputList](#string-outputlist)
-	- [Number OutputList](#number-outputlist)
-	- [JSON OutputList](#json-outputlist)
-	- [Spreadsheet OutputList](#spreadsheet-outputlist)
-	- [Load any File](#load-any-file)
-	- [OutputList Combinations](#outputlist-combinations)
-	- [Formatted String](#formatted-string)
-	- [Convert any number to Int Float String](#convert-any-number-to-int-float-string)
+	[String OutputList](#StringOutputList)
+	[Number OutputList](#NumberOutputList)
+	[JSON OutputList](#JSONOutputList)
+	[Spreadsheet OutputList](#SpreadsheetOutputList)
+	[OutputLists Combinations](#CombineOutputLists)
+	[XYZ-GridPlot](#XyzGridPlot)
+	[Formatted String](#FormattedString)
+	[Convert To Int Float Str](#ConvertNumberToIntFloatStr)
+	[Load Any File](#LoadAnyFile)
 - [Examples](#examples)
 	- [Simple Example](#simple-example)
 	- [Combine prompts](#combine-prompts)
@@ -71,15 +74,11 @@ TODO
 
 ## ComfyUI-Manager (recommended)
 
-[ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager)
-
 Search for ```OutputLists Combiner```
 
 ![Search OutputLists Combiner in ComfyUI-Manager](/media/ComfyUIManager.png)
 
 ## Comfy-CLI
-
-[Comfy-CLI](https://github.com/Comfy-Org/comfy-cli)
 
 ```bash
 comfy-cli node install ComfyUI-outputlists_combiner
@@ -130,25 +129,22 @@ Yeah, I didn't know about it either. Apparently everytime you see the symbol `�
 (workflow included)
 
 Create a OutputList by separating the string in the textfield.
-value and index uses OUTPUT_IS_LIST=True (indicated by the symbol 𝌠) and will be processed sequentially by corresponding nodes
-
+`value` and `index` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| separator	| STRING	| the string to split the textfield values	|
-| values	| STRING	| the string which will be separated. note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed	|
-
+| `separator`	| `STRING`	| The string to split the textfield values by.	|
+| `values`	| `STRING`	| The string which will be separated. Note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed.	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| value	| *	| the values from the list.	|
-| index	| INT	| range of 0..count which can be used as an index.	|
-| count	| INT	| the number of items in the list.	|
-| inspect_combo	| COMBO	| a dummy output only used to pre-fill the list with values from a COMBO input and will automatically disconnect again	|
-
+| `value`	| `*`	| The values from the list.	|
+| `index`	| `INT`	| Range of 0..count which can be used as an index.	|
+| `count`	| `INT`	| The number of items in the list.	|
+| `inspect_combo`	| `COMBO`	| A dummy output only used to pre-fill the list with values from an other `COMBO` input and will automatically disconnect again	|
 
 ## Number OutputList
 
@@ -158,28 +154,25 @@ value and index uses OUTPUT_IS_LIST=True (indicated by the symbol 𝌠) and will
 
 Create a OutputList by generating a numbers of values in a range.
 Uses `numpy.linspace` internally because it works more reliably with floatingpoint values.
-int, float, string and index uses OUTPUT_IS_LIST=True (indicated by the symbol 𝌠) and will be processed sequentially by corresponding nodes.
-
+`int`, `float`, `string` and `index` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| start	| FLOAT	| start value to generate the range from	|
-| stop	| FLOAT	| end value. if endpoint=include this number will be included in the lst	|
-| num	| INT	| the number of items in the list (not to be confused with a step)	|
-| endpoint	| BOOLEAN	| decides if the stop value should be included or excluded in the items	|
-
+| `start`	| `FLOAT`	| Start value to generate the range from.	|
+| `stop`	| `FLOAT`	| End value. If `endpoint=include` this number will be included in the list.	|
+| `num`	| `INT`	| The number of items in the list (not to be confused with a `step`).	|
+| `endpoint`	| `BOOLEAN`	| Decides if the `stop` value should be included or excluded in the items.	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| int	| INT	| the value converted to int (rounded down/floored).	|
-| float	| FLOAT	| the value as a float.	|
-| string	| STRING	| the value as a string.	|
-| index	| INT	| range of 0..count which can be used as an index.	|
-| count	| INT	| same as num	|
-
+| `int`	| `INT`	| The value converted to int (rounded down/floored).	|
+| `float`	| `FLOAT`	| The value as a float.	|
+| `string`	| `STRING`	| The value as a float converted to string.	|
+| `index`	| `INT`	| Range of 0..count which can be used as an index.	|
+| `count`	| `INT`	| Same as `num`.	|
 
 ## JSON OutputList
 
@@ -188,31 +181,28 @@ int, float, string and index uses OUTPUT_IS_LIST=True (indicated by the symbol �
 (workflow included)
 
 Create a OutputList by extracting arrays or dictionaries from JSON objects.
-Uses JSONPath syntax to extract the values, see https://en.wikipedia.org/wiki/JSONPath .
+Uses JSONPath syntax to extract the values, see [JSONPath on Wikipedia](https://en.wikipedia.org/wiki/JSONPath) .
 All matched values will be flattend into one list.
 You can also use this node to create objects from literal strings like `[1, 2, 3]`.
-key, value, int, float uses OUTPUT_IS_LIST=True (indicated by the symbol 𝌠) and will be processed sequentially by corresponding nodes.
-
+`key`, `value`, `int` and `float` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| jsonpath	| STRING	| JSONPath used to extract the values	|
-| json	| STRING	| a string which will be parsed as JSON	|
-| obj	| *	| (optional) object of any type which will replace the JSON string	|
-
+| `jsonpath`	| `STRING`	| JSONPath used to extract the values.	|
+| `json`	| `STRING`	| A JSON string which will be parsed to an object.	|
+| `obj`	| `*`	| (optional) object of any type which will replace the JSON string	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| key	| STRING	| the key for dictionaries or index for arrays (as string). . Technically it's a global index of the flattened list for all non-keys	|
-| value	| STRING	| the value as a string.	|
-| int	| INT	| the value as a int (if not parseable number default to 0).	|
-| float	| FLOAT	| the value as a float (if not parseable number default to 0).	|
-| count	| INT	| total number of items in the flattened list	|
-| debug	| STRING	| debug output of all matched objects as a formatted JSON string	|
-
+| `key`	| `STRING`	| The key for dictionaries or index for arrays (as string). . Technically it's a global index of the flattened list for all non-keys.	|
+| `value`	| `STRING`	| The value as a string.	|
+| `int`	| `INT`	| The value as a int (if not parseable number default to 0).	|
+| `float`	| `FLOAT`	| The value as a float (if not parseable number default to 0).	|
+| `count`	| `INT`	| Total number of items in the flattened list	|
+| `debug`	| `STRING`	| Debug output of all matched objects as a formatted JSON string	|
 
 ## Spreadsheet OutputList
 
@@ -220,68 +210,69 @@ key, value, int, float uses OUTPUT_IS_LIST=True (indicated by the symbol 𝌠) a
 
 (workflow included)
 
-Create a OutputLists from a spreadsheet (CSV, TSV, ODS, XLSX and XLS).
+Create a OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
 Use `Load any File` node to load a file as base64.
 Internally uses pandas to load spreadsheet files.
-Lists {OUTPUTLIST_NOTE}.
-
+All lists uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| rows_and_cols	| STRING	| Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based.	|
-| header_rows	| INT	| Ignore the first x rows in the list. Only used if you specify a col in rows_and_cols.	|
-| header_cols	| INT	| Ignore the first x cols in the list. Only used if you specify a row in rows_and_cols.	|
-| select_nth	| INT	| Only select the nth entry. Useful in combination with the PrimitiveInt+control_after_generate=increment pattern.	|
-| string_or_base64	| STRING	| CSV/TSV string or spreadsheet file in base64 (ODS, XLSX, XLS). Use `Load any File` node to load a file as base64.	|
-
+| `rows_and_cols`	| `STRING`	| Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`).	|
+| `header_rows`	| `INT`	| Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`.	|
+| `header_cols`	| `INT`	| Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`.	|
+| `select_nth`	| `INT`	| Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern.	|
+| `string_or_base64`	| `STRING`	| CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| list_a	| STRING	| 	|
-| list_b	| STRING	| 	|
-| list_c	| STRING	| 	|
-| list_d	| STRING	| 	|
-| count	| INT	| number of items in the longest list	|
+| `list_a`	| `STRING`	| 	|
+| `list_b`	| `STRING`	| 	|
+| `list_c`	| `STRING`	| 	|
+| `list_d`	| `STRING`	| 	|
+| `count`	| `INT`	| Number of items in the longest list.	|
 
+## OutputLists Combinations
 
-## Combine Output Lists
-
-![Combine Output Lists](/media/CombineOutputLists.png)
+![OutputLists Combinations](/media/CombineOutputLists.png)
 
 (workflow included)
 
-Takes up to 4 OutputLists, generates all combinations between them and emits each combination as separate items.
-Example: [1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
-All the unzip values and index {OUTPUTLIST_NOTE}.
+Takes up to 4 OutputLists and generates all combinations between them and emits each combination as separate items.
+Example:
+```
+[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
+```
+
+`unzip_a` .. `unzip_d` {OUTPUTLIST_NOTE}.
 All lists are optional and empty lists will be ignored.
 
 Technically it computes the Cartesian product and outputs each combination splitted up into their elements (unzip), whereas empty lists will be replaced with units of None and they will emit None on the respective output.
-Example: [1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
-
+Example:
+```
+[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
+```
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| list_a	| *	| (optional)	|
-| list_b	| *	| (optional)	|
-| list_c	| *	| (optional)	|
-| list_d	| *	| (optional)	|
-
+| `list_a`	| `*`	| (optional)	|
+| `list_b`	| `*`	| (optional)	|
+| `list_c`	| `*`	| (optional)	|
+| `list_d`	| `*`	| (optional)	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| unzip_a	| *	| value of the combinations corresponding to list_a.	|
-| unzip_b	| *	| value of the combinations corresponding to list_b.	|
-| unzip_c	| *	| value of the combinations corresponding to list_c.	|
-| unzip_d	| *	| value of the combinations corresponding to list_d.	|
-| index	| INT	| range of 0..count which can be used as an index.	|
-| count	| INT	| total number of combinations	|
-
+| `unzip_a`	| `*`	| Value of the combinations corresponding to `list_a`.	|
+| `unzip_b`	| `*`	| Value of the combinations corresponding to `list_b`.	|
+| `unzip_c`	| `*`	| Value of the combinations corresponding to `list_c`.	|
+| `unzip_d`	| `*`	| Value of the combinations corresponding to `list_d`.	|
+| `index`	| `INT`	| Range of 0..count which can be used as an index.	|
+| `count`	| `INT`	| Total number of combinations.	|
 
 ## XYZ-GridPlot
 
@@ -290,26 +281,23 @@ Example: [1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", N
 (workflow included)
 
 Generate a XYZ-Gridplot from a list of images
-
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| images	| IMAGE	| 	|
-| row_labels	| STRING	| 	|
-| col_labels	| STRING	| 	|
-| gap	| INT	| 	|
-| font_size	| FLOAT	| 	|
-| order	| BOOLEAN	| Defines in which order the images should be processed. This is only relevant if you have sub-images.	|
-| output_is_list	| BOOLEAN	| This is only relevant if you have sub-images.	|
-
+| `images`	| `IMAGE`	| 	|
+| `row_labels`	| `STRING`	| 	|
+| `col_labels`	| `STRING`	| 	|
+| `gap`	| `INT`	| 	|
+| `font_size`	| `FLOAT`	| 	|
+| `order`	| `BOOLEAN`	| Defines in which order the images should be processed. This is only relevant if you have sub-images.	|
+| `output_is_list`	| `BOOLEAN`	| This is only relevant if you have sub-images.	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| image	| IMAGE	| xyz-gridplot	|
-
+| `image`	| `IMAGE`	| xyz-gridplot	|
 
 ## Formatted String
 
@@ -317,28 +305,25 @@ Generate a XYZ-Gridplot from a list of images
 
 (workflow included)
 
-Uses python `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax
-Use `{a:.2f}` to round off a float to 2 decimals
-Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`
-If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`
-
+Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .
+* Use `{a:.2f}` to round off a float to 2 decimals.
+* Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.
+* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| fstring	| STRING	| Uses python `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax Use `{a:.2f}` to round off a float to 2 decimals Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png` If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`	|
-| a	| *	| (optional) value that will be converted to string with the {a} placeholder	|
-| b	| *	| (optional) value that will be converted to string with the {b} placeholder	|
-| c	| *	| (optional) value that will be converted to string with the {c} placeholder	|
-| d	| *	| (optional) value that will be converted to string with the {d} placeholder	|
-
+| `fstring`	| `STRING`	| Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) . * Use `{a:.2f}` to round off a float to 2 decimals. * Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`. * If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.	|
+| `a`	| `*`	| (optional) value that will be as a string at the `{a}` placeholder.	|
+| `b`	| `*`	| (optional) value that will be as a string at the `{b}` placeholder.	|
+| `c`	| `*`	| (optional) value that will be as a string at the `{c}` placeholder.	|
+| `d`	| `*`	| (optional) value that will be as a string at the `{d}` placeholder.	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| string	| STRING	| the formatted string with all placeholders replaced with their respective values	|
-
+| `string`	| `STRING`	| The formatted string with all placeholders replaced with their respective values.	|
 
 ## Convert To Int Float Str
 
@@ -346,27 +331,23 @@ If you want to write `{ }` within your strings (e.g. for JSONs) you have to doub
 
 (workflow included)
 
-Convert anything number-like to int float string.
-Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts.
-Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
-int, float and string uses OUTPUT_IS_LIST=True (indicated by the symbol 𝌠) and will be processed sequentially by corresponding nodes.
-
+Convert anything number-like to `INT` `FLOAT` `STRING`.
+Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts. Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
+`int`, `float` and `string` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| number	| *	| anything that can be converted to a string	|
-
+| `number`	| `*`	| Anything that can be meaningfully converted to a string	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| int	| INT	| all the numbers found in the string with the decimals truncated.	|
-| float	| FLOAT	| all the numbers found in the string as floats.	|
-| string	| STRING	| all the numbers found in the string as floats converted to string.	|
-| count	| INT	| amount of numbers found in the string, which in most cases will be 1	|
-
+| `int`	| `INT`	| All the numbers found in the string with the decimals truncated.	|
+| `float`	| `FLOAT`	| All the numbers found in the string as floats.	|
+| `string`	| `STRING`	| All the numbers found in the string as floats converted to string.	|
+| `count`	| `INT`	| Amount of numbers found in the full list.	|
 
 ## Load Any File
 
@@ -374,58 +355,20 @@ int, float and string uses OUTPUT_IS_LIST=True (indicated by the symbol 𝌠) an
 
 (workflow included)
 
-Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a IMAGE.
-
+Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE`.
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| annotated_filepath	| STRING	| Base directory defaults to input directory. Use suffix [input] [output] [temp] to specify a different ComfyUI user directory.	|
-
+| `annotated_filepath`	| `STRING`	| Base directory defaults to input directory. Use suffix `[input]` `[output]` or `[temp]` to specify a different ComfyUI user directory.	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| string	| STRING	| file content for text files, base64 for binary files.	|
-| image	| IMAGE	| image batch tensor	|
-| mask	| MASK	| mask batch tensor	|
-
-
-## KSampler Immediate Save
-
-![KSampler Immediate Save](/media/KSamplerImmediateSave.png)
-
-(workflow included)
-
-Node Expansion of default KSampler, VAE Decode and Save Image to process as one.
-This is useful if you want to save the intermediate images for grids immediately.
-'A custom KSampler just to save an image? Now I have become the very thing I sought to destroy!'
-
-### Inputs
-
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| model	| MODEL	| The model used for denoising the input latent.	|
-| positive	| CONDITIONING	| The conditioning describing the attributes you want to include in the image.	|
-| negative	| CONDITIONING	| The conditioning describing the attributes you want to exclude from the image.	|
-| latent_image	| LATENT	| The latent image to denoise.	|
-| vae	| VAE	| The VAE model used for decoding the latent.	|
-| seed	| INT	| The random seed used for creating the noise.	|
-| steps	| INT	| The number of steps used in the denoising process.	|
-| cfg	| FLOAT	| The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality.	|
-| sampler_name	| ['euler', 'euler_cfg_pp', 'euler_ancestral', 'euler_ancestral_cfg_pp', 'heun', 'heunpp2', 'exp_heun_2_x0', 'exp_heun_2_x0_sde', 'dpm_2', 'dpm_2_ancestral', 'lms', 'dpm_fast', 'dpm_adaptive', 'dpmpp_2s_ancestral', 'dpmpp_2s_ancestral_cfg_pp', 'dpmpp_sde', 'dpmpp_sde_gpu', 'dpmpp_2m', 'dpmpp_2m_cfg_pp', 'dpmpp_2m_sde', 'dpmpp_2m_sde_gpu', 'dpmpp_2m_sde_heun', 'dpmpp_2m_sde_heun_gpu', 'dpmpp_3m_sde', 'dpmpp_3m_sde_gpu', 'ddpm', 'lcm', 'ipndm', 'ipndm_v', 'deis', 'res_multistep', 'res_multistep_cfg_pp', 'res_multistep_ancestral', 'res_multistep_ancestral_cfg_pp', 'gradient_estimation', 'gradient_estimation_cfg_pp', 'er_sde', 'seeds_2', 'seeds_3', 'sa_solver', 'sa_solver_pece', 'ddim', 'uni_pc', 'uni_pc_bh2']	| The algorithm used when sampling , this can affect the quality , speed , and style of the generated output.	|
-| scheduler	| ['simple', 'sgm_uniform', 'karras', 'exponential', 'ddim_uniform', 'beta', 'normal', 'linear_quadratic', 'kl_optimal']	| The scheduler controls how noise is gradually removed to form the image.	|
-| denoise	| FLOAT	| The amount of denoising applied , lower values will maintain the structure of the initial image allowing for image to image sampling.	|
-| filename_prefix	| STRING	| The prefix for the file to save. This may include formatting information such as %date :yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes.	|
-
-
-### Outputs
-
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| image	| IMAGE	| The decoded image.	|
-
+| `string`	| `STRING`	| File content for text files, base64 for binary files.	|
+| `image`	| `IMAGE`	| Image batch tensor.	|
+| `mask`	| `MASK`	| Mask batch tensor.	|
 
 
 # Examples
@@ -433,6 +376,7 @@ This is useful if you want to save the intermediate images for grids immediately
 ## Simple Example
 
 ![Simple example](/workflows/Example_00_Simple_OutputList.png)
+
 (workflow included)
 
 Just uses a `String OutputList` to separate a string and produce 4 images in one run.
@@ -440,6 +384,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 ## Combine prompts
 
 ![Combine prompts example](/workflows/Example_01a_Combine_Prompts.png)
+
 (workflow included)
 
 Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Formatted String`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue] = 3 x 3 = 9`)
@@ -457,6 +402,7 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 ## Combine numbers
 
 ![Combine numbers example](/workflows/Example_03_Combine_Numbers.png)
+
 (workflow included)
 
 Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] x [768, 512, 256]` and connects them to the image width and height to produce image variants in portrait, square and landscape.
@@ -486,6 +432,8 @@ Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` y
 I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
 
 ![XYZ-Gridplots with sub-grids](/workflows/Example_04b_XYZ-GridPlots-Subgrids.png)
+
+(workflow included)
 
 Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For more complex image grids the question always is: How should the axis be ordered and in which way the images be shuffled, e.g. do we want to show `cat|dog|rat` x `red|blue|green` and then the batch next to each other in a subgrid (`RxCxB`), or four separate images each with a grid of `cat|dog|rat` x `red|blue|green` (`BxCxR`). To achieve this you can play around with the options `order=outside-in|inside-out` and `output_is_list=False|True`, but make sure the `row_labels` and `col_labels` match what you want to achieve, as this info is also used how the grid is shaped.
 

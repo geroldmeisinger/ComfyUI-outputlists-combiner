@@ -28,25 +28,26 @@ class StringOutputList(io.ComfyNode):
 	def define_schema(self) -> io.Schema:
 		ret = io.Schema(
 			description=f"""Create a OutputList by separating the string in the textfield.
-value and index {OUTPUTLIST_NOTE}
+`value` and `index` {OUTPUTLIST_NOTE}.
 """,
 			node_id     	= "StringOutputList",
 			display_name	= "String OutputList",
 			category    	= "Utility",
 			inputs      	= [
-				io.String.Input("separator",	default="\\n", tooltip="the string to split the textfield values"),
+				io.String.Input("separator", display_name="separator", default="\\n", tooltip="The string to split the textfield values by."),
 				io.String.Input("values",
-					multiline  	= True,
-					default    	= "",
-					placeholder	= "string separated with newlines. Try to connect inspect_combo with a COMBO input!",
-					tooltip    	= "the string which will be separated. note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed",
+					display_name	= "values",
+					multiline   	= True,
+					default     	= "",
+					placeholder 	= "string separated with newlines. Try to connect inspect_combo with a COMBO input!",
+					tooltip     	= "The string which will be separated. Note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed.",
 				)
 			],
 			outputs	= [
-				io.AnyType	.Output("value"        	, display_name="value"        	, is_output_list=True 	, tooltip=f"the values from the list. {OUTPUTLIST_NOTE}"                                                                         	),
-				io.Int    	.Output("index"        	, display_name="index"        	, is_output_list=True 	, tooltip=f"range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}"                                                  	),
-				io.Int    	.Output("count"        	, display_name="count"        	, is_output_list=False	, tooltip=f"the number of items in the list. {OUTPUTLIST_NOTE}"                                                                  	),
-				io.Combo  	.Output("inspect_combo"	, display_name="inspect_combo"	, is_output_list=False	, tooltip=f"a dummy output only used to pre-fill the list with values from a COMBO input and will automatically disconnect again"	),
+				io.AnyType	.Output("value"        	, display_name="value"        	, is_output_list=True 	, tooltip=f"The values from the list. {OUTPUTLIST_NOTE}"                                                                                  	),
+				io.Int    	.Output("index"        	, display_name="index"        	, is_output_list=True 	, tooltip=f"Range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}"                                                           	),
+				io.Int    	.Output("count"        	, display_name="count"        	, is_output_list=False	, tooltip=f"The number of items in the list. {OUTPUTLIST_NOTE}"                                                                           	),
+				io.Combo  	.Output("inspect_combo"	, display_name="inspect_combo"	, is_output_list=False	, tooltip=f"A dummy output only used to pre-fill the list with values from an other `COMBO` input and will automatically disconnect again"	),
 			])
 		return ret
 
@@ -66,23 +67,23 @@ class NumberOutputList(io.ComfyNode):
 		ret = io.Schema(
 			description=f"""Create a OutputList by generating a numbers of values in a range.
 Uses `numpy.linspace` internally because it works more reliably with floatingpoint values.
-int, float, string and index {OUTPUTLIST_NOTE}.
+`int`, `float`, `string` and `index` {OUTPUTLIST_NOTE}.
 """,
 			node_id     	= "NumberOutputList",
 			display_name	= "Number OutputList",
 			category    	= "Utility",
 			inputs      	= [
-				io.Float  	.Input("start"   	, display_name="start"   	, default= 	0   	,                                         	tooltip="start value to generate the range from"                                	),
-				io.Float  	.Input("stop"    	, display_name="stop"    	, default=	10   	,                                         	tooltip="end value. if endpoint=include this number will be included in the lst"	),
-				io.Int    	.Input("num"     	, display_name="num"     	, default=	10   	, min=1                                  ,	tooltip="the number of items in the list (not to be confused with a step)"      	),
-				io.Boolean	.Input("endpoint"	, display_name="endpoint"	, default=	False	, label_on="include", label_off="exclude",	tooltip="decides if the stop value should be included or excluded in the items" 	),
+				io.Float  	.Input("start"   	, display_name="start"   	, default= 	0   	,                                         	tooltip="Start value to generate the range from."                                   	),
+				io.Float  	.Input("stop"    	, display_name="stop"    	, default=	10   	,                                         	tooltip="End value. If `endpoint=include` this number will be included in the list."	),
+				io.Int    	.Input("num"     	, display_name="num"     	, default=	10   	, min=1                                  ,	tooltip="The number of items in the list (not to be confused with a `step`)."       	),
+				io.Boolean	.Input("endpoint"	, display_name="endpoint"	, default=	False	, label_on="include", label_off="exclude",	tooltip="Decides if the `stop` value should be included or excluded in the items."  	),
 			],
 			outputs	= [
-				io.Int   	.Output("int"   	, display_name="int"   	, is_output_list=True 	, tooltip=f"the value converted to int (rounded down/floored). {OUTPUTLIST_NOTE}"),
-				io.Float 	.Output("float" 	, display_name="float" 	, is_output_list=True 	, tooltip=f"the value as a float. {OUTPUTLIST_NOTE}"),
-				io.String	.Output("string"	, display_name="string"	, is_output_list=True 	, tooltip=f"the value as a string. {OUTPUTLIST_NOTE}"),
-				io.Int   	.Output("index" 	, display_name="index" 	, is_output_list=True 	, tooltip=f"range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}"),
-				io.Int   	.Output("count" 	, display_name="count" 	, is_output_list=False	, tooltip="same as num"),
+				io.Int   	.Output("int"   	, display_name="int"   	, is_output_list=True 	, tooltip=f"The value converted to int (rounded down/floored). {OUTPUTLIST_NOTE}"),
+				io.Float 	.Output("float" 	, display_name="float" 	, is_output_list=True 	, tooltip=f"The value as a float. {OUTPUTLIST_NOTE}"),
+				io.String	.Output("string"	, display_name="string"	, is_output_list=True 	, tooltip=f"The value as a float converted to string. {OUTPUTLIST_NOTE}"),
+				io.Int   	.Output("index" 	, display_name="index" 	, is_output_list=True 	, tooltip=f"Range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}"),
+				io.Int   	.Output("count" 	, display_name="count" 	, is_output_list=False	, tooltip="Same as `num`."),
 				])
 		return ret
 
@@ -101,32 +102,32 @@ class JSONOutputList(io.ComfyNode):
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
 			description	= f"""Create a OutputList by extracting arrays or dictionaries from JSON objects.
-Uses JSONPath syntax to extract the values, see https://en.wikipedia.org/wiki/JSONPath .
+Uses JSONPath syntax to extract the values, see [JSONPath on Wikipedia](https://en.wikipedia.org/wiki/JSONPath) .
 All matched values will be flattend into one list.
 You can also use this node to create objects from literal strings like `[1, 2, 3]`.
-key, value, int, float {OUTPUTLIST_NOTE}.
+`key`, `value`, `int` and `float` {OUTPUTLIST_NOTE}.
 """,
 			node_id     	= "JSONOutputList",
 			display_name	= "JSON OutputList",
 			category    	= "Utility",
 			inputs      	= [
-				io.String.Input("jsonpath", display_name="jsonpath", default="$.dict", tooltip="JSONPath used to extract the values"),
+				io.String.Input("jsonpath", display_name="jsonpath", default="$.dict", tooltip="JSONPath used to extract the values."),
 				io.String.Input("json",
 					display_name	= "json",
 					default     	= dumps(loads('{ "dict" : { "a": 0.12, "b": 3.45, "c": 6.78 }, "arr": [0.12, 3.45, 6.78] }'), indent=4),
 					multiline   	= True,
-					placeholder 	= "object or JSON string",
-					tooltip     	= "a string which will be parsed as JSON"
+					placeholder 	= "Object or JSON string",
+					tooltip     	= "A JSON string which will be parsed to an object."
 				),
 				io.AnyType.Input("obj", display_name="obj", optional=True, tooltip="(optional) object of any type which will replace the JSON string"),
 			],
 			outputs	= [
-				io.String	.Output("key"  	, display_name="key"  	, is_output_list=True 	, tooltip=f"the key for dictionaries or index for arrays (as string). {OUTPUTLIST_NOTE}. Technically it's a global index of the flattened list for all non-keys"),
-				io.String	.Output("value"	, display_name="value"	, is_output_list=True 	, tooltip=f"the value as a string. {OUTPUTLIST_NOTE}"),
-				io.Int   	.Output("int"  	, display_name="int"  	, is_output_list=True 	, tooltip=f"the value as a int (if not parseable number default to 0). {OUTPUTLIST_NOTE}"),
-				io.Float 	.Output("float"	, display_name="float"	, is_output_list=True 	, tooltip=f"the value as a float (if not parseable number default to 0). {OUTPUTLIST_NOTE}"),
-				io.Int   	.Output("count"	, display_name="count"	, is_output_list=False	, tooltip="total number of items in the flattened list"),
-				io.String	.Output("debug"	, display_name="debug"	, is_output_list=False	, tooltip="debug output of all matched objects as a formatted JSON string"),
+				io.String	.Output("key"  	, display_name="key"  	, is_output_list=True 	, tooltip=f"The key for dictionaries or index for arrays (as string). {OUTPUTLIST_NOTE}. Technically it's a global index of the flattened list for all non-keys."),
+				io.String	.Output("value"	, display_name="value"	, is_output_list=True 	, tooltip=f"The value as a string. {OUTPUTLIST_NOTE}"),
+				io.Int   	.Output("int"  	, display_name="int"  	, is_output_list=True 	, tooltip=f"The value as a int (if not parseable number default to 0). {OUTPUTLIST_NOTE}"),
+				io.Float 	.Output("float"	, display_name="float"	, is_output_list=True 	, tooltip=f"The value as a float (if not parseable number default to 0). {OUTPUTLIST_NOTE}"),
+				io.Int   	.Output("count"	, display_name="count"	, is_output_list=False	, tooltip="Total number of items in the flattened list"),
+				io.String	.Output("debug"	, display_name="debug"	, is_output_list=False	, tooltip="Debug output of all matched objects as a formatted JSON string"),
 			]
 		)
 		return ret
@@ -201,25 +202,25 @@ class SpreadsheetOutputList(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= """Create a OutputLists from a spreadsheet (CSV, TSV, ODS, XLSX and XLS).
+			description	= f"""Create a OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
 Use `Load any File` node to load a file as base64.
 Internally uses pandas to load spreadsheet files.
-Lists {OUTPUTLIST_NOTE}.
+All lists {OUTPUTLIST_NOTE}.
 """,
 			node_id     	= "SpreadsheetOutputList",
 			display_name	= "Spreadsheet OutputList",
 			category    	= "Utility",
 			inputs      	= [
-				io.String	.Input("rows_and_cols"	, display_name="rows_and_cols"	, default=	"A B C D"	,             	tooltip="Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based."),
-				io.Int   	.Input("header_rows"  	, display_name="header_rows"  	, default= 	1, min=  	0, max=65535,	tooltip="Ignore the first x rows in the list. Only used if you specify a col in rows_and_cols."),
-				io.Int   	.Input("header_cols"  	, display_name="header_cols"  	, default= 	1, min=  	0, max=65535,	tooltip="Ignore the first x cols in the list. Only used if you specify a row in rows_and_cols."),
-				io.Int   	.Input("select_nth"   	, display_name="select_nth"   	, default=	-1, min= 	-1, max=65535,	tooltip="Only select the nth entry. Useful in combination with the PrimitiveInt+control_after_generate=increment pattern."),
+				io.String	.Input("rows_and_cols"	, display_name="rows_and_cols"	, default=	"A B C D"	,             	tooltip="Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`)."),
+				io.Int   	.Input("header_rows"  	, display_name="header_rows"  	, default= 	1, min=  	0, max=65535,	tooltip="Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`."),
+				io.Int   	.Input("header_cols"  	, display_name="header_cols"  	, default= 	1, min=  	0, max=65535,	tooltip="Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`."),
+				io.Int   	.Input("select_nth"   	, display_name="select_nth"   	, default=	-1, min= 	-1, max=65535,	tooltip="Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern."),
 				io.String	.Input("string_or_base64",
 					display_name	= "string_or_base64",
 					multiline   	= True,
 					default     	= "",
-					placeholder 	= "CSV/TSV string or spreadsheet file in base64 (ODS, XLSX, XLS). Use `Load any File` node to load a file as base64.",
-					tooltip     	= "CSV/TSV string or spreadsheet file in base64 (ODS, XLSX, XLS). Use `Load any File` node to load a file as base64.",
+					placeholder 	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
+					tooltip     	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
 				)
 			],
 			outputs=[
@@ -227,7 +228,7 @@ Lists {OUTPUTLIST_NOTE}.
 				io.String	.Output("list_b"	, display_name="list_b"	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
 				io.String	.Output("list_c"	, display_name="list_c"	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
 				io.String	.Output("list_d"	, display_name="list_d"	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
-				io.Int   	.Output("count" 	, display_name="count" 	, is_output_list=False	, tooltip="number of items in the longest list"),
+				io.Int   	.Output("count" 	, display_name="count" 	, is_output_list=False	, tooltip="Number of items in the longest list."),
 			]
 		)
 		return ret
@@ -323,16 +324,23 @@ class CombineOutputLists(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= """Takes up to 4 OutputLists, generates all combinations between them and emits each combination as separate items.
-Example: [1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
-All the unzip values and index {OUTPUTLIST_NOTE}.
+			description	= """Takes up to 4 OutputLists and generates all combinations between them and emits each combination as separate items.
+Example:
+```
+[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
+```
+
+`unzip_a` .. `unzip_d` {OUTPUTLIST_NOTE}.
 All lists are optional and empty lists will be ignored.
 
 Technically it computes the Cartesian product and outputs each combination splitted up into their elements (unzip), whereas empty lists will be replaced with units of None and they will emit None on the respective output.
-Example: [1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
+Example:
+```
+[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
+```
 """,
 			node_id      	= "CombineOutputLists",
-			display_name 	= "Combine Output Lists",
+			display_name 	= "OutputLists Combinations",
 			category     	= "Utility",
 			is_input_list	= True,
 			inputs=[
@@ -342,12 +350,12 @@ Example: [1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", N
 				io.AnyType.Input("list_d", display_name="list_d", optional=True, tooltip=f"(optional) {INPUTLIST_NOTE}"),
 			],
 			outputs=[
-				io.AnyType	.Output("unzip_a"	, display_name="unzip_a"	, is_output_list=True 	, tooltip=f"value of the combinations corresponding to list_a. {OUTPUTLIST_NOTE}"),
-				io.AnyType	.Output("unzip_b"	, display_name="unzip_b"	, is_output_list=True 	, tooltip=f"value of the combinations corresponding to list_b. {OUTPUTLIST_NOTE}"),
-				io.AnyType	.Output("unzip_c"	, display_name="unzip_c"	, is_output_list=True 	, tooltip=f"value of the combinations corresponding to list_c. {OUTPUTLIST_NOTE}"),
-				io.AnyType	.Output("unzip_d"	, display_name="unzip_d"	, is_output_list=True 	, tooltip=f"value of the combinations corresponding to list_d. {OUTPUTLIST_NOTE}"),
-				io.Int    	.Output("index"  	, display_name="index"  	, is_output_list=True 	, tooltip=f"range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}"),
-				io.Int    	.Output("count"  	, display_name="count"  	, is_output_list=False	, tooltip="total number of combinations"),
+				io.AnyType	.Output("unzip_a"	, display_name="unzip_a"	, is_output_list=True 	, tooltip=f"Value of the combinations corresponding to `list_a`. {OUTPUTLIST_NOTE}"),
+				io.AnyType	.Output("unzip_b"	, display_name="unzip_b"	, is_output_list=True 	, tooltip=f"Value of the combinations corresponding to `list_b`. {OUTPUTLIST_NOTE}"),
+				io.AnyType	.Output("unzip_c"	, display_name="unzip_c"	, is_output_list=True 	, tooltip=f"Value of the combinations corresponding to `list_c`. {OUTPUTLIST_NOTE}"),
+				io.AnyType	.Output("unzip_d"	, display_name="unzip_d"	, is_output_list=True 	, tooltip=f"Value of the combinations corresponding to `list_d`. {OUTPUTLIST_NOTE}"),
+				io.Int    	.Output("index"  	, display_name="index"  	, is_output_list=True 	, tooltip=f"Range of 0..count which can be used as an index. {OUTPUTLIST_NOTE}"),
+				io.Int    	.Output("count"  	, display_name="count"  	, is_output_list=False	, tooltip="Total number of combinations."),
 			],
 		)
 		return ret
@@ -363,14 +371,16 @@ Example: [1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", N
 		return ret
 
 class FormattedString(io.ComfyNode):
+	DESCRIPTION = """Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .
+* Use `{a:.2f}` to round off a float to 2 decimals.
+* Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.
+* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.
+"""
+
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= """Uses python `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax
-Use `{a:.2f}` to round off a float to 2 decimals
-Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`
-If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`
-""",
+			description 	= FormattedString.DESCRIPTION,
 			node_id     	= "FormattedString",
 			display_name	= "Formatted String",
 			category    	= "Utility",
@@ -379,15 +389,15 @@ If you want to write `{ }` within your strings (e.g. for JSONs) you have to doub
 					display_name	= "fstring",
 					multiline   	= True,
 					default     	= "{a}_{b}_{c}_{d}",
-					tooltip     	= "Uses python `str.format()` internally, see https://docs.python.org/3/library/string.html#format-string-syntax\nUse `{a:.2f}` to round off a float to 2 decimals\nUse `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`\nIf you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`"
+					tooltip     	= FormattedString.DESCRIPTION,
 				),
-				io.AnyType.Input("a", display_name="a", optional=True, tooltip="(optional) value that will be converted to string with the {a} placeholder"),
-				io.AnyType.Input("b", display_name="b", optional=True, tooltip="(optional) value that will be converted to string with the {b} placeholder"),
-				io.AnyType.Input("c", display_name="c", optional=True, tooltip="(optional) value that will be converted to string with the {c} placeholder"),
-				io.AnyType.Input("d", display_name="d", optional=True, tooltip="(optional) value that will be converted to string with the {d} placeholder"),
+				io.AnyType.Input("a", display_name="a", optional=True, tooltip="(optional) value that will be as a string at the `{a}` placeholder."),
+				io.AnyType.Input("b", display_name="b", optional=True, tooltip="(optional) value that will be as a string at the `{b}` placeholder."),
+				io.AnyType.Input("c", display_name="c", optional=True, tooltip="(optional) value that will be as a string at the `{c}` placeholder."),
+				io.AnyType.Input("d", display_name="d", optional=True, tooltip="(optional) value that will be as a string at the `{d}` placeholder."),
 			],
 			outputs=[
-				io.String.Output("string", display_name="string", is_output_list=False, tooltip="the formatted string with all placeholders replaced with their respective values"),
+				io.String.Output("string", display_name="string", is_output_list=False, tooltip="The formatted string with all placeholders replaced with their respective values."),
 			],
 		)
 		return ret
@@ -401,23 +411,22 @@ class ConvertNumberToIntFloatStr(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description=f"""Convert anything number-like to int float string.
-Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts.
-Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
-int, float and string {OUTPUTLIST_NOTE}.
+			description=f"""Convert anything number-like to `INT` `FLOAT` `STRING`.
+Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts. Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
+`int`, `float` and `string` {OUTPUTLIST_NOTE}.
 """,
 			node_id     	= "ConvertNumberToIntFloatStr",
 			display_name	= "Convert To Int Float Str",
 			category    	= "Utility",
 			is_input_list=True,
 			inputs=[
-				io.AnyType.Input("number", tooltip="anything that can be converted to a string"),
+				io.AnyType.Input("number", tooltip="Anything that can be meaningfully converted to a string"),
 			],
 			outputs=[
-				io.Int   	.Output("int"   	, display_name="int"   	,is_output_list=True 	, tooltip=f"all the numbers found in the string with the decimals truncated. {OUTPUTLIST_NOTE}"),
-				io.Float 	.Output("float" 	, display_name="float" 	,is_output_list=True 	, tooltip=f"all the numbers found in the string as floats. {OUTPUTLIST_NOTE}"),
-				io.String	.Output("string"	, display_name="string"	,is_output_list=True 	, tooltip=f"all the numbers found in the string as floats converted to string. {OUTPUTLIST_NOTE}"),
-				io.Int   	.Output("count" 	, display_name="count" 	,is_output_list=False	, tooltip="amount of numbers found in the string, which in most cases will be 1"),
+				io.Int   	.Output("int"   	, display_name="int"   	,is_output_list=True 	, tooltip=f"All the numbers found in the string with the decimals truncated. {OUTPUTLIST_NOTE}"),
+				io.Float 	.Output("float" 	, display_name="float" 	,is_output_list=True 	, tooltip=f"All the numbers found in the string as floats. {OUTPUTLIST_NOTE}"),
+				io.String	.Output("string"	, display_name="string"	,is_output_list=True 	, tooltip=f"All the numbers found in the string as floats converted to string. {OUTPUTLIST_NOTE}"),
+				io.Int   	.Output("count" 	, display_name="count" 	,is_output_list=False	, tooltip="Amount of numbers found in the full list."),
 			],
 		)
 		return ret
@@ -436,17 +445,18 @@ class LoadAnyFile(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description 	= """Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a IMAGE.""",
+			description	= """Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE`.
+""",
 			node_id     	= "LoadAnyFile",
 			display_name	= "Load Any File",
 			category    	= "Utility",
 			inputs      	= [
-				io.String.Input("annotated_filepath", tooltip="Base directory defaults to input directory. Use suffix [input] [output] [temp] to specify a different ComfyUI user directory."),
+				io.String.Input("annotated_filepath", tooltip="Base directory defaults to input directory. Use suffix `[input]` `[output]` or `[temp]` to specify a different ComfyUI user directory."),
 			],
 			outputs	= [
-				io.String	.Output("string"	, display_name="string"	, is_output_list=False, tooltip="file content for text files, base64 for binary files."),
-				io.Image 	.Output("image" 	, display_name="image" 	, is_output_list=False, tooltip="image batch tensor"),
-				io.Mask  	.Output("mask"  	, display_name="mask"  	, is_output_list=False, tooltip="mask batch tensor"),
+				io.String	.Output("string"	, display_name="string"	, is_output_list=False, tooltip="File content for text files, base64 for binary files."),
+				io.Image 	.Output("image" 	, display_name="image" 	, is_output_list=False, tooltip="Image batch tensor."),
+				io.Mask  	.Output("mask"  	, display_name="mask"  	, is_output_list=False, tooltip="Mask batch tensor."),
 			],
 		)
 		return ret
@@ -564,9 +574,10 @@ class KSamplerImmediateSave(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		return io.Schema(
-			description	= """Node Expansion of default KSampler, VAE Decode and Save Image to process as one.
+			description	= """Node expansion of default `KSampler`, `VAE Decode` and `Save Image` to process as one.
 This is useful if you want to save the intermediate images for grids immediately.
-'A custom KSampler just to save an image? Now I have become the very thing I sought to destroy!'
+
+*"A custom KSampler just to save an image? Now I have become the very thing I sought to destroy!"*
 """,
 			node_id     	= "KSamplerImmediateSave",
 			display_name	= "KSampler Immediate Save",

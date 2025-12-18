@@ -1,3 +1,5 @@
+{HEADER}
+
 <div align="center">
 	<img src="/media/promo.png" alt="OutputLists Combiner Promo" width="600" />
 </div>
@@ -40,14 +42,6 @@ If this custom node helps you in your work..
 - [Changelog](#changelog)
 - [Background](#background)
 - [Nodes](#nodes)
-	- [String OutputList](#string-outputlist)
-	- [Number OutputList](#number-outputlist)
-	- [JSON OutputList](#json-outputlist)
-	- [Spreadsheet OutputList](#spreadsheet-outputlist)
-	- [Load any File](#load-any-file)
-	- [OutputList Combinations](#outputlist-combinations)
-	- [Formatted String](#formatted-string)
-	- [Convert any number to Int Float String](#convert-any-number-to-int-float-string)
 - [Examples](#examples)
 	- [Simple Example](#simple-example)
 	- [Combine prompts](#combine-prompts)
@@ -71,15 +65,11 @@ TODO
 
 ## ComfyUI-Manager (recommended)
 
-[ComfyUI-Manager](https://github.com/ltdrdata/ComfyUI-Manager)
-
 Search for ```OutputLists Combiner```
 
 ![Search OutputLists Combiner in ComfyUI-Manager](/media/ComfyUIManager.png)
 
 ## Comfy-CLI
-
-[Comfy-CLI](https://github.com/Comfy-Org/comfy-cli)
 
 ```bash
 comfy-cli node install ComfyUI-outputlists_combiner
@@ -130,6 +120,7 @@ Yeah, I didn't know about it either. Apparently everytime you see the symbol `ù
 ## Simple Example
 
 ![Simple example](/workflows/Example_00_Simple_OutputList.png)
+
 (workflow included)
 
 Just uses a `String OutputList` to separate a string and produce 4 images in one run.
@@ -137,6 +128,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 ## Combine prompts
 
 ![Combine prompts example](/workflows/Example_01a_Combine_Prompts.png)
+
 (workflow included)
 
 Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Formatted String`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue] = 3 x 3 = 9`)
@@ -154,6 +146,7 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 ## Combine numbers
 
 ![Combine numbers example](/workflows/Example_03_Combine_Numbers.png)
+
 (workflow included)
 
 Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] x [768, 512, 256]` and connects them to the image width and height to produce image variants in portrait, square and landscape.
@@ -183,6 +176,8 @@ Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` y
 I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
 
 ![XYZ-Gridplots with sub-grids](/workflows/Example_04b_XYZ-GridPlots-Subgrids.png)
+
+(workflow included)
 
 Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For more complex image grids the question always is: How should the axis be ordered and in which way the images be shuffled, e.g. do we want to show `cat|dog|rat` x `red|blue|green` and then the batch next to each other in a subgrid (`RxCxB`), or four separate images each with a grid of `cat|dog|rat` x `red|blue|green` (`BxCxR`). To achieve this you can play around with the options `order=outside-in|inside-out` and `output_is_list=False|True`, but make sure the `row_labels` and `col_labels` match what you want to achieve, as this info is also used how the grid is shaped.
 
