@@ -45,7 +45,7 @@ def test_generate_docs():
 		schema	= node.define_schema()
 		node_name	= schema.display_name or schema.node_id
 
-		toc_lines.append(f"\t[{node_name}](#{schema.node_id})")
+		toc_lines.append(f"\t- [{node_name}](#{schema.node_id})")
 
 		nodes_lines.append(f"## {node_name}\n")
 		#md_lines.append("### Description\n")

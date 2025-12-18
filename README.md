@@ -42,15 +42,15 @@ If this custom node helps you in your work..
 - [Changelog](#changelog)
 - [Background](#background)
 - [Nodes](#nodes)
-	[String OutputList](#StringOutputList)
-	[Number OutputList](#NumberOutputList)
-	[JSON OutputList](#JSONOutputList)
-	[Spreadsheet OutputList](#SpreadsheetOutputList)
-	[OutputLists Combinations](#CombineOutputLists)
-	[XYZ-GridPlot](#XyzGridPlot)
-	[Formatted String](#FormattedString)
-	[Convert To Int Float Str](#ConvertNumberToIntFloatStr)
-	[Load Any File](#LoadAnyFile)
+	- [String OutputList](#StringOutputList)
+	- [Number OutputList](#NumberOutputList)
+	- [JSON OutputList](#JSONOutputList)
+	- [Spreadsheet OutputList](#SpreadsheetOutputList)
+	- [OutputLists Combinations](#CombineOutputLists)
+	- [XYZ-GridPlot](#XyzGridPlot)
+	- [Formatted String](#FormattedString)
+	- [Convert To Int Float Str](#ConvertNumberToIntFloatStr)
+	- [Load Any File](#LoadAnyFile)
 - [Examples](#examples)
 	- [Simple OutputList](#simple-outputlist)
 	- [Combine prompts](#combine-prompts)
@@ -541,7 +541,7 @@ Custom nodes:
 
 PromptManager keeps track of all the prompt you generated in a database which you can annotate with tags and categories. The following workflow allows you to search by text, tags and categories to get selection of the prompts and iterate them.
 
-![Load prompts with GET HTTP and extract JSON with JSON OutputList](/workflows/ExampleAdv_03_PromptManager)
+![Load prompts with GET HTTP and extract JSON with JSON OutputList](/workflows/ExampleAdv_03_PromptManager.png)
 
 (workflow included)
 
