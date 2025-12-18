@@ -21,8 +21,8 @@
 # Overview
 
 - **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird samplers! No node black magic!
-- **Inspect combo** to iterate lists of LoRas, samplers, checkpoints, schedulers...
-- **List combinations** with native support for LoRa strength, image size-variants, prompt combinations...
+- **Inspect combo** to iterate lists of LoRAs, samplers, checkpoints, schedulers...
+- **List combinations** with native support for LoRA strength, image size-variants, prompt combinations...
 - **Quick OutputLists** from CSV and Excel Spreadsheets, JSON data, multiline texts, number ranges...
 - **Formatted strings** for flexible and beautiful filenames, labels, additional metadata...
 
@@ -170,7 +170,7 @@ Makes use of the `index` combined the same way as the prompts, which gives as th
 
 (workflow included)
 
-Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `Lora Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
+Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
 
 **If you don't need separate trigger words, just delete the second combination altogether, it's much simpler this way!**
 
