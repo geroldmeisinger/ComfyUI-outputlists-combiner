@@ -129,7 +129,8 @@ Yeah, I didn't know about it either. Apparently everytime you see the symbol `�
 (workflow included)
 
 Create a OutputList by separating the string in the textfield.
-`value` and `index` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
+`value` and `index` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+
 ### Inputs
 
 | Name	| Type	| Description	|
@@ -141,8 +142,8 @@ Create a OutputList by separating the string in the textfield.
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `value`	| `*`	| The values from the list.	|
-| `index`	| `INT`	| Range of 0..count which can be used as an index.	|
+| `value`	| `*𝌠`	| The values from the list.	|
+| `index`	| `INT𝌠`	| Range of 0..count which can be used as an index.	|
 | `count`	| `INT`	| The number of items in the list.	|
 | `inspect_combo`	| `COMBO`	| A dummy output only used to pre-fill the list with values from an other `COMBO` input and will automatically disconnect again	|
 
@@ -154,7 +155,8 @@ Create a OutputList by separating the string in the textfield.
 
 Create a OutputList by generating a numbers of values in a range.
 Uses `numpy.linspace` internally because it works more reliably with floatingpoint values.
-`int`, `float`, `string` and `index` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
+`int`, `float`, `string` and `index` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+
 ### Inputs
 
 | Name	| Type	| Description	|
@@ -168,10 +170,10 @@ Uses `numpy.linspace` internally because it works more reliably with floatingpoi
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `int`	| `INT`	| The value converted to int (rounded down/floored).	|
-| `float`	| `FLOAT`	| The value as a float.	|
-| `string`	| `STRING`	| The value as a float converted to string.	|
-| `index`	| `INT`	| Range of 0..count which can be used as an index.	|
+| `int`	| `INT𝌠`	| The value converted to int (rounded down/floored).	|
+| `float`	| `FLOAT𝌠`	| The value as a float.	|
+| `string`	| `STRING𝌠`	| The value as a float converted to string.	|
+| `index`	| `INT𝌠`	| Range of 0..count which can be used as an index.	|
 | `count`	| `INT`	| Same as `num`.	|
 
 ## JSON OutputList
@@ -184,7 +186,8 @@ Create a OutputList by extracting arrays or dictionaries from JSON objects.
 Uses JSONPath syntax to extract the values, see [JSONPath on Wikipedia](https://en.wikipedia.org/wiki/JSONPath) .
 All matched values will be flattend into one list.
 You can also use this node to create objects from literal strings like `[1, 2, 3]`.
-`key`, `value`, `int` and `float` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
+`key`, `value`, `int` and `float` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+
 ### Inputs
 
 | Name	| Type	| Description	|
@@ -197,10 +200,10 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `key`	| `STRING`	| The key for dictionaries or index for arrays (as string). . Technically it's a global index of the flattened list for all non-keys.	|
-| `value`	| `STRING`	| The value as a string.	|
-| `int`	| `INT`	| The value as a int (if not parseable number default to 0).	|
-| `float`	| `FLOAT`	| The value as a float (if not parseable number default to 0).	|
+| `key`	| `STRING𝌠`	| The key for dictionaries or index for arrays (as string).  Technically it's a global index of the flattened list for all non-keys.	|
+| `value`	| `STRING𝌠`	| The value as a string.	|
+| `int`	| `INT𝌠`	| The value as a int (if not parseable number default to 0).	|
+| `float`	| `FLOAT𝌠`	| The value as a float (if not parseable number default to 0).	|
 | `count`	| `INT`	| Total number of items in the flattened list	|
 | `debug`	| `STRING`	| Debug output of all matched objects as a formatted JSON string	|
 
@@ -213,7 +216,8 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 Create a OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
 Use `Load any File` node to load a file as base64.
 Internally uses pandas to load spreadsheet files.
-All lists uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
+All lists uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+
 ### Inputs
 
 | Name	| Type	| Description	|
@@ -228,10 +232,10 @@ All lists uses `is_output_list=True` (indicated by the symbol `𝌠`) and will b
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `list_a`	| `STRING`	| 	|
-| `list_b`	| `STRING`	| 	|
-| `list_c`	| `STRING`	| 	|
-| `list_d`	| `STRING`	| 	|
+| `list_a`	| `STRING𝌠`	| 	|
+| `list_b`	| `STRING𝌠`	| 	|
+| `list_c`	| `STRING𝌠`	| 	|
+| `list_d`	| `STRING𝌠`	| 	|
 | `count`	| `INT`	| Number of items in the longest list.	|
 
 ## OutputLists Combinations
@@ -241,19 +245,23 @@ All lists uses `is_output_list=True` (indicated by the symbol `𝌠`) and will b
 (workflow included)
 
 Takes up to 4 OutputLists and generates all combinations between them and emits each combination as separate items.
+
 Example:
 ```
 [1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
 ```
 
-`unzip_a` .. `unzip_d` {OUTPUTLIST_NOTE}.
+`unzip_a` .. `unzip_d` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+
 All lists are optional and empty lists will be ignored.
 
 Technically it computes the Cartesian product and outputs each combination splitted up into their elements (unzip), whereas empty lists will be replaced with units of None and they will emit None on the respective output.
+
 Example:
 ```
 [1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
 ```
+
 ### Inputs
 
 | Name	| Type	| Description	|
@@ -267,11 +275,11 @@ Example:
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `unzip_a`	| `*`	| Value of the combinations corresponding to `list_a`.	|
-| `unzip_b`	| `*`	| Value of the combinations corresponding to `list_b`.	|
-| `unzip_c`	| `*`	| Value of the combinations corresponding to `list_c`.	|
-| `unzip_d`	| `*`	| Value of the combinations corresponding to `list_d`.	|
-| `index`	| `INT`	| Range of 0..count which can be used as an index.	|
+| `unzip_a`	| `*𝌠`	| Value of the combinations corresponding to `list_a`.	|
+| `unzip_b`	| `*𝌠`	| Value of the combinations corresponding to `list_b`.	|
+| `unzip_c`	| `*𝌠`	| Value of the combinations corresponding to `list_c`.	|
+| `unzip_d`	| `*𝌠`	| Value of the combinations corresponding to `list_d`.	|
+| `index`	| `INT𝌠`	| Range of 0..count which can be used as an index.	|
 | `count`	| `INT`	| Total number of combinations.	|
 
 ## XYZ-GridPlot
@@ -280,24 +288,36 @@ Example:
 
 (workflow included)
 
-Generate a XYZ-Gridplot from a list of images
+Generate a XYZ-Gridplot from a list of images.
+It takes a list of images (including batches) and will flatten the list first (thus `batch_size=1`).
+The shape of the grid is determined:
+1. by the number row labels
+2. by the number of column labels
+3. by the remaining sub-images.
+You can use `order=inside_out` to reverse how the images are selected.
+Sub-images (usually from batches) will be shaped into the most square area (the "sub-image packing"), unless `output_is_list=True` in which case a list of image grids will be created instead. You can use this list to connect another XyzGridPlot node to create super-grids.
+
+For the column label areas the width is determined by the width of the sub-image packing, the height is determined by `font_size` or `half image_height` (whichever is greater).
+For the row label areas the width is also determined by the width(!) of the sub-images packing (with a minimum of 256px), the height is determined by height of the sub-images.
+The text will be shrunk down until it fits (up to `font_size_min=6`) and the same font size will be used for the whole axis (column labels/row labels). If the text is already font size is already at the minimum, any remaining text will be clipped (reasoning: the lower part of a prompt is usually not that important).
+
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `images`	| `IMAGE`	| 	|
-| `row_labels`	| `STRING`	| 	|
-| `col_labels`	| `STRING`	| 	|
-| `gap`	| `INT`	| 	|
-| `font_size`	| `FLOAT`	| 	|
+| `images`	| `IMAGE`	| A list of images (including batches)	|
+| `row_labels`	| `STRING`	| The text used for the row labels at the left side	|
+| `col_labels`	| `STRING`	| The text used for the column labels at the top	|
+| `gap`	| `INT`	| The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node.	|
+| `font_size`	| `FLOAT`	| The target font size. The text will be shrunk down until it fits (up to `font_size_min=6`).	|
 | `order`	| `BOOLEAN`	| Defines in which order the images should be processed. This is only relevant if you have sub-images.	|
-| `output_is_list`	| `BOOLEAN`	| This is only relevant if you have sub-images.	|
+| `output_is_list`	| `BOOLEAN`	| This is only relevant if you have sub-images or you want to create super-grids.	|
 
 ### Outputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `image`	| `IMAGE`	| xyz-gridplot	|
+| `image`	| `IMAGE𝌠`	| The XYZ-GridPlot image. If `output_is_list=True` it will be a list of images which you can connect to another XYZ-GridPlot node to create super-grids.	|
 
 ## Formatted String
 
@@ -309,6 +329,7 @@ Uses python `str.format()` internally, see [Python - Format String Syntax](https
 * Use `{a:.2f}` to round off a float to 2 decimals.
 * Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.
 * If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.
+
 ### Inputs
 
 | Name	| Type	| Description	|
@@ -333,7 +354,8 @@ Uses python `str.format()` internally, see [Python - Format String Syntax](https
 
 Convert anything number-like to `INT` `FLOAT` `STRING`.
 Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts. Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
-`int`, `float` and `string` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes..
+`int`, `float` and `string` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+
 ### Inputs
 
 | Name	| Type	| Description	|
@@ -344,9 +366,9 @@ Uses `nums_from_string.get_nums` internally which is very permissive in the numb
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `int`	| `INT`	| All the numbers found in the string with the decimals truncated.	|
-| `float`	| `FLOAT`	| All the numbers found in the string as floats.	|
-| `string`	| `STRING`	| All the numbers found in the string as floats converted to string.	|
+| `int`	| `INT𝌠`	| All the numbers found in the string with the decimals truncated.	|
+| `float`	| `FLOAT𝌠`	| All the numbers found in the string as floats.	|
+| `string`	| `STRING𝌠`	| All the numbers found in the string as floats converted to string.	|
 | `count`	| `INT`	| Amount of numbers found in the full list.	|
 
 ## Load Any File
@@ -356,6 +378,7 @@ Uses `nums_from_string.get_nums` internally which is very permissive in the numb
 (workflow included)
 
 Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE`.
+
 ### Inputs
 
 | Name	| Type	| Description	|

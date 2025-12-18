@@ -50,7 +50,7 @@ def test_generate_docs():
 		nodes_lines.append(f"## {node_name}\n")
 		#md_lines.append("### Description\n")
 		nodes_lines.append(f"![{node_name}](/media/{schema.node_id}.png)\n\n(workflow included)\n")
-		nodes_lines.append((schema.description or "").strip())
+		nodes_lines.append((schema.description or "").strip() + "\n")
 
 		# Inputs
 		nodes_lines.append("### Inputs\n")
@@ -66,6 +66,8 @@ def test_generate_docs():
 		output_rows = []
 		for out in schema.outputs or []:
 			type	= "COMBO" if isinstance(out.io_type, list) else out.io_type
+			if out.is_output_list:
+				type += "𝌠" # if you want to use a space here make sure it's non-breaking
 			tooltip	= getattr(out, "tooltip", "").replace(OUTPUTLIST_NOTE, "").strip()
 			output_rows.append((out.display_name or out.id, type, tooltip))
 		nodes_lines.extend(generate_table(output_rows))
