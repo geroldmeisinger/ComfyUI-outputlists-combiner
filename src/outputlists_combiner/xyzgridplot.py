@@ -160,7 +160,7 @@ The text will be shrunk down until it fits (up to `font_size_min=6`) and the sam
 		labels_data	= []
 		if len(col_labels) > 0:
 			labels_data.append({
-				"texts"	: col_labels,
+				"texts"	: [str(c) for c in col_labels],
 				"is_column"	: True,
 				"rotation"	: 0,
 				"align"	: { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight },
@@ -180,7 +180,7 @@ The text will be shrunk down until it fits (up to `font_size_min=6`) and the sam
 			label_row_width_max	= max(256, subs_cols * img_w) - 2 * PADDING
 
 			labels_data.append({
-				"texts"	: row_labels,
+				"texts"	: [str(r) for r in row_labels],
 				"is_column"	: False,
 				"rotation"	: 0	if is_horz else -90,
 				"align"	: align_horz	if is_horz else align_vert,

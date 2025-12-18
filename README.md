@@ -52,14 +52,15 @@ If this custom node helps you in your work..
 	[Convert To Int Float Str](#ConvertNumberToIntFloatStr)
 	[Load Any File](#LoadAnyFile)
 - [Examples](#examples)
-	- [Simple Example](#simple-example)
+	- [Simple OutputList](#simple-outputlist)
 	- [Combine prompts](#combine-prompts)
-	- [Combine samplers and schedulers](#combine-samplers-and-schedulers)
 	- [Combine numbers](#combine-numbers)
+	- [Combine samplers and schedulers](#combine-samplers-and-schedulers)
 	- [Combine row/column for filename](#combine-rowcolumn-for-filename)
-	- [XYZ-GridPlots](#xyz-gridplots)
+	- [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength)
+	- [XYZ-GridPlot](#xyz-gridplot)
 - [Advanced Examples](#advanced-examples)
-	- [XYZ-GridPlots with sub-grids](#xyz-gridplots-with-sub-grids)
+	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
 	- [Baking Values Into Workflow](#baking-values-into-workflow)
 	- [Load all images from grid](#load-all-images-from-grid)
@@ -118,7 +119,9 @@ https://github.com/user-attachments/assets/303115d3-7c28-42e8-bb52-d02e7cc1022b
 
 *Wait, what?*
 
-Yeah, I didn't know about it either. Apparently everytime you see the symbol `𝌠` it's an [output list](https://docs.comfy.org/custom-nodes/backend/lists). This feature seems very underutilized but it allows values to be processed sequentially without weird workarounds (like for-loops, increment counters or external python scripts) which makes them perfect for prompt combinations and XYZ-gridplots. I always found grids a hazzle in ComfyUI whereas they were straightforward in Automatic1111. Most custom nodes either require a lot of manual work or you have to use some extra-special nodes (like custom KSamplers). This project tries to make good use of output lists, integrate well with the ComfyUI's paradigm and finally makes XYZ-gridplots easy to use again.
+Yeah, I didn't know about it either. Apparently everytime you see the symbol `𝌠` it's an [output list](https://docs.comfy.org/custom-nodes/backend/lists). This feature seems very underutilized but it allows values to be processed sequentially without weird workarounds (like for-loops, increment counters or external python scripts) which makes them perfect for prompt combinations and XYZ-gridplots. I always found grids a hazzle in ComfyUI whereas they were straightforward in Automatic1111. Most custom nodes either require a lot of manual work or you have to use some extra-special nodes (like custom KSamplers). This project tries to make good use of output lists, integrate well with the ComfyUI's paradigm and finally make XYZ-gridplots easy to use again.
+
+**Make sure you understand what's happening in this example as it's crucial to work with the following nodes!**
 
 # Nodes
 
@@ -291,7 +294,7 @@ Example:
 Generate a XYZ-Gridplot from a list of images.
 It takes a list of images (including batches) and will flatten the list first (thus `batch_size=1`).
 The shape of the grid is determined:
-1. by the number row labels
+1. by the number of row labels
 2. by the number of column labels
 3. by the remaining sub-images.
 You can use `order=inside_out` to reverse how the images are selected.
@@ -299,7 +302,7 @@ Sub-images (usually from batches) will be shaped into the most square area (the 
 
 For the column label areas the width is determined by the width of the sub-image packing, the height is determined by `font_size` or `half image_height` (whichever is greater).
 For the row label areas the width is also determined by the width(!) of the sub-images packing (with a minimum of 256px), the height is determined by height of the sub-images.
-The text will be shrunk down until it fits (up to `font_size_min=6`) and the same font size will be used for the whole axis (column labels/row labels). If the text is already font size is already at the minimum, any remaining text will be clipped (reasoning: the lower part of a prompt is usually not that important).
+The text will be shrunk down until it fits (up to `font_size_min=6`) and the same font size will be used for the whole axis (column labels/row labels). If the font size is already at the minimum, any remaining text will be clipped (reasoning: the lower part of a prompt is usually not that important).
 
 ### Inputs
 
@@ -396,9 +399,9 @@ Load any text or binary file and provide the file content as string or base64 st
 
 # Examples
 
-## Simple Example
+## Simple OutputList
 
-![Simple example](/workflows/Example_00_Simple_OutputList.png)
+![Simple OutputList example](/workflows/Example_00_Simple_OutputList.png)
 
 (workflow included)
 
@@ -406,7 +409,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 
 ## Combine prompts
 
-![Combine prompts example](/workflows/Example_01a_Combine_Prompts.png)
+![Combine prompts example](/workflows/Example_01_Combine_Prompts.png)
 
 (workflow included)
 
@@ -414,17 +417,9 @@ Combines two `String OutputList` with a `OutputList Combinations` and merges the
 
 To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as it outputs a new line for each emitted item.
 
-## Combine samplers and schedulers
-
-![Combine samplers and schedulers example](/workflows/Example_02_Combine_Samplers_Schedulers.png)
-
-(workflow included)
-
-Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entries were deleted) and connects to the COMBO inputs `samplers` and `schedulers`. It iterates over all combinations of `[euler, dpmpp_2m, uni_pc_bh2] x [simple, karras, beta] = 3 x 3 = 9`)
-
 ## Combine numbers
 
-![Combine numbers example](/workflows/Example_03_Combine_Numbers.png)
+![Combine numbers example](/workflows/Example_02_Combine_Numbers.png)
 
 (workflow included)
 
@@ -432,29 +427,49 @@ Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] 
 
 Notice that images within a batch always have to be same width and height, wheras here each image has a different image size. This is only possible because it is a list of images.
 
-## Combine row/column for filename
+## Combine samplers and schedulers
 
-![Combine numbers example](/workflows/Example_01b_Combine_RowCol_Filename.png)
+![Combine samplers and schedulers example](/workflows/Example_03_Combine_Samplers_Schedulers.png)
 
 (workflow included)
 
-Makes use of the `index` combined the same way as the prompts, which gives as the rows and columns. `Formatted String` produces the filename prefix `cell_{c:02d}_row_{a:02d}_col_{b:02d}`.
+Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entries were deleted) and connects to the COMBO inputs `samplers` and `schedulers`. It iterates over all combinations of `[euler, dpmpp_2m, uni_pc_bh2] x [simple, karras, beta] = 3 x 3 = 9`)
 
-## XYZ-GridPlots
+## Combine row/column for filename
 
-![XYZ-Gridplots](/workflows/Example_04a_XYZ-GridPlots.png)
+![Combine row/column for filename example](/workflows/Example_04_Combine_RowCol_Filename.png)
 
-Uses `String OutputLists + OutputLists Combinations + Fomratted String` to generate multiple prompts for an image grid. The values of the `String OutputLists` are directly used a labels for the `XYZ-GridPlot` and they also define how the grid should be shaped.
+(workflow included)
+
+Makes use of the `index` combined the same way as the prompts, which gives as the rows and columns. `Formatted String` produces the filename prefix `img_{c:02d}_row_{ad}_col_{b}`.
+
+## Compare LoRA-model and LoRA-strength
+
+![Combine LoRA-model and LoRA-strength example](/workflows/Example_05_Compare_LoRAModel_LoRAStrength.png)
+
+(workflow included)
+
+Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `Lora Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
+
+**If you don't need separate trigger words, just delete the second combination altogether, it's much simpler this way!**
+
+It might be a little confusing why we need two combinations here, but it is important that the lists are synchronized. Ideally we would only construct a single combination with pairs of `[(modelA, triggerA), (modelB, triggerB), (modelC, triggerC)] x lora-strengths` but then we would need to deconstruct the `(modelX, triggerX)` pairs later.
+
+## XYZ-GridPlot
+
+![XYZ-GridPlot example](/workflows/Example_06_XYZ-GridPlot.png)
+
+Uses `String OutputLists + OutputLists Combinations + Formatted String` to generate multiple prompts for an image grid. The values of the `String OutputLists` are directly used as labels for the `XYZ-GridPlot` and they also define how the grid should be shaped.
 
 Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` you get a image grid with the batch as sub-grids. If you also set `output_is_list=True` the sub-images will not be arranged together but you will get 4 separate images instead.
 
 # Advanced Examples
 
-## XYZ-GridPlots with sub-grids
+## XYZ-GridPlots with Supergrids
 
 I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
 
-![XYZ-Gridplots with sub-grids](/workflows/Example_04b_XYZ-GridPlots-Subgrids.png)
+![XYZ-GridPlots with Supergrids example](/workflows/ExampleAdv_00a_XYZGridPlot_Supergrids.png)
 
 (workflow included)
 
@@ -469,7 +484,7 @@ Custom nodes:
 * [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
 * [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials) (optional)
 
-![ImageGrids example](/workflows/Example_04b_ImageGridsImmediateSave.png)
+![ImageGrids example](/workflows/ExampleAdv_00b_XYZGridPlot_ImmediateSave.png)
 
 (workflow included)
 
@@ -486,13 +501,13 @@ Custom nodes:
 
 You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. Thus we need store the individual values in the metadata. The following workflow makes use of Crystools' `Save image with Metadata` and `Load image with Metadata` and Impact-Pack's `Select Nth Item`.
 
-![Save Index in Metadata](/workflows/Example_06a_IndexInMetadata.png)
+![Save Index in Metadata example](/workflows/ExampleAdv_01a_IndexInMetadata.png)
 
 (workflow included)
 
 Uses the `index` of the combined list to store it as a JSON. It also uses the `index` of the individual lists combined the same way as the prompts, which gives as the rows and columns, for additional information, including the prompt: `{{ "prompt": "{a}", "index": {b}, "row": {c}, "col": {d} }}`
 
-![Load Index from Metadata](/workflows/Example_06b_IndexFromMetadata.png)
+![Load Index from Metadata example](/workflows/ExampleAdv_01b_IndexFromMetadata.png)
 
 (workflow included)
 
@@ -512,7 +527,7 @@ Custom nodes, one of the following:
 
 Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `cell_{c:02d}-{a}-{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of one of these `Load Image by Path` nodes,
 
-![Load Image with Formatted String](/workflows/Example_07_LoadWithFormattedString.png)
+![Load Image with Formatted String](/workflows/ExampleAdv_02_LoadWithFormattedString.png)
 
 (workflow included)
 
@@ -526,7 +541,7 @@ Custom nodes:
 
 PromptManager keeps track of all the prompt you generated in a database which you can annotate with tags and categories. The following workflow allows you to search by text, tags and categories to get selection of the prompts and iterate them.
 
-![Load prompts with GET HTTP and extract JSON with JSON OutputList](/workflows/Example_08_PromptManager.png)
+![Load prompts with GET HTTP and extract JSON with JSON OutputList](/workflows/ExampleAdv_03_PromptManager)
 
 (workflow included)
 
