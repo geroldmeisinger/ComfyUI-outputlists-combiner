@@ -35,6 +35,8 @@ If this custom node helps you in your work..
 - [Overview](#overview)
 - [Table of Content](#table-of-content)
 - [Features](#features)
+	- [XYZ-GridPlot](#xyz-gridplot)
+	- [Inspect Combo](#inspect-combo)
 - [Installation](#installation)
 	- [ComfyUI-Manager (recommended)](#comfyui-manager-recommended)
 	- [Comfy-CLI](#comfy-cli)
@@ -58,7 +60,7 @@ If this custom node helps you in your work..
 	- [Combine samplers and schedulers](#combine-samplers-and-schedulers)
 	- [Combine row/column for filename](#combine-rowcolumn-for-filename)
 	- [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength)
-	- [XYZ-GridPlot](#xyz-gridplot)
+	- [XYZ-GridPlot](#xyz-gridplot-1)
 - [Advanced Examples](#advanced-examples)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
@@ -69,7 +71,13 @@ If this custom node helps you in your work..
 
 # Features
 
-TODO
+## XYZ-GridPlot
+
+https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
+
+## Inspect Combo
+
+https://github.com/user-attachments/assets/d8da27b9-99d2-4ac5-a6ed-d368d2ae1a38
 
 # Installation
 
@@ -433,6 +441,8 @@ Notice that images within a batch always have to be same width and height, whera
 
 (workflow included)
 
+https://github.com/user-attachments/assets/d8da27b9-99d2-4ac5-a6ed-d368d2ae1a38
+
 Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entries were deleted) and connects to the COMBO inputs `samplers` and `schedulers`. It iterates over all combinations of `[euler, dpmpp_2m, uni_pc_bh2] x [simple, karras, beta] = 3 x 3 = 9`)
 
 ## Combine row/column for filename
@@ -449,6 +459,8 @@ Makes use of the `index` combined the same way as the prompts, which gives as th
 
 (workflow included)
 
+https://github.com/user-attachments/assets/d8da27b9-99d2-4ac5-a6ed-d368d2ae1a38
+
 Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
 
 **If you don't need separate trigger words, just delete the second combination altogether, it's much simpler this way!**
@@ -462,6 +474,8 @@ It might be a little confusing why we need two combinations here, but it is impo
 Uses `String OutputLists + OutputLists Combinations + Formatted String` to generate multiple prompts for an image grid. The values of the `String OutputLists` are directly used as labels for the `XYZ-GridPlot` and they also define how the grid should be shaped.
 
 Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` you get a image grid with the batch as sub-grids. If you also set `output_is_list=True` the sub-images will not be arranged together but you will get 4 separate images instead.
+
+https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
 
 # Advanced Examples
 
