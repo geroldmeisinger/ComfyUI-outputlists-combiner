@@ -205,7 +205,7 @@ class SpreadsheetOutputList(io.ComfyNode):
 		ret = io.Schema(
 			description	= f"""Create a OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
 Use `Load any File` node to load a file as base64.
-Internally uses pandas `[read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html)` and `[read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html)` to load spreadsheet files.
+Internally uses pandas [read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html) and [read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html) to load spreadsheet files.
 All lists {OUTPUTLIST_NOTE}
 """,
 			node_id	= "SpreadsheetOutputList",
