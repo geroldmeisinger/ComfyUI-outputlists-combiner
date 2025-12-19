@@ -68,6 +68,7 @@ If this custom node helps you in your work..
 	- [Baking Values Into Workflow](#baking-values-into-workflow)
 	- [Load all images from grid](#load-all-images-from-grid)
 	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
+	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 - [Credits](#credits)
 
 # Features
@@ -579,6 +580,16 @@ PromptManager keeps track of all the prompt you generated in a database which yo
 (workflow included)
 
 Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search API route and `JSON OutputList` to extract the `text` field using a JSONPath. The prompts are emitted as an OutputList and will be processed sequentially.
+
+## XYZ-GridPlots with Videos
+
+![XYZ-GridPlots with Videos](/workflows/ExampleAdv_04_XYZGridPlot_Videos.png)
+
+You can basically ignore the left part of the workflow (blue group) as it's just abusing a `OutputList Combinations` to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
+
+**TODO** Fix the `non divisible by 2` error
+
+https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
 
 # Credits
 

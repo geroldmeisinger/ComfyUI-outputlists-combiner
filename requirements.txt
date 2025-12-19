@@ -8,4 +8,3 @@ xlrd
 pyxlsb
 chardet
 skia-python
-
