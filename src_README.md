@@ -51,6 +51,7 @@ If this custom node helps you in your work..
 	- [Combine samplers and schedulers](#combine-samplers-and-schedulers)
 	- [Combine row/column for filename](#combine-rowcolumn-for-filename)
 	- [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength)
+	- [The PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern)
 	- [XYZ-GridPlot](#xyz-gridplot-1)
 - [Advanced Examples](#advanced-examples)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
@@ -187,6 +188,16 @@ Makes use of `inspect_combo` to populate the `String OutputList` with the model 
 **If you don't need separate trigger words, just delete the second combination altogether, it's much simpler this way!**
 
 It might be a little confusing why we need two combinations here, but it is important that the lists are synchronized. Ideally we would only construct a single combination with pairs of `[(modelA, triggerA), (modelB, triggerB), (modelC, triggerC)] x lora-strengths` but then we would need to deconstruct the `(modelX, triggerX)` pairs later.
+
+## The PrimitiveInt control_after_generate=increment pattern
+
+You probably noticed the `control_after_generate` widget before in the `KSampler` for `seed` where it's often set to `random`. This feature can also be created manually with the `Primitive Int` node. If you set it to `control_after_generate=increment` you basically get a counter that increases everytime you run a prompt. When you hook it up as a index in a list selector node, it iterates over entries across multiple prompts. In the `Run` toolbox you can set the amount of prompts to the number of items in your list to iterate the whole list. This pattern essentially cancels out the effect of OutputLists and will only ever process one item at a time. That's especially useful if you want to test something out. Remember to reset the counter to 0 afterwards!
+
+![The PrimitiveInt control_after_generate=increment pattern](/media/PrimitiveIntControlAfterGenerateIncrement.png)
+
+And because it is very tedious to add a selector for every single list, the `Spreadsheet OutputList` includes a `select_nth` widget which applies the index to all lists at once, and makes everything simpler for complex workflows that use multiple lists.
+
+![The PrimitiveInt control_after_generate=increment pattern and Spreadsheet OutputList](/media/PrimitiveIntControlAfterGenerateIncrementSpreadsheet.png)
 
 ## XYZ-GridPlot
 

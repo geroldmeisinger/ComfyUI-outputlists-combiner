@@ -60,6 +60,7 @@ If this custom node helps you in your work..
 	- [Combine samplers and schedulers](#combine-samplers-and-schedulers)
 	- [Combine row/column for filename](#combine-rowcolumn-for-filename)
 	- [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength)
+	- [The PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern)
 	- [XYZ-GridPlot](#xyz-gridplot-1)
 - [Advanced Examples](#advanced-examples)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
@@ -227,7 +228,7 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 
 Create a OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
 Use `Load any File` node to load a file as base64.
-Internally uses pandas `[read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html)` and `[read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html)` to load spreadsheet files.
+Internally uses pandas [read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html) and [read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html) to load spreadsheet files.
 All lists use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 ### Inputs
@@ -309,9 +310,16 @@ The shape of the grid is determined:
 You can use `order=inside_out` to reverse how the images are selected.
 Sub-images (usually from batches) will be shaped into the most square area (the "sub-image packing"), unless `output_is_list=True` in which case a list of image grids will be created instead. You can use this list to connect another XyzGridPlot node to create super-grids.
 
+Font-size:
 For the column label areas the width is determined by the width of the sub-image packing, the height is determined by `font_size` or `half image_height` (whichever is greater).
 For the row label areas the width is also determined by the width(!) of the sub-images packing (with a minimum of 256px), the height is determined by height of the sub-images.
 The text will be shrunk down until it fits (up to `font_size_min=6`) and the same font size will be used for the whole axis (column labels/row labels). If the font size is already at the minimum, any remaining text will be clipped (reasoning: the lower part of a prompt is usually not that important).
+
+Alignment:
+If a label got wrapped the whole axis is considered "multiline" and will be align at top and justified.
+If all the labels are numbers or all end in parseable numbers (e.g. `strength: 1.`) the whole axis is considered "numeric" and will be right aligend.
+All other texts are considered "singleline" and will be horizontally centered.
+Singleline and numeric labels for columns are vertically aligned at bottom and for rows are vertically centered.
 
 ### Inputs
 
@@ -460,13 +468,23 @@ Makes use of the `index` combined the same way as the prompts, which gives as th
 
 (workflow included)
 
-https://github.com/user-attachments/assets/d8da27b9-99d2-4ac5-a6ed-d368d2ae1a38
+https://github.com/user-attachments/assets/64e118c1-15f3-463b-b439-37e1a1f5b62b
 
 Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
 
 **If you don't need separate trigger words, just delete the second combination altogether, it's much simpler this way!**
 
 It might be a little confusing why we need two combinations here, but it is important that the lists are synchronized. Ideally we would only construct a single combination with pairs of `[(modelA, triggerA), (modelB, triggerB), (modelC, triggerC)] x lora-strengths` but then we would need to deconstruct the `(modelX, triggerX)` pairs later.
+
+## The PrimitiveInt control_after_generate=increment pattern
+
+You probably noticed the `control_after_generate` widget before in the `KSampler` for `seed` where it's often set to `random`. This feature can also be created manually with the `Primitive Int` node. If you set it to `control_after_generate=increment` you basically get a counter that increases everytime you run a prompt. When you hook it up as a index in a list selector node, it iterates over entries across multiple prompts. In the `Run` toolbox you can set the amount of prompts to the number of items in your list to iterate the whole list. This pattern essentially cancels out the effect of OutputLists and will only ever process one item at a time. That's especially useful if you want to test something out. Remember to reset the counter to 0 afterwards!
+
+![The PrimitiveInt control_after_generate=increment pattern](/media/PrimitiveIntControlAfterGenerateIncrement.png)
+
+And because it is very tedious to add a selector for every single list, the `Spreadsheet OutputList` includes a `select_nth` widget which applies the index to all lists at once, and makes everything simpler for complex workflows that use multiple lists.
+
+![The PrimitiveInt control_after_generate=increment pattern and Spreadsheet OutputList](/media/PrimitiveIntControlAfterGenerateIncrementSpreadsheet.png)
 
 ## XYZ-GridPlot
 
