@@ -66,7 +66,8 @@ class NumberOutputList(io.ComfyNode):
 	def define_schema(self) -> io.Schema:
 		ret = io.Schema(
 			description=f"""Create a OutputList by generating a numbers of values in a range.
-Uses `numpy.linspace` internally because it works more reliably with floatingpoint values.
+Uses `[numpy.linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html)` internally because it works more reliably with floatingpoint values.
+If you want to define number lists with arbitrary steps instead check out the JSON OutputList and define an array like `[1, 42, 123]`.
 `int`, `float`, `string` and `index` {OUTPUTLIST_NOTE}
 """,
 			node_id	= "NumberOutputList",
@@ -204,7 +205,7 @@ class SpreadsheetOutputList(io.ComfyNode):
 		ret = io.Schema(
 			description	= f"""Create a OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
 Use `Load any File` node to load a file as base64.
-Internally uses pandas to load spreadsheet files.
+Internally uses pandas `[read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html)` and `[read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html)` to load spreadsheet files.
 All lists {OUTPUTLIST_NOTE}
 """,
 			node_id	= "SpreadsheetOutputList",

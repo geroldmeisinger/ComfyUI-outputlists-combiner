@@ -292,4 +292,6 @@ Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search AP
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools)
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
 
+[![Star History Chart](https://api.star-history.com/svg?repos=geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)](https://www.star-history.com/#geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)
+
 <a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>

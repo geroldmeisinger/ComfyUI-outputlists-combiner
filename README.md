@@ -140,7 +140,7 @@ Yeah, I didn't know about it either. Apparently everytime you see the symbol `�
 (workflow included)
 
 Create a OutputList by separating the string in the textfield.
-`value` and `index` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+`value` and `index` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 ### Inputs
 
@@ -165,8 +165,9 @@ Create a OutputList by separating the string in the textfield.
 (workflow included)
 
 Create a OutputList by generating a numbers of values in a range.
-Uses `numpy.linspace` internally because it works more reliably with floatingpoint values.
-`int`, `float`, `string` and `index` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+Uses `[numpy.linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html)` internally because it works more reliably with floatingpoint values.
+If you want to define number lists with arbitrary steps instead check out the JSON OutputList and define an array like `[1, 42, 123]`.
+`int`, `float`, `string` and `index` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 ### Inputs
 
@@ -197,7 +198,7 @@ Create a OutputList by extracting arrays or dictionaries from JSON objects.
 Uses JSONPath syntax to extract the values, see [JSONPath on Wikipedia](https://en.wikipedia.org/wiki/JSONPath) .
 All matched values will be flattend into one list.
 You can also use this node to create objects from literal strings like `[1, 2, 3]`.
-`key`, `value`, `int` and `float` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+`key`, `value`, `int` and `float` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 ### Inputs
 
@@ -226,8 +227,8 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 
 Create a OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
 Use `Load any File` node to load a file as base64.
-Internally uses pandas to load spreadsheet files.
-All lists uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+Internally uses pandas `[read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html)` and `[read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html)` to load spreadsheet files.
+All lists use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 ### Inputs
 
@@ -262,7 +263,7 @@ Example:
 [1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
 ```
 
-`unzip_a` .. `unzip_d` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+`unzip_a` .. `unzip_d` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 All lists are optional and empty lists will be ignored.
 
@@ -365,7 +366,7 @@ Uses python `str.format()` internally, see [Python - Format String Syntax](https
 
 Convert anything number-like to `INT` `FLOAT` `STRING`.
 Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts. Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
-`int`, `float` and `string` uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+`int`, `float` and `string` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 ### Inputs
 
@@ -570,5 +571,7 @@ Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search AP
 - [Impackt-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools)
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
+
+[![Star History Chart](https://api.star-history.com/svg?repos=geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)](https://www.star-history.com/#geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)
 
 <a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>

@@ -6,8 +6,8 @@ from PIL import Image
 
 #any = io.Custom(ANY)
 
-OUTPUTLIST_NOTE	= "uses `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes."
-INPUTLIST_NOTE	= "ideally connected to a node with `is_output_list=True` indicated by the symbol `𝌠`."
+OUTPUTLIST_NOTE	= "use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes."
+INPUTLIST_NOTE 	= "ideally connected to a node with `is_output_list=True` indicated by the symbol `𝌠`."
 
 def tensor_to_skia_image(img):
 	if img.ndim == 4:
