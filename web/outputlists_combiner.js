@@ -1,9 +1,26 @@
-import { api } from "../../scripts/api.js"
-import { app } from "../../scripts/app.js"
+const { applyTextReplacements } = window.comfyAPI.utils
+const { app } = window.comfyAPI.app
+const { api } = window.comfyAPI.api
 
 app.registerExtension(
 {
 	name: "OutputListsCombiner",
+
+	async beforeRegisterNodeDef(node)
+	{
+		if (node.comfyClass === "FormattedString")
+		{
+			node.prototype.onNodeCreated = function()
+			{
+				const widget = this.widgets.find(w => w.name === "fstring")
+				widget.serializeValue = () => {
+					console.log(widget.value)
+					const ret = applyTextReplacements(app, widget.value)
+					return ret
+				}
+			}
+		}
+	},
 
 	async nodeCreated(node)
 	{
