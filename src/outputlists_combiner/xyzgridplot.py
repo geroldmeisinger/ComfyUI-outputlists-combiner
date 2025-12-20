@@ -1,3 +1,4 @@
+import itertools
 import math
 from itertools import repeat
 from typing import Iterable
@@ -59,56 +60,71 @@ def get_texts_type(texts: Iterable[str], paragraphs: Iterable[tl.ParagraphStyle]
 
 	return "singleline"
 
-def find_imgs_rectangularpack(imgs: Iterable[tuple[int, int]]) -> tuple[int, int]:
-	if not imgs: return [0, 0]  # No images
+def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = "aspectratio") -> tuple[int, int, list[int], list[int]]:
+	if not sizes: return [0, 0, [], []]  # no images
 
-	imgs	= list(imgs)
-	n	= len(imgs)
-	if n == 1: return [1, 1]
+	sizes	= list(sizes)
+	n	= len(sizes)
 
-	best_rows = 0
-	best_cols = 0
-	best_diff = float("inf")
-	best_area = float("inf")
+	best_rows	= 0
+	best_cols	= 0
+	best_diagonal	= float("inf")
+	best_area	= float("inf")
+	best_ar_diff	= float("inf")
+	best_col_widths	= []
+	best_row_heights	= []
 
-	# Try every possible number of columns from 1 to n
+	avg_aspectratio = sum([w / h for w, h in sizes]) / n
+
+	# try every possible number of columns from 1 to n
 	for cols in range(1, n + 1):
-		rows = math.ceil(n / cols)
-
-		# Initialize column max widths (for cols columns)
+		rows	= math.ceil(n / cols)
 		col_widths = [0] * cols
 		row_heights = []
 
-		# Distribute images into a grid: row-major order
-		for i in range(rows):
-			row_start = i * cols
-			row_end = min(row_start + cols, n)
-			row_imgs = imgs[row_start:row_end]
-			row_height = 0
+		# distribute images into a grid: row-major order
+		for r in range(rows):
+			row_start	= r * cols
+			row_end	= min(row_start + cols, n)
+			row_imgs	= sizes[row_start:row_end]
+			row_height	= 0
 
-			for j, (w, h) in enumerate(row_imgs):
-				# Update column j's max width
-				if w > col_widths[j]:
-					col_widths[j] = w
-				# Track max height in this row
-				if h > row_height:
+			for c, (w, h) in enumerate(row_imgs):
+				if w > col_widths[c]: # update column's max width
+					col_widths[c] = w
+				if h > row_height: # track max height in this row
 					row_height = h
 
 			row_heights.append(row_height)
 
-		total_width = sum(col_widths)
-		total_height = sum(row_heights)
-		diff = abs(total_width - total_height)
-		area = total_width * total_height
+		total_width	= sum(col_widths)
+		total_height	= sum(row_heights)
+		diagonal	= total_width ** 2 + total_height ** 2
+		area	= total_width * total_height
+		ar_diff	= abs(total_width / total_height - avg_aspectratio)
 
-		# Update best if this layout is more square or same squareness but smaller area
-		if diff < best_diff or (diff == best_diff and area < best_area):
-			best_diff = diff
+		is_better = False
+		if strategy == "square":
+			if diagonal < best_diagonal or (diagonal == best_diagonal and area < best_area):
+				is_better = True
+		elif strategy == "area":
+			if area < best_area or (area == best_area and diagonal < best_diagonal):
+				is_better = True
+		elif strategy == "aspectratio":
+			if ar_diff < best_ar_diff or (area == best_area and diagonal < best_diagonal):
+				is_better = True
+
+		if is_better:
+			best_diagonal = diagonal
 			best_area = area
+			best_ar_diff	= ar_diff
 			best_rows = rows
 			best_cols = cols
+			best_col_widths	= col_widths
+			best_row_heights	= row_heights
 
-	return [best_rows, best_cols]
+	ret = (best_rows, best_cols, best_col_widths, best_row_heights)
+	return ret
 
 def get_vertical_offset(paragraph: tl.ParagraphStyle, width: int, height: int, alignment: str, rotation: int) -> int:
 	if	alignment == "top"	: return 0
@@ -189,7 +205,7 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		rows	= max(1, len(row_labels))
 		subs_num	= len(images_flat) // (rows * cols)
 		outputs_num	= subs_num if output_is_list else 1
-		subs_rows, subs_cols = find_imgs_rectangularpack(repeat((img_w, img_h), 1 if output_is_list else subs_num))
+		subs_rows, subs_cols, _ = find_imgs_rectangularpack((img_w, img_h) * (1 if output_is_list else subs_num))
 
 		# labels
 		labels_rows_w	= 0.0

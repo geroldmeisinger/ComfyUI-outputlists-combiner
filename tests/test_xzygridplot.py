@@ -2,24 +2,41 @@
 
 """Tests for `outputlists_combiner` package."""
 
-# import node_helpers
-# import pytest
-# from comfy_extras.nodes_dataset import pil_to_tensor, tensor_to_pil
-# from PIL import Image
+import colorsys
 
-# from src.outputlists_combiner import XyzGridPlot
+import node_helpers
+import pytest
+from comfy_extras.nodes_dataset import pil_to_tensor, tensor_to_pil
+from PIL import Image, ImageDraw, ImageFont
 
-# LABELS_INT_SHORT	= [1, 2, 3]
-# LABELS_INT_LONG	= [1234567890, 42, 3141592]
-# LABELS_FLOATS	= [0.5, 1.99, 3.141592]
-# LABELS_NUMERIC	= ["CFG: 1.0", "CFG: 12.0", "CFG: 123.0"]
-# LABELS_STRINGS_SHORT	= ["euler", "dpmpp_2m", "uni_pc_bh2"]
-# LABELS_PROMPTS_SHORT	= ["a cat on a table", "portrait photo, studio lighting", "high detail, cinematic"]
-# LABELS_PROMPTS_LONG	= [
-#	"a highly detailed cinematic photograph of a futuristic city at sunset with flying cars",
-#	"masterpiece, best quality, ultra detailed, 8k, sharp focus, dramatic lighting, fantasy art",
-#	"an oil painting of a medieval village during winter, snow falling, warm lights in windows",
-# ]
+from src.outputlists_combiner.xyzgridplot import *
+
+LABELS_INT_SHORT	= [1, 2, 3]
+LABELS_INT_LONG	= [1234567890, 42, 3141592]
+LABELS_FLOATS	= [0.5, 1.99, 3.141592]
+LABELS_NUMERIC	= ["CFG: 1.0", "CFG: 12.0", "CFG: 123.0"]
+LABELS_STRINGS_SHORT	= ["euler", "dpmpp_2m", "uni_pc_bh2"]
+LABELS_PROMPTS_SHORT	= ["a cat on a table", "portrait photo, studio lighting", "high detail, cinematic"]
+LABELS_PROMPTS_LONG	= [
+						"a highly detailed cinematic photograph of a futuristic city at sunset with flying cars",
+						"masterpiece, best quality, ultra detailed, 8k, sharp focus, dramatic lighting, fantasy art",
+						"an oil painting of a medieval village during winter, snow falling, warm lights in windows",
+]
+
+rectangularpack_tests = [
+	("empty"	, []),
+	("single image"	, [(100, 50)]),
+	("two identical"	, [(100, 100), (100, 100)]),
+	("two different"	, [(200, 50), (50, 200)]),
+	("four square"	, [(100, 100), (100, 100), (100, 100), (100, 100)]),
+	("four mixed"	, [(300, 50), (50, 300), (200, 100), (100, 200)]),
+	("three images"	, [(150, 50), (50, 150), (100, 100)]),
+	("six varied"	, [(100, 50), (80, 60), (120, 40), (90, 70), (110, 45), (70, 80)]),
+	("seven identical"	, [(100, 100)] * 7),
+	("ten varied"	, [(200, 50), (50, 200), (150, 100), (100, 150), (180, 60), (60, 180), (120, 120), (140, 90), (90, 140), (160, 70)]),
+	("all wide"	, [(500, 50), (400, 60), (600, 40), (450, 55)]),
+	("all tall"	, [(50, 500), (60, 400), (40, 600), (55, 450)])
+]
 
 # @pytest.fixture
 # def xyzgridplot_node():
@@ -30,11 +47,40 @@
 #	"""Test that the node can be instantiated."""
 #	assert isinstance(xyzgridplot_node, XyzGridPlot)
 
-# def test_return_types():
-#	"""Test the node's metadata."""
-#	assert XyzGridPlot.RETURN_TYPES == ("IMAGE",)
-#	#assert XyzGridPlot.FUNCTION == "execute"
-#	assert XyzGridPlot.CATEGORY == "Utility"
+def test_rectangularpack():
+	num_colors	= 16
+	colors	= [tuple(round(c * 255) for c in colorsys.hsv_to_rgb(h / num_colors, 1.0, 1.0)) for h in range(num_colors)]
+	font	= ImageFont.load_default()
+
+	for t, (title, sizes) in enumerate(rectangularpack_tests):
+		rows, cols, col_widths, row_heights	= find_imgs_rectangularpack(sizes)
+		total_width	= sum(col_widths)
+		total_height	= sum(row_heights)
+
+		if total_width == 0 or total_height == 0: continue
+
+		img = Image.new('RGB', (total_width, total_height), 'white')
+
+		i = 0
+		y = 0
+		for r in range(rows):
+			x = 0
+			for c in range(cols):
+				if i >= len(sizes): break
+
+				img_w, img_h	= sizes[i]
+				col_w, row_h	= col_widths[c], row_heights[r]
+				color	= colors[i % num_colors]
+				text	= f"#{i} {r},{c}\n{img_w}x{img_h}"
+				sub_img	= Image.new('RGB', (img_w, img_h), color)
+				draw	= ImageDraw.Draw(sub_img)
+				draw.text((10, 10), text, fill="black", font=font)
+				img.paste(sub_img, (x, y))
+
+				x += col_w
+				i += 1
+			y += row_h
+		img.show(title)
 
 # def test_main(xyzgridplot_node):
 #	images = []

@@ -1,3 +1,5 @@
+from typing import Iterable
+
 from comfy_api.latest import io
 
 from .util import OUTPUTLIST_NOTE
@@ -32,7 +34,7 @@ class StringOutputList(io.ComfyNode):
 		return ret
 
 	@classmethod
-	def execute(self, separator: str, values: list[str]) -> io.NodeOutput:
+	def execute(self, separator: str, values: Iterable[str]) -> io.NodeOutput:
 		unescaped_separator	= separator.encode().decode('unicode_escape')
 		value	= [s.strip() for s in values.rstrip().split(unescaped_separator)]
 		count	= len(value)
