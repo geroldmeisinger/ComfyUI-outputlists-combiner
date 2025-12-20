@@ -49,11 +49,11 @@ Example:
 		return ret
 
 	@classmethod
-	def execute(self, list_a = [], list_b = [], list_c = [], list_d = []):
+	def execute(self, list_a: list = [], list_b: list = [], list_c: list = [], list_d: list = []) -> io.NodeOutput:
 		normalized	= [lst if len(lst) > 0 else [None] for lst in [list_a, list_b, list_c, list_d]]
 		product	= list(itertools.product(*normalized))
 		transposed	= tuple(map(list, zip(*product)))
 		count	= len(product)
 		index	= range(count)
-		ret	= (*transposed, index, count)
+		ret	= io.NodeOutput(*transposed, index, count)
 		return ret

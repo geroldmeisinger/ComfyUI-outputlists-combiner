@@ -32,7 +32,7 @@ class StringOutputList(io.ComfyNode):
 		return ret
 
 	@classmethod
-	def execute(self, separator, values) -> io.NodeOutput:
+	def execute(self, separator: str, values: list[str]) -> io.NodeOutput:
 		unescaped_separator	= separator.encode().decode('unicode_escape')
 		value	= [s.strip() for s in values.rstrip().split(unescaped_separator)]
 		count	= len(value)

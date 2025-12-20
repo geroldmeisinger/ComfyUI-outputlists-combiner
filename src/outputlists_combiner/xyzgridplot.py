@@ -1,4 +1,6 @@
 import math
+from itertools import repeat
+from typing import Iterable
 
 import nums_from_string
 import skia
@@ -8,7 +10,7 @@ from skia import textlayout as tl
 from .util import *
 
 
-def make_paragraph(text, font_size, width_max, font_coll, para_style, text_style):
+def make_paragraph(text: str, font_size: float, width_max: int, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> tl.ParagraphStyle:
 	text_style.setFontSize(font_size)
 	para_style.setTextStyle(text_style)
 	builder = tl.ParagraphBuilder.make(para_style, font_coll, skia.Unicode())
@@ -17,13 +19,13 @@ def make_paragraph(text, font_size, width_max, font_coll, para_style, text_style
 	ret.layout(width_max)
 	return ret
 
-def fit_texts(texts, font_size, width_max, height_max, font_coll, para_style, text_style):
+def fit_texts(texts: Iterable[str], font_size: float, width_max: int, height_max: int, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> bool:
 	for t in texts:
 		paragraph = make_paragraph(t, font_size, width_max, font_coll, para_style, text_style)
 		if paragraph.Height > height_max: return False
 	return True
 
-def find_uniform_font_size(texts, width_max, height_max, font_size_target, font_size_min, font_coll, para_style, text_style):
+def find_uniform_font_size(texts: Iterable[str], width_max: int, height_max: int, font_size_target: float, font_size_min: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> float:
 	EPS = 0.1
 
 	if fit_texts(texts, font_size_target, width_max, height_max, font_coll, para_style, text_style):
@@ -43,7 +45,7 @@ def find_uniform_font_size(texts, width_max, height_max, font_size_target, font_
 
 	return font_size_low
 
-def get_texts_type(texts, paragraphs, width):
+def get_texts_type(texts: Iterable[str], paragraphs: Iterable[tl.ParagraphStyle], width: int) -> str:
 	is_multiline = any(p.MaxIntrinsicWidth > width for p in paragraphs)
 	if is_multiline: return "multiline"
 
@@ -57,30 +59,58 @@ def get_texts_type(texts, paragraphs, width):
 
 	return "singleline"
 
-def find_imgs_rectangularpack(imgs_num, img_w, img_h):
-	rows_best = 0
-	cols_best = 0
-	diff_best = float("inf")
-	area_best = float("inf")
+def find_imgs_rectangularpack(imgs: Iterable[tuple[int, int]]) -> tuple[int, int]:
+	if not imgs: return [0, 0]  # No images
 
-	for cols in range(1, imgs_num + 1):
-		rows = math.ceil(imgs_num / cols)
+	imgs	= list(imgs)
+	n	= len(imgs)
+	if n == 1: return [1, 1]
 
-		width = cols * img_w
-		height = rows * img_h
+	best_rows = 0
+	best_cols = 0
+	best_diff = float("inf")
+	best_area = float("inf")
 
-		diff = abs(width - height)
-		area = width * height
+	# Try every possible number of columns from 1 to n
+	for cols in range(1, n + 1):
+		rows = math.ceil(n / cols)
 
-		if (diff < diff_best or (diff == diff_best and area < area_best)):
-			diff_best = diff
-			area_best = area
-			rows_best = rows
-			cols_best = cols
+		# Initialize column max widths (for cols columns)
+		col_widths = [0] * cols
+		row_heights = []
 
-	return [rows_best, cols_best]
+		# Distribute images into a grid: row-major order
+		for i in range(rows):
+			row_start = i * cols
+			row_end = min(row_start + cols, n)
+			row_imgs = imgs[row_start:row_end]
+			row_height = 0
 
-def get_vertical_offset(paragraph, width, height, alignment, rotation):
+			for j, (w, h) in enumerate(row_imgs):
+				# Update column j's max width
+				if w > col_widths[j]:
+					col_widths[j] = w
+				# Track max height in this row
+				if h > row_height:
+					row_height = h
+
+			row_heights.append(row_height)
+
+		total_width = sum(col_widths)
+		total_height = sum(row_heights)
+		diff = abs(total_width - total_height)
+		area = total_width * total_height
+
+		# Update best if this layout is more square or same squareness but smaller area
+		if diff < best_diff or (diff == best_diff and area < best_area):
+			best_diff = diff
+			best_area = area
+			best_rows = rows
+			best_cols = cols
+
+	return [best_rows, best_cols]
+
+def get_vertical_offset(paragraph: tl.ParagraphStyle, width: int, height: int, alignment: str, rotation: int) -> int:
 	if	alignment == "top"	: return 0
 	elif	alignment == "middle"	: return (height - paragraph.Height) / 2
 	elif	alignment == "bottom"	: return (height - paragraph.Height)
@@ -131,7 +161,7 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 	@classmethod
 	#def execute(self, images, row_labels, col_labels, row_label_orientation, gap, font_size, output_is_list):
-	def execute(self, images, row_labels=[], col_labels=[], gap=[0], font_size=[6], order=["outside-in"], output_is_list=[False]):
+	def execute(self, images: Iterable[torch.tensor], row_labels: Iterable[any] = [], col_labels: Iterable[any] = [], gap: list[int] = [0], font_size: list[float] = [6], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> io.NodeOutput:
 		FONT_SIZE_MIN	= 6
 		PADDING	= 18
 
@@ -159,7 +189,7 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		rows	= max(1, len(row_labels))
 		subs_num	= len(images_flat) // (rows * cols)
 		outputs_num	= subs_num if output_is_list else 1
-		subs_rows, subs_cols = find_imgs_rectangularpack(1 if output_is_list else subs_num, img_w, img_h)
+		subs_rows, subs_cols = find_imgs_rectangularpack(repeat((img_w, img_h), 1 if output_is_list else subs_num))
 
 		# labels
 		labels_rows_w	= 0.0
@@ -285,4 +315,5 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 			output	= skia_to_tensor(skia_img)
 			outputs.append(output)
 
-		return (outputs, )
+		ret = io.NodeOutput(outputs)
+		return ret

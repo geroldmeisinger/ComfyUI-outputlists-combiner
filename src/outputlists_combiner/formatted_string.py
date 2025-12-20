@@ -39,6 +39,6 @@ Note that "search & replace" takes place in Javascript context which runs before
 		return ret
 
 	@classmethod
-	def execute(self, fstring, a = "", b = "", c = "", d = ""):
-		ret = (fstring.format(a=a, b=b, c=c, d=d),)
+	def execute(self, fstring: str, a: any = "", b: any = "", c: any = "", d: any = "") -> io.NodeOutput:
+		ret = io.NodeOutput(fstring.format(a=a, b=b, c=c, d=d))
 		return ret

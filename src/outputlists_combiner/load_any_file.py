@@ -32,7 +32,7 @@ class LoadAnyFile(io.ComfyNode):
 		return ret
 
 	@classmethod
-	def load_image(self, image_data):
+	def load_image(self, image_data: str | BytesIO) -> tuple[torch.tensor, torch.tensor]:
 		img = node_helpers.pillow(Image.open, image_data)
 
 		# from ComfyUI/nodes.py LoadImage
@@ -79,7 +79,7 @@ class LoadAnyFile(io.ComfyNode):
 		return (output_image, output_mask)
 
 	@classmethod
-	def execute(self, annotated_filepath):
+	def execute(self, annotated_filepath: str) -> io.NodeOutput:
 		file_path = folder_paths.get_annotated_filepath(annotated_filepath)
 
 		with open(file_path, "rb") as f:
@@ -121,10 +121,11 @@ class LoadAnyFile(io.ComfyNode):
 			image	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 			mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 
-		return (filecontent, image, mask)
+		ret = io.NodeOutput(filecontent, image, mask)
+		return ret
 
 	@classmethod
-	def IS_CHANGED(s, annotated_filepath):
+	def fingerprint_inputs(cls, annotated_filepath: str) -> str:
 		path	= folder_paths.get_annotated_filepath(annotated_filepath)
 		m	= hashlib.sha256()
 		with open(path, 'rb') as f:
@@ -133,7 +134,7 @@ class LoadAnyFile(io.ComfyNode):
 		return ret
 
 	@classmethod
-	def VALIDATE_INPUTS(s, annotated_filepath):
+	def validate_inputs(cls, annotated_filepath: str) -> bool | str:
 		path = folder_paths.get_annotated_filepath(annotated_filepath)
 		if not folder_paths.exists_annotated_filepath(path):
 			return "Invalid file: {}".format(path)

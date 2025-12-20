@@ -43,7 +43,7 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 		return ret
 
 	@classmethod
-	def execute(cls, jsonpath, json, obj=None) -> io.NodeOutput:
+	def execute(cls, jsonpath: str, json: str, obj: any = None) -> io.NodeOutput:
 		# parse JSON
 		if obj:
 			if isinstance(obj, str):

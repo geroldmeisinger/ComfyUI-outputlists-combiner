@@ -18,7 +18,7 @@ Use a string `123;234;345` to quickly generate a list of numbers. Don't use comm
 			category	= "Utility",
 			is_input_list=True,
 			inputs=[
-				io.AnyType.Input("number", display_name="any", tooltip="Anything that can be meaningfully converted to a string"),
+				io.AnyType.Input("number", display_name="any", tooltip="Anything that can be meaningfully converted to a string with parseable numbers inside"),
 			],
 			outputs=[
 				io.Int	.Output("int"	, display_name="int"	, is_output_list=True	, tooltip=f"All the numbers found in the string with the decimals truncated. {OUTPUTLIST_NOTE}"),
@@ -30,11 +30,11 @@ Use a string `123;234;345` to quickly generate a list of numbers. Don't use comm
 		return ret
 
 	@classmethod
-	def execute(self, number_any):
-		number_str	= str(number_any)
+	def execute(self, number: any) -> io.NodeOutput:
+		number_str	= str(number)
 		floats	= nums_from_string.get_nums(number_str)
 		ints	= [int(f) for f in floats]
 		strs	= [str(f) for f in floats]
 		count	= len(floats)
-		ret	= (ints, floats, strs, count)
+		ret	= io.NodeOutput(ints, floats, strs, count)
 		return ret

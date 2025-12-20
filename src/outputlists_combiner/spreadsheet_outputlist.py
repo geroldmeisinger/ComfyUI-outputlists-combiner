@@ -44,19 +44,19 @@ All lists {OUTPUTLIST_NOTE}
 		return ret
 
 	@staticmethod
-	def is_valid_selector(re, sel):
+	def is_valid_selector(re: re.Pattern[str], sel: str):
 		ret = re.match(sel) is not None
 		return ret
 
 	@staticmethod
-	def col_to_index(col):
+	def col_to_index(col: str):
 		total = 0
 		for c in col.upper():
 			total = total * 26 + (ord(c) - 64)
 		return total - 1
 
 	@classmethod
-	def execute(self, string_or_base64, rows_and_cols, header_rows, header_cols, select_nth):
+	def execute(self, string_or_base64: str, rows_and_cols: str, header_rows: int, header_cols: int, select_nth: int):
 		limit	= 4
 		data	= string_or_base64.strip()
 
