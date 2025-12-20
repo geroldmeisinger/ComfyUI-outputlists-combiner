@@ -231,8 +231,11 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 			labels_layout.append((label_data, paragraphs, texts_type))
 
 		# render
-		grid_w = int(labels_rows_w) + (cols + 1) * gap + cols * subs_cols * img_w
-		grid_h = int(labels_cols_h) + (rows + 1) * gap + rows * subs_rows * img_h
+
+		# pad width and height so it's divisible by 2 for Create Video node, see #19
+		grid_div	= 2
+		grid_w = math.ceil((int(labels_rows_w) + (cols + 1) * gap + cols * subs_cols * img_w) / grid_div) * grid_div
+		grid_h = math.ceil((int(labels_cols_h) + (rows + 1) * gap + rows * subs_rows * img_h) / grid_div) * grid_div
 
 		outputs = []
 		for b in range(outputs_num):
