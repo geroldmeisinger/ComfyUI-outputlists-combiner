@@ -1,6 +1,4 @@
-import itertools
-import math
-from itertools import repeat
+from math import ceil
 from typing import Iterable
 
 import nums_from_string
@@ -11,7 +9,7 @@ from skia import textlayout as tl
 from .util import *
 
 
-def make_paragraph(text: str, font_size: float, width_max: int, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> tl.ParagraphStyle:
+def make_paragraph(text: str, width_max: int, font_size: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> tl.ParagraphStyle:
 	text_style.setFontSize(font_size)
 	para_style.setTextStyle(text_style)
 	builder = tl.ParagraphBuilder.make(para_style, font_coll, skia.Unicode())
@@ -20,16 +18,16 @@ def make_paragraph(text: str, font_size: float, width_max: int, font_coll: tl.Fo
 	ret.layout(width_max)
 	return ret
 
-def fit_texts(texts: Iterable[str], font_size: float, width_max: int, height_max: int, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> bool:
-	for t in texts:
-		paragraph = make_paragraph(t, font_size, width_max, font_coll, para_style, text_style)
+def fit_texts(label_infos: Iterable[tuple[str, int, int]], font_size: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> bool:
+	for text, width_max, height_max in label_infos:
+		paragraph = make_paragraph(text, width_max, font_size, font_coll, para_style, text_style)
 		if paragraph.Height > height_max: return False
 	return True
 
-def find_uniform_font_size(texts: Iterable[str], width_max: int, height_max: int, font_size_target: float, font_size_min: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> float:
+def find_uniform_font_size(label_infos: Iterable[tuple[str, int, int]], font_size_target: float, font_size_min: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> float:
 	EPS = 0.1
 
-	if fit_texts(texts, font_size_target, width_max, height_max, font_coll, para_style, text_style):
+	if fit_texts(label_infos, font_size_target, font_coll, para_style, text_style):
 		return font_size_target
 
 	# Binary search between target size and min size
@@ -38,7 +36,7 @@ def find_uniform_font_size(texts: Iterable[str], width_max: int, height_max: int
 
 	while (font_size_high - font_size_low) > EPS:
 		font_size_mid	= (font_size_low + font_size_high) / 2
-		fits	= fit_texts(texts, font_size_mid, width_max, height_max, font_coll, para_style, text_style)
+		fits	= fit_texts(label_infos, font_size_mid, font_coll, para_style, text_style)
 		if fits:
 			font_size_low = font_size_mid
 		else:
@@ -46,22 +44,22 @@ def find_uniform_font_size(texts: Iterable[str], width_max: int, height_max: int
 
 	return font_size_low
 
-def get_texts_type(texts: Iterable[str], paragraphs: Iterable[tl.ParagraphStyle], width: int) -> str:
-	is_multiline = any(p.MaxIntrinsicWidth > width for p in paragraphs)
+def get_texts_type(label_infos: Iterable[tuple[str, int, tl.ParagraphStyle]]) -> str:
+	is_multiline = any(p.MaxIntrinsicWidth > w for _, w, p in label_infos)
 	if is_multiline: return "multiline"
 
 	is_numeric = True
-	for t in texts:
-		tokens = nums_from_string.get_numeric_string_tokens(t)
+	for text, *_ in label_infos:
+		tokens = nums_from_string.get_numeric_string_tokens(text)
 		if len(tokens) != 1	: is_numeric = False; break
-		if not t.rstrip().endswith(tokens[0])	: is_numeric = False; break
+		if not text.rstrip().endswith(tokens[0])	: is_numeric = False; break
 
 	if is_numeric: return "numeric"
 
 	return "singleline"
 
-def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = "aspectratio") -> tuple[int, int, list[int], list[int]]:
-	if not sizes: return [0, 0, [], []]  # no images
+def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = "square") -> tuple[int, int]: #, list[int], list[int]]:
+	if not sizes: return [0, 0] #, [], []]  # no images
 
 	sizes	= list(sizes)
 	n	= len(sizes)
@@ -71,14 +69,14 @@ def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = 
 	best_diagonal	= float("inf")
 	best_area	= float("inf")
 	best_ar_diff	= float("inf")
-	best_col_widths	= []
-	best_row_heights	= []
+	# best_col_widths	= []
+	# best_row_heights	= []
 
 	avg_aspectratio = sum([w / h for w, h in sizes]) / n
 
 	# try every possible number of columns from 1 to n
 	for cols in range(1, n + 1):
-		rows	= math.ceil(n / cols)
+		rows	= ceil(n / cols)
 		col_widths = [0] * cols
 		row_heights = []
 
@@ -120,23 +118,84 @@ def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = 
 			best_ar_diff	= ar_diff
 			best_rows = rows
 			best_cols = cols
-			best_col_widths	= col_widths
-			best_row_heights	= row_heights
+			#best_col_widths	= col_widths
+			#best_row_heights	= row_heights
 
-	ret = (best_rows, best_cols, best_col_widths, best_row_heights)
+	ret = (best_rows, best_cols) #, best_col_widths, best_row_heights)
 	return ret
 
-def get_vertical_offset(paragraph: tl.ParagraphStyle, width: int, height: int, alignment: str, rotation: int) -> int:
+
+def get_grid_sizes(sizes: Iterable[tuple[int, int]], shape: tuple[int, int]) -> tuple[list[int], list[int]]:
+	"""
+	sizes: iterable of (width, height), length should be rows * cols
+	rows, cols: grid shape
+
+	Returns:
+		(column_widths, row_heights)
+	"""
+
+	rows, cols = shape
+
+	col_widths	= [0] * cols
+	row_heights	= [0] * rows
+
+	for idx, (w, h) in enumerate(sizes):
+		r = idx //	cols
+		c = idx %	cols
+
+		col_widths	[c] = max(col_widths[c], w)
+		row_heights	[r] = max(row_heights[r], h)
+
+	return row_heights, col_widths
+
+def get_vertical_offset(paragraph: tl.ParagraphStyle, height: int, alignment: str) -> int:
 	if	alignment == "top"	: return 0
 	elif	alignment == "middle"	: return (height - paragraph.Height) / 2
 	elif	alignment == "bottom"	: return (height - paragraph.Height)
 	else: return 0
 
+def flatten_images(images: Iterable[torch.Tensor], rows: int, cols: int, order: bool = True) -> list[torch.Tensor]:
+	"""
+	Flatten a list of BHWC tensors with different batch sizes, heights, widths.
+
+	Returns a list of tensors where each tensor has B=1.
+	"""
+
+	# pad batches to batch_max
+	batch_max	= max(img.shape[0] for img in images)
+	images_padded	= []
+	for img in images:
+		B, H, W, C = img.shape
+
+		if B < batch_max:
+			pad = torch.zeros((batch_max - B, H, W, C))
+			img = torch.cat([img, pad], dim=0)
+
+		images_padded.append(img)
+
+	# flatten according to order
+	ret = []
+	if order:  # outside-in (batch-major)
+		for img in images_padded:
+			for b in range(batch_max):
+				ret.append(img[b:b+1])
+
+	else:  # inside-out (interleave batches)
+		for b in range(batch_max):
+			for img in images_padded:
+				ret.append(img[b:b+1])
+
+	return ret
+
+FONT_SIZE_MIN	= 6
+PADDING	= 16
+LABELAREA_ROW_HEIGHT_MIN	= 256
+
 class XyzGridPlot(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= """Generate a XYZ-Gridplot from a list of images.
+			description	= f"""Generate a XYZ-Gridplot from a list of images.
 It takes a list of images (including batches) and will flatten the list first (thus `batch_size=1`).
 The shape of the grid is determined:
 1. by the number of row labels
@@ -146,9 +205,9 @@ You can use `order=inside_out` to reverse how the images are selected.
 Sub-images (usually from batches) will be shaped into the most square area (the "sub-image packing"), unless `output_is_list=True` in which case a list of image grids will be created instead. You can use this list to connect another XyzGridPlot node to create super-grids.
 
 Font-size:
-For the column label areas the width is determined by the width of the sub-image packing, the height is determined by `font_size` or `half image_height` (whichever is greater).
-For the row label areas the width is also determined by the width(!) of the sub-images packing (with a minimum of 256px), the height is determined by height of the sub-images.
-The text will be shrunk down until it fits (up to `font_size_min=6`) and the same font size will be used for the whole axis (column labels/row labels). If the font size is already at the minimum, any remaining text will be clipped (reasoning: the lower part of a prompt is usually not that important).
+For the column label areas the width is determined by the width of the sub-image packing, the height is determined by `font_size` or `half image height` (whichever is greater).
+For the row label areas the width is also determined by the width(!) of the sub-images packing (with a minimum of {LABELAREA_ROW_HEIGHT_MIN}px), the height is determined by height of the sub-images.
+The text will be shrunk down until it fits (up to `font_size_min={FONT_SIZE_MIN}`) and the same font size will be used for the whole axis (column labels/row labels). If the font size is already at the minimum, any remaining text will be clipped (reasoning: the lower part of a prompt is usually not that important).
 
 Alignment:
 If a label got wrapped the whole axis is considered "multiline" and will be align at top and justified.
@@ -165,7 +224,7 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 				io.AnyType	.Input("row_labels"	, display_name="row_labels"	, optional=True,	tooltip=f"The text used for the row labels at the left side {INPUTLIST_NOTE}"),
 				io.AnyType	.Input("col_labels"	, display_name="col_labels"	, optional=True,	tooltip=f"The text used for the column labels at the top {INPUTLIST_NOTE}"),
 				io.Int	.Input("gap"	, display_name="gap"	, default=0, min=0, max=128,	tooltip="The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node."),
-				io.Float	.Input("font_size"	, display_name="font_size"	, default=50, min=6, max=1000,	tooltip="The target font size. The text will be shrunk down until it fits (up to `font_size_min=6`)."),
+				io.Float	.Input("font_size"	, display_name="font_size"	, default=50, min=6, max=1000,	tooltip=f"The target font size. The text will be shrunk down until it fits (up to `font_size_min={FONT_SIZE_MIN}`)."),
 				io.Boolean	.Input("order"	, display_name="order"	, default=True, label_on="outside-in", label_off="inside-out",	tooltip="Defines in which order the images should be processed. This is only relevant if you have sub-images."),
 				io.Boolean	.Input("output_is_list"	, display_name="output_is_list"	, default=False, label_on="True", label_off="False",	tooltip="This is only relevant if you have sub-images or you want to create super-grids."),
 			],
@@ -177,9 +236,8 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 	@classmethod
 	#def execute(self, images, row_labels, col_labels, row_label_orientation, gap, font_size, output_is_list):
-	def execute(self, images: Iterable[torch.tensor], row_labels: Iterable[any] = [], col_labels: Iterable[any] = [], gap: list[int] = [0], font_size: list[float] = [6], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> io.NodeOutput:
-		FONT_SIZE_MIN	= 6
-		PADDING	= 18
+	def execute(self, images: Iterable[torch.tensor], row_labels: Iterable[any] = [], col_labels: Iterable[any] = [], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> io.NodeOutput:
+		outputs = []
 
 		#row_label_orientation	= row_label_orientation	[0]
 		row_label_orientation	= "horizontal"
@@ -189,25 +247,23 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		output_is_list	= output_is_list	[0]
 
 		# flatten images
-		images_flat = []
-		if order: # outside-in
-			for img in images:
-				for b in range(img.shape[0]):
-					images_flat.append(img[b:b+1])
-		else:  # inside-out
-			batch_size = images[0].shape[0]
-			for b in range(batch_size):
-				for img in images:
-					images_flat.append(img[b:b+1])
-
-		img_h, img_w	= images[0].shape[1:3]
-		cols	= max(1, len(col_labels))
 		rows	= max(1, len(row_labels))
+		cols	= max(1, len(col_labels))
+
+		images_flat = flatten_images(images, rows, cols, order)
+		img_sizes	= [(i.shape[1], i.shape[2]) for i in images]
+
 		subs_num	= len(images_flat) // (rows * cols)
+		subs_sizes	= [get_grid_sizes(img_sizes[i:i + subs_num], find_imgs_rectangularpack(img_sizes[i:i + subs_num])) for i in range(0, len(img_sizes), subs_num)]
+		subs_full_sizes	= [(sum(sub_row_heights), sum(sub_col_widths)) for sub_row_heights, sub_col_widths in subs_sizes]
+		row_heights, col_widths	= get_grid_sizes(subs_full_sizes, (rows, cols))
+
 		outputs_num	= subs_num if output_is_list else 1
-		subs_rows, subs_cols, _ = find_imgs_rectangularpack((img_w, img_h) * (1 if output_is_list else subs_num))
 
 		# labels
+		labels_col_height_max	= max(max(h for _, h in subs_full_sizes) // 2	- 2 * PADDING, 0)
+		labels_row_width_max	= max(max(w for w, _ in subs_full_sizes)	- 2 * PADDING, 0)
+
 		labels_rows_w	= 0.0
 		labels_cols_h	= 0.0
 		labels_data	= []
@@ -218,9 +274,7 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 				"rotation"	: 0,
 				"align"	: { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight },
 				"valign"	: { "singleline": "bottom"	, "multiline": "top"	, "numeric": "bottom" },
-				"height_max"	: max(font_size + 2 * PADDING, subs_cols * img_h / 2 - 2 * PADDING),
-				"width_max"	: subs_cols * img_w - 2 * PADDING,
-				"pos"	: lambda i: (labels_rows_w + PADDING + (i + 1) * gap + i * subs_cols * img_w, PADDING),
+				#"pos"	: lambda i: (labels_rows_w + PADDING + (i + 1) * gap + i * subs_cols * img_w, PADDING),
 			})
 
 		if len(row_labels) > 0:
@@ -229,8 +283,6 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 			align_vert	= { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kCenter	}
 			valign_horz	= { "singleline": "middle"	, "multiline": "top"	, "numeric": "middle" }
 			valign_vert	= { "singleline": "middle"	, "multiline": "bottom"	, "numeric": "middle" }
-			label_row_height_max	= subs_rows * img_h - 2 * PADDING
-			label_row_width_max	= max(256, subs_cols * img_w) - 2 * PADDING
 
 			labels_data.append({
 				"texts"	: [str(r) for r in row_labels],
@@ -238,9 +290,7 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 				"rotation"	: 0	if is_horz else -90,
 				"align"	: align_horz	if is_horz else align_vert,
 				"valign"	: valign_horz	if is_horz else valign_vert,
-				"height_max"	: label_row_height_max	if is_horz else label_row_width_max,
-				"width_max"	: label_row_width_max	if is_horz else label_row_height_max,
-				"pos"	: lambda i: (PADDING, labels_cols_h + PADDING + (i + 1) * gap + i * subs_rows * img_h),
+				#"pos"	: lambda i: (PADDING, labels_cols_h + PADDING + (i + 1) * gap + i * subs_rows * img_h),
 			})
 
 		font_coll = tl.FontCollection()
@@ -250,82 +300,107 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		text_style_base.setFontFamilies(["DejaVu Sans"])
 		text_style_base.setColor(skia.ColorBLACK)
 
-		labels_layout = []
-		for label_data in labels_data:
+		for label in labels_data:
+			labels_n	= len(label["texts"])
 			align_default	= tl.TextAlign.kLeft
-			is_column	= label_data["is_column"]
+			is_column	= label["is_column"]
+			label_max_widths	= col_widths	if is_column else [labels_row_width_max] * labels_n
+			label_max_heights	= [labels_col_height_max] * labels_n	if is_column else row_heights
+			label_infos	= list(zip(label["texts"], label_max_widths, label_max_heights))
 
 			para_style = tl.ParagraphStyle()
 			para_style.setTextAlign(align_default)
-			font_size_fit = find_uniform_font_size(label_data["texts"], label_data["width_max"], label_data["height_max"], font_size, FONT_SIZE_MIN, font_coll, para_style, text_style_base)
+			font_size_fit = find_uniform_font_size(label_infos, font_size, FONT_SIZE_MIN, font_coll, para_style, text_style_base)
 
-			paragraphs_ = [make_paragraph(text, font_size_fit, label_data["width_max"], font_coll, para_style, text_style_base) for text in label_data["texts"]]
+			paragraphs_ = [make_paragraph(text, width_max, font_size_fit, font_coll, para_style, text_style_base) for (text, width_max, _) in label_infos]
 
-			width_max	= max((max(p.LongestLine, p.MinIntrinsicWidth)	for p in paragraphs_)	, default=0.0) + 1
-			height_max	= max((p.Height	for p in paragraphs_)	, default=0.0)
-
-			texts_type	= get_texts_type(label_data["texts"], paragraphs_, label_data["width_max"])
-			align	= label_data["align"][texts_type]
+			label_infos	= list(zip(label["texts"], label_max_widths, paragraphs_))
+			texts_type	= get_texts_type(label_infos)
+			align	= label["align"][texts_type]
 
 			para_style.setTextAlign(align)
-			paragraphs = [make_paragraph(text, font_size_fit, label_data["width_max"] if is_column else width_max, font_coll, para_style, text_style_base) for text in label_data["texts"]]
-			#paragraphs = paragraphs_
+			paragraphs = [make_paragraph(text, width_max, font_size_fit, font_coll, para_style, text_style_base) for (text, width_max, _) in label_infos]
 
-			if is_column	: labels_cols_h = min(height_max, label_data["height_max"]) + 2 * PADDING
-			else	: labels_rows_w = min(width_max , label_data["width_max" ]) + 2 * PADDING
+			if is_column:
+				labels_cols_h = max((p.Height for p in paragraphs), default=0.0)
+			else:
+				labels_rows_w = max((max(p.LongestLine, p.MinIntrinsicWidth) for p in paragraphs), default=0.0) + 1
 
-			labels_layout.append((label_data, paragraphs, texts_type))
+			label["paragraphs"] = paragraphs
+			label["texts_type"] = texts_type
 
 		# render
 
 		# pad width and height so it's divisible by 2 for Create Video node, see #19
 		grid_div	= 2
-		grid_w = math.ceil((int(labels_rows_w) + (cols + 1) * gap + cols * subs_cols * img_w) / grid_div) * grid_div
-		grid_h = math.ceil((int(labels_cols_h) + (rows + 1) * gap + rows * subs_rows * img_h) / grid_div) * grid_div
+		grid_w = ceil((ceil(labels_rows_w) + (cols + 1) * gap + sum(col_widths )) / grid_div) * grid_div
+		grid_h = ceil((ceil(labels_cols_h) + (rows + 1) * gap + sum(row_heights)) / grid_div) * grid_div
 
-		outputs = []
 		for b in range(outputs_num):
 			surface	= skia.Surface(grid_w, grid_h)
 			canvas	= surface.getCanvas()
 			canvas.clear(skia.ColorWHITE)
 
-			# draw labels
-			for label_data, paragraphs, texts_type in labels_layout:
-				width_max	= label_data["width_max"]	if label_data["is_column"] else labels_rows_w
-				height_max	= labels_cols_h	if label_data["is_column"] else label_data["height_max"]
-				for i, paragraph in enumerate(paragraphs):
-					x, y	= label_data["pos"](i) #, paragraph.Width, paragraph.Height)
-					oy	= get_vertical_offset(paragraph, width_max, height_max - 2 * PADDING, label_data["valign"][texts_type], label_data["rotation"])
+			# draw column labels
+			label = labels_data[0]
+			x, y	= labels_rows_w + gap, PADDING
+			for i in range(len(label["texts"])):
+				paragraph	= label["paragraphs"][i]
+				width	= col_widths[i]
+				oy	= get_vertical_offset(paragraph, labels_cols_h, label["valign"][texts_type])
 
-					canvas.save()
-					canvas.translate(x, y + oy)
-					canvas.rotate(label_data["rotation"])
-					canvas.clipRect(skia.Rect.MakeWH(width_max, height_max))
-					paragraph.paint(canvas, 0, 0)
-					canvas.restore()
+				canvas.save()
+				canvas.translate(x, y)
+				canvas.clipRect(skia.Rect.MakeWH(width, labels_cols_h))
+				paragraph.paint(canvas, 0, 0)
+				canvas.restore()
+
+				x += width + gap
+
+			# draw row labels
+			label = labels_data[1]
+			x, y	= labels_rows_w - labels_row_width_max + PADDING, labels_cols_h + gap
+			for i in range(len(label["texts"])):
+				paragraph	= label["paragraphs"][i]
+				height	= row_heights[i]
+				oy	= get_vertical_offset(paragraph, height, label["valign"][texts_type])
+
+				canvas.save()
+				canvas.translate(x, y + oy)
+				canvas.clipRect(skia.Rect.MakeWH(labels_row_width_max, height))
+				paragraph.paint(canvas, 0, 0)
+				canvas.restore()
+
+				y += height + gap
 
 			# draw images
 			idx_M = 0
-			for r in range(rows):
-				for c in range(cols):
+			y = labels_cols_h + gap
+			for r, row_h in enumerate(row_heights):
+				x = labels_rows_w + gap
+				for c, col_w in enumerate(col_widths):
+					idx_M = r * rows + c
 					cell_imgs	= images_flat[idx_M:(idx_M + subs_num)]
-
 					if output_is_list: cell_imgs = [cell_imgs[b]]
 
+					sub_row_hs, sub_col_ws = subs_sizes[idx_M]
+					soy = 0
 					idx_m = 0
-					for sr in range(subs_rows):
-						for sc in range(subs_cols):
-							if idx_m >= len(cell_imgs): continue
-
+					for sub_row_h in sub_row_hs:
+						sox = 0
+						for sub_col_w in sub_col_ws:
 							img	= cell_imgs[idx_m]
+							img_w, img_h	= img.shape[2], img.shape[1]
 							sk_img	= tensor_to_skia_image(img)
-							sk_rect	= skia.Rect.MakeXYWH(
-								labels_rows_w + (c + 1) * gap + c * subs_cols * img_w + sc * img_w,
-								labels_cols_h + (r + 1) * gap + r * subs_rows * img_h + sr * img_h,
-								img_w, img_h)
+							sk_rect	= skia.Rect.MakeXYWH(x + sox, y + soy, img_w, img_h)
 							canvas.drawImageRect(sk_img, sk_rect)
+
+							sox += sub_col_w
 							idx_m += 1
+						soy += sub_row_h
+					x += col_w + gap
 					idx_M += subs_num
+				y += row_h + gap
 
 			skia_img	= surface.makeImageSnapshot()
 			output	= skia_to_tensor(skia_img)
@@ -333,3 +408,14 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 		ret = io.NodeOutput(outputs)
 		return ret
+
+	@classmethod
+	def validate_inputs(self, images: Iterable[torch.tensor], row_labels: Iterable[any] = [], col_labels: Iterable[any] = [], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> bool | str:
+		rows = len(row_labels)
+		cols = len(col_labels)
+		n	= rows * cols
+		len	= len(images)
+		if len % n != 0:
+			return "Number of images must be a multiple of rows * cols ({rows} * {cols} = {n}) but got {len}!"
+
+		return True

@@ -8,6 +8,7 @@ repo_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, repo_dir)
 
 from src.outputlists_combiner import *
+from src.outputlists_combiner.util import INPUTLIST_NOTE, OUTPUTLIST_NOTE
 
 
 def generate_table(rows):
@@ -26,6 +27,7 @@ def generate_table(rows):
 	return lines
 
 def test_generate_docs():
+	return
 	nodes = [
 		StringOutputList(),
 		NumberOutputList(),

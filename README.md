@@ -167,7 +167,7 @@ Create a OutputList by separating the string in the textfield.
 (workflow included)
 
 Create a OutputList by generating a numbers of values in a range.
-Uses `[numpy.linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html)` internally because it works more reliably with floatingpoint values.
+Uses [numpy.linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html) internally because it works more reliably with floatingpoint values.
 If you want to define number lists with arbitrary steps instead check out the JSON OutputList and define an array like `[1, 42, 123]`.
 `int`, `float`, `string` and `index` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
@@ -312,7 +312,7 @@ You can use `order=inside_out` to reverse how the images are selected.
 Sub-images (usually from batches) will be shaped into the most square area (the "sub-image packing"), unless `output_is_list=True` in which case a list of image grids will be created instead. You can use this list to connect another XyzGridPlot node to create super-grids.
 
 Font-size:
-For the column label areas the width is determined by the width of the sub-image packing, the height is determined by `font_size` or `half image_height` (whichever is greater).
+For the column label areas the width is determined by the width of the sub-image packing, the height is determined by `font_size` or `half image height` (whichever is greater).
 For the row label areas the width is also determined by the width(!) of the sub-images packing (with a minimum of 256px), the height is determined by height of the sub-images.
 The text will be shrunk down until it fits (up to `font_size_min=6`) and the same font size will be used for the whole axis (column labels/row labels). If the font size is already at the minimum, any remaining text will be clipped (reasoning: the lower part of a prompt is usually not that important).
 
@@ -327,8 +327,8 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
 | `images`	| `IMAGE`	| A list of images (including batches)	|
-| `row_labels`	| `STRING`	| The text used for the row labels at the left side	|
-| `col_labels`	| `STRING`	| The text used for the column labels at the top	|
+| `row_labels`	| `*`	| The text used for the row labels at the left side	|
+| `col_labels`	| `*`	| The text used for the column labels at the top	|
 | `gap`	| `INT`	| The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node.	|
 | `font_size`	| `FLOAT`	| The target font size. The text will be shrunk down until it fits (up to `font_size_min=6`).	|
 | `order`	| `BOOLEAN`	| Defines in which order the images should be processed. This is only relevant if you have sub-images.	|
@@ -346,16 +346,21 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 (workflow included)
 
+String with variable placeholders which will replaced with their respective values.
 Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .
 * Use `{a:.2f}` to round off a float to 2 decimals.
 * Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.
 * If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.
 
+Also applies "search & replace" (S&R) syntax such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`.
+Thus you can also use it as a getter node.
+Note that "search & replace" takes place in Javascript context which runs before node execution.
+
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `fstring`	| `STRING`	| Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) . * Use `{a:.2f}` to round off a float to 2 decimals. * Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`. * If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.	|
+| `fstring`	| `STRING`	| String with variable placeholders which will replaced with their respective values. Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) . * Use `{a:.2f}` to round off a float to 2 decimals. * Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`. * If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.  Also applies "search & replace" (S&R) syntax such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`. Thus you can also use it as a getter node. Note that "search & replace" takes place in Javascript context which runs before node execution.	|
 | `a`	| `*`	| (optional) value that will be as a string at the `{a}` placeholder.	|
 | `b`	| `*`	| (optional) value that will be as a string at the `{b}` placeholder.	|
 | `c`	| `*`	| (optional) value that will be as a string at the `{c}` placeholder.	|
@@ -375,13 +380,14 @@ Uses python `str.format()` internally, see [Python - Format String Syntax](https
 
 Convert anything number-like to `INT` `FLOAT` `STRING`.
 Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts. Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
+Use a string `123;234;345` to quickly generate a list of numbers. Don't use commas as separators as they may be interpreted as thousand-separators.
 `int`, `float` and `string` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `number`	| `*`	| Anything that can be meaningfully converted to a string	|
+| `any`	| `*`	| Anything that can be meaningfully converted to a string with parseable numbers inside	|
 
 ### Outputs
 
@@ -390,7 +396,7 @@ Uses `nums_from_string.get_nums` internally which is very permissive in the numb
 | `int`	| `INT𝌠`	| All the numbers found in the string with the decimals truncated.	|
 | `float`	| `FLOAT𝌠`	| All the numbers found in the string as floats.	|
 | `string`	| `STRING𝌠`	| All the numbers found in the string as floats converted to string.	|
-| `count`	| `INT`	| Amount of numbers found in the full list.	|
+| `count`	| `INT`	| Amount of numbers found in the value.	|
 
 ## Load Any File
 
