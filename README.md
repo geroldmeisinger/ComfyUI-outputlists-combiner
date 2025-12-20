@@ -139,7 +139,7 @@ Yeah, I didn't know about it either. Apparently everytime you see the symbol `�
 
 ![String OutputList](/media/StringOutputList.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Create a OutputList by separating the string in the textfield.
 `value` and `index` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
@@ -155,8 +155,8 @@ Create a OutputList by separating the string in the textfield.
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `value`	| `*𝌠`	| The values from the list.	|
-| `index`	| `INT𝌠`	| Range of 0..count which can be used as an index.	|
+| `value`	| `* 𝌠`	| The values from the list.	|
+| `index`	| `INT 𝌠`	| Range of 0..count which can be used as an index.	|
 | `count`	| `INT`	| The number of items in the list.	|
 | `inspect_combo`	| `COMBO`	| A dummy output only used to pre-fill the list with values from an other `COMBO` input and will automatically disconnect again	|
 
@@ -164,7 +164,7 @@ Create a OutputList by separating the string in the textfield.
 
 ![Number OutputList](/media/NumberOutputList.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Create a OutputList by generating a numbers of values in a range.
 Uses `[numpy.linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html)` internally because it works more reliably with floatingpoint values.
@@ -184,17 +184,17 @@ If you want to define number lists with arbitrary steps instead check out the JS
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `int`	| `INT𝌠`	| The value converted to int (rounded down/floored).	|
-| `float`	| `FLOAT𝌠`	| The value as a float.	|
-| `string`	| `STRING𝌠`	| The value as a float converted to string.	|
-| `index`	| `INT𝌠`	| Range of 0..count which can be used as an index.	|
+| `int`	| `INT 𝌠`	| The value converted to int (rounded down/floored).	|
+| `float`	| `FLOAT 𝌠`	| The value as a float.	|
+| `string`	| `STRING 𝌠`	| The value as a float converted to string.	|
+| `index`	| `INT 𝌠`	| Range of 0..count which can be used as an index.	|
 | `count`	| `INT`	| Same as `num`.	|
 
 ## JSON OutputList
 
 ![JSON OutputList](/media/JSONOutputList.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Create a OutputList by extracting arrays or dictionaries from JSON objects.
 Uses JSONPath syntax to extract the values, see [JSONPath on Wikipedia](https://en.wikipedia.org/wiki/JSONPath) .
@@ -214,10 +214,10 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `key`	| `STRING𝌠`	| The key for dictionaries or index for arrays (as string).  Technically it's a global index of the flattened list for all non-keys.	|
-| `value`	| `STRING𝌠`	| The value as a string.	|
-| `int`	| `INT𝌠`	| The value as a int (if not parseable number default to 0).	|
-| `float`	| `FLOAT𝌠`	| The value as a float (if not parseable number default to 0).	|
+| `key`	| `STRING 𝌠`	| The key for dictionaries or index for arrays (as string).  Technically it's a global index of the flattened list for all non-keys.	|
+| `value`	| `STRING 𝌠`	| The value as a string.	|
+| `int`	| `INT 𝌠`	| The value as a int (if not parseable number default to 0).	|
+| `float`	| `FLOAT 𝌠`	| The value as a float (if not parseable number default to 0).	|
 | `count`	| `INT`	| Total number of items in the flattened list	|
 | `debug`	| `STRING`	| Debug output of all matched objects as a formatted JSON string	|
 
@@ -225,7 +225,7 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 
 ![Spreadsheet OutputList](/media/SpreadsheetOutputList.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Create a OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
 Use `Load any File` node to load a file as base64.
@@ -246,17 +246,17 @@ All lists use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `list_a`	| `STRING𝌠`	| 	|
-| `list_b`	| `STRING𝌠`	| 	|
-| `list_c`	| `STRING𝌠`	| 	|
-| `list_d`	| `STRING𝌠`	| 	|
+| `list_a`	| `STRING 𝌠`	| 	|
+| `list_b`	| `STRING 𝌠`	| 	|
+| `list_c`	| `STRING 𝌠`	| 	|
+| `list_d`	| `STRING 𝌠`	| 	|
 | `count`	| `INT`	| Number of items in the longest list.	|
 
 ## OutputLists Combinations
 
 ![OutputLists Combinations](/media/CombineOutputLists.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Takes up to 4 OutputLists and generates all combinations between them and emits each combination as separate items.
 
@@ -289,18 +289,18 @@ Example:
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `unzip_a`	| `*𝌠`	| Value of the combinations corresponding to `list_a`.	|
-| `unzip_b`	| `*𝌠`	| Value of the combinations corresponding to `list_b`.	|
-| `unzip_c`	| `*𝌠`	| Value of the combinations corresponding to `list_c`.	|
-| `unzip_d`	| `*𝌠`	| Value of the combinations corresponding to `list_d`.	|
-| `index`	| `INT𝌠`	| Range of 0..count which can be used as an index.	|
+| `unzip_a`	| `* 𝌠`	| Value of the combinations corresponding to `list_a`.	|
+| `unzip_b`	| `* 𝌠`	| Value of the combinations corresponding to `list_b`.	|
+| `unzip_c`	| `* 𝌠`	| Value of the combinations corresponding to `list_c`.	|
+| `unzip_d`	| `* 𝌠`	| Value of the combinations corresponding to `list_d`.	|
+| `index`	| `INT 𝌠`	| Range of 0..count which can be used as an index.	|
 | `count`	| `INT`	| Total number of combinations.	|
 
 ## XYZ-GridPlot
 
 ![XYZ-GridPlot](/media/XyzGridPlot.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Generate a XYZ-Gridplot from a list of images.
 It takes a list of images (including batches) and will flatten the list first (thus `batch_size=1`).
@@ -338,13 +338,13 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `image`	| `IMAGE𝌠`	| The XYZ-GridPlot image. If `output_is_list=True` it will be a list of images which you can connect to another XYZ-GridPlot node to create super-grids.	|
+| `image`	| `IMAGE 𝌠`	| The XYZ-GridPlot image. If `output_is_list=True` it will be a list of images which you can connect to another XYZ-GridPlot node to create super-grids.	|
 
 ## Formatted String
 
 ![Formatted String](/media/FormattedString.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .
 * Use `{a:.2f}` to round off a float to 2 decimals.
@@ -371,7 +371,7 @@ Uses python `str.format()` internally, see [Python - Format String Syntax](https
 
 ![Convert To Int Float Str](/media/ConvertNumberToIntFloatStr.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Convert anything number-like to `INT` `FLOAT` `STRING`.
 Uses `nums_from_string.get_nums` internally which is very permissive in the numbers it accepts. Anything from actual ints, actual floats, ints or floats as strings, strings that contains multiple numbers with thousand-separators.
@@ -387,16 +387,16 @@ Uses `nums_from_string.get_nums` internally which is very permissive in the numb
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `int`	| `INT𝌠`	| All the numbers found in the string with the decimals truncated.	|
-| `float`	| `FLOAT𝌠`	| All the numbers found in the string as floats.	|
-| `string`	| `STRING𝌠`	| All the numbers found in the string as floats converted to string.	|
+| `int`	| `INT 𝌠`	| All the numbers found in the string with the decimals truncated.	|
+| `float`	| `FLOAT 𝌠`	| All the numbers found in the string as floats.	|
+| `string`	| `STRING 𝌠`	| All the numbers found in the string as floats converted to string.	|
 | `count`	| `INT`	| Amount of numbers found in the full list.	|
 
 ## Load Any File
 
 ![Load Any File](/media/LoadAnyFile.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE`.
 
