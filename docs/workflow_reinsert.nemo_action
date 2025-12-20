@@ -1,0 +1,9 @@
+[Nemo Action]
+Name=Reinsert workflow
+Comment=Reinsert workflow and prompt metadata for selected PNG files
+Exec=bash -c 'for f in %F; do base="${f%.*}"; convert "$f" -trim -bordercolor none -border 16 "$f"; exiftool -config <(echo '\''%Image::ExifTool::UserDefined = ("Image::ExifTool::PNG::TextualData" => {workflow => { %unreg }},);1'\'') -overwrite_original "-workflow<=$base.json" "$f"; done'
+Icon=image
+Selection=notnone
+Extensions=png;PNG;
+Quote=double
+

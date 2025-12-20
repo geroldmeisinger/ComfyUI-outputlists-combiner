@@ -116,8 +116,8 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 			is_input_list	= True,
 			inputs=[
 				io.Image	.Input("images"	, display_name="images"	,	tooltip="A list of images (including batches)"),
-				io.AnyType	.Input("row_labels"	, display_name="row_labels"	,	tooltip=f"The text used for the row labels at the left side {INPUTLIST_NOTE}"),
-				io.AnyType	.Input("col_labels"	, display_name="col_labels"	,	tooltip=f"The text used for the column labels at the top {INPUTLIST_NOTE}"),
+				io.AnyType	.Input("row_labels"	, display_name="row_labels"	, optional=True,	tooltip=f"The text used for the row labels at the left side {INPUTLIST_NOTE}"),
+				io.AnyType	.Input("col_labels"	, display_name="col_labels"	, optional=True,	tooltip=f"The text used for the column labels at the top {INPUTLIST_NOTE}"),
 				io.Int	.Input("gap"	, display_name="gap"	, default=0, min=0, max=128,	tooltip="The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node."),
 				io.Float	.Input("font_size"	, display_name="font_size"	, default=50, min=6, max=1000,	tooltip="The target font size. The text will be shrunk down until it fits (up to `font_size_min=6`)."),
 				io.Boolean	.Input("order"	, display_name="order"	, default=True, label_on="outside-in", label_off="inside-out",	tooltip="Defines in which order the images should be processed. This is only relevant if you have sub-images."),
@@ -131,7 +131,7 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 	@classmethod
 	#def execute(self, images, row_labels, col_labels, row_label_orientation, gap, font_size, output_is_list):
-	def execute(self, images, row_labels, col_labels, gap, font_size, order, output_is_list):
+	def execute(self, images, row_labels=[], col_labels=[], gap=[0], font_size=[6], order=["outside-in"], output_is_list=[False]):
 		FONT_SIZE_MIN	= 6
 		PADDING	= 18
 

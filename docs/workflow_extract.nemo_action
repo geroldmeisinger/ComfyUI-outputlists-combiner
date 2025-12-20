@@ -1,0 +1,9 @@
+[Nemo Action]
+Name=Extract workflow
+Comment=Extract workflow and prompt metadata from selected PNG files
+Exec=bash -c 'for f in %F; do base="${f%.*}"; exiftool -b -workflow "$f" 2>/dev/null | jq --indent 4 "." > "$base.json"; done;'
+Icon=image
+Selection=notnone
+Extensions=png;PNG;
+Quote=double
+
