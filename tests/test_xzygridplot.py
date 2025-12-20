@@ -4,21 +4,23 @@
 
 # import node_helpers
 # import pytest
+
+# from src.outputlists_combiner.xyzgridplot import XyzGridPlot
+
 # from comfy_extras.nodes_dataset import pil_to_tensor, tensor_to_pil
 # from PIL import Image
 
-# from src.outputlists_combiner import XyzGridPlot
 
-# LABELS_INT_SHORT	= [1, 2, 3]
-# LABELS_INT_LONG	= [1234567890, 42, 3141592]
-# LABELS_FLOATS	= [0.5, 1.99, 3.141592]
-# LABELS_NUMERIC	= ["CFG: 1.0", "CFG: 12.0", "CFG: 123.0"]
+# LABELS_INT_SHORT    	= [1, 2, 3]
+# LABELS_INT_LONG     	= [1234567890, 42, 3141592]
+# LABELS_FLOATS       	= [0.5, 1.99, 3.141592]
+# LABELS_NUMERIC      	= ["CFG: 1.0", "CFG: 12.0", "CFG: 123.0"]
 # LABELS_STRINGS_SHORT	= ["euler", "dpmpp_2m", "uni_pc_bh2"]
 # LABELS_PROMPTS_SHORT	= ["a cat on a table", "portrait photo, studio lighting", "high detail, cinematic"]
-# LABELS_PROMPTS_LONG	= [
-#	"a highly detailed cinematic photograph of a futuristic city at sunset with flying cars",
-#	"masterpiece, best quality, ultra detailed, 8k, sharp focus, dramatic lighting, fantasy art",
-#	"an oil painting of a medieval village during winter, snow falling, warm lights in windows",
+# LABELS_PROMPTS_LONG 	= [
+#                     	"a highly detailed cinematic photograph of a futuristic city at sunset with flying cars",
+#                     	"masterpiece, best quality, ultra detailed, 8k, sharp focus, dramatic lighting, fantasy art",
+#                     	"an oil painting of a medieval village during winter, snow falling, warm lights in windows",
 # ]
 
 # @pytest.fixture

@@ -1,15 +1,16 @@
 # #!/usr/bin/env python
 
-from datetime import datetime
 import os
 import shutil
 import sys
+from datetime import datetime
 from pathlib import Path
 
 repo_dir	= os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, repo_dir)
 
 from src.outputlists_combiner import *
+from src.outputlists_combiner.util import INPUTLIST_NOTE, OUTPUTLIST_NOTE
 
 iso_set2	= [
 	("en"	, "English"),
@@ -65,8 +66,8 @@ iso_set2	= [
 	("ur"	, "Urdu"),
 	("bs"	, "Bosnian"),
 	("hy"	, "Armenian"),
-	("zh_hans", "Chinese (Simplified)"),
-	("zh_hant", "Chinese (Traditional)"),
+        	("zh_hans", "Chinese (Simplified)"),
+        	("zh_hant", "Chinese (Traditional)"),
 	("my"	, "Burmese"),
 	("ar"	, "Arabic"),
 	("he"	, "Hebrew"),
@@ -148,10 +149,9 @@ def test_generate_badges(active_iso = "en"):
 	print(text)
 
 def test_move_from_downloads():
-	return
 	docs_dir	= Path(f"{repo_dir}/web/docs/")
 	dls_dir	= Path(f"~/Downloads")
-	header	= f"<!-- This file was auto-translated with an local LLM and last updated on {datetime.now().strftime("%Y-%m-%d")}. -->"
+	header	= f"<!-- This file was auto-translated with an local LLM and last updated on {datetime.now().strftime('%Y-%m-%d')}. -->"
 
 	for iso, _ in iso_set2:
 		lang_dir = docs_dir / iso
