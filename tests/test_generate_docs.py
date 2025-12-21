@@ -181,7 +181,7 @@ def test_generate_docs():
 		]
 
 		for name, type, tooltip in rows:
-			tooltip = tooltip.replace("\n", " ").strip() if tooltip else ""
+			tooltip = tooltip.replace("\n", "<br>").strip() if tooltip else ""
 			lines.append(f"| `{name}`\t| `{type}`\t| {tooltip}\t|")
 
 		lines.append("")
