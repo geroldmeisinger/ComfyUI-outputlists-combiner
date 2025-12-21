@@ -125,7 +125,7 @@ def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = 
 	return ret
 
 
-def get_grid_sizes(sizes: Iterable[tuple[int, int]], shape: tuple[int, int]) -> tuple[list[int], list[int]]:
+def get_grid_axes_max(sizes: Iterable[tuple[int, int]], shape: tuple[int, int]) -> tuple[list[int], list[int]]:
 	"""
 	sizes: iterable of (width, height), length should be rows * cols
 	rows, cols: grid shape
@@ -154,7 +154,7 @@ def get_vertical_offset(paragraph: tl.ParagraphStyle, height: int, alignment: st
 	elif	alignment == "bottom"	: return (height - paragraph.Height)
 	else: return 0
 
-def flatten_images(images: Iterable[torch.Tensor], rows: int, cols: int, order: bool = True) -> list[torch.Tensor]:
+def flatten_and_pad_images(images: Iterable[torch.Tensor], rows: int, cols: int, order: bool = True) -> list[torch.Tensor]:
 	"""
 	Flatten a list of BHWC tensors with different batch sizes, heights, widths.
 
@@ -185,6 +185,139 @@ def flatten_images(images: Iterable[torch.Tensor], rows: int, cols: int, order: 
 			for img in images_padded:
 				ret.append(img[b:b+1])
 
+	return ret
+
+def draw_single_label_surface(paragraph: tl.Paragraph, width: int, height: int, pos: tuple[int, int], valign: str) -> skia.Image:
+	surface	= skia.Surface(width, height)
+	canvas	= surface.getCanvas()
+	canvas.clear(skia.ColorWHITE)
+
+	x, y = pos
+	oy = get_vertical_offset(paragraph, height, valign)
+
+	canvas.clipRect(skia.Rect.MakeWH(width, height))
+	canvas.translate(x, y + oy)
+	paragraph.paint(canvas, 0, 0)
+
+	ret = surface.makeImageSnapshot()
+	return ret
+
+def compose_label_area(layout_render_infos: list[tuple[int, int, tl.Paragraph]], padding: int, gap: int, direction: str, offset: tuple[int, int], valign: str) -> skia.Image:
+	"""
+	vertical = True  -> column labels (laid out horizontally)
+	vertical = False -> row labels (laid out vertically)
+	"""
+
+	n = len(layout_render_infos)
+	if direction == "horizontal":
+		total_width  = sum(w for w, _, _ in layout_render_infos) + 2 * padding * n + gap * (n - 1)
+		total_height = layout_render_infos[0][1] + 2 * padding
+	elif direction == "vertical":
+		total_width  = layout_render_infos[0][0] + 2 * padding
+		total_height = sum(h for _, h, _ in layout_render_infos) + 2 * padding * n  + gap * (n - 1)
+
+	surface = skia.Surface(total_width, total_height)
+	canvas = surface.getCanvas()
+	canvas.clear(skia.ColorWHITE)
+
+	x, y = padding, padding
+	for width, height, paragraph in layout_render_infos:
+		label_image = draw_single_label_surface(paragraph, width, height, offset, valign)
+		#skia_to_pil(label_image).show()
+		canvas.drawImage(label_image, x, y)
+		if	direction == "horizontal"	: x += width	+ gap + 2 * padding
+		elif	direction == "vertical"	: y += height	+ gap + 2 * padding
+
+	ret = surface.makeImageSnapshot()
+	return ret
+
+def prepare_label_paragraphs(label_infos: list[tuple[str, int, int]], font_size: float, font_size_min: float, direction: str, align_map: dict, font_coll: tl.FontCollection, text_style_base: tl.TextStyle) -> skia.Surface:
+	"""
+	Returns:
+		paragraphs: list[tl.Paragraph]
+		texts_type: str
+		cross_size: float   # max height (for columns) or max width (for rows)
+	"""
+
+	n = len(label_infos)
+	default_align: tl.TextAlign = tl.TextAlign.kLeft
+
+	# --- uniform font size pass ---
+	para_style = tl.ParagraphStyle()
+	para_style.setTextAlign(default_align)
+
+	font_size_fit = find_uniform_font_size(label_infos, font_size, font_size_min, font_coll, para_style, text_style_base)
+
+	# --- first layout pass (type detection) ---
+	paragraph_infos = [
+		(text, width_max, make_paragraph(text, width_max, font_size_fit, font_coll, para_style, text_style_base))
+		for text, width_max, _ in label_infos
+	]
+
+	texts_type = get_texts_type(paragraph_infos)
+
+	# --- final alignment pass ---
+	para_style.setTextAlign(align_map[texts_type])
+
+	paragraphs = [
+		make_paragraph(text, width_max, font_size_fit, font_coll, para_style, text_style_base)
+		for text, width_max, _ in label_infos
+	]
+
+	return paragraphs, texts_type
+
+def draw_subimage_pack(images: list[torch.tensor], sub_sizes: tuple[list[int], list[int]]) -> skia.Image:
+	sub_row_heights, sub_col_widths = sub_sizes
+	width  = sum(sub_col_widths)
+	height = sum(sub_row_heights)
+
+	surface = skia.Surface(width, height)
+	canvas = surface.getCanvas()
+	canvas.clear(skia.ColorTRANSPARENT)
+
+	idx = 0
+	y = 0
+	for rh in sub_row_heights:
+		x = 0
+		for cw in sub_col_widths:
+			img = images[idx]
+			sk_img = tensor_to_skia_image(img)
+			canvas.drawImage(sk_img, x, y)
+			x += cw
+			idx += 1
+		y += rh
+
+	ret = surface.makeImageSnapshot()
+	return ret
+
+def draw_image_grid(images: list[torch.tensor], row_heights: list[int], col_widths: list[int], subs_axes: tuple[list[int], list[int]], gap: int) -> skia.Image:
+	rows = len(row_heights)
+	cols = len(col_widths)
+
+	height	= sum(row_heights) + (rows - 1) * gap
+	width	= sum(col_widths ) + (cols - 1) * gap
+
+	surface	= skia.Surface(width, height)
+	canvas	= surface.getCanvas()
+	canvas.clear(skia.ColorWHITE)
+
+	chunk	= ceil(len(images) / (rows * cols))
+	idx	= 0
+	y = 0
+	for row_h in row_heights:
+		x	= 0
+		for col_w in col_widths:
+			sub_axes	= subs_axes[idx]
+			sub_images	= images[(idx * chunk):(idx * chunk) + chunk]
+			sub_image	= draw_subimage_pack(sub_images, sub_axes)
+
+			canvas.drawImage(sub_image, x, y)
+
+			x	+= col_w + gap
+			idx	+= 1
+		y += row_h + gap
+
+	ret = surface.makeImageSnapshot()
 	return ret
 
 FONT_SIZE_MIN	= 6
@@ -250,48 +383,27 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		rows	= max(1, len(row_labels))
 		cols	= max(1, len(col_labels))
 
-		images_flat = flatten_images(images, rows, cols, order)
+		images_flat	= flatten_and_pad_images(images, rows, cols, order)
 		img_sizes	= [(i.shape[1], i.shape[2]) for i in images]
 
-		subs_num	= len(images_flat) // (rows * cols)
-		subs_sizes	= [get_grid_sizes(img_sizes[i:i + subs_num], find_imgs_rectangularpack(img_sizes[i:i + subs_num])) for i in range(0, len(img_sizes), subs_num)]
-		subs_full_sizes	= [(sum(sub_row_heights), sum(sub_col_widths)) for sub_row_heights, sub_col_widths in subs_sizes]
-		row_heights, col_widths	= get_grid_sizes(subs_full_sizes, (rows, cols))
+		subs_num	= ceil(len(images_flat) / (rows * cols))
+		subs_axes	= [get_grid_axes_max(img_sizes[i:i + subs_num], find_imgs_rectangularpack(img_sizes[i:i + subs_num])) for i in range(0, len(img_sizes), subs_num)]
+		subs_total_axes	= [
+			(sum(sub_row_heights), sum(sub_col_widths))
+			for sub_row_heights, sub_col_widths in subs_axes
+		]
+		row_heights, col_widths	= get_grid_axes_max(subs_total_axes, (rows, cols))
 
 		outputs_num	= subs_num if output_is_list else 1
 
 		# labels
-		labels_col_height_max	= max(max(h for _, h in subs_full_sizes) // 2	- 2 * PADDING, 0)
-		labels_row_width_max	= max(max(w for w, _ in subs_full_sizes)	- 2 * PADDING, 0)
+		col_labels_height_max	= max(max(h for _, h in subs_total_axes) // 2	- 2 * PADDING, 0)
+		row_labels_width_max	= max(max(w for w, _ in subs_total_axes)	- 2 * PADDING, 0)
 
-		labels_rows_w	= 0.0
-		labels_cols_h	= 0.0
-		labels_data	= []
-		if len(col_labels) > 0:
-			labels_data.append({
-				"texts"	: [str(c) for c in col_labels],
-				"is_column"	: True,
-				"rotation"	: 0,
-				"align"	: { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight },
-				"valign"	: { "singleline": "bottom"	, "multiline": "top"	, "numeric": "bottom" },
-				#"pos"	: lambda i: (labels_rows_w + PADDING + (i + 1) * gap + i * subs_cols * img_w, PADDING),
-			})
-
-		if len(row_labels) > 0:
-			is_horz	= row_label_orientation == "horizontal"
-			align_horz	= { "singleline": tl.TextAlign.kRight	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight	}
-			align_vert	= { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kCenter	}
-			valign_horz	= { "singleline": "middle"	, "multiline": "top"	, "numeric": "middle" }
-			valign_vert	= { "singleline": "middle"	, "multiline": "bottom"	, "numeric": "middle" }
-
-			labels_data.append({
-				"texts"	: [str(r) for r in row_labels],
-				"is_column"	: False,
-				"rotation"	: 0	if is_horz else -90,
-				"align"	: align_horz	if is_horz else align_vert,
-				"valign"	: valign_horz	if is_horz else valign_vert,
-				#"pos"	: lambda i: (PADDING, labels_cols_h + PADDING + (i + 1) * gap + i * subs_rows * img_h),
-			})
+		col_label_align	= { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight }
+		col_label_valign	= { "singleline": "bottom"	, "multiline": "top"	, "numeric": "bottom" }
+		row_label_align	= { "singleline": tl.TextAlign.kRight	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight	}
+		row_label_valign	= { "singleline": "middle"	, "multiline": "top"	, "numeric": "middle" }
 
 		font_coll = tl.FontCollection()
 		font_coll.setDefaultFontManager(skia.FontMgr())
@@ -300,110 +412,46 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		text_style_base.setFontFamilies(["DejaVu Sans"])
 		text_style_base.setColor(skia.ColorBLACK)
 
-		for label in labels_data:
-			labels_n	= len(label["texts"])
-			align_default	= tl.TextAlign.kLeft
-			is_column	= label["is_column"]
-			label_max_widths	= col_widths	if is_column else [labels_row_width_max] * labels_n
-			label_max_heights	= [labels_col_height_max] * labels_n	if is_column else row_heights
-			label_infos	= list(zip(label["texts"], label_max_widths, label_max_heights))
+		# col labels
+		col_label_widths	= [cw - 2 * PADDING for cw in col_widths]
+		col_label_layout_infos	= list(zip(col_labels, col_label_widths, [col_labels_height_max] * cols))
+		col_label_paragraphs, col_label_type = prepare_label_paragraphs(col_label_layout_infos, font_size, FONT_SIZE_MIN, "horizontal", col_label_align, font_coll, text_style_base)
+		col_paragraph_height_max	= ceil(max((p.Height for p in col_label_paragraphs)	, default=0.0))
+		col_label_render_infos	= list(zip(col_label_widths, [col_paragraph_height_max] * cols, col_label_paragraphs))
+		col_label_image	= compose_label_area(col_label_render_infos, PADDING, gap, "horizontal", (0, 0), col_label_valign[col_label_type])
 
-			para_style = tl.ParagraphStyle()
-			para_style.setTextAlign(align_default)
-			font_size_fit = find_uniform_font_size(label_infos, font_size, FONT_SIZE_MIN, font_coll, para_style, text_style_base)
+		# row labels
+		row_label_heights	= [rh - 2 * PADDING for rh in row_heights]
+		row_label_layout_infos	= list(zip(row_labels, [row_labels_width_max] * rows, row_label_heights))
+		row_label_paragraphs, row_label_type = prepare_label_paragraphs(row_label_layout_infos, font_size, FONT_SIZE_MIN, "vertical", row_label_align, font_coll, text_style_base)
+		row_paragraph_width_max	= ceil(max((max(p.LongestLine, p.MinIntrinsicWidth) for p in row_label_paragraphs), default=0.0) + 1)
+		row_label_render_infos	= list(zip([row_paragraph_width_max] * rows, row_label_heights, row_label_paragraphs))
+		row_label_image	= compose_label_area(row_label_render_infos, PADDING, gap, "vertical", (-row_labels_width_max + row_paragraph_width_max, 0), row_label_valign[row_label_type])
 
-			paragraphs_ = [make_paragraph(text, width_max, font_size_fit, font_coll, para_style, text_style_base) for (text, width_max, _) in label_infos]
+		# sub image packs
+		image_grid_image = draw_image_grid(images_flat, row_heights, col_widths, subs_axes, gap)
+		skia_to_pil(image_grid_image).show()
 
-			label_infos	= list(zip(label["texts"], label_max_widths, paragraphs_))
-			texts_type	= get_texts_type(label_infos)
-			align	= label["align"][texts_type]
-
-			para_style.setTextAlign(align)
-			paragraphs = [make_paragraph(text, width_max, font_size_fit, font_coll, para_style, text_style_base) for (text, width_max, _) in label_infos]
-
-			if is_column:
-				labels_cols_h = max((p.Height for p in paragraphs), default=0.0)
-			else:
-				labels_rows_w = max((max(p.LongestLine, p.MinIntrinsicWidth) for p in paragraphs), default=0.0) + 1
-
-			label["paragraphs"] = paragraphs
-			label["texts_type"] = texts_type
-
-		# render
+		# full image grid
 
 		# pad width and height so it's divisible by 2 for Create Video node, see #19
+		offset_x	= row_label_image.width () + gap
+		offset_y	= col_label_image.height() + gap
 		grid_div	= 2
-		grid_w = ceil((ceil(labels_rows_w) + (cols + 1) * gap + sum(col_widths )) / grid_div) * grid_div
-		grid_h = ceil((ceil(labels_cols_h) + (rows + 1) * gap + sum(row_heights)) / grid_div) * grid_div
+		grid_w = ceil((offset_x + sum(col_widths ) + cols * gap) / grid_div) * grid_div
+		grid_h = ceil((offset_y + sum(row_heights) + rows * gap) / grid_div) * grid_div
 
 		for b in range(outputs_num):
 			surface	= skia.Surface(grid_w, grid_h)
 			canvas	= surface.getCanvas()
 			canvas.clear(skia.ColorWHITE)
 
-			# draw column labels
-			label = labels_data[0]
-			x, y	= labels_rows_w + gap, PADDING
-			for i in range(len(label["texts"])):
-				paragraph	= label["paragraphs"][i]
-				width	= col_widths[i]
-				oy	= get_vertical_offset(paragraph, labels_cols_h, label["valign"][texts_type])
+			canvas.drawImage(col_label_image	, offset_x	, 0	)
+			canvas.drawImage(row_label_image	, 0	, offset_y	)
+			canvas.drawImage(image_grid_image	, offset_x	, offset_y	)
 
-				canvas.save()
-				canvas.translate(x, y)
-				canvas.clipRect(skia.Rect.MakeWH(width, labels_cols_h))
-				paragraph.paint(canvas, 0, 0)
-				canvas.restore()
-
-				x += width + gap
-
-			# draw row labels
-			label = labels_data[1]
-			x, y	= labels_rows_w - labels_row_width_max + PADDING, labels_cols_h + gap
-			for i in range(len(label["texts"])):
-				paragraph	= label["paragraphs"][i]
-				height	= row_heights[i]
-				oy	= get_vertical_offset(paragraph, height, label["valign"][texts_type])
-
-				canvas.save()
-				canvas.translate(x, y + oy)
-				canvas.clipRect(skia.Rect.MakeWH(labels_row_width_max, height))
-				paragraph.paint(canvas, 0, 0)
-				canvas.restore()
-
-				y += height + gap
-
-			# draw images
-			idx_M = 0
-			y = labels_cols_h + gap
-			for r, row_h in enumerate(row_heights):
-				x = labels_rows_w + gap
-				for c, col_w in enumerate(col_widths):
-					idx_M = r * rows + c
-					cell_imgs	= images_flat[idx_M:(idx_M + subs_num)]
-					if output_is_list: cell_imgs = [cell_imgs[b]]
-
-					sub_row_hs, sub_col_ws = subs_sizes[idx_M]
-					soy = 0
-					idx_m = 0
-					for sub_row_h in sub_row_hs:
-						sox = 0
-						for sub_col_w in sub_col_ws:
-							img	= cell_imgs[idx_m]
-							img_w, img_h	= img.shape[2], img.shape[1]
-							sk_img	= tensor_to_skia_image(img)
-							sk_rect	= skia.Rect.MakeXYWH(x + sox, y + soy, img_w, img_h)
-							canvas.drawImageRect(sk_img, sk_rect)
-
-							sox += sub_col_w
-							idx_m += 1
-						soy += sub_row_h
-					x += col_w + gap
-					idx_M += subs_num
-				y += row_h + gap
-
-			skia_img	= surface.makeImageSnapshot()
-			output	= skia_to_tensor(skia_img)
+			grid_image = surface.makeImageSnapshot()
+			output = skia_to_tensor(grid_image)
 			outputs.append(output)
 
 		ret = io.NodeOutput(outputs)

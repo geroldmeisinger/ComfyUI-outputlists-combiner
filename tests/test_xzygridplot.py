@@ -114,7 +114,7 @@ def test_node_initialization(xyzgridplot_node):
 def test_main(xyzgridplot_node):
 	images = []
 	i = 0
-	batch_size = 1
+	batch_size = 4
 	for r in range(3):
 		for c in range(3):
 			img_path = f"custom_nodes/ComfyUI-outputlists-combiner/tests/imgs/img_sq_{i:02d}_{r}_{c}.webp"
