@@ -368,13 +368,10 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		return ret
 
 	@classmethod
-	#def execute(self, images, row_labels, col_labels, row_label_orientation, gap, font_size, output_is_list):
 	def execute(self, images: list[torch.tensor], row_labels: list[any] = [], col_labels: list[any] = [], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> io.NodeOutput:
 		outputs = []
 
 		#row_label_orientation	= row_label_orientation	[0]
-		row_labels	= [str(l) for l in row_labels]
-		col_labels	= [str(l) for l in col_labels]
 		row_label_orientation	= "horizontal"
 		gap	= gap	[0]
 		font_size	= font_size	[0]
@@ -384,6 +381,8 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		# flatten images
 		rows	= max(1, len(row_labels))
 		cols	= max(1, len(col_labels))
+		row_labels	= [str(l) for l in row_labels] if len(row_labels) > 0 else [""] * rows
+		col_labels	= [str(l) for l in col_labels] if len(col_labels) > 0 else [""] * cols
 
 		images_flat	= flatten_and_pad_images(images, rows, cols, order)
 		img_sizes	= [(i.shape[2], i.shape[1]) for i in images_flat] # BHWC
@@ -464,9 +463,14 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 	@classmethod
 	def validate_inputs(self, images: list[torch.tensor], row_labels: list[any] = [], col_labels: list[any] = [], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> bool | str:
 		imgs_len	= len(images)
-		rows = len(list(row_labels))
-		cols = len(list(col_labels))
+		rows	= len(row_labels)
+		cols	= len(col_labels)
 		n	= rows * cols
+
+		if rows	== 0: return True
+		if cols	== 0: return True
+		if n	== 1: return True
+
 		if imgs_len % n != 0:
 			return "Number of images must be a multiple of rows * cols ({rows} * {cols} = {n}) but got {len}!"
 
