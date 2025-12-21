@@ -280,6 +280,7 @@ def draw_subimage_pack(images: list[torch.tensor], sub_sizes: tuple[list[int], l
 	for rh in sub_row_heights:
 		x = 0
 		for cw in sub_col_widths:
+			if idx >= len(images): break
 			img = images[idx]
 			sk_img = tensor_to_skia_image(img)
 			canvas.drawImage(sk_img, x, y)
