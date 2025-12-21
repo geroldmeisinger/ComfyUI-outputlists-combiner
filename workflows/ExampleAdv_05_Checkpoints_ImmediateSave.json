@@ -1,0 +1,388 @@
+{
+    "id": "409461d3-9236-4d34-bfc6-f50135f49c46",
+    "revision": 0,
+    "last_node_id": 16,
+    "last_link_id": 27,
+    "nodes": [
+        {
+            "id": 16,
+            "type": "KSamplerImmediateSave",
+            "pos": [
+                350,
+                0
+            ],
+            "size": [
+                272.8333343505859,
+                510
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+                {
+                    "label": "latent_image",
+                    "localized_name": "latent_image",
+                    "name": "latent_image",
+                    "type": "LATENT",
+                    "link": 24
+                },
+                {
+                    "localized_name": "ckpt_name",
+                    "name": "ckpt_name",
+                    "type": "COMBO",
+                    "widget": {
+                        "name": "ckpt_name"
+                    },
+                    "link": 27
+                },
+                {
+                    "localized_name": "positive",
+                    "name": "positive",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "positive"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "negative",
+                    "name": "negative",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "negative"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "seed",
+                    "name": "seed",
+                    "type": "INT",
+                    "widget": {
+                        "name": "seed"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "steps",
+                    "name": "steps",
+                    "type": "INT",
+                    "widget": {
+                        "name": "steps"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "cfg",
+                    "name": "cfg",
+                    "type": "FLOAT",
+                    "widget": {
+                        "name": "cfg"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "sampler_name",
+                    "name": "sampler_name",
+                    "type": "COMBO",
+                    "widget": {
+                        "name": "sampler_name"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "scheduler",
+                    "name": "scheduler",
+                    "type": "COMBO",
+                    "widget": {
+                        "name": "scheduler"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "denoise",
+                    "name": "denoise",
+                    "type": "FLOAT",
+                    "widget": {
+                        "name": "denoise"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "filename_prefix",
+                    "name": "filename_prefix",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "filename_prefix"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "IMAGE",
+                    "name": "IMAGE",
+                    "type": "IMAGE",
+                    "links": [
+                        26
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "5fa4dbcc907367307bb475da32f5303e8edee83a",
+                "Node name for S&R": "KSamplerImmediateSave",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {},
+                    "version": "7.5.2"
+                }
+            },
+            "widgets_values": [
+                "1.5/realisticVisionV60B1_v51VAE.safetensors",
+                "a cat with a hat",
+                "",
+                123,
+                "fixed",
+                5,
+                5,
+                "euler",
+                "simple",
+                1,
+                "ComfyUI"
+            ]
+        },
+        {
+            "id": 5,
+            "type": "EmptyLatentImage",
+            "pos": [
+                0,
+                400
+            ],
+            "size": [
+                210,
+                106
+            ],
+            "flags": {
+                "collapsed": false
+            },
+            "order": 1,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "width",
+                    "name": "width",
+                    "type": "INT",
+                    "widget": {
+                        "name": "width"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "height",
+                    "name": "height",
+                    "type": "INT",
+                    "widget": {
+                        "name": "height"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "batch_size",
+                    "name": "batch_size",
+                    "type": "INT",
+                    "widget": {
+                        "name": "batch_size"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "LATENT",
+                    "name": "LATENT",
+                    "type": "LATENT",
+                    "slot_index": 0,
+                    "links": [
+                        24
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.3.70",
+                "Node name for S&R": "EmptyLatentImage",
+                "ue_properties": {
+                    "widget_ue_connectable": {
+                        "width": true,
+                        "height": true,
+                        "batch_size": true
+                    },
+                    "version": "7.5.1",
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": [
+                512,
+                512,
+                1
+            ]
+        },
+        {
+            "id": 13,
+            "type": "PreviewImage",
+            "pos": [
+                700,
+                0
+            ],
+            "size": [
+                300,
+                500
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "images",
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 26
+                }
+            ],
+            "outputs": [],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.3.70",
+                "Node name for S&R": "PreviewImage",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "version": "7.5.1",
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": []
+        },
+        {
+            "id": 14,
+            "type": "StringOutputList",
+            "pos": [
+                -150,
+                0
+            ],
+            "size": [
+                350,
+                300
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "separator",
+                    "name": "separator",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "separator"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "values",
+                    "name": "values",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "values"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "value",
+                    "name": "value",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        27
+                    ]
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "inspect_combo",
+                    "name": "inspect_combo",
+                    "type": "COMBO",
+                    "links": []
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "92519a06926c52288f4034c3459f292cd833c3c4",
+                "Node name for S&R": "StringOutputList",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {},
+                    "version": "7.5.1"
+                }
+            },
+            "widgets_values": [
+                "\\n",
+                "sdxl/Juggernaut_X_RunDiffusion.safetensors\nsdxl/epicrealismXL_v8Kiss.safetensors\nsdxl/realismEngineSDXL_v30VAE.safetensors\nsdxl/sd_xl_base_1.0_0.9vae.safetensors\nsdxl/sd_xl_refiner_1.0_0.9vae.safetensors\n"
+            ],
+            "color": "#232",
+            "bgcolor": "#353"
+        }
+    ],
+    "links": [
+        [
+            24,
+            5,
+            0,
+            16,
+            0,
+            "LATENT"
+        ],
+        [
+            26,
+            16,
+            0,
+            13,
+            0,
+            "IMAGE"
+        ],
+        [
+            27,
+            14,
+            0,
+            16,
+            1,
+            "COMBO"
+        ]
+    ],
+    "groups": [],
+    "config": {},
+    "extra": {
+        "ds": {
+            "scale": 1,
+            "offset": [
+                250,
+                100
+            ]
+        },
+        "ue_links": [],
+        "links_added_by_ue": [],
+        "workflowRendererVersion": "LG"
+    },
+    "version": 0.4
+}

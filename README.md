@@ -69,6 +69,7 @@ If this custom node helps you in your work..
 	- [Load all images from grid](#load-all-images-from-grid)
 	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
 	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
+	- [Iterate checkpoints](#iterate-checkpoints)
 - [Credits](#credits)
 
 # Features
@@ -427,7 +428,7 @@ Load any text or binary file and provide the file content as string or base64 st
 
 ![Simple OutputList example](/workflows/Example_00_Simple_OutputList.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Just uses a `String OutputList` to separate a string and produce 4 images in one run.
 
@@ -435,7 +436,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 
 ![Combine prompts example](/workflows/Example_01_Combine_Prompts.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Formatted String`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue] = 3 x 3 = 9`)
 
@@ -445,7 +446,7 @@ To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as i
 
 ![Combine numbers example](/workflows/Example_02_Combine_Numbers.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Makes use of `Number OutputList` to generate the number ranges `[256, 512, 768] x [768, 512, 256]` and connects them to the image width and height to produce image variants in portrait, square and landscape.
 
@@ -455,7 +456,7 @@ Notice that images within a batch always have to be same width and height, whera
 
 ![Combine samplers and schedulers example](/workflows/Example_03_Combine_Samplers_Schedulers.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 https://github.com/user-attachments/assets/d8da27b9-99d2-4ac5-a6ed-d368d2ae1a38
 
@@ -465,7 +466,7 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 
 ![Combine row/column for filename example](/workflows/Example_04_Combine_RowCol_Filename.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Makes use of the `index` combined the same way as the prompts, which gives as the rows and columns. `Formatted String` produces the filename prefix `img_{c:02d}_row_{ad}_col_{b}`.
 
@@ -473,7 +474,7 @@ Makes use of the `index` combined the same way as the prompts, which gives as th
 
 ![Combine LoRA-model and LoRA-strength example](/workflows/Example_05_Compare_LoRAModel_LoRAStrength.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 https://github.com/user-attachments/assets/64e118c1-15f3-463b-b439-37e1a1f5b62b
 
@@ -511,7 +512,7 @@ I recommend to start ComfyUI with `--cache-ram` for this example if you want to 
 
 ![XYZ-GridPlots with Supergrids example](/workflows/ExampleAdv_00a_XYZGridPlot_Supergrids.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For more complex image grids the question always is: How should the axis be ordered and in which way the images be shuffled, e.g. do we want to show `cat|dog|rat` x `red|blue|green` and then the batch next to each other in a subgrid (`RxCxB`), or four separate images each with a grid of `cat|dog|rat` x `red|blue|green` (`BxCxR`). To achieve this you can play around with the options `order=outside-in|inside-out` and `output_is_list=False|True`, but make sure the `row_labels` and `col_labels` match what you want to achieve, as this info is also used how the grid is shaped.
 
@@ -526,9 +527,9 @@ Custom nodes:
 
 ![ImageGrids example](/workflows/ExampleAdv_00b_XYZGridPlot_ImmediateSave.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
-Technically this node is implemented as a [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `KSampler`, `VAE Decode` and `Save Image`.
+Technically this node is implemented as a [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `CheckpointLoaderSimple`, `KSampler`, `VAE Decode` and `Save Image`.
 
 - **TODO** Update workflow with new `XYZ-GridPlot` node
 - **TODO** I'm not happy that this node exists at all as I wanted to avoid custom KSampler nodes. Unfortunately I haven't found a way to [use subgraphs to force immediate processing](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) yet.
@@ -543,13 +544,13 @@ You may have noticed when you load the workflow from one of the grid images it c
 
 ![Save Index in Metadata example](/workflows/ExampleAdv_01a_IndexInMetadata.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Uses the `index` of the combined list to store it as a JSON. It also uses the `index` of the individual lists combined the same way as the prompts, which gives as the rows and columns, for additional information, including the prompt: `{{ "prompt": "{a}", "index": {b}, "row": {c}, "col": {d} }}`
 
 ![Load Index from Metadata example](/workflows/ExampleAdv_01b_IndexFromMetadata.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 This example reads the index from the metadata with `Load Image with Metadata` and selects the index using `Select Nth Item`.
 
@@ -569,7 +570,7 @@ Let's say you generated a lot of images for your grid and (hopefully) stored the
 
 ![Load Image with Formatted String](/workflows/ExampleAdv_02_LoadWithFormattedString.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 **TODO** Make the combo work with native `Load Image` (but my `string to any` approach always resulted in `NoneType object has no attribute 'endsWith'`). I filled a bugreport https://github.com/comfyanonymous/ComfyUI/issues/11017
 
@@ -583,19 +584,29 @@ PromptManager keeps track of all the prompt you generated in a database which yo
 
 ![Load prompts with GET HTTP and extract JSON with JSON OutputList](/workflows/ExampleAdv_03_PromptManager.png)
 
-(workflow included)
+(ComfyUI workflow included)
 
 Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search API route and `JSON OutputList` to extract the `text` field using a JSONPath. The prompts are emitted as an OutputList and will be processed sequentially.
 
 ## XYZ-GridPlots with Videos
 
-![XYZ-GridPlots with Videos](/workflows/ExampleAdv_04_XYZGridPlot_Videos.png)
+![XYZ-GridPlots with Videos example](/workflows/ExampleAdv_04_XYZGridPlot_Videos.png)
 
 You can basically ignore the left part of the workflow (blue group) as it's just abusing a `OutputList Combinations` to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
 
 **TODO** Fix the `non divisible by 2` error
 
 https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
+
+## Iterate checkpoints
+
+![Iterate checkpoints example](/workflows/ExampleAdv_05_Checkpoints_ImmediateSave.png)
+
+(ComfyUI workflow included)
+
+The `Load Checkpoint` node suffers from [the save problem](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) as the `KSampler` in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `KSampler Immediate Save` but note that this only works for default `Load Checkpoint -> KSampler -> VAE Decode -> Save Image` pattern, i.e. no `CFGGuider`, no `ModelShift` etc. If you need them you have to implement your own node expansion or extend [ksampler_immediate_saveimage.py](src/outputlists_combiner/ksampler_immediate_saveimage.py). I know this is unfortunate and probably to difficult for some people (it's not that hard actually, you just have to be careful when connecting node in code).
+
+Another workaround is to use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) but you will loose the OutputLists abilities.
 
 # Credits
 
