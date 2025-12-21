@@ -154,12 +154,14 @@ def get_vertical_offset(paragraph: tl.ParagraphStyle, height: int, alignment: st
 	elif	alignment == "bottom"	: return (height - paragraph.Height)
 	else: return 0
 
-def flatten_and_pad_images(images: Iterable[torch.Tensor], rows: int, cols: int, order: bool = True) -> list[torch.Tensor]:
+def flatten_and_pad_images(images: Iterable[torch.Tensor], rows: int, cols: int, order: bool = True) -> tuple[list[torch.Tensor], bool]:
 	"""
 	Flatten a list of BHWC tensors with different batch sizes, heights, widths.
 
 	Returns a list of tensors where each tensor has B=1.
 	"""
+
+	if len(images) == 0: return ([], True)
 
 	# pad batches to batch_max
 	batch_max	= max(img.shape[0] for img in images)
@@ -185,7 +187,10 @@ def flatten_and_pad_images(images: Iterable[torch.Tensor], rows: int, cols: int,
 			for img in images_padded:
 				ret.append(img[b:b+1])
 
-	return ret
+	batch_sizes	= [img.shape[0] for img in images]
+	all_same_batch	= all(bs == batch_sizes[0] for bs in batch_sizes)
+
+	return ret, all_same_batch
 
 def draw_single_label_surface(paragraph: tl.Paragraph, width: int, height: int, pos: tuple[int, int], valign: str) -> skia.Image:
 	surface	= skia.Surface(width, height)
@@ -370,7 +375,7 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 	@classmethod
 	def execute(self, images: list[torch.tensor], row_labels: list[any] = [], col_labels: list[any] = [], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> io.NodeOutput:
-		outputs = []
+		outputs: list[torch.tensor] = []
 
 		#row_label_orientation	= row_label_orientation	[0]
 		row_label_orientation	= "horizontal"
@@ -382,23 +387,33 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		# flatten images
 		rows	= max(1, len(row_labels))
 		cols	= max(1, len(col_labels))
+		size	= rows * cols
 		row_labels	= [str(l) for l in row_labels] if len(row_labels) > 0 else [""] * rows
 		col_labels	= [str(l) for l in col_labels] if len(col_labels) > 0 else [""] * cols
 
-		images_flat	= flatten_and_pad_images(images, rows, cols, order)
-		img_sizes	= [(i.shape[2], i.shape[1]) for i in images_flat] # BHWC
+		images, all_same_batch	= flatten_and_pad_images(images, rows, cols, order)
 
-		subs_num	= ceil(len(images_flat) / (rows * cols))
+		chunk_num	= ceil(len(images) / size)
+		subs_num	= 1 if output_is_list else chunk_num
+		outputs_num	= chunk_num if output_is_list else 1
+
+		if output_is_list:
+			images_transposed = []
+			for b in range(chunk_num):
+				for i in range(size):
+					images_transposed.append(images[i * chunk_num + b])
+			images = images_transposed
+
+		img_sizes	= [(i.shape[2], i.shape[1]) for i in images] # BHWC
+
 		subs_packing	= [(img_sizes[i:i + subs_num], find_imgs_rectangularpack(img_sizes[i:i + subs_num])) for i in range(0, len(img_sizes), subs_num)]
 		subs_axes	= [get_grid_axes_max(imgs, shape) for imgs, shape in subs_packing]
 
 		subs_axes_total = [
 			(sum(col_widths), sum(row_heights))
-			for row_heights, col_widths in subs_axes
+			for row_heights, col_widths in subs_axes[0:size]
 		]
 		row_heights, col_widths = get_grid_axes_max(subs_axes_total, (rows, cols))
-
-		outputs_num	= subs_num if output_is_list else 1
 
 		# labels
 		col_labels_height_max	= max(max(row_heights) // 2	- 2 * PADDING, 0)
@@ -432,10 +447,6 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		row_label_render_infos	= list(zip([row_paragraph_width_max] * rows, row_label_heights, row_label_paragraphs))
 		row_label_image	= compose_label_area(row_label_render_infos, PADDING, gap, "vertical", (-row_labels_width_max + row_paragraph_width_max, 0), row_label_valign[row_label_type])
 
-		# sub image packs
-		image_grid_image = draw_image_grid(images_flat, row_heights, col_widths, subs_axes, gap)
-		skia_to_pil(image_grid_image).show()
-
 		# full image grid
 
 		# pad width and height so it's divisible by 2 for Create Video node, see #19
@@ -446,6 +457,11 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		grid_h = ceil((offset_y + sum(row_heights) + rows * gap) / grid_div) * grid_div
 
 		for b in range(outputs_num):
+			grid_images	= images	if not output_is_list else images[b * size : (b + 1) * size]
+			grid_subs_axes	= subs_axes	if not output_is_list else subs_axes[b * size : (b + 1) * size]
+			image_grid_image = draw_image_grid(grid_images, row_heights, col_widths, grid_subs_axes, gap)
+			skia_to_pil(image_grid_image).show()
+
 			surface	= skia.Surface(grid_w, grid_h)
 			canvas	= surface.getCanvas()
 			canvas.clear(skia.ColorWHITE)
@@ -457,6 +473,9 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 			grid_image = surface.makeImageSnapshot()
 			output = skia_to_tensor(grid_image)
 			outputs.append(output)
+
+		if all_same_batch:
+			outputs = [torch.cat(outputs, dim=0)]
 
 		ret = io.NodeOutput(outputs)
 		return ret
