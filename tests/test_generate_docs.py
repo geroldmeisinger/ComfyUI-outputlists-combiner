@@ -150,16 +150,17 @@ def test_generate_badges(active_iso = "en"):
 
 def test_move_from_downloads():
 	docs_dir	= Path(f"{repo_dir}/web/docs/")
-	dls_dir	= Path(f"~/Downloads")
-	header	= f"<!-- This file was auto-translated with an local LLM and last updated on {datetime.now().strftime('%Y-%m-%d')}. -->"
+	dls_dir	= Path(f"~/Downloads").expanduser()
+	header	= f"<!-- This file was auto-translated with an local LLM and last updated on {datetime.now().strftime('%Y-%m-%d')}. -->\n"
 
 	for iso, _ in iso_set2:
 		lang_dir = docs_dir / iso
 		lang_dir.mkdir(parents=True, exist_ok=True)
 
 		for node in nodes:
-			dls_path	= dls_dir / f"{node}_{iso}.md"
-			lang_path	= lang_dir / f"{iso}.md"
+			schema	= node.define_schema()
+			dls_path	= dls_dir  / f"{schema.node_id}_{iso}.md"
+			lang_path	= lang_dir / f"{schema.node_id}/{iso}.md"
 
 			if not dls_path.exists(): continue
 
