@@ -131,7 +131,7 @@ def get_grid_axes_max(sizes: Iterable[tuple[int, int]], shape: tuple[int, int]) 
 	rows, cols: grid shape
 
 	Returns:
-		(column_widths, row_heights)
+		(row_heights, column_widths) # row major, column minor
 	"""
 
 	rows, cols = shape
@@ -369,10 +369,12 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 	@classmethod
 	#def execute(self, images, row_labels, col_labels, row_label_orientation, gap, font_size, output_is_list):
-	def execute(self, images: Iterable[torch.tensor], row_labels: Iterable[any] = [], col_labels: Iterable[any] = [], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> io.NodeOutput:
+	def execute(self, images: list[torch.tensor], row_labels: list[any] = [], col_labels: list[any] = [], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> io.NodeOutput:
 		outputs = []
 
 		#row_label_orientation	= row_label_orientation	[0]
+		row_labels	= [str(l) for l in row_labels]
+		col_labels	= [str(l) for l in col_labels]
 		row_label_orientation	= "horizontal"
 		gap	= gap	[0]
 		font_size	= font_size	[0]
@@ -384,21 +386,23 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		cols	= max(1, len(col_labels))
 
 		images_flat	= flatten_and_pad_images(images, rows, cols, order)
-		img_sizes	= [(i.shape[1], i.shape[2]) for i in images]
+		img_sizes	= [(i.shape[2], i.shape[1]) for i in images_flat] # BHWC
 
 		subs_num	= ceil(len(images_flat) / (rows * cols))
-		subs_axes	= [get_grid_axes_max(img_sizes[i:i + subs_num], find_imgs_rectangularpack(img_sizes[i:i + subs_num])) for i in range(0, len(img_sizes), subs_num)]
-		subs_total_axes	= [
-			(sum(sub_row_heights), sum(sub_col_widths))
-			for sub_row_heights, sub_col_widths in subs_axes
+		subs_packing	= [(img_sizes[i:i + subs_num], find_imgs_rectangularpack(img_sizes[i:i + subs_num])) for i in range(0, len(img_sizes), subs_num)]
+		subs_axes	= [get_grid_axes_max(imgs, shape) for imgs, shape in subs_packing]
+
+		subs_axes_total = [
+			(sum(col_widths), sum(row_heights))
+			for row_heights, col_widths in subs_axes
 		]
-		row_heights, col_widths	= get_grid_axes_max(subs_total_axes, (rows, cols))
+		row_heights, col_widths = get_grid_axes_max(subs_axes_total, (rows, cols))
 
 		outputs_num	= subs_num if output_is_list else 1
 
 		# labels
-		col_labels_height_max	= max(max(h for _, h in subs_total_axes) // 2	- 2 * PADDING, 0)
-		row_labels_width_max	= max(max(w for w, _ in subs_total_axes)	- 2 * PADDING, 0)
+		col_labels_height_max	= max(max(row_heights) // 2	- 2 * PADDING, 0)
+		row_labels_width_max	= max(max(col_widths )	- 2 * PADDING, 0)
 
 		col_label_align	= { "singleline": tl.TextAlign.kCenter	, "multiline": tl.TextAlign.kJustify	, "numeric": tl.TextAlign.kRight }
 		col_label_valign	= { "singleline": "bottom"	, "multiline": "top"	, "numeric": "bottom" }
@@ -458,12 +462,12 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		return ret
 
 	@classmethod
-	def validate_inputs(self, images: Iterable[torch.tensor], row_labels: Iterable[any] = [], col_labels: Iterable[any] = [], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> bool | str:
-		rows = len(row_labels)
-		cols = len(col_labels)
+	def validate_inputs(self, images: list[torch.tensor], row_labels: list[any] = [], col_labels: list[any] = [], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> bool | str:
+		imgs_len	= len(images)
+		rows = len(list(row_labels))
+		cols = len(list(col_labels))
 		n	= rows * cols
-		len	= len(images)
-		if len % n != 0:
+		if imgs_len % n != 0:
 			return "Number of images must be a multiple of rows * cols ({rows} * {cols} = {n}) but got {len}!"
 
 		return True
