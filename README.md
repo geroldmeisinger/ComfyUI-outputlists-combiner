@@ -331,6 +331,7 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 | `col_labels`	| `*`	| The text used for the column labels at the top	|
 | `gap`	| `INT`	| The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node.	|
 | `font_size`	| `FLOAT`	| The target font size. The text will be shrunk down until it fits (up to `font_size_min=6`).	|
+| `row_label_orientation`	| `COMBO`	| The text orientation of the row labels. Useful if you want to save space.	|
 | `order`	| `BOOLEAN`	| Defines in which order the images should be processed. This is only relevant if you have sub-images.	|
 | `output_is_list`	| `BOOLEAN`	| This is only relevant if you have sub-images or you want to create super-grids.	|
 

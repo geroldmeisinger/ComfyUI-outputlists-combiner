@@ -27,7 +27,6 @@ def generate_table(rows):
 	return lines
 
 def test_generate_docs():
-	return
 	nodes = [
 		StringOutputList(),
 		NumberOutputList(),
@@ -44,8 +43,8 @@ def test_generate_docs():
 	toc_lines	= ["- [Nodes](#nodes)"]
 	nodes_lines = []
 	for node in nodes:
-		schema    	= node.define_schema()
-		node_name 	= schema.display_name or schema.node_id
+		schema	= node.define_schema()
+		node_name	= schema.display_name or schema.node_id
 		toc_anchor	= node_name.lower().replace(" ", "-")
 		toc_lines.append(f"\t- [{node_name}](#{toc_anchor})")
 
@@ -58,7 +57,7 @@ def test_generate_docs():
 		nodes_lines.append("### Inputs\n")
 		input_rows = []
 		for input in schema.inputs or []:
-			type   	= "COMBO" if input.io_type.startswith("[") else input.io_type
+			type	= "COMBO" if input.io_type.startswith("[") else input.io_type
 			tooltip	= getattr(input, "tooltip", "").replace(INPUTLIST_NOTE, "").strip()
 			input_rows.append((input.display_name or input.id, type, tooltip))
 		nodes_lines.extend(generate_table(input_rows))
@@ -78,10 +77,10 @@ def test_generate_docs():
 	#output_path.parent.mkdir(parents=True, exist_ok=True)
 
 	# Write markdown file
-	header  	= "<!--- Auto-generated from src_README.md! Don't edit this file! Edit src_README.md instead! -->"
+	header	= "<!--- Auto-generated from src_README.md! Don't edit this file! Edit src_README.md instead! -->"
 	toc_text	= "\n".join(toc_lines)
 	nodes_text = "\n".join(nodes_lines)
 	print(nodes_text)
 	readme_src	= Path(f"{repo_dir}/src_README.md").read_text()
-	readme    	= readme_src.replace("{HEADER}", header).replace('- [Nodes](#nodes)', toc_text).replace('{NODES}', nodes_text)
+	readme	= readme_src.replace("{HEADER}", header).replace('- [Nodes](#nodes)', toc_text).replace('{NODES}', nodes_text)
 	Path(f"{repo_dir}/README.md").write_text(readme, encoding="utf-8")
