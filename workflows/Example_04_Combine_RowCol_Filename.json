@@ -203,7 +203,7 @@
                 100
             ],
             "size": [
-                203.0999969482422,
+                210.3499969482422,
                 126
             ],
             "flags": {},
@@ -309,7 +309,7 @@
                 350
             ],
             "size": [
-                203.0999969482422,
+                210.3499969482422,
                 126
             ],
             "flags": {},
@@ -817,61 +817,6 @@
             ]
         },
         {
-            "id": 17,
-            "type": "ShowText|pysssss",
-            "pos": [
-                1050,
-                150
-            ],
-            "size": [
-                210,
-                520.0000000000002
-            ],
-            "flags": {},
-            "order": 10,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "text",
-                    "name": "text",
-                    "type": "STRING",
-                    "link": 50
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfyui-custom-scripts",
-                "ver": "1.2.5",
-                "Node name for S&R": "ShowText|pysssss",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "version": "7.5.1",
-                    "input_ue_unconnectable": {}
-                }
-            },
-            "widgets_values": [
-                "img_00-row_0-col_0",
-                "img_01-row_0-col_1",
-                "img_02-row_0-col_2",
-                "img_03-row_1-col_0",
-                "img_04-row_1-col_1",
-                "img_05-row_1-col_2",
-                "img_06-row_2-col_0",
-                "img_07-row_2-col_1",
-                "img_08-row_2-col_2"
-            ],
-            "color": "#432",
-            "bgcolor": "#653"
-        },
-        {
             "id": 29,
             "type": "VAEDecode",
             "pos": [
@@ -1062,8 +1007,8 @@
             "id": 34,
             "type": "SaveImage",
             "pos": [
-                750,
-                400
+                800,
+                350
             ],
             "size": [
                 250,
@@ -1102,6 +1047,61 @@
             "widgets_values": [
                 "ComfyUI"
             ]
+        },
+        {
+            "id": 17,
+            "type": "ShowText|pysssss",
+            "pos": [
+                1100,
+                150
+            ],
+            "size": [
+                210,
+                520.0000000000002
+            ],
+            "flags": {},
+            "order": 10,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "text",
+                    "name": "text",
+                    "type": "STRING",
+                    "link": 50
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfyui-custom-scripts",
+                "ver": "1.2.5",
+                "Node name for S&R": "ShowText|pysssss",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "version": "7.5.1",
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": [
+                "img_00-row_0-col_0",
+                "img_01-row_0-col_1",
+                "img_02-row_0-col_2",
+                "img_03-row_1-col_0",
+                "img_04-row_1-col_1",
+                "img_05-row_1-col_2",
+                "img_06-row_2-col_0",
+                "img_07-row_2-col_1",
+                "img_08-row_2-col_2"
+            ],
+            "color": "#432",
+            "bgcolor": "#653"
         }
     ],
     "links": [
@@ -1285,7 +1285,37 @@
             ]
         },
         "ue_links": [],
-        "links_added_by_ue": []
+        "links_added_by_ue": [],
+        "workflowRendererVersion": "LG",
+        "linkExtensions": [
+            {
+                "id": 52,
+                "parentId": 2
+            }
+        ],
+        "reroutes": [
+            {
+                "id": 1,
+                "pos": [
+                    2100,
+                    700
+                ],
+                "linkIds": [
+                    52
+                ]
+            },
+            {
+                "id": 2,
+                "parentId": 1,
+                "pos": [
+                    650,
+                    700
+                ],
+                "linkIds": [
+                    52
+                ]
+            }
+        ]
     },
     "version": 0.4
 }
