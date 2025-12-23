@@ -21,13 +21,13 @@ class LoadAnyFile(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= """Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE` with metadata.
+			description	= f"""Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE` with metadata.
 
 `filepath` supports ComfyUI's annotated filepaths ` [input]` ` [output]` or ` [temp]`.
 `filepath` also support glob pattern expansion `subdir/**/*.png`.
-Internally uses [python's glob.iglob](https://docs.python.org/3/library/glob.html#glob.iglob).
+Internally uses python's [glob.iglob](https://docs.python.org/3/library/glob.html#glob.iglob).
 
-`metadata` uses `PIL.Image.info` internally for .png files, otherwise calls `exiftool`, if it's installed and available at the path.
+`metadata` calls `exiftool`, if it's installed and available at the path, otherwise uses `PIL.Image.info` as a fallback.
 
 For security reason only the following directories are supported: `[input] [output] [temp]`.
 For performance reasons the number of files are limited to: {MAX_RESULTS}.

@@ -332,7 +332,7 @@ Another workaround is to use the [PrimitiveInt control\_after\_generate=incremen
 
 ## Discriminate multiple files
 
-![Iterate checkpoints example](/workflows/ExampleAdv_05_Checkpoints_ImmediateSave.png)
+![Iterate checkpoints example](/workflows/ExampleAdv_06_DiscriminateMultipleFiles.png)
 
 (ComfyUI workflow included)
 
