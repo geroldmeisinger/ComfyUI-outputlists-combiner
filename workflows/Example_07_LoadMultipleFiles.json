@@ -1,0 +1,230 @@
+{
+    "id": "e3b1cf2e-1a32-4abc-8f0f-1b01c7372896",
+    "revision": 0,
+    "last_node_id": 5,
+    "last_link_id": 3,
+    "nodes": [
+        {
+            "id": 5,
+            "type": "StringOutputList",
+            "pos": [
+                -150,
+                700
+            ],
+            "size": [
+                210,
+                200
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "separator",
+                    "name": "separator",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "separator"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "values",
+                    "name": "values",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "values"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "value",
+                    "name": "value",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        3
+                    ]
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "inspect_combo",
+                    "name": "inspect_combo",
+                    "type": "COMBO",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "a264e5ff9999af8620fdf1f54c351a59afb49794",
+                "Node name for S&R": "StringOutputList",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {},
+                    "version": "7.5.2"
+                }
+            },
+            "widgets_values": [
+                "\\n",
+                "tests/**/*.png [output]\ntests/**/*.jpg [output]\ntests/**/*.webp [output]"
+            ],
+            "color": "#232",
+            "bgcolor": "#353"
+        },
+        {
+            "id": 1,
+            "type": "LoadAnyFile",
+            "pos": [
+                200,
+                700
+            ],
+            "size": [
+                270,
+                118
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "annotated_filepath",
+                    "name": "annotated_filepath",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "annotated_filepath"
+                    },
+                    "link": 3
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "content",
+                    "name": "content",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                },
+                {
+                    "localized_name": "image",
+                    "name": "image",
+                    "shape": 6,
+                    "type": "IMAGE",
+                    "links": [
+                        2
+                    ]
+                },
+                {
+                    "localized_name": "mask",
+                    "name": "mask",
+                    "shape": 6,
+                    "type": "MASK",
+                    "links": null
+                },
+                {
+                    "localized_name": "metadata",
+                    "name": "metadata",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "a264e5ff9999af8620fdf1f54c351a59afb49794",
+                "Node name for S&R": "LoadAnyFile",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {},
+                    "version": "7.5.2"
+                }
+            },
+            "widgets_values": [
+                "glob/**/*.png [output]"
+            ],
+            "color": "#323",
+            "bgcolor": "#535"
+        },
+        {
+            "id": 4,
+            "type": "PreviewImage",
+            "pos": [
+                600,
+                700
+            ],
+            "size": [
+                450,
+                258
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "images",
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 2
+                }
+            ],
+            "outputs": [],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.5.1",
+                "Node name for S&R": "PreviewImage",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {},
+                    "version": "7.5.2"
+                }
+            },
+            "widgets_values": []
+        }
+    ],
+    "links": [
+        [
+            2,
+            1,
+            1,
+            4,
+            0,
+            "IMAGE"
+        ],
+        [
+            3,
+            5,
+            0,
+            1,
+            0,
+            "STRING"
+        ]
+    ],
+    "groups": [],
+    "config": {},
+    "extra": {
+        "workflowRendererVersion": "LG",
+        "ds": {
+            "scale": 1,
+            "offset": [
+                250,
+                -600
+            ]
+        },
+        "ue_links": [],
+        "links_added_by_ue": []
+    },
+    "version": 0.4
+}

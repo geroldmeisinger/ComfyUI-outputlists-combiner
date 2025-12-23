@@ -53,6 +53,7 @@ If this custom node helps you in your work..
 	- [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength)
 	- [The PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern)
 	- [XYZ-GridPlot](#xyz-gridplot-1)
+	- [Load multiple files](#load-multiple-files)
 - [Advanced Examples](#advanced-examples)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
@@ -61,6 +62,7 @@ If this custom node helps you in your work..
 	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
 	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 	- [Iterate checkpoints](#iterate-checkpoints)
+	- [Discriminate multiple files](#discriminate-multiple-files)
 - [Credits](#credits)
 
 # Features
@@ -205,11 +207,21 @@ And because it is very tedious to add a selector for every single list, the `Spr
 
 ![XYZ-GridPlot example](/workflows/Example_06_XYZ-GridPlot.png)
 
+(ComfyUI workflow included)
+
 Uses `String OutputLists + OutputLists Combinations + Formatted String` to generate multiple prompts for an image grid. The values of the `String OutputLists` are directly used as labels for the `XYZ-GridPlot` and they also define how the grid should be shaped.
 
 Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` you get a image grid with the batch as sub-grids. If you also set `output_is_list=True` the sub-images will not be arranged together but you will get 4 separate images instead.
 
 https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
+
+## Load multiple files
+
+![Load multiple files example](/workflows/Example_07_LoadMultipleFiles.png)
+
+(ComfyUI workflow included)
+
+Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the directory `tests`, 2. on any sub-directory `**` (in this case: `imgs`), 3. on all files with a certain file ending (`*.png`), 4. starting at ComfyUI's `[output]` directory as the base. This calls `Load Any File` 3 times, each time with a different format, which again emits multiple files each time, resulting in a list of many files.
 
 # Advanced Examples
 
@@ -317,6 +329,14 @@ https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
 The `Load Checkpoint` node suffers from [the save problem](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) as the `KSampler` in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `KSampler Immediate Save` but note that this only works for default `Load Checkpoint -> KSampler -> VAE Decode -> Save Image` pattern, i.e. no `CFGGuider`, no `ModelShift` etc. If you need them you have to implement your own node expansion or extend [ksampler_immediate_saveimage.py](src/outputlists_combiner/ksampler_immediate_saveimage.py). I know this is unfortunate and probably to difficult for some people (it's not that hard actually, you just have to be careful when connecting node in code).
 
 Another workaround is to use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) but you will loose the OutputLists abilities.
+
+## Discriminate multiple files
+
+![Iterate checkpoints example](/workflows/ExampleAdv_05_Checkpoints_ImmediateSave.png)
+
+(ComfyUI workflow included)
+
+Similar to the basic `Workflow Discriminator` example, but uses a `Load Any File` with a glob pattern expansion to load multiple files, where all files are discriminated against.
 
 # Credits
 
