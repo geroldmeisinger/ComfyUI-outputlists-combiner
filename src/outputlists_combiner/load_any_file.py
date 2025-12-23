@@ -23,12 +23,14 @@ class LoadAnyFile(io.ComfyNode):
 		ret = io.Schema(
 			description	= """Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE` with metadata.
 
-`filepath` support ComfyUI's annotated filepaths ` [input]` ` [output]` or ` [temp]` (mind the whitespace!).
-`filepath` also support glob pattern expansion `subdir/**/*.png`. Internally uses [python's glob.iglob](https://docs.python.org/3/library/glob.html#glob.iglob).
+`filepath` supports ComfyUI's annotated filepaths ` [input]` ` [output]` or ` [temp]`.
+`filepath` also support glob pattern expansion `subdir/**/*.png`.
+Internally uses [python's glob.iglob](https://docs.python.org/3/library/glob.html#glob.iglob).
 
 `metadata` uses `PIL.Image.info` internally for .png files, otherwise calls `exiftool`, if it's installed and available at the path.
 
-Number of files are limited to: {MAX_RESULTS}.
+For security reason only the following directories are supported: `[input] [output] [temp]`.
+For performance reasons the number of files are limited to: {MAX_RESULTS}.
 """,
 			node_id	= "LoadAnyFile",
 			display_name	= "Load Any File",
@@ -37,7 +39,7 @@ Number of files are limited to: {MAX_RESULTS}.
 				io.String.Input("annotated_filepath", display_name="filepath"	,  tooltip="Base directory defaults to input directory. Support glob pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the whitespace!) to specify a different ComfyUI user directory."),
 			],
 			outputs	= [
-				io.String	.Output("string"	, display_name="string"	, is_output_list=True, tooltip="File content for text files, base64 for binary files."),
+				io.String	.Output("string"	, display_name="content"	, is_output_list=True, tooltip="File content for text files, base64 for binary files."),
 				io.Image	.Output("image"	, display_name="image"	, is_output_list=True, tooltip="Image batch tensor."),
 				io.Mask	.Output("mask"	, display_name="mask"	, is_output_list=True, tooltip="Mask batch tensor."),
 				io.String	.Output("metadata"	, display_name="metadata"	, is_output_list=True, tooltip="Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`."),
@@ -94,10 +96,6 @@ Number of files are limited to: {MAX_RESULTS}.
 			try:
 				pil_img	= node_helpers.pillow(Image.open, BytesIO(image_data))
 				image, mask = load_image(pil_img)
-
-				# get info from standard PNG otherwise fall back to exiftool
-				if hasattr(pil_img, "info") and pil_img.info and not "exif" in pil_img.info:
-					exif_json = dumps(pil_img.info, indent=4, default=to_base64)
 			except (UnidentifiedImageError, OSError, ValueError):
 				# fallback to black 64x64 tensors
 				image	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
@@ -110,7 +108,11 @@ Number of files are limited to: {MAX_RESULTS}.
 						exif = et.get_metadata(file_path)[0]
 						exif_json = dumps(exif, indent=4)
 				except FileNotFoundError: # exiftool not found in path
-					pass
+					if pil_img:
+						# get info from standard PNG otherwise fall back to exiftool
+						if hasattr(pil_img, "info") and pil_img.info and not "exif" in pil_img.info:
+							pil_img.info["SourceFile"] = file_path
+							exif_json = dumps(pil_img.info, indent=4, default=to_base64)
 
 			ret_strings.append(filecontent)
 			ret_images.append(image)
