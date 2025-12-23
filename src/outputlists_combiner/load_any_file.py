@@ -1,5 +1,6 @@
 import base64
 import hashlib
+import time
 from io import BytesIO
 from json import dumps
 
@@ -19,23 +20,35 @@ class LoadAnyFile(io.ComfyNode):
 		ret = io.Schema(
 			description	= """Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE`.
 """,
-			node_id	= "LoadAnyFile",
+			node_id     	= "LoadAnyFile",
 			display_name	= "Load Any File",
-			category	= "Utility",
-			inputs	= [
-				io.String.Input("annotated_filepath", tooltip="Base directory defaults to input directory. Use suffix `[input]` `[output]` or `[temp]` to specify a different ComfyUI user directory."),
+			category    	= "Utility",
+			inputs      	= [
+				io.String.Input("annotated_filepath", display_name="filepath"	,  tooltip="Base directory defaults to input directory. Use suffix `[input]` `[output]` or `[temp]` to specify a different ComfyUI user directory."),
 			],
 			outputs	= [
-				io.String	.Output("string"	, display_name="string"	, is_output_list=False, tooltip="File content for text files, base64 for binary files."),
-				io.Image	.Output("image"	, display_name="image"	, is_output_list=False, tooltip="Image batch tensor."),
-				io.Mask	.Output("mask"	, display_name="mask"	, is_output_list=False, tooltip="Mask batch tensor."),
-				io.String	.Output("metadata"	, display_name="metadata"	, is_output_list=False, tooltip="Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`."),
+				io.String	.Output("string"  	, display_name="string"  	, is_output_list=True, tooltip="File content for text files, base64 for binary files."),
+				io.Image 	.Output("image"   	, display_name="image"   	, is_output_list=True, tooltip="Image batch tensor."),
+				io.Mask  	.Output("mask"    	, display_name="mask"    	, is_output_list=True, tooltip="Mask batch tensor."),
+				io.String	.Output("metadata"	, display_name="metadata"	, is_output_list=True, tooltip="Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`."),
 			],
 		)
 		return ret
 
 	@classmethod
-	def execute(self, annotated_filepath: str) -> io.NodeOutput:
+	def execute(cls, annotated_filepath: str) -> io.NodeOutput:
+		# https://github.com/comfyanonymous/ComfyUI/issues/11017
+		if not annotated_filepath:
+			ret = io.NodeOutput([], [], [], [])
+			return ret
+
+		# input_dir = folder_paths.get_input_directory()
+		# files = [f for f in os.listdir(input_dir) if os.path.isfile(os.path.join(input_dir, f))]
+		# files = folder_paths.filter_files_content_types(files, ["image"])
+		# return {"required":
+		#             {"image": (sorted(files), {"image_upload": True})},
+		#         }
+
 		file_path = folder_paths.get_annotated_filepath(annotated_filepath)
 
 		with open(file_path, "rb") as f:
@@ -43,7 +56,7 @@ class LoadAnyFile(io.ComfyNode):
 
 		# check if binary
 		try:
-			result	= chardet.detect(raw_data[:1024]) # trunc for performance
+			result  	= chardet.detect(raw_data[:1024]) # trunc for performance
 			encoding	= result["encoding"]
 			if encoding:
 				filecontent = raw_data.decode(encoding)
@@ -81,7 +94,7 @@ class LoadAnyFile(io.ComfyNode):
 		except (UnidentifiedImageError, OSError, ValueError):
 			# fallback to black 64x64 tensors
 			image	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
-			mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
+			mask 	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 
 		# run exiftool
 		if not exif_json and is_binary:
@@ -92,13 +105,14 @@ class LoadAnyFile(io.ComfyNode):
 			except FileNotFoundError: # exiftool not found in path
 				pass
 
-		ret = io.NodeOutput(filecontent, image, mask, exif_json or "{}")
+		ret = io.NodeOutput([filecontent], [image], [mask], [exif_json or "{}"])
 		return ret
 
 	@classmethod
 	def fingerprint_inputs(cls, annotated_filepath: str) -> str:
+		if not annotated_filepath: return str(time.time()) # https://github.com/comfyanonymous/ComfyUI/issues/11017
 		path	= folder_paths.get_annotated_filepath(annotated_filepath)
-		m	= hashlib.sha256()
+		m   	= hashlib.sha256()
 		with open(path, 'rb') as f:
 			m.update(f.read())
 		ret = m.digest().hex()
@@ -106,6 +120,7 @@ class LoadAnyFile(io.ComfyNode):
 
 	@classmethod
 	def validate_inputs(cls, annotated_filepath: str) -> bool | str:
+		if not annotated_filepath: return True # https://github.com/comfyanonymous/ComfyUI/issues/11017
 		path = folder_paths.get_annotated_filepath(annotated_filepath)
 		if not folder_paths.exists_annotated_filepath(path):
 			return "Invalid file: {}".format(path)
@@ -115,8 +130,8 @@ class LoadAnyFile(io.ComfyNode):
 # from ComfyUI/nodes.py LoadImage
 def load_image(img: Image) -> tuple[torch.tensor, torch.tensor]:
 	output_images	= []
-	output_masks	= []
-	w, h	= None, None
+	output_masks 	= []
+	w, h         	= None, None
 
 	excluded_formats = ['MPO']
 
@@ -145,13 +160,13 @@ def load_image(img: Image) -> tuple[torch.tensor, torch.tensor]:
 		else:
 			mask = torch.zeros((64,64), dtype=torch.float32, device="cpu")
 		output_images	.append(image)
-		output_masks	.append(mask.unsqueeze(0))
+		output_masks 	.append(mask.unsqueeze(0))
 
 	if len(output_images) > 1 and img.format not in excluded_formats:
 		output_image	= torch.cat(output_images	, dim=0)
-		output_mask	= torch.cat(output_masks	, dim=0)
+		output_mask 	= torch.cat(output_masks 	, dim=0)
 	else:
 		output_image	= output_images[0]
-		output_mask	= output_masks[0]
+		output_mask 	= output_masks[0]
 
 	return (output_image, output_mask)
