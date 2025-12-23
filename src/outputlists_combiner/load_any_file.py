@@ -1,6 +1,7 @@
 import base64
 import hashlib
 from io import BytesIO
+from json import dumps
 
 import chardet
 import folder_paths
@@ -8,6 +9,7 @@ import node_helpers
 import numpy as np
 import torch
 from comfy_api.latest import io
+from exiftool import ExifToolHelper
 from PIL import Image, ImageOps, ImageSequence, UnidentifiedImageError
 
 
@@ -27,56 +29,10 @@ class LoadAnyFile(io.ComfyNode):
 				io.String	.Output("string"	, display_name="string"	, is_output_list=False, tooltip="File content for text files, base64 for binary files."),
 				io.Image	.Output("image"	, display_name="image"	, is_output_list=False, tooltip="Image batch tensor."),
 				io.Mask	.Output("mask"	, display_name="mask"	, is_output_list=False, tooltip="Mask batch tensor."),
+				io.String	.Output("metadata"	, display_name="metadata"	, is_output_list=False, tooltip="Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`."),
 			],
 		)
 		return ret
-
-	@classmethod
-	def load_image(self, image_data: str | BytesIO) -> tuple[torch.tensor, torch.tensor]:
-		img = node_helpers.pillow(Image.open, image_data)
-
-		# from ComfyUI/nodes.py LoadImage
-		output_images	= []
-		output_masks	= []
-		w, h	= None, None
-
-		excluded_formats = ['MPO']
-
-		for i in ImageSequence.Iterator(img):
-			i = node_helpers.pillow(ImageOps.exif_transpose, i)
-
-			if i.mode == 'I':
-				i = i.point(lambda i: i * (1 / 255))
-			image = i.convert("RGB")
-
-			if len(output_images) == 0:
-				w = image.size[0]
-				h = image.size[1]
-
-			if image.size[0] != w or image.size[1] != h:
-				continue
-
-			image = np.array(image).astype(np.float32) / 255.0
-			image = torch.from_numpy(image)[None,]
-			if 'A' in i.getbands():
-				mask = np.array(i.getchannel('A')).astype(np.float32) / 255.0
-				mask = 1. - torch.from_numpy(mask)
-			elif i.mode == 'P' and 'transparency' in i.info:
-				mask = np.array(i.convert('RGBA').getchannel('A')).astype(np.float32) / 255.0
-				mask = 1. - torch.from_numpy(mask)
-			else:
-				mask = torch.zeros((64,64), dtype=torch.float32, device="cpu")
-			output_images	.append(image)
-			output_masks	.append(mask.unsqueeze(0))
-
-		if len(output_images) > 1 and img.format not in excluded_formats:
-			output_image	= torch.cat(output_images	, dim=0)
-			output_mask	= torch.cat(output_masks	, dim=0)
-		else:
-			output_image	= output_images[0]
-			output_mask	= output_masks[0]
-
-		return (output_image, output_mask)
 
 	@classmethod
 	def execute(self, annotated_filepath: str) -> io.NodeOutput:
@@ -87,7 +43,7 @@ class LoadAnyFile(io.ComfyNode):
 
 		# check if binary
 		try:
-			result	= chardet.detect(raw_data)
+			result	= chardet.detect(raw_data[:1024]) # trunc for performance
 			encoding	= result["encoding"]
 			if encoding:
 				filecontent = raw_data.decode(encoding)
@@ -114,14 +70,29 @@ class LoadAnyFile(io.ComfyNode):
 			image_data = filecontent.encode("utf-8")
 
 		# try to load binary or base64 as image
+		exif_json = ""
 		try:
-			image, mask = self.load_image(BytesIO(image_data))
+			pil_img	= node_helpers.pillow(Image.open, BytesIO(image_data))
+			image, mask = load_image(pil_img)
+
+			# get info from standard PNG otherwise fall back to exiftool
+			if hasattr(pil_img, "info") and pil_img.info and not "exif" in pil_img.info:
+				exif_json = dumps(pil_img.info, indent=4)
 		except (UnidentifiedImageError, OSError, ValueError):
 			# fallback to black 64x64 tensors
 			image	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 			mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 
-		ret = io.NodeOutput(filecontent, image, mask)
+		# run exiftool
+		if not exif_json and is_binary:
+			try:
+				with ExifToolHelper() as et:
+					exif = et.get_metadata(file_path)[0]
+					exif_json = dumps(exif, indent=4)
+			except FileNotFoundError: # exiftool not found in path
+				pass
+
+		ret = io.NodeOutput(filecontent, image, mask, exif_json or "{}")
 		return ret
 
 	@classmethod
@@ -140,3 +111,47 @@ class LoadAnyFile(io.ComfyNode):
 			return "Invalid file: {}".format(path)
 
 		return True
+
+# from ComfyUI/nodes.py LoadImage
+def load_image(img: Image) -> tuple[torch.tensor, torch.tensor]:
+	output_images	= []
+	output_masks	= []
+	w, h	= None, None
+
+	excluded_formats = ['MPO']
+
+	for i in ImageSequence.Iterator(img):
+		i = node_helpers.pillow(ImageOps.exif_transpose, i)
+
+		if i.mode == 'I':
+			i = i.point(lambda i: i * (1 / 255))
+		image = i.convert("RGB")
+
+		if len(output_images) == 0:
+			w = image.size[0]
+			h = image.size[1]
+
+		if image.size[0] != w or image.size[1] != h:
+			continue
+
+		image = np.array(image).astype(np.float32) / 255.0
+		image = torch.from_numpy(image)[None,]
+		if 'A' in i.getbands():
+			mask = np.array(i.getchannel('A')).astype(np.float32) / 255.0
+			mask = 1. - torch.from_numpy(mask)
+		elif i.mode == 'P' and 'transparency' in i.info:
+			mask = np.array(i.convert('RGBA').getchannel('A')).astype(np.float32) / 255.0
+			mask = 1. - torch.from_numpy(mask)
+		else:
+			mask = torch.zeros((64,64), dtype=torch.float32, device="cpu")
+		output_images	.append(image)
+		output_masks	.append(mask.unsqueeze(0))
+
+	if len(output_images) > 1 and img.format not in excluded_formats:
+		output_image	= torch.cat(output_images	, dim=0)
+		output_mask	= torch.cat(output_masks	, dim=0)
+	else:
+		output_image	= output_images[0]
+		output_mask	= output_masks[0]
+
+	return (output_image, output_mask)

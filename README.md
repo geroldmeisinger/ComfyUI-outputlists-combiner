@@ -50,6 +50,7 @@ If this custom node helps you in your work..
 	- [Spreadsheet OutputList](#spreadsheet-outputlist)
 	- [OutputLists Combinations](#outputlists-combinations)
 	- [XYZ-GridPlot](#xyz-gridplot)
+	- [Workflow Discriminator](#workflow-discriminator)
 	- [Formatted String](#formatted-string)
 	- [Convert To Int Float Str](#convert-to-int-float-str)
 	- [Load Any File](#load-any-file)
@@ -341,6 +342,37 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 | ---	| ---	| ---	|
 | `image`	| `IMAGE 𝌠`	| The XYZ-GridPlot image. If `output_is_list=True` it will be a list of images which you can connect to another XYZ-GridPlot node to create super-grids.	|
 
+## Workflow Discriminator
+
+![Workflow Discriminator](/media/WorkflowDiscriminator.png)
+
+(ComfyUI workflow included)
+
+Compare workflows and discriminate differences as JSON paths.
+Note that ComfyUI's `IMAGE` doesn't contain the workflow metadata and you need to load the images with specialized image+metadata loaders and connect the metadata to this node.
+Custom nodes with metadata loaders include:
+* `Load Any File.exif` -> `JSON OutputList(jsonpath=$.["PNG:Prompt"]).value`
+* [Crystool](https://github.com/crystian/ComfyUI-Crystools) `🪛 Load image with metadata.Metadata RAW` -> `🪛 Metadata extractor.prompt`
+* [Simple_Readable_Metadata](https://github.com/ShammiG/ComfyUI-Simple_Readable_Metadata-SG) `Simple Readable Metadata-SG.metadata_raw`
+
+### Inputs
+
+| Name	| Type	| Description	|
+| ---	| ---	| ---	|
+| `objs_0`	| `*`	| (optional) A single object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects.	|
+| `more_objs`	| `*`	| (optional) Another object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects.	|
+| `ignore_jsonpaths`	| `*`	| (optional) A list of JSONPaths to ignore in case you want to chain multiple discriminators together.	|
+
+### Outputs
+
+| Name	| Type	| Description	|
+| ---	| ---	| ---	|
+| `list_a`	| `* 𝌠`	| 	|
+| `list_b`	| `* 𝌠`	| 	|
+| `list_c`	| `* 𝌠`	| 	|
+| `list_d`	| `* 𝌠`	| 	|
+| `jsonpaths`	| `STRING 𝌠`	| 	|
+
 ## Formatted String
 
 ![Formatted String](/media/FormattedString.png)
@@ -420,6 +452,7 @@ Load any text or binary file and provide the file content as string or base64 st
 | `string`	| `STRING`	| File content for text files, base64 for binary files.	|
 | `image`	| `IMAGE`	| Image batch tensor.	|
 | `mask`	| `MASK`	| Mask batch tensor.	|
+| `metadata`	| `STRING`	| Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`.	|
 
 
 # Examples
@@ -620,6 +653,7 @@ Another workaround is to use the [PrimitiveInt control\_after\_generate=incremen
 - [Impackt-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools)
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
+- [Simple_Readable_Metadata](https://github.com/ShammiG/ComfyUI-Simple_Readable_Metadata-SG)
 
 [![Star History Chart](https://api.star-history.com/svg?repos=geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)](https://www.star-history.com/#geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)
 
