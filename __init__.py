@@ -16,6 +16,7 @@ async def comfy_entrypoint() -> ComfyExtension:
 				SpreadsheetOutputList,
 				CombineOutputLists,
 				XyzGridPlot,
+				WorkflowDiscriminator,
 				FormattedString,
 				ConvertNumberToIntFloatStr,
 				LoadAnyFile,

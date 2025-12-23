@@ -1,0 +1,119 @@
+qwen3_id;md-translator;iso_lang_code_set1;qwen3_language;labelKey;nativeLabel;iso_lang_code_set2;qwen3_family;wikipedia_link
+;am;;;;;;;
+71;ar;ar;Arabic;arabic;العربية (al-ʿarabiyya);ara;Afro-Asiatic;https://en.wikipedia.org/wiki/Arabic
+7;bg;bg;Bulgarian;bulgarian;Български (Bǎlgarski);bul;Indo-European;https://en.wikipedia.org/wiki/Bulgarian_language
+39;bho;bho;Bhojpuri;bhojpuri;भोजपुरी (Bhojpurī);bho;Indo-European;https://en.wikipedia.org/wiki/Bhojpuri_language
+45;bn;bn;Bengali;bengali;বাংলা (Bangla);ben;Indo-European;https://en.wikipedia.org/wiki/Bengali_language
+9;cs;cs;Czech;czech;Čeština;ces;Indo-European;https://en.wikipedia.org/wiki/Czech_language
+6;da;da;Danish;danish;Dansk;dan;Indo-European;https://en.wikipedia.org/wiki/Danish_language
+3;de;de;German;german;Deutsch;ger;Indo-European;https://en.wikipedia.org/wiki/German_language
+10;el;el;Greek;greek;Ελληνικά (Elliniká);ell;Indo-European;https://en.wikipedia.org/wiki/Greek_language
+0;en;en;English;english;English;eng;Indo-European;https://en.wikipedia.org/wiki/English_language
+12;es;es;Spanish;spanish;Español;spa;Indo-European;https://en.wikipedia.org/wiki/Spanish_language
+99;et;et;Estonian;estonian;Eesti;est;Uralic;https://en.wikipedia.org/wiki/Estonian_language
+20;fa;fa;Persian;persian;فارسی (Fārsi);fas;Indo-European;https://en.wikipedia.org/wiki/Persian_language
+98;fi;fi;Finnish;finnish;Suomi;fin;Uralic;https://en.wikipedia.org/wiki/Finnish_language
+;fil;;;;;;;
+1;fr;fr;French;french;Français;fre;Indo-European;https://en.wikipedia.org/wiki/French_language
+22;gu;gu;Gujarati;gujarati;ગુજરાતી (Gujarātī);guj;Indo-European;https://en.wikipedia.org/wiki/Gujarati_language
+;ha;;;;;;;
+72;he;he;Hebrew;hebrew;עברית (Ivrit);heb;Afro-Asiatic;https://en.wikipedia.org/wiki/Hebrew_language
+43;hi;hi;Hindi;hindi;हिन्दी (Hindī);hin;Indo-European;https://en.wikipedia.org/wiki/Hindi
+15;hr;hr;Croatian;croatian;Hrvatski;hrv;Indo-European;https://en.wikipedia.org/wiki/Croatian_language
+100;hu;hu;Hungarian;hungarian;Magyar;hun;Uralic;https://en.wikipedia.org/wiki/Hungarian_language
+74;id;id;Indonesian;indonesian;Bahasa Indonesia;ind;Austronesian;https://en.wikipedia.org/wiki/Indonesian_language
+24;it;it;Italian;italian;Italiano;ita;Indo-European;https://en.wikipedia.org/wiki/Italian_language
+103;ja;ja;Japanese;japanese;日本語 (Nihongo);jpn;Other;https://en.wikipedia.org/wiki/Japanese_language
+78;jv;jv;Javanese;javanese;ꦧꦱꦗꦮ (Basa Jawa);jav;Austronesian;https://en.wikipedia.org/wiki/Javanese_language
+93;kk;kk;Kazakh;kazakh;Қазақша (Qazaqşa);kaz;Turkic;https://en.wikipedia.org/wiki/Kazakh_language
+88;kn;kn;Kannada;kannada;ಕನ್ನಡ (Kannaḍa);kan;Dravidian;https://en.wikipedia.org/wiki/Kannada_language
+104;ko;ko;Korean;korean;한국어 (Hangugeo);kor;Other;https://en.wikipedia.org/wiki/Korean_language
+;ky;;;;;;;
+17;lt;lt;Lithuanian;lithuanian;Lietuvių;lit;Indo-European;https://en.wikipedia.org/wiki/Lithuanian_language
+23;lv;lv;Latvian;latvian;Latviešu;lav;Indo-European;https://en.wikipedia.org/wiki/Latvian_language
+27;mr;mr;Marathi;marathi;मराठी (Marāṭhī);mar;Indo-European;https://en.wikipedia.org/wiki/Marathi_language
+75;ms;ms;Malay;malay;Bahasa Melayu;msa;Austronesian;https://en.wikipedia.org/wiki/Malay_language
+18;nb;nb;Norwegian Bokmål;norwegianbokmal;Norsk Bokmål;nob;Indo-European;https://en.wikipedia.org/wiki/Bokm%C3%A5l
+13;nl;nl;Dutch;dutch;Nederlands;nld;Indo-European;https://en.wikipedia.org/wiki/Dutch_language
+16;pl;pl;Polish;polish;Polski;pol;Indo-European;https://en.wikipedia.org/wiki/Polish_language
+2;pt;pt;Portuguese;portuguese;Português;por;Indo-European;https://en.wikipedia.org/wiki/Portuguese_language
+4;ro;ro;Romanian;romanian;Română;ron;Indo-European;https://en.wikipedia.org/wiki/Romanian_language
+8;ru;ru;Russian;russian;Русский (Russkij);rus;Indo-European;https://en.wikipedia.org/wiki/Russian_language
+14;sk;sk;Slovak;slovak;Slovenčina;slk;Indo-European;https://en.wikipedia.org/wiki/Slovak_language
+21;sl;sl;Slovenian;slovenian;Slovenščina;slv;Indo-European;https://en.wikipedia.org/wiki/Slovene_language
+5;sv;sv;Swedish;swedish;Svenska;swe;Indo-European;https://en.wikipedia.org/wiki/Swedish_language
+111;sw;sw;Swahili;swahili;Kiswahili;swa;Other;https://en.wikipedia.org/wiki/Swahili_language
+86;ta;ta;Tamil;tamil;தமிழ் (Tamiḻ);tam;Dravidian;https://en.wikipedia.org/wiki/Tamil_language
+87;te;te;Telugu;telugu;తెలుగు (Telugu);tel;Dravidian;https://en.wikipedia.org/wiki/Telugu_language
+96;th;th;Thai;thai;ไทย (Thai);tha;Tai-Kadai;https://en.wikipedia.org/wiki/Thai_language
+;tk;;;;;;;
+90;tr;tr;Turkish;turkish;Türkçe;tur;Turkic;https://en.wikipedia.org/wiki/Turkish_language
+;ug;;;;;;;
+11;uk;uk;Ukrainian;ukrainian;Українська (Ukrajinsʹka);ukr;Indo-European;https://en.wikipedia.org/wiki/Ukrainian_language
+63;ur;ur;Urdu;urdu;اردو (Urdu);urd;Indo-European;https://en.wikipedia.org/wiki/Urdu
+92;uz;uz;Northern Uzbek;northernuzbek;Oʻzbekcha;uzb;Turkic;https://en.wikipedia.org/wiki/Uzbek_language
+101;vi;vi;Vietnamese;vietnamese;Tiếng Việt;vie;Austroasiatic;https://en.wikipedia.org/wiki/Vietnamese_language
+67;zh;zh;Chinese (Simplified);chinese(simplified);Chinese (Simplified)中文（简体）(Zhōngwén Jiǎntǐ);zho;Sino-Tibetan;https://en.wikipedia.org/wiki/Simplified_Chinese_characters
+68;zh;zh;Chinese (Traditional);chinese(traditional);Chinese (Traditional)中文（繁體）(Zhōngwén Fántǐ);zho;Sino-Tibetan;https://en.wikipedia.org/wiki/Traditional_Chinese_characters
+60;;af;Afrikaans;afrikaans;Afrikaans;afr;Indo-European;https://en.wikipedia.org/wiki/Afrikaans
+32;;as;Assamese;assamese;অসমীয়া (Ôxômiya);asm;Indo-European;https://en.wikipedia.org/wiki/Assamese_language
+91;;az;North Azerbaijani;northazerbaijani;Azərbaycanca;aze;Turkic;https://en.wikipedia.org/wiki/Azerbaijani_language
+94;;ba;Bashkir;bashkir;Башҡортса (Başqortsa);bak;Turkic;https://en.wikipedia.org/wiki/Bashkir_language
+28;;be;Belarusian;belarusian;Беларуская (Bielaruskaja);bel;Indo-European;https://en.wikipedia.org/wiki/Belarusian_language
+65;;bs;Bosnian;bosnian;Bosanski;bos;Indo-European;https://en.wikipedia.org/wiki/Bosnian_language
+55;;ca;Catalan;catalan;Català;cat;Indo-European;https://en.wikipedia.org/wiki/Catalan_language
+33;;cy;Welsh;welsh;Cymraeg;cym;Indo-European;https://en.wikipedia.org/wiki/Welsh_language
+106;;eu;Basque;basque;Euskara;eus;Other;https://en.wikipedia.org/wiki/Basque_language
+42;;fo;Faroese;faroese;Føroyskt;fao;Indo-European;https://en.wikipedia.org/wiki/Faroese_language
+41;;ga;Irish;irish;Gaeilge;gle;Indo-European;https://en.wikipedia.org/wiki/Irish_language
+54;;gl;Galician;galician;Galego;glg;Indo-European;https://en.wikipedia.org/wiki/Galician_language
+107;;ht;Haitian;haitian;Kreyòl Ayisyen;hat;Other;https://en.wikipedia.org/wiki/Haitian_Creole
+66;;hy;Armenian;armenian;Հայերեն (Hayeren);hye;Indo-European;https://en.wikipedia.org/wiki/Armenian_language
+56;;is;Icelandic;icelandic;Íslenska;isl;Indo-European;https://en.wikipedia.org/wiki/Icelandic_language
+105;;ka;Georgian;georgian;ქართული (Kartuli);kat;Other;https://en.wikipedia.org/wiki/Georgian_language
+102;;km;Khmer;khmer;ភាសាខ្មែរ (Phiəsaakhmae);khm;Austroasiatic;https://en.wikipedia.org/wiki/Khmer_language
+30;;lb;Luxembourgish;luxembourgish;Lëtzebuergesch;ltz;Indo-European;https://en.wikipedia.org/wiki/Luxembourgish
+58;;li;Limburgish;limburgish;Limburgs;lim;Indo-European;https://en.wikipedia.org/wiki/Limburgish
+97;;lo;Lao;lao;ພາສາລາວ (Phasa Lao);lao;Tai-Kadai;https://en.wikipedia.org/wiki/Lao_language
+61;;mk;Macedonian;macedonian;Македонски (Makedonski);mkd;Indo-European;https://en.wikipedia.org/wiki/Macedonian_language
+89;;ml;Malayalam;malayalam;മലയാളം (Malayāḷaṁ);mal;Dravidian;https://en.wikipedia.org/wiki/Malayalam
+73;;mt;Maltese;maltese;Malti;mlt;Afro-Asiatic;https://en.wikipedia.org/wiki/Maltese_language
+70;;my;Burmese;burmese;မြန်မာဘာသာ (Myanma bhasa);mya;Sino-Tibetan;https://en.wikipedia.org/wiki/Burmese_language
+26;;ne;Nepali;nepali;नेपाली (Nepālī);nep;Indo-European;https://en.wikipedia.org/wiki/Nepali_language
+19;;nn;Norwegian Nynorsk;norwegiannynorsk;Norsk Nynorsk;nno;Indo-European;https://en.wikipedia.org/wiki/Nynorsk
+25;;oc;Occitan;occitan;Occitan;oci;Indo-European;https://en.wikipedia.org/wiki/Occitan_language
+46;;or;Oriya;oriya;ଓଡ଼ିଆ (Oṛiā);ori;Indo-European;https://en.wikipedia.org/wiki/Odia_language
+44;;pa;Punjabi;punjabi;ਪੰਜਾਬੀ (Pañjābī);pan;Indo-European;https://en.wikipedia.org/wiki/Punjabi_language
+53;;sc;Sardinian;sardinian;Sardu;srd;Indo-European;https://en.wikipedia.org/wiki/Sardinian_language
+40;;sd;Sindhi;sindhi;سنڌي (Sindhī);snd;Indo-European;https://en.wikipedia.org/wiki/Sindhi_language
+62;;si;Sinhala;sinhala;සිංහල (Siṁhala);sin;Indo-European;https://en.wikipedia.org/wiki/Sinhala_language
+29;;sr;Serbian;serbian;Српски (Srpski);srp;Indo-European;https://en.wikipedia.org/wiki/Serbian_language
+79;;su;Sundanese;sundanese;Basa Sunda;sun;Austronesian;https://en.wikipedia.org/wiki/Sundanese_language
+47;;tg;Tajik;tajik;Тоҷикӣ (Tojikī);tgk;Indo-European;https://en.wikipedia.org/wiki/Tajik_language
+76;;tl;Tagalog;tagalog;Tagalog;tgl;Austronesian;https://en.wikipedia.org/wiki/Tagalog_language
+95;;tt;Tatar;tatar;Татарча (Tatarça);tat;Turkic;https://en.wikipedia.org/wiki/Tatar_language
+48;;yi;Eastern Yiddish;easternyiddish;ייִדיש (Yidish);ydd;Indo-European;https://en.wikipedia.org/wiki/Yiddish_language
+31;;vec;Venetian;venetian;Vèneto;vec;Indo-European;https://en.wikipedia.org/wiki/Venetian_language
+34;;szl;Silesian;silesian;Ślōnskŏ gŏdka;szl;Indo-European;https://en.wikipedia.org/wiki/Silesian_language
+35;;ast;Asturian;asturian;Asturianu;ast;Indo-European;https://en.wikipedia.org/wiki/Asturian_language
+36;;hne;Chhattisgarhi;chhattisgarhi;छत्तीसगढ़ी (Chhattīsgaṛhī);hne;Indo-European;https://en.wikipedia.org/wiki/Chhattisgarhi_language
+37;;awa;Awadhi;awadhi;अवधी (Avadhī);awa;Indo-European;https://en.wikipedia.org/wiki/Awadhi_language
+38;;mai;Maithili;maithili;मैथिली (Maithilī);mai;Indo-European;https://en.wikipedia.org/wiki/Maithili_language
+49;;lmo;Lombard;lombard;Lombard;lmo;Indo-European;https://en.wikipedia.org/wiki/Lombard_language
+50;;lij;Ligurian;ligurian;Lìgure;lij;Indo-European;https://en.wikipedia.org/wiki/Ligurian_language
+51;;scn;Sicilian;sicilian;Sicilianu;scn;Indo-European;https://en.wikipedia.org/wiki/Sicilian_language
+52;;fur;Friulian;friulian;Furlan;fur;Indo-European;https://en.wikipedia.org/wiki/Friulian_language
+57;;als;Tosk Albanian;toskalbanian;Shqip (Tosk);als;Indo-European;https://en.wikipedia.org/wiki/Tosk_Albanian
+59;;prs;Dari;dari;دری (Darī);prs;Indo-European;https://en.wikipedia.org/wiki/Dari_language
+64;;mag;Magahi;magahi;मगही (Magahī);mag;Indo-European;https://en.wikipedia.org/wiki/Magahi_language
+69;;yue;Cantonese;cantonese;廣東話 (Gwóngdūng wá);yue;Sino-Tibetan;https://en.wikipedia.org/wiki/Cantonese
+77;;ceb;Cebuano;cebuano;Sinugboanon;ceb;Austronesian;https://en.wikipedia.org/wiki/Cebuano_language
+80;;min;Minangkabau;minangkabau;Baso Minangkabau;min;Austronesian;https://en.wikipedia.org/wiki/Minangkabau_language
+81;;ban;Balinese;balinese;ᬩᬲᬩᬮᬶ (Basa Bali);ban;Austronesian;https://en.wikipedia.org/wiki/Balinese_language
+82;;bjn;Banjar;banjar;Bahasa Banjar;bjn;Austronesian;https://en.wikipedia.org/wiki/Banjar_language
+83;;pag;Pangasinan;pangasinan;Salitan Pangasinan;pag;Austronesian;https://en.wikipedia.org/wiki/Pangasinan_language
+84;;ilo;Iloko;iloko;Ilokano;ilo;Austronesian;https://en.wikipedia.org/wiki/Ilocano_language
+85;;war;Waray;waray;Winaray;war;Austronesian;https://en.wikipedia.org/wiki/Waray_language
+108;;pap;Papiamento;papiamento;Papiamentu;pap;Other;https://en.wikipedia.org/wiki/Papiamento
+109;;kea;Kabuverdianu;kabuverdianu;Kabuverdianu;kea;Other;https://en.wikipedia.org/wiki/Cape_Verdean_Creole
+110;;tpi;Tok Pisin;tokpisin;Tok Pisin;tpi;Other;https://en.wikipedia.org/wiki/Tok_Pisin

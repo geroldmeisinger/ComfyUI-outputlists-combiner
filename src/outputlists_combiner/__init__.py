@@ -7,4 +7,5 @@ from .load_any_file import LoadAnyFile
 from .number_outputlist import NumberOutputList
 from .spreadsheet_outputlist import SpreadsheetOutputList
 from .string_outputlist import StringOutputList
+from .workflow_discriminator import WorkflowDiscriminator
 from .xyzgridplot import XyzGridPlot
