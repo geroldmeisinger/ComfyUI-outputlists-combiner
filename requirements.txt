@@ -9,3 +9,4 @@ pyxlsb
 chardet
 skia-python
 pyexiftool
+deepdiff
