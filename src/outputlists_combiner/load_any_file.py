@@ -43,6 +43,7 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 				io.Image 	.Output("image"   	, display_name="image"   	, is_output_list=True, tooltip="Image batch tensor."),
 				io.Mask  	.Output("mask"    	, display_name="mask"    	, is_output_list=True, tooltip="Mask batch tensor."),
 				io.String	.Output("metadata"	, display_name="metadata"	, is_output_list=True, tooltip="Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`."),
+				io.String	.Output("filepath"	, display_name="filepath"	, is_output_list=True, tooltip="File path used after expansion."),
 			],
 		)
 		return ret
@@ -51,13 +52,14 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 	def execute(cls, annotated_filepath: str) -> io.NodeOutput:
 		# https://github.com/comfyanonymous/ComfyUI/issues/11017
 		if not annotated_filepath:
-			ret = io.NodeOutput([], [], [], [])
+			ret = io.NodeOutput([], [], [], [], [])
 			return ret
 
-		ret_strings 	= []
-		ret_images  	= []
-		ret_masks   	= []
-		ret_metadata	= []
+		ret_content  	= []
+		ret_images   	= []
+		ret_masks    	= []
+		ret_metadata 	= []
+		ret_filepaths	= []
 		file_paths = get_files(annotated_filepath)
 		for file_path in file_paths:
 			with open(file_path, "rb") as f:
@@ -86,8 +88,8 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 
 			# get file content as text or base64
 			if is_binary or filecontent is None:
-				filecontent = base64.b64encode(raw_data).decode("utf-8")
-				image_data = raw_data
+				filecontent	= base64.b64encode(raw_data).decode("utf-8")
+				image_data 	= raw_data
 			else:
 				image_data = filecontent.encode("utf-8")
 
@@ -114,12 +116,13 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 							pil_img.info["SourceFile"] = file_path
 							exif_json = dumps(pil_img.info, indent=4, default=to_base64)
 
-			ret_strings.append(filecontent)
-			ret_images.append(image)
-			ret_masks.append(mask)
-			ret_metadata.append(exif_json or "{}")
+			ret_content  	.append(filecontent)
+			ret_images   	.append(image)
+			ret_masks    	.append(mask)
+			ret_metadata 	.append(exif_json or "{}")
+			ret_filepaths	.append(file_path)
 
-		ret = io.NodeOutput(ret_strings, ret_images, ret_masks, ret_metadata)
+		ret = io.NodeOutput(ret_content, ret_images, ret_masks, ret_metadata, ret_filepaths)
 		return ret
 
 	@classmethod
