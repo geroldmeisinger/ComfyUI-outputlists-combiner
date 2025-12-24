@@ -103,17 +103,17 @@ iso_set2	= [
 ]
 
 comfy_iso2 = [
-	("en"     	, "English"),
+	("en"	, "English"),
 	("zh_hans"	, "中文"),
 	("zh_hant"	, "繁體中文"),
-	("ru"     	, "Русский"),
-	("ja"     	, "日本語"),
-	("ko"     	, "한국어"),
-	("fr"     	, "Français"),
-	("es"     	, "Español"),
-	("ar"     	, "عربي"),
-	("tr"     	, "Türkçe"),
-	("pt"     	, "Português (BR)")
+	("ru"	, "Русский"),
+	("ja"	, "日本語"),
+	("ko"	, "한국어"),
+	("fr"	, "Français"),
+	("es"	, "Español"),
+	("ar"	, "عربي"),
+	("tr"	, "Türkçe"),
+	("pt"	, "Português (BR)")
 ]
 
 nodes = [
@@ -139,28 +139,28 @@ def test_generate_badges(active_iso = "en"):
 	lines = []
 	for iso, _ in iso_set2:
 		extra = "lang-"	if iso == lang_default	else ""
-		color = "green"	if iso == active_iso  	else ("blue" if iso == lang_default else "gray")
+		color = "green"	if iso == active_iso	else ("blue" if iso == lang_default else "gray")
 		img = f"[![{iso}](https://img.shields.io/badge/{extra}{iso}-{color})](/docs/README.{iso}.md) "
 		lines.append(img)
 
-	text       	= "\n".join(lines)
-	docs_dir   	= Path(f"{repo_dir}/.local/")
+	text	= "\n".join(lines)
+	docs_dir	= Path(f"{repo_dir}/.local/")
 	badges_path	= docs_dir / "badges.md"
 	badges_path.write_text(text, encoding="utf-8")
 	print(text)
 
 def test_move_from_downloads():
 	docs_dir	= Path(f"{repo_dir}/web/docs/")
-	dls_dir 	= Path(f"~/Downloads").expanduser()
-	header  	= f"<!-- This file was auto-translated with an local LLM and last updated on {datetime.now().strftime('%Y-%m-%d')}. -->\n"
+	dls_dir	= Path(f"~/Downloads").expanduser()
+	header	= f"<!-- This file was auto-translated with an local LLM and last updated on {datetime.now().strftime('%Y-%m-%d')}. -->\n"
 
 	for iso, _ in iso_set2:
 		lang_dir = docs_dir / iso
 		lang_dir.mkdir(parents=True, exist_ok=True)
 
 		for node in nodes:
-			schema   	= node.define_schema()
-			dls_path 	= dls_dir  / f"{schema.node_id}_{iso}.md"
+			schema	= node.define_schema()
+			dls_path	= dls_dir  / f"{schema.node_id}_{iso}.md"
 			lang_path	= lang_dir / f"{schema.node_id}/{iso}.md"
 
 			if not dls_path.exists(): continue
@@ -195,8 +195,8 @@ def test_generate_docs():
 	nodes_lines = []
 	for node in nodes:
 		node_lines	= []
-		schema    	= node.define_schema()
-		node_name 	= schema.display_name or schema.node_id
+		schema	= node.define_schema()
+		node_name	= schema.display_name or schema.node_id
 		toc_anchor	= node_name.lower().replace(" ", "-")
 		toc_lines.append(f"\t- [{node_name}](#{toc_anchor})")
 
@@ -209,7 +209,7 @@ def test_generate_docs():
 		node_lines.append("### Inputs\n")
 		input_rows = []
 		for input in schema.inputs or []:
-			type   	= "COMBO" if input.io_type.startswith("[") else input.io_type
+			type	= "COMBO" if input.io_type.startswith("[") else input.io_type
 			tooltip	= getattr(input, "tooltip", "").replace(INPUTLIST_NOTE, "").strip()
 			input_rows.append((input.display_name or input.id, type, tooltip))
 		node_lines.extend(generate_table(input_rows))
@@ -229,7 +229,7 @@ def test_generate_docs():
 		node_path = nodes_dir / f"{schema.node_id}.md"
 		node_path.write_text(node_text, encoding="utf-8")
 
-		node_locales_dir 	= nodes_dir / schema.node_id
+		node_locales_dir	= nodes_dir / schema.node_id
 		node_locales_path	= node_locales_dir / "en.md"
 		node_locales_dir .mkdir(parents=True, exist_ok=True)
 		node_locales_path.write_text(node_text, encoding="utf-8")
@@ -240,11 +240,11 @@ def test_generate_docs():
 	#output_path.parent.mkdir(parents=True, exist_ok=True)
 
 	# Write markdown file
-	header    	= "<!--- Auto-generated from src_README.md! Don't edit this file! Edit src_README.md instead! -->"
-	toc_text  	= "\n".join(toc_lines)
+	header	= "<!--- Auto-generated from src_README.md! Don't edit this file! Edit src_README.md instead! -->"
+	toc_text	= "\n".join(toc_lines)
 	nodes_text	= "\n".join(nodes_lines)
 	readme_src	= Path(f"{repo_dir}/src_README.md").read_text()
-	readme    	= readme_src.replace("{HEADER}", header).replace('- [Nodes](#nodes)', toc_text).replace('{NODES}', nodes_text)
+	readme	= readme_src.replace("{HEADER}", header).replace('- [Nodes](#nodes)', toc_text).replace('{NODES}', nodes_text)
 
 	Path(f"{repo_dir}/README.md").write_text(readme, encoding="utf-8")
 	print(nodes_text)
