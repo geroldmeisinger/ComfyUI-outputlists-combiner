@@ -18,16 +18,17 @@ def make_paragraph(text: str, width_max: int, font_size: float, font_coll: tl.Fo
 	ret.layout(width_max)
 	return ret
 
-def fit_texts(label_infos: Iterable[tuple[str, int, int]], font_size: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> bool:
-	for text, width_max, height_max in label_infos:
+def fit_texts(label_infos: Iterable[tuple[str, int]], height_max: int, font_size: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> bool:
+	for text, width_max in label_infos:
 		paragraph = make_paragraph(text, width_max, font_size, font_coll, para_style, text_style)
 		if paragraph.Height > height_max: return False
 	return True
 
-def find_uniform_font_size(label_infos: Iterable[tuple[str, int, int]], font_size_target: float, font_size_min: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> float:
+def find_uniform_font_size(label_infos: Iterable[tuple[str, int]], height_max: int, font_size_target: float, font_size_min: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> float:
 	EPS = 0.1
+	is_singleline = all(t.count(" ") <= 3 for t, *_ in label_infos)
 
-	if fit_texts(label_infos, font_size_target, font_coll, para_style, text_style):
+	if fit_texts(label_infos, font_size_target * 1.2 if is_singleline else height_max, font_size_target, font_coll, para_style, text_style):
 		return font_size_target
 
 	# Binary search between target size and min size
@@ -36,7 +37,7 @@ def find_uniform_font_size(label_infos: Iterable[tuple[str, int, int]], font_siz
 
 	while (font_size_high - font_size_low) > EPS:
 		font_size_mid	= (font_size_low + font_size_high) / 2
-		fits	= fit_texts(label_infos, font_size_mid, font_coll, para_style, text_style)
+		fits	= fit_texts(label_infos, font_size_mid * 1.2 if is_singleline else height_max, font_size_mid, font_coll, para_style, text_style)
 		if fits:
 			font_size_low = font_size_mid
 		else:
@@ -58,8 +59,8 @@ def get_texts_type(label_infos: Iterable[tuple[str, int, tl.ParagraphStyle]]) ->
 
 	return "singleline"
 
-def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = "square") -> tuple[int, int]: #, list[int], list[int]]:
-	if not sizes: return [0, 0] #, [], []]  # no images
+def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = "square") -> tuple[int, int]:
+	if not sizes: return [0, 0]
 
 	sizes	= list(sizes)
 	n	= len(sizes)
@@ -69,16 +70,14 @@ def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = 
 	best_diagonal	= float("inf")
 	best_area	= float("inf")
 	best_ar_diff	= float("inf")
-	# best_col_widths	= []
-	# best_row_heights	= []
 
 	avg_aspectratio = sum([w / h for w, h in sizes]) / n
 
 	# try every possible number of columns from 1 to n
 	for cols in range(1, n + 1):
 		rows	= ceil(n / cols)
-		col_widths = [0] * cols
-		row_heights = []
+		col_widths	= [0] * cols
+		row_heights	= []
 
 		# distribute images into a grid: row-major order
 		for r in range(rows):
@@ -113,15 +112,13 @@ def find_imgs_rectangularpack(sizes: Iterable[tuple[int, int]], strategy: str = 
 				is_better = True
 
 		if is_better:
-			best_diagonal = diagonal
-			best_area = area
+			best_diagonal	= diagonal
+			best_area	= area
 			best_ar_diff	= ar_diff
-			best_rows = rows
-			best_cols = cols
-			#best_col_widths	= col_widths
-			#best_row_heights	= row_heights
+			best_rows	= rows
+			best_cols	= cols
 
-	ret = (best_rows, best_cols) #, best_col_widths, best_row_heights)
+	ret = (best_rows, best_cols)
 	return ret
 
 
@@ -238,7 +235,6 @@ def compose_label_area(layout_render_infos: list[tuple[int, int, tl.Paragraph]],
 	if rotate:
 		rotated_surface	= skia.Surface(total_height, total_width)
 		rotated_canvas	= rotated_surface.getCanvas()
-		#rotated_surface.clear(skia.ColorWHITE)
 
 		rotated_canvas.translate(0, total_width) # move down first
 		rotated_canvas.rotate(-90)
@@ -248,7 +244,7 @@ def compose_label_area(layout_render_infos: list[tuple[int, int, tl.Paragraph]],
 
 	return ret
 
-def prepare_label_paragraphs(label_infos: list[tuple[str, int, int]], font_size: float, font_size_min: float, align_map: dict, font_coll: tl.FontCollection, text_style_base: tl.TextStyle) -> skia.Surface:
+def prepare_label_paragraphs(label_infos: list[tuple[str, int]], height_max: int, font_size: float, font_size_min: float, align_map: dict, font_coll: tl.FontCollection, text_style_base: tl.TextStyle) -> skia.Surface:
 	"""
 	Returns:
 		paragraphs: list[tl.Paragraph]
@@ -263,12 +259,12 @@ def prepare_label_paragraphs(label_infos: list[tuple[str, int, int]], font_size:
 	para_style = tl.ParagraphStyle()
 	para_style.setTextAlign(default_align)
 
-	font_size_fit = find_uniform_font_size(label_infos, font_size, font_size_min, font_coll, para_style, text_style_base)
+	font_size_fit = find_uniform_font_size(label_infos, height_max, font_size, font_size_min, font_coll, para_style, text_style_base)
 
 	# --- first layout pass (type detection) ---
 	paragraph_infos = [
 		(text, width_max, make_paragraph(text, width_max, font_size_fit, font_coll, para_style, text_style_base))
-		for text, width_max, _ in label_infos
+		for text, width_max in label_infos
 	]
 
 	texts_type = get_texts_type(paragraph_infos)
@@ -278,7 +274,7 @@ def prepare_label_paragraphs(label_infos: list[tuple[str, int, int]], font_size:
 
 	paragraphs = [
 		make_paragraph(text, width_max, font_size_fit, font_coll, para_style, text_style_base)
-		for text, width_max, _ in label_infos
+		for text, width_max in label_infos
 	]
 
 	return paragraphs, texts_type
@@ -360,8 +356,8 @@ You can use `order=inside_out` to reverse how the images are selected.
 Sub-images (usually from batches) will be shaped into the most square area (the "sub-image packing"), unless `output_is_list=True` in which case a list of image grids will be created instead. You can use this list to connect another XyzGridPlot node to create super-grids.
 
 Font-size:
-For the column label areas the width is determined by the width of the sub-image packing, the height is determined by `font_size` or `half image height` (whichever is greater).
-For the row label areas the width is also determined by the width(!) of the sub-images packing (with a minimum of {LABELAREA_ROW_HEIGHT_MIN}px), the height is determined by height of the sub-images.
+For the column label areas the width is determined by the width of the sub-image packing, the height is determined by `font_size` or `half of largest sub-images height in any row` (whichever is greater).
+For the row label areas the width is also determined by the width of the sub-images packing (with a minimum of {LABELAREA_ROW_HEIGHT_MIN}px), the height is determined by the sub-images of that row.
 The text will be shrunk down until it fits (up to `font_size_min={FONT_SIZE_MIN}`) and the same font size will be used for the whole axis (column labels/row labels). If the font size is already at the minimum, any remaining text will be clipped (reasoning: the lower part of a prompt is usually not that important).
 
 Alignment:
@@ -447,18 +443,20 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 			row_labels_width_max = max(max(col_widths) - 2 * PADDING, 0)
 			if row_label_orientation == "horizontal":
 				row_label_heights	= [max(rh - 2 * PADDING, 0) for rh in row_heights]
-				row_label_layout_infos	= list(zip(row_labels, [row_labels_width_max] * rows, row_label_heights))
-				row_label_paragraphs, row_label_type = prepare_label_paragraphs(row_label_layout_infos, font_size, FONT_SIZE_MIN, ROW_LABEL_ALIGN, font_coll, text_style_base)
-				row_paragraph_width_max	= ceil(max((max(p.LongestLine, p.MinIntrinsicWidth) for p in row_label_paragraphs), default=0.0) + 1)
+				row_label_layout_infos	= list(zip(row_labels, [row_labels_width_max] * rows))
+				row_label_paragraphs, row_label_type = prepare_label_paragraphs(row_label_layout_infos, min(row_label_heights), font_size, FONT_SIZE_MIN, ROW_LABEL_ALIGN, font_coll, text_style_base)
+				row_label_align	= ROW_LABEL_ALIGN[row_label_type]
+				row_paragraph_width_max	= row_labels_width_max if row_label_align == tl.TextAlign.kJustify else ceil(max((max(p.LongestLine, p.MinIntrinsicWidth) for p in row_label_paragraphs), default=0.0) + 1)
 				row_label_render_infos	= list(zip([row_paragraph_width_max] * rows, row_label_heights, row_label_paragraphs))
-				row_label_image	= compose_label_area(row_label_render_infos, PADDING, gap, "vertical", (-row_labels_width_max + row_paragraph_width_max, 0), ROW_LABEL_VALIGN[row_label_type])
+				row_label_offset_x	= -row_labels_width_max + row_paragraph_width_max if row_label_align == tl.TextAlign.kRight else 0
+				row_label_image	= compose_label_area(row_label_render_infos, PADDING, gap, "vertical", (row_label_offset_x, 0), ROW_LABEL_VALIGN[row_label_type])
 			elif row_label_orientation == "vertical":
 				# swap widths and heights and draw rotated
 				row_labels_width_max	= max(max(col_widths) // 2 - 2 * PADDING, 0) # same logic as column
 				row_label_widths	= [max(rh - 2 * PADDING, 0) for rh in row_heights]
-				row_label_layout_infos	= list(zip(row_labels, row_label_widths, [row_labels_width_max] * rows))
-				row_label_paragraphs, row_label_type = prepare_label_paragraphs(row_label_layout_infos, font_size, FONT_SIZE_MIN, COL_LABEL_ALIGN, font_coll, text_style_base)
-				row_paragraph_height_max	= ceil(max((p.Height for p in row_label_paragraphs)	, default=0.0))
+				row_label_layout_infos	= list(zip(row_labels, row_label_widths))
+				row_label_paragraphs, row_label_type = prepare_label_paragraphs(row_label_layout_infos, row_labels_width_max, font_size, FONT_SIZE_MIN, COL_LABEL_ALIGN, font_coll, text_style_base)
+				row_paragraph_height_max	= ceil(max((p.Height for p in row_label_paragraphs), default=0.0))
 				row_label_render_infos	= list(zip(row_label_widths, [row_paragraph_height_max] * rows, row_label_paragraphs))
 				row_label_render_infos.reverse()
 				row_label_image	= compose_label_area(row_label_render_infos, PADDING, gap, "horizontal", (0, 0), COL_LABEL_VALIGN[row_label_type], True)
@@ -471,9 +469,9 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 		if len(col_labels) > 0:
 			col_labels_height_max	= max(max(row_heights) // 2 - 2 * PADDING, 0)
 			col_label_widths	= [max(cw - 2 * PADDING, 0) for cw in col_widths]
-			col_label_layout_infos	= list(zip(col_labels, col_label_widths, [col_labels_height_max] * cols))
-			col_label_paragraphs, col_label_type = prepare_label_paragraphs(col_label_layout_infos, font_size, FONT_SIZE_MIN, COL_LABEL_ALIGN, font_coll, text_style_base)
-			col_paragraph_height_max	= ceil(max((p.Height for p in col_label_paragraphs)	, default=0.0))
+			col_label_layout_infos	= list(zip(col_labels, col_label_widths))
+			col_label_paragraphs, col_label_type = prepare_label_paragraphs(col_label_layout_infos, col_labels_height_max, font_size, FONT_SIZE_MIN, COL_LABEL_ALIGN, font_coll, text_style_base)
+			col_paragraph_height_max	= ceil(max((p.Height for p in col_label_paragraphs), default=0.0))
 			col_label_render_infos	= list(zip(col_label_widths, [col_paragraph_height_max] * cols, col_label_paragraphs))
 			col_label_image	= compose_label_area(col_label_render_infos, PADDING, gap, "horizontal", (0, 0), COL_LABEL_VALIGN[col_label_type])
 			offset_y	= col_label_image.height() + gap
