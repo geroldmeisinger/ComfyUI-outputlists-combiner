@@ -29,3 +29,4 @@ For performance reasons the number of files are limited to: 1024.
 | `image`	| `IMAGE 𝌠`	| Image batch tensor.	|
 | `mask`	| `MASK 𝌠`	| Mask batch tensor.	|
 | `metadata`	| `STRING 𝌠`	| Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`.	|
+| `filepath`	| `STRING 𝌠`	| File path used after expansion.	|

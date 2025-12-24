@@ -20,11 +20,11 @@
 
 # Overview
 
-- **[XYZ-GridPlots](#xyz-gridplot-simple)** perfectly integrated into ComfyUI's paradigm. No weird samplers! No node black magic!
-- **[Inspect combo](#combine-samplers-and-schedulers)** to iterate lists of [LoRAs](#compare-lora-model-and-lora-strength), [samplers](#combine-samplers-and-schedulers), [checkpoints](#iterate-checkpoints), [schedulers](#combine-samplers-and-schedulers)...
-- **[List combinations](#outputlists-combiner)** with native support for [LoRA strength](#compare-lora-model-and-lora-strength), [image size-variants](#combine-numbers), [prompt combinations](#combine-prompts)...
-- **Quick OutputLists** from CSV and Excel [Spreadsheets](#spreadsheet-outputlist), [JSON data](#json-outputlist), [multiline texts](#string-outputlist), [number ranges](#number-outputlist)...
-- **[Formatted strings](#formatted-string)** for flexible and beautiful [filenames](#combine-rowcolumn-for-filename), [labels](#xyz-gridplot-simple), [additional metadata](#workflow-discriminator)...
+- **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird samplers! No node black magic!
+- **Inspect combo** to iterate lists of LoRAs, samplers, checkpoints, schedulers...
+- **List combinations** with native support for LoRA strength, image size-variants, prompt combinations...
+- **Quick OutputLists** from CSV and Excel Spreadsheets, JSON data, multiline texts, number ranges...
+- **Formatted strings** for flexible and beautiful filenames, labels, additional metadata...
 
 If this custom node helps you in your work..
 - ⭐ **Star the repo** to make others discover the project and motivate the developer!
@@ -34,6 +34,9 @@ If this custom node helps you in your work..
 
 - [Overview](#overview)
 - [Table of Content](#table-of-content)
+- [Features](#features)
+	- [XYZ-GridPlot](#xyz-gridplot)
+	- [Inspect Combo](#inspect-combo)
 - [Installation](#installation)
 	- [ComfyUI-Manager (recommended)](#comfyui-manager-recommended)
 	- [Comfy-CLI](#comfy-cli)
@@ -59,21 +62,27 @@ If this custom node helps you in your work..
 	- [Combine row/column for filename](#combine-rowcolumn-for-filename)
 	- [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength)
 	- [The PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern)
-	- [XYZ-GridPlot Simple](#xyz-gridplot-simple)
+	- [XYZ-GridPlot](#xyz-gridplot-1)
 	- [Load multiple files with different formats](#load-multiple-files-with-different-formats)
-	- [Repeat OutputLists](#repeat-outputlists)
-	- [Cycle OutputLists](#cycle-outputlists)
 - [Advanced Examples](#advanced-examples)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
-	- [Baking Values Into Workflow](#baking-values-into-workflow)
 	- [Load all images from grid](#load-all-images-from-grid)
 	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
 	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 	- [Iterate checkpoints](#iterate-checkpoints)
 	- [Discriminate multiple files](#discriminate-multiple-files)
-	- [Animating LoRA strength](#animating-lora-strength)
 - [Credits](#credits)
+
+# Features
+
+## XYZ-GridPlot
+
+https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
+
+## Inspect Combo
+
+https://github.com/user-attachments/assets/d8da27b9-99d2-4ac5-a6ed-d368d2ae1a38
 
 # Installation
 
@@ -255,7 +264,10 @@ All lists use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will
 
 Takes up to 4 OutputLists and generates all combinations between them and emits each combination as separate items.
 
-Example: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
+Example:
+```
+[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
+```
 
 `unzip_a` .. `unzip_d` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
@@ -263,7 +275,10 @@ All lists are optional and empty lists will be ignored.
 
 Technically it computes the Cartesian product and outputs each combination splitted up into their elements (unzip), whereas empty lists will be replaced with units of None and they will emit None on the respective output.
 
-Example: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
+Example:
+```
+[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
+```
 
 ### Inputs
 
@@ -377,15 +392,18 @@ Also applies "search & replace" (S&R) syntax such as `%date:yyyy-MM-dd hh:mm:ss%
 Thus you can also use it as a getter node.
 Note that "search & replace" takes place in Javascript context which runs before node execution.
 
+The final string will be baked into `override` in the workflow JSON, which is useful if you want to restore the very image generated from a list.
+
 ### Inputs
 
 | Name	| Type	| Description	|
 | ---	| ---	| ---	|
-| `fstring`	| `STRING`	| String with variable placeholders which will replaced with their respective values.<br>Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .<br>* Use `{a:.2f}` to round off a float to 2 decimals.<br>* Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.<br>* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.<br><br>Also applies "search & replace" (S&R) syntax such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`.<br>Thus you can also use it as a getter node.<br>Note that "search & replace" takes place in Javascript context which runs before node execution.	|
+| `fstring`	| `STRING`	| String with variable placeholders which will replaced with their respective values.<br>Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .<br>* Use `{a:.2f}` to round off a float to 2 decimals.<br>* Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.<br>* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.<br><br>Also applies "search & replace" (S&R) syntax such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`.<br>Thus you can also use it as a getter node.<br>Note that "search & replace" takes place in Javascript context which runs before node execution.<br><br>The final string will be baked into `override` in the workflow JSON, which is useful if you want to restore the very image generated from a list.	|
 | `a`	| `*`	| (optional) value that will be as a string at the `{a}` placeholder.	|
 | `b`	| `*`	| (optional) value that will be as a string at the `{b}` placeholder.	|
 | `c`	| `*`	| (optional) value that will be as a string at the `{c}` placeholder.	|
 | `d`	| `*`	| (optional) value that will be as a string at the `{d}` placeholder.	|
+| `override`	| `STRING`	| If set, will always output this string instead. Used by `Save Image` to bake the value into the workflow JSON.	|
 
 ### Outputs
 
@@ -450,6 +468,7 @@ For performance reasons the number of files are limited to: 1024.
 | `image`	| `IMAGE 𝌠`	| Image batch tensor.	|
 | `mask`	| `MASK 𝌠`	| Mask batch tensor.	|
 | `metadata`	| `STRING 𝌠`	| Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`.	|
+| `filepath`	| `STRING 𝌠`	| File path used after expansion.	|
 
 
 # Examples
@@ -508,11 +527,6 @@ Makes use of the `index` combined the same way as the prompts, which gives as th
 
 https://github.com/user-attachments/assets/64e118c1-15f3-463b-b439-37e1a1f5b62b
 
-Custom LoRAs:
-* ![MoXinV1.safetensors](https://civitai.com/models/12597)
-* ![animeoutlineV4_16.safetensors](https://civitai.com/models/16014)
-* ![blindbox_v1_mix.safetensors](https://civitai.com/models/25995)
-
 Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
 
 **If you don't need separate trigger words, just delete the second combination altogether, it's much simpler this way!**
@@ -529,9 +543,9 @@ And because it is very tedious to add a selector for every single list, the `Spr
 
 ![The PrimitiveInt control_after_generate=increment pattern and Spreadsheet OutputList](/media/PrimitiveIntControlAfterGenerateIncrementSpreadsheet.png)
 
-## XYZ-GridPlot Simple
+## XYZ-GridPlot
 
-![XYZ-GridPlot Simple example](/workflows/Example_06_XYZ-GridPlot.png)
+![XYZ-GridPlot example](/workflows/Example_06_XYZ-GridPlot.png)
 
 (ComfyUI workflow included)
 
@@ -548,14 +562,6 @@ https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
 (ComfyUI workflow included)
 
 Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the directory `tests`, 2. on any sub-directory `**` (in this case: `imgs`), 3. on all files with a certain file ending (`*.png`), 4. starting at ComfyUI's `[output]` directory as the base. This calls `Load Any File` 3 times, each time with a different format, which again emits multiple files each time, resulting in a list of many files.
-
-## Repeat OutputLists
-
-![Repeat OutputLists example](/workflows/Example_08a_RepeatOutputLists.png)
-
-## Cycle OutputLists
-
-![Cycle OuputLists example](/workflows/Example_08b_CycleOutputLists.png)
 
 # Advanced Examples
 
@@ -585,31 +591,6 @@ Custom nodes:
 Technically this node is implemented as a [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `CheckpointLoaderSimple`, `KSampler`, `VAE Decode` and `Save Image`.
 
 - **TODO** I'm not happy that this node exists at all as I wanted to avoid custom KSampler nodes. Unfortunately I haven't found a way to [use subgraphs to force immediate processing](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) yet.
-
-## Baking Values Into Workflow
-
-Custom nodes:
-* [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
-* [Crystools](https://github.com/crystian/ComfyUI-Crystools)
-
-You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. Thus we need store the individual values in the metadata. The following workflow makes use of Crystools' `Save image with Metadata` and `Load image with Metadata` and Impact-Pack's `Select Nth Item`.
-
-![Save Index in Metadata example](/workflows/ExampleAdv_01a_IndexInMetadata.png)
-
-(ComfyUI workflow included)
-
-Uses the `index` of the combined list to store it as a JSON. It also uses the `index` of the individual lists combined the same way as the prompts, which gives as the rows and columns, for additional information, including the prompt: `{{ "prompt": "{a}", "index": {b}, "row": {c}, "col": {d} }}`
-
-![Load Index from Metadata example](/workflows/ExampleAdv_01b_IndexFromMetadata.png)
-
-(ComfyUI workflow included)
-
-This example reads the index from the metadata with `Load Image with Metadata` and selects the index using `Select Nth Item`.
-
-It's is not perfect because in the end you still have to manually put the image in `Load Image` and hook up the values from `Select Nth Item` to get this one exact image. If you work a lot with image grids you might want to include both of this patterns in one workflow.
-
-- **TODO** This is unsatisfactory and requires a lot of manual work
-- **TODO** If someone knows a native way include metadata please let me know (node expansion?, hidden extra pnginfo?, dynprompt?)!
 
 ## Load all images from grid
 
@@ -665,25 +646,6 @@ Another workaround is to use the [PrimitiveInt control\_after\_generate=incremen
 (ComfyUI workflow included)
 
 Similar to the basic `Workflow Discriminator` example, but uses a `Load Any File` with a glob pattern expansion to load multiple files, where all files are discriminated against.
-
-## Animating LoRA strength
-
-Custom nodes: [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
-
-Custom LoRAs: ![MoXinV1.safetensors](https://civitai.com/models/12597)
-
-![Animating LoRA strength example](/workflows/ExampleAdv_07_AnimatingLoRAStrength.png)
-
-(ComfyUI workflow included)
-
-Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Formatted String` with `{0:0.2f]` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
-
-
-https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
-
-Also see
-* [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
-* [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
 
 # Credits
 
