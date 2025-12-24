@@ -344,15 +344,16 @@
             "properties": {
                 "cnr_id": "ComfyUI-outputlists_combiner",
                 "ver": "92519a06926c52288f4034c3459f292cd833c3c4",
+                "Node name for S&R": "JSONOutputList",
                 "ue_properties": {
                     "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {}
-                },
-                "Node name for S&R": "JSONOutputList"
+                    "input_ue_unconnectable": {},
+                    "version": "7.5.2"
+                }
             },
             "widgets_values": [
                 "$.results[*].text",
-                "{\n    \"success\": true,\n    \"results\": [\n        {\n            \"id\": 3,\n            \"text\": \"cat with cap\",\n            \"created_at\": \"2025-12-06T07:15:43.572007+00:00\",\n            \"updated_at\": \"2025-12-06T07:15:43.572019+00:00\",\n            \"category\": null,\n            \"tags\": [],\n            \"rating\": null,\n            \"notes\": null,\n            \"hash\": \"16519e1ecf6444dc1acb20228c0627f97d195abb119e5604037c251b54950094\"\n        },\n        {\n            \"id\": 2,\n            \"text\": \"cat with hat\",\n            \"created_at\": \"2025-12-06T07:15:35.283913+00:00\",\n            \"updated_at\": \"2025-12-06T07:15:35.283923+00:00\",\n            \"category\": null,\n            \"tags\": [],\n            \"rating\": null,\n            \"notes\": null,\n            \"hash\": \"7b654070eba2eac5d3e877ed1e5ac3e74059d04f16852549c64d337da930cf12\"\n        },\n        {\n            \"id\": 1,\n            \"text\": \"cat\",\n            \"created_at\": \"2025-12-06T07:15:00.110769+00:00\",\n            \"updated_at\": \"2025-12-06T07:15:00.110781+00:00\",\n            \"category\": null,\n            \"tags\": [],\n            \"rating\": null,\n            \"notes\": null,\n            \"hash\": \"77af778b51abd4a3c51c5ddd97204a9c3ae614ebccb75a606c3b6865aed6744e\"\n        }\n    ],\n    \"count\": 3\n}"
+                "null"
             ],
             "color": "#323",
             "bgcolor": "#535"
@@ -429,165 +430,6 @@
             "widgets_values": [
                 "1.5/v1-5-pruned-emaonly.safetensors"
             ]
-        },
-        {
-            "id": 12,
-            "type": "HTTPGet",
-            "pos": [
-                -550,
-                250
-            ],
-            "size": [
-                210,
-                286
-            ],
-            "flags": {},
-            "order": 2,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "session",
-                    "name": "session",
-                    "shape": 7,
-                    "type": "HTTP_SESSION",
-                    "link": null
-                },
-                {
-                    "localized_name": "auth",
-                    "name": "auth",
-                    "shape": 7,
-                    "type": "HTTP_AUTH",
-                    "link": null
-                },
-                {
-                    "localized_name": "url",
-                    "name": "url",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "url"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "headers",
-                    "name": "headers",
-                    "shape": 7,
-                    "type": "STRING",
-                    "widget": {
-                        "name": "headers"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "params",
-                    "name": "params",
-                    "shape": 7,
-                    "type": "STRING",
-                    "widget": {
-                        "name": "params"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "timeout",
-                    "name": "timeout",
-                    "shape": 7,
-                    "type": "INT",
-                    "widget": {
-                        "name": "timeout"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "verify_ssl",
-                    "name": "verify_ssl",
-                    "shape": 7,
-                    "type": "BOOLEAN",
-                    "widget": {
-                        "name": "verify_ssl"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "allow_redirects",
-                    "name": "allow_redirects",
-                    "shape": 7,
-                    "type": "BOOLEAN",
-                    "widget": {
-                        "name": "allow_redirects"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "cookies",
-                    "name": "cookies",
-                    "shape": 7,
-                    "type": "STRING",
-                    "widget": {
-                        "name": "cookies"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "proxy_url",
-                    "name": "proxy_url",
-                    "shape": 7,
-                    "type": "STRING",
-                    "widget": {
-                        "name": "proxy_url"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "status_code",
-                    "name": "status_code",
-                    "type": "INT",
-                    "links": null
-                },
-                {
-                    "localized_name": "headers",
-                    "name": "headers",
-                    "type": "STRING",
-                    "links": null
-                },
-                {
-                    "localized_name": "content",
-                    "name": "content",
-                    "type": "STRING",
-                    "links": null
-                },
-                {
-                    "localized_name": "json",
-                    "name": "json",
-                    "type": "STRING",
-                    "links": [
-                        11
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfyui-http",
-                "ver": "2.0.0",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {}
-                },
-                "Node name for S&R": "HTTPGet"
-            },
-            "widgets_values": [
-                "http://127.0.0.1:8188/prompt_manager/search",
-                "{\"text\":\"cat\"}",
-                "{}",
-                30,
-                true,
-                true,
-                "{}",
-                ""
-            ],
-            "color": "#223",
-            "bgcolor": "#335"
         },
         {
             "id": 3,
@@ -790,19 +632,176 @@
             "properties": {
                 "cnr_id": "comfyui-custom-scripts",
                 "ver": "1.2.5",
+                "Node name for S&R": "ShowText|pysssss",
                 "ue_properties": {
                     "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {}
-                },
-                "Node name for S&R": "ShowText|pysssss"
+                    "input_ue_unconnectable": {},
+                    "version": "7.5.2"
+                }
             },
-            "widgets_values": [
-                "cat with cap",
-                "cat with hat",
-                "cat"
-            ],
+            "widgets_values": [],
             "color": "#432",
             "bgcolor": "#653"
+        },
+        {
+            "id": 12,
+            "type": "HTTPGet",
+            "pos": [
+                -700,
+                250
+            ],
+            "size": [
+                350,
+                286
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "session",
+                    "name": "session",
+                    "shape": 7,
+                    "type": "HTTP_SESSION",
+                    "link": null
+                },
+                {
+                    "localized_name": "auth",
+                    "name": "auth",
+                    "shape": 7,
+                    "type": "HTTP_AUTH",
+                    "link": null
+                },
+                {
+                    "localized_name": "url",
+                    "name": "url",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "url"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "headers",
+                    "name": "headers",
+                    "shape": 7,
+                    "type": "STRING",
+                    "widget": {
+                        "name": "headers"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "params",
+                    "name": "params",
+                    "shape": 7,
+                    "type": "STRING",
+                    "widget": {
+                        "name": "params"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "timeout",
+                    "name": "timeout",
+                    "shape": 7,
+                    "type": "INT",
+                    "widget": {
+                        "name": "timeout"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "verify_ssl",
+                    "name": "verify_ssl",
+                    "shape": 7,
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "verify_ssl"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "allow_redirects",
+                    "name": "allow_redirects",
+                    "shape": 7,
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "allow_redirects"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "cookies",
+                    "name": "cookies",
+                    "shape": 7,
+                    "type": "STRING",
+                    "widget": {
+                        "name": "cookies"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "proxy_url",
+                    "name": "proxy_url",
+                    "shape": 7,
+                    "type": "STRING",
+                    "widget": {
+                        "name": "proxy_url"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "status_code",
+                    "name": "status_code",
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "headers",
+                    "name": "headers",
+                    "type": "STRING",
+                    "links": null
+                },
+                {
+                    "localized_name": "content",
+                    "name": "content",
+                    "type": "STRING",
+                    "links": null
+                },
+                {
+                    "localized_name": "json",
+                    "name": "json",
+                    "type": "STRING",
+                    "links": [
+                        11
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfyui-http",
+                "ver": "2.0.0",
+                "Node name for S&R": "HTTPGet",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {},
+                    "version": "7.5.2"
+                }
+            },
+            "widgets_values": [
+                "http://127.0.0.1:8188/prompt_manager/search",
+                "{\"text\":\"cat\"}",
+                "{}",
+                30,
+                true,
+                true,
+                "{}",
+                ""
+            ],
+            "color": "#223",
+            "bgcolor": "#335"
         }
     ],
     "links": [
@@ -903,32 +902,19 @@
             "STRING"
         ]
     ],
-    "groups": [
-        {
-            "id": 1,
-            "title": "Focus on this!",
-            "bounding": [
-                -600,
-                150,
-                1050,
-                450
-            ],
-            "color": "#3f789e",
-            "font_size": 24,
-            "flags": {}
-        }
-    ],
+    "groups": [],
     "config": {},
     "extra": {
         "ds": {
             "scale": 1,
             "offset": [
-                650,
+                800,
                 0
             ]
         },
         "ue_links": [],
-        "links_added_by_ue": []
+        "links_added_by_ue": [],
+        "workflowRendererVersion": "LG"
     },
     "version": 0.4
 }
