@@ -18,8 +18,6 @@
     <a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 </div>
 
-**IMPORTANT: XYZ-GridPlot labels currently only work with "DejaVu Sans" font. I'm fixing it!**
-
 # Overview
 
 - **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird samplers! No node black magic!
@@ -65,7 +63,7 @@ If this custom node helps you in your work..
 	- [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength)
 	- [The PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern)
 	- [XYZ-GridPlot](#xyz-gridplot-1)
-	- [Load multiple files](#load-multiple-files)
+	- [Load multiple files with different formats](#load-multiple-files-with-different-formats)
 - [Advanced Examples](#advanced-examples)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
@@ -554,7 +552,7 @@ Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` y
 
 https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
 
-## Load multiple files
+## Load multiple files with different formats
 
 ![Load multiple files example](/workflows/Example_07_LoadMultipleFiles.png)
 
@@ -589,8 +587,6 @@ Custom nodes:
 
 Technically this node is implemented as a [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `CheckpointLoaderSimple`, `KSampler`, `VAE Decode` and `Save Image`.
 
-- **TODO** Update workflow with changes in `KSampler Immediate SaveImage`
-- **TODO** Update workflow with new `XYZ-GridPlot` node
 - **TODO** I'm not happy that this node exists at all as I wanted to avoid custom KSampler nodes. Unfortunately I haven't found a way to [use subgraphs to force immediate processing](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) yet.
 
 ## Baking Values Into Workflow
@@ -620,18 +616,16 @@ It's is not perfect because in the end you still have to manually put the image 
 
 ## Load all images from grid
 
-Custom nodes, one of the following:
-* [was-ns](https://github.com/ltdrdata/was-node-suite-comfyui)/[was-node-suite-comfyui (old)](https://github.com/WASasquatch/was-node-suite-comfyui)
-* [VideoHelperSuite](https://github.com/KosinkadinkComfyUI-VideoHelperSuite)
-* [ComfyUI-RMBG](https://github.com/1038lab/ComfyUI-RMBG)
-
-Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `cell_{c:02d}-{a}-{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of one of these `Load Image by Path` nodes,
+Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `cell_{c:02d}-{a}-{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of `Load Any File`,
 
 ![Load Image with Formatted String](/workflows/ExampleAdv_02_LoadWithFormattedString.png)
 
 (ComfyUI workflow included)
 
-**TODO** Make the combo work with native `Load Image` (but my `string to any` approach always resulted in `NoneType object has no attribute 'endsWith'`). I filled a bugreport https://github.com/comfyanonymous/ComfyUI/issues/11017
+External custom nodes which support image loading via path:
+* [was-ns](https://github.com/ltdrdata/was-node-suite-comfyui)/[was-node-suite-comfyui (old)](https://github.com/WASasquatch/was-node-suite-comfyui)
+* [VideoHelperSuite](https://github.com/KosinkadinkComfyUI-VideoHelperSuite)
+* [ComfyUI-RMBG](https://github.com/1038lab/ComfyUI-RMBG)
 
 ## Iterate prompts from PromptManager
 
@@ -645,7 +639,7 @@ PromptManager keeps track of all the prompt you generated in a database which yo
 
 (ComfyUI workflow included)
 
-Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search API route and `JSON OutputList` to extract the `text` field using a JSONPath. The prompts are emitted as an OutputList and will be processed sequentially.
+Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search API route at `http://127.0.0.1:8188/prompt_manager/search` and `JSON OutputList` to extract the `text` field using a JSONPath. The prompts are emitted as an OutputList and will be processed sequentially.
 
 ## XYZ-GridPlots with Videos
 
@@ -653,9 +647,7 @@ Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search AP
 
 (ComfyUI workflow included)
 
-You can basically ignore the left part of the workflow (blue group) as it's just abusing a `OutputList Combinations` to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
-
-**TODO** Fix the `non divisible by 2` error
+You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
 
 https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
 
