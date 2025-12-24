@@ -18,6 +18,8 @@
     <a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 </div>
 
+**IMPORTANT: XYZ-GridPlot labels currently only work with "DejaVu Sans" font. I'm fixing it!**
+
 # Overview
 
 - **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird samplers! No node black magic!
