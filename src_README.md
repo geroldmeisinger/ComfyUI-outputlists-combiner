@@ -65,6 +65,7 @@ If this custom node helps you in your work..
 	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 	- [Iterate checkpoints](#iterate-checkpoints)
 	- [Discriminate multiple files](#discriminate-multiple-files)
+	- [Animating LoRA strength](#animating-lora-strength)
 - [Credits](#credits)
 
 # Features
@@ -342,6 +343,19 @@ Another workaround is to use the [PrimitiveInt control\_after\_generate=incremen
 (ComfyUI workflow included)
 
 Similar to the basic `Workflow Discriminator` example, but uses a `Load Any File` with a glob pattern expansion to load multiple files, where all files are discriminated against.
+
+## Animating LoRA strength
+
+Custom nodes:
+* [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
+
+![Animating LoRA strength example](/workflows/ExampleAdv_07_AnimatingLoRAStrength.png)
+
+(ComfyUI workflow included)
+
+Makes use of a `Number OutputList` to iterate over the range `0..100` and KJNodes `Add Label` to add this information into the image itself. The list of images is rebatched into `batch_size=count` to create a video with `Create Video`.
+
+https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
 
 # Credits
 
