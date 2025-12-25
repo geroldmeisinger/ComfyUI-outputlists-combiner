@@ -1,5 +1,6 @@
 from .combine_outputlists import CombineOutputLists
 from .convert_to_intfloatstr import ConvertNumberToIntFloatStr
+from .dynamicprompts import DynamicPromptsOutputList
 from .formatted_string import FormattedString
 from .json_outputlist import JSONOutputList
 from .ksampler_immediate_saveimage import KSamplerImmediateSave

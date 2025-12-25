@@ -10,3 +10,4 @@ chardet
 skia-python
 pyexiftool
 deepdiff
+dynamicprompts

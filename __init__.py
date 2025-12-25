@@ -14,6 +14,7 @@ async def comfy_entrypoint() -> ComfyExtension:
 				NumberOutputList,
 				JSONOutputList,
 				SpreadsheetOutputList,
+				DynamicPromptsOutputList,
 				CombineOutputLists,
 				XyzGridPlot,
 				WorkflowDiscriminator,
