@@ -191,6 +191,11 @@ Makes use of the `index` combined the same way as the prompts, which gives as th
 
 https://github.com/user-attachments/assets/64e118c1-15f3-463b-b439-37e1a1f5b62b
 
+Custom LoRAs:
+* ![MoXinV1.safetensors](https://civitai.com/models/12597)
+* ![animeoutlineV4_16.safetensors](https://civitai.com/models/16014)
+* ![blindbox_v1_mix.safetensors](https://civitai.com/models/25995)
+
 Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
 
 **If you don't need separate trigger words, just delete the second combination altogether, it's much simpler this way!**
@@ -346,16 +351,22 @@ Similar to the basic `Workflow Discriminator` example, but uses a `Load Any File
 
 ## Animating LoRA strength
 
-Custom nodes:
-* [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
+Custom nodes: [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
+
+Custom LoRAs: ![MoXinV1.safetensors](https://civitai.com/models/12597)
 
 ![Animating LoRA strength example](/workflows/ExampleAdv_07_AnimatingLoRAStrength.png)
 
 (ComfyUI workflow included)
 
-Makes use of a `Number OutputList` to iterate over the range `0..100` and KJNodes `Add Label` to add this information into the image itself. The list of images is rebatched into `batch_size=count` to create a video with `Create Video`.
+Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Formatted String` with `{0:0.2f]` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
+
 
 https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
+
+Also see
+* [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
+* [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
 
 # Credits
 
