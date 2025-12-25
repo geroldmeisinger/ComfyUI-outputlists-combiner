@@ -20,11 +20,11 @@
 
 # Overview
 
-- **XYZ-GridPlots** perfectly integrated into ComfyUI's paradigm. No weird samplers! No node black magic!
-- **Inspect combo** to iterate lists of LoRAs, samplers, checkpoints, schedulers...
-- **List combinations** with native support for LoRA strength, image size-variants, prompt combinations...
-- **Quick OutputLists** from CSV and Excel Spreadsheets, JSON data, multiline texts, number ranges...
-- **Formatted strings** for flexible and beautiful filenames, labels, additional metadata...
+- **[XYZ-GridPlots](#xyz-gridplot-simple)** perfectly integrated into ComfyUI's paradigm. No weird samplers! No node black magic!
+- **[Inspect combo](#combine-samplers-and-schedulers)** to iterate lists of [LoRAs](#compare-lora-model-and-lora-strength), [samplers/schedulers](#combine-samplers-and-schedulers), [checkpoints](#iterate-checkpoints)...
+- **[List combinations](#outputlists-combinations)** with native support for [LoRA strength](#compare-lora-model-and-lora-strength), [image size-variants](#combine-numbers), [prompt combinations](#combine-prompts)...
+- **Quick OutputLists** from CSV and Excel [Spreadsheets](#spreadsheet-outputlist), [JSON data](#json-outputlist), [multiline texts](#string-outputlist), [number ranges](#number-outputlist)...
+- **[Formatted strings](#formatted-string)** for flexible and beautiful [filenames](#combine-rowcolumn-for-filename), [labels](#animating-lora-strength), [additional metadata](#workflow-discriminator)...
 
 If this custom node helps you in your work..
 - ⭐ **Star the repo** to make others discover the project and motivate the developer!
@@ -34,9 +34,6 @@ If this custom node helps you in your work..
 
 - [Overview](#overview)
 - [Table of Content](#table-of-content)
-- [Features](#features)
-	- [XYZ-GridPlot](#xyz-gridplot)
-	- [Inspect Combo](#inspect-combo)
 - [Installation](#installation)
 	- [ComfyUI-Manager (recommended)](#comfyui-manager-recommended)
 	- [Comfy-CLI](#comfy-cli)
@@ -52,7 +49,7 @@ If this custom node helps you in your work..
 	- [Combine row/column for filename](#combine-rowcolumn-for-filename)
 	- [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength)
 	- [The PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern)
-	- [XYZ-GridPlot](#xyz-gridplot-1)
+	- [XYZ-GridPlot Simple](#xyz-gridplot-simple)
 	- [Load multiple files with different formats](#load-multiple-files-with-different-formats)
 	- [Repeat OutputLists](#repeat-outputlists)
 	- [Cycle OutputLists](#cycle-outputlists)
@@ -67,16 +64,6 @@ If this custom node helps you in your work..
 	- [Discriminate multiple files](#discriminate-multiple-files)
 	- [Animating LoRA strength](#animating-lora-strength)
 - [Credits](#credits)
-
-# Features
-
-## XYZ-GridPlot
-
-https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
-
-## Inspect Combo
-
-https://github.com/user-attachments/assets/d8da27b9-99d2-4ac5-a6ed-d368d2ae1a38
 
 # Installation
 
@@ -212,9 +199,9 @@ And because it is very tedious to add a selector for every single list, the `Spr
 
 ![The PrimitiveInt control_after_generate=increment pattern and Spreadsheet OutputList](/media/PrimitiveIntControlAfterGenerateIncrementSpreadsheet.png)
 
-## XYZ-GridPlot
+## XYZ-GridPlot Simple
 
-![XYZ-GridPlot example](/workflows/Example_06_XYZ-GridPlot.png)
+![XYZ-GridPlot Simple example](/workflows/Example_06_XYZ-GridPlot.png)
 
 (ComfyUI workflow included)
 
