@@ -54,6 +54,8 @@ If this custom node helps you in your work..
 	- [The PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern)
 	- [XYZ-GridPlot](#xyz-gridplot-1)
 	- [Load multiple files with different formats](#load-multiple-files-with-different-formats)
+	- [Repeat OutputLists](#repeat-outputlists)
+	- [Cycle OutputLists](#cycle-outputlists)
 - [Advanced Examples](#advanced-examples)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
@@ -223,6 +225,14 @@ https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
 (ComfyUI workflow included)
 
 Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the directory `tests`, 2. on any sub-directory `**` (in this case: `imgs`), 3. on all files with a certain file ending (`*.png`), 4. starting at ComfyUI's `[output]` directory as the base. This calls `Load Any File` 3 times, each time with a different format, which again emits multiple files each time, resulting in a list of many files.
+
+## Repeat OutputLists
+
+![Repeat OutputLists example](/workflows/Example_08a_RepeatOutputLists.png)
+
+## Cycle OutputLists
+
+![Cycle OuputLists example](/workflows/Example_08b_CycleOutputLists.png)
 
 # Advanced Examples
 

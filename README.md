@@ -64,6 +64,8 @@ If this custom node helps you in your work..
 	- [The PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern)
 	- [XYZ-GridPlot](#xyz-gridplot-1)
 	- [Load multiple files with different formats](#load-multiple-files-with-different-formats)
+	- [Repeat OutputLists](#repeat-outputlists)
+	- [Cycle OutputLists](#cycle-outputlists)
 - [Advanced Examples](#advanced-examples)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
@@ -265,10 +267,7 @@ All lists use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will
 
 Takes up to 4 OutputLists and generates all combinations between them and emits each combination as separate items.
 
-Example:
-```
-[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
-```
+Example: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
 `unzip_a` .. `unzip_d` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
@@ -276,10 +275,7 @@ All lists are optional and empty lists will be ignored.
 
 Technically it computes the Cartesian product and outputs each combination splitted up into their elements (unzip), whereas empty lists will be replaced with units of None and they will emit None on the respective output.
 
-Example:
-```
-[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
-```
+Example: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
 ### Inputs
 
@@ -559,6 +555,14 @@ https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
 (ComfyUI workflow included)
 
 Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the directory `tests`, 2. on any sub-directory `**` (in this case: `imgs`), 3. on all files with a certain file ending (`*.png`), 4. starting at ComfyUI's `[output]` directory as the base. This calls `Load Any File` 3 times, each time with a different format, which again emits multiple files each time, resulting in a list of many files.
+
+## Repeat OutputLists
+
+![Repeat OutputLists example](/workflows/Example_08a_RepeatOutputLists.png)
+
+## Cycle OutputLists
+
+![Cycle OuputLists example](/workflows/Example_08b_CycleOutputLists.png)
 
 # Advanced Examples
 

@@ -11,10 +11,7 @@ class CombineOutputLists(io.ComfyNode):
 		ret = io.Schema(
 			description	= f"""Takes up to 4 OutputLists and generates all combinations between them and emits each combination as separate items.
 
-Example:
-```
-[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]
-```
+Example: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
 `unzip_a` .. `unzip_d` {OUTPUTLIST_NOTE}
 
@@ -22,10 +19,7 @@ All lists are optional and empty lists will be ignored.
 
 Technically it computes the Cartesian product and outputs each combination splitted up into their elements (unzip), whereas empty lists will be replaced with units of None and they will emit None on the respective output.
 
-Example:
-```
-[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]
-```
+Example: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 """,
 			node_id	= "CombineOutputLists",
 			display_name	= "OutputLists Combinations",
