@@ -179,9 +179,9 @@ Makes use of the `index` combined the same way as the prompts, which gives as th
 https://github.com/user-attachments/assets/64e118c1-15f3-463b-b439-37e1a1f5b62b
 
 Custom LoRAs:
-* ![MoXinV1.safetensors](https://civitai.com/models/12597)
-* ![animeoutlineV4_16.safetensors](https://civitai.com/models/16014)
-* ![blindbox_v1_mix.safetensors](https://civitai.com/models/25995)
+* [MoXinV1.safetensors](https://civitai.com/models/12597)
+* [animeoutlineV4_16.safetensors](https://civitai.com/models/16014)
+* [blindbox_v1_mix.safetensors](https://civitai.com/models/25995)
 
 Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
 
@@ -340,7 +340,7 @@ Similar to the basic `Workflow Discriminator` example, but uses a `Load Any File
 
 Custom nodes: [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
 
-Custom LoRAs: ![MoXinV1.safetensors](https://civitai.com/models/12597)
+Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
 ![Animating LoRA strength example](/workflows/ExampleAdv_07_AnimatingLoRAStrength.png)
 

@@ -4,7 +4,7 @@
 
 (ComfyUI workflow included)
 
-Create a OutputList by separating the string in the textfield.
+Creates a OutputList by separating the string in the textfield.
 `value` and `index` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 ### Inputs
