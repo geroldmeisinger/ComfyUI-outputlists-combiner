@@ -1,6 +1,6 @@
 ## OutputLists Combinations
 
-![OutputLists Combinations](/media/CombineOutputLists.png)
+![OutputLists Combinations](CombineOutputLists/CombineOutputLists.png)
 
 (ComfyUI workflow included)
 
@@ -18,20 +18,20 @@ Example: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", 
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `list_a`	| `*`	| (optional)	|
-| `list_b`	| `*`	| (optional)	|
-| `list_c`	| `*`	| (optional)	|
-| `list_d`	| `*`	| (optional)	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `list_a` | `*` | (optional) |
+| `list_b` | `*` | (optional) |
+| `list_c` | `*` | (optional) |
+| `list_d` | `*` | (optional) |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `unzip_a`	| `* 𝌠`	| Value of the combinations corresponding to `list_a`.	|
-| `unzip_b`	| `* 𝌠`	| Value of the combinations corresponding to `list_b`.	|
-| `unzip_c`	| `* 𝌠`	| Value of the combinations corresponding to `list_c`.	|
-| `unzip_d`	| `* 𝌠`	| Value of the combinations corresponding to `list_d`.	|
-| `index`	| `INT 𝌠`	| Range of 0..count which can be used as an index.	|
-| `count`	| `INT`	| Total number of combinations.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `unzip_a` | `* 𝌠` | Value of the combinations corresponding to `list_a`. |
+| `unzip_b` | `* 𝌠` | Value of the combinations corresponding to `list_b`. |
+| `unzip_c` | `* 𝌠` | Value of the combinations corresponding to `list_c`. |
+| `unzip_d` | `* 𝌠` | Value of the combinations corresponding to `list_d`. |
+| `index` | `INT 𝌠` | Range of 0..count which can be used as an index. |
+| `count` | `INT` | Total number of combinations. |

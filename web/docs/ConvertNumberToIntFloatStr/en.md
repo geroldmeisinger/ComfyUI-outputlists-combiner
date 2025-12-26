@@ -1,6 +1,6 @@
 ## Convert To Int Float Str
 
-![Convert To Int Float Str](/media/ConvertNumberToIntFloatStr.png)
+![Convert To Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
 (ComfyUI workflow included)
 
@@ -11,15 +11,15 @@ Use a string `123;234;345` to quickly generate a list of numbers. Don't use comm
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `any`	| `*`	| Anything that can be meaningfully converted to a string with parseable numbers inside	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `any` | `*` | Anything that can be meaningfully converted to a string with parseable numbers inside |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `int`	| `INT 𝌠`	| All the numbers found in the string with the decimals truncated.	|
-| `float`	| `FLOAT 𝌠`	| All the numbers found in the string as floats.	|
-| `string`	| `STRING 𝌠`	| All the numbers found in the string as floats converted to string.	|
-| `count`	| `INT`	| Amount of numbers found in the value.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `int` | `INT 𝌠` | All the numbers found in the string with the decimals truncated. |
+| `float` | `FLOAT 𝌠` | All the numbers found in the string as floats. |
+| `string` | `STRING 𝌠` | All the numbers found in the string as floats converted to string. |
+| `count` | `INT` | Amount of numbers found in the value. |

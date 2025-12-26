@@ -16,16 +16,17 @@ Note that "search & replace" takes place in Javascript context which runs before
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description 	= FormattedString.DESCRIPTION,
-			node_id     	= "FormattedString",
+			description	= FormattedString.DESCRIPTION,
+			node_id	= "FormattedString",
 			display_name	= "Formatted String",
-			category    	= "Utility",
-			inputs      	= [
+			category	= "Utility",
+			inputs	= [
 				io.String.Input("fstring",
 					display_name	= "fstring",
-					multiline   	= True,
-					default     	= "{a}_{b}_{c}_{d}",
-					tooltip     	= FormattedString.DESCRIPTION,
+					multiline	= True,
+					default	= "{a}_{b}_{c}_{d}",
+					placeholder	= "f-string with variable placeholders {a} {b} {c} {d}",
+					tooltip	= FormattedString.DESCRIPTION,
 				),
 				io.AnyType.Input("a", display_name="a", optional=True, tooltip="(optional) value that will be as a string at the `{a}` placeholder."),
 				io.AnyType.Input("b", display_name="b", optional=True, tooltip="(optional) value that will be as a string at the `{b}` placeholder."),

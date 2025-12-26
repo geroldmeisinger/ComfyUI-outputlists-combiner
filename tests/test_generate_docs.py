@@ -156,7 +156,7 @@ def test_move_from_downloads():
 
 	for iso, _ in iso_set2:
 		lang_dir = docs_dir / iso
-		lang_dir.mkdir(parents=True, exist_ok=True)
+		#lang_dir.mkdir(parents=True, exist_ok=True)
 
 		for node in nodes:
 			schema	= node.define_schema()
@@ -177,13 +177,13 @@ def test_generate_docs():
 		if not rows: return []
 
 		lines = [
-			"| Name\t| Type\t| Description\t|",
-			"| ---\t| ---\t| ---\t|",
+			"| Name | Type | Description |",
+			"| --- | --- | --- |",
 		]
 
 		for name, type, tooltip in rows:
 			tooltip = tooltip.replace("\n", "<br>").strip() if tooltip else ""
-			lines.append(f"| `{name}`\t| `{type}`\t| {tooltip}\t|")
+			lines.append(f"| `{name}` | `{type}` | {tooltip} |")
 
 		lines.append("")
 		return lines
@@ -202,7 +202,8 @@ def test_generate_docs():
 
 		node_lines.append(f"## {node_name}\n")
 		#md_lines.append("### Description\n")
-		node_lines.append(f"![{node_name}](/media/{schema.node_id}.png)\n\n(ComfyUI workflow included)\n")
+		node_lines_img_idx = len(node_lines)
+		node_lines.append(f"![{node_name}]({schema.node_id}/{schema.node_id}.png)\n\n(ComfyUI workflow included)\n")
 		node_lines.append((schema.description or "").strip() + "\n")
 
 		# Inputs
@@ -233,6 +234,10 @@ def test_generate_docs():
 		node_locales_path	= node_locales_dir / "en.md"
 		node_locales_dir .mkdir(parents=True, exist_ok=True)
 		node_locales_path.write_text(node_text, encoding="utf-8")
+
+		# rewrite image path relative to repo root for readme.md
+		node_lines[node_lines_img_idx] = f"![{node_name}](/web/docs/{schema.node_id}/{schema.node_id}.png)\n\n(ComfyUI workflow included)\n"
+		node_text = "\n".join(node_lines)
 
 		nodes_lines.append(node_text)
 

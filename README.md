@@ -21,10 +21,10 @@
 # Overview
 
 - **[XYZ-GridPlots](#xyz-gridplot-simple)** perfectly integrated into ComfyUI's paradigm. No weird samplers! No node black magic!
-- **[Inspect combo](#combine-samplers-and-schedulers)** to iterate lists of [LoRAs](#compare-lora-model-and-lora-strength), [samplers](#combine-samplers-and-schedulers), [checkpoints](#iterate-checkpoints), [schedulers](#combine-samplers-and-schedulers)...
-- **[List combinations](#outputlists-combiner)** with native support for [LoRA strength](#compare-lora-model-and-lora-strength), [image size-variants](#combine-numbers), [prompt combinations](#combine-prompts)...
+- **[Inspect combo](#combine-samplers-and-schedulers)** to iterate lists of [LoRAs](#compare-lora-model-and-lora-strength), [samplers/schedulers](#combine-samplers-and-schedulers), [checkpoints](#iterate-checkpoints)...
+- **[List combinations](#outputlists-combinations)** with native support for [LoRA strength](#compare-lora-model-and-lora-strength), [image size-variants](#combine-numbers), [prompt combinations](#combine-prompts)...
 - **Quick OutputLists** from CSV and Excel [Spreadsheets](#spreadsheet-outputlist), [JSON data](#json-outputlist), [multiline texts](#string-outputlist), [number ranges](#number-outputlist)...
-- **[Formatted strings](#formatted-string)** for flexible and beautiful [filenames](#combine-rowcolumn-for-filename), [labels](#xyz-gridplot-simple), [additional metadata](#workflow-discriminator)...
+- **[Formatted strings](#formatted-string)** for flexible and beautiful [filenames](#combine-rowcolumn-for-filename), [labels](#animating-lora-strength), [additional metadata](#workflow-discriminator)...
 
 If this custom node helps you in your work..
 - ⭐ **Star the repo** to make others discover the project and motivate the developer!
@@ -132,7 +132,7 @@ Yeah, I didn't know about it either. Apparently everytime you see the symbol `�
 
 ## String OutputList
 
-![String OutputList](/media/StringOutputList.png)
+![String OutputList](/web/docs/StringOutputList/StringOutputList.png)
 
 (ComfyUI workflow included)
 
@@ -141,23 +141,23 @@ Create a OutputList by separating the string in the textfield.
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `separator`	| `STRING`	| The string to split the textfield values by.	|
-| `values`	| `STRING`	| The string which will be separated. Note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `separator` | `STRING` | The string to split the textfield values by. |
+| `values` | `STRING` | The string which will be separated. Note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed. |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `value`	| `* 𝌠`	| The values from the list.	|
-| `index`	| `INT 𝌠`	| Range of 0..count which can be used as an index.	|
-| `count`	| `INT`	| The number of items in the list.	|
-| `inspect_combo`	| `COMBO`	| A dummy output only used to pre-fill the list with values from an other `COMBO` input and will automatically disconnect again	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `value` | `* 𝌠` | The values from the list. |
+| `index` | `INT 𝌠` | Range of 0..count which can be used as an index. |
+| `count` | `INT` | The number of items in the list. |
+| `inspect_combo` | `COMBO` | A dummy output only used to pre-fill the list with values from an other `COMBO` input and will automatically disconnect again |
 
 ## Number OutputList
 
-![Number OutputList](/media/NumberOutputList.png)
+![Number OutputList](/web/docs/NumberOutputList/NumberOutputList.png)
 
 (ComfyUI workflow included)
 
@@ -168,26 +168,26 @@ If you want to define number lists with arbitrary steps instead check out the JS
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `start`	| `FLOAT`	| Start value to generate the range from.	|
-| `stop`	| `FLOAT`	| End value. If `endpoint=include` this number will be included in the list.	|
-| `num`	| `INT`	| The number of items in the list (not to be confused with a `step`).	|
-| `endpoint`	| `BOOLEAN`	| Decides if the `stop` value should be included or excluded in the items.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `start` | `FLOAT` | Start value to generate the range from. |
+| `stop` | `FLOAT` | End value. If `endpoint=include` this number will be included in the list. |
+| `num` | `INT` | The number of items in the list (not to be confused with a `step`). |
+| `endpoint` | `BOOLEAN` | Decides if the `stop` value should be included or excluded in the items. |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `int`	| `INT 𝌠`	| The value converted to int (rounded down/floored).	|
-| `float`	| `FLOAT 𝌠`	| The value as a float.	|
-| `string`	| `STRING 𝌠`	| The value as a float converted to string.	|
-| `index`	| `INT 𝌠`	| Range of 0..count which can be used as an index.	|
-| `count`	| `INT`	| Same as `num`.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `int` | `INT 𝌠` | The value converted to int (rounded down/floored). |
+| `float` | `FLOAT 𝌠` | The value as a float. |
+| `string` | `STRING 𝌠` | The value as a float converted to string. |
+| `index` | `INT 𝌠` | Range of 0..count which can be used as an index. |
+| `count` | `INT` | Same as `num`. |
 
 ## JSON OutputList
 
-![JSON OutputList](/media/JSONOutputList.png)
+![JSON OutputList](/web/docs/JSONOutputList/JSONOutputList.png)
 
 (ComfyUI workflow included)
 
@@ -199,26 +199,26 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `jsonpath`	| `STRING`	| JSONPath used to extract the values.	|
-| `json`	| `STRING`	| A JSON string which will be parsed to an object.	|
-| `obj`	| `*`	| (optional) object of any type which will replace the JSON string	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `jsonpath` | `STRING` | JSONPath used to extract the values. |
+| `json` | `STRING` | A JSON string which will be parsed to an object. |
+| `obj` | `*` | (optional) object of any type which will replace the JSON string |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `key`	| `STRING 𝌠`	| The key for dictionaries or index for arrays (as string).  Technically it's a global index of the flattened list for all non-keys.	|
-| `value`	| `STRING 𝌠`	| The value as a string.	|
-| `int`	| `INT 𝌠`	| The value as a int (if not parseable number default to 0).	|
-| `float`	| `FLOAT 𝌠`	| The value as a float (if not parseable number default to 0).	|
-| `count`	| `INT`	| Total number of items in the flattened list	|
-| `debug`	| `STRING`	| Debug output of all matched objects as a formatted JSON string	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `key` | `STRING 𝌠` | The key for dictionaries or index for arrays (as string).  Technically it's a global index of the flattened list for all non-keys. |
+| `value` | `STRING 𝌠` | The value as a string. |
+| `int` | `INT 𝌠` | The value as a int (if not parseable number default to 0). |
+| `float` | `FLOAT 𝌠` | The value as a float (if not parseable number default to 0). |
+| `count` | `INT` | Total number of items in the flattened list |
+| `debug` | `STRING` | Debug output of all matched objects as a formatted JSON string |
 
 ## Spreadsheet OutputList
 
-![Spreadsheet OutputList](/media/SpreadsheetOutputList.png)
+![Spreadsheet OutputList](/web/docs/SpreadsheetOutputList/SpreadsheetOutputList.png)
 
 (ComfyUI workflow included)
 
@@ -229,27 +229,27 @@ All lists use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `rows_and_cols`	| `STRING`	| Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`).	|
-| `header_rows`	| `INT`	| Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`.	|
-| `header_cols`	| `INT`	| Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`.	|
-| `select_nth`	| `INT`	| Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern.	|
-| `string_or_base64`	| `STRING`	| CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `rows_and_cols` | `STRING` | Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`). |
+| `header_rows` | `INT` | Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`. |
+| `header_cols` | `INT` | Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`. |
+| `select_nth` | `INT` | Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern. |
+| `string_or_base64` | `STRING` | CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64. |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `list_a`	| `STRING 𝌠`	| 	|
-| `list_b`	| `STRING 𝌠`	| 	|
-| `list_c`	| `STRING 𝌠`	| 	|
-| `list_d`	| `STRING 𝌠`	| 	|
-| `count`	| `INT`	| Number of items in the longest list.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `list_a` | `STRING 𝌠` |  |
+| `list_b` | `STRING 𝌠` |  |
+| `list_c` | `STRING 𝌠` |  |
+| `list_d` | `STRING 𝌠` |  |
+| `count` | `INT` | Number of items in the longest list. |
 
 ## OutputLists Combinations
 
-![OutputLists Combinations](/media/CombineOutputLists.png)
+![OutputLists Combinations](/web/docs/CombineOutputLists/CombineOutputLists.png)
 
 (ComfyUI workflow included)
 
@@ -267,27 +267,27 @@ Example: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", 
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `list_a`	| `*`	| (optional)	|
-| `list_b`	| `*`	| (optional)	|
-| `list_c`	| `*`	| (optional)	|
-| `list_d`	| `*`	| (optional)	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `list_a` | `*` | (optional) |
+| `list_b` | `*` | (optional) |
+| `list_c` | `*` | (optional) |
+| `list_d` | `*` | (optional) |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `unzip_a`	| `* 𝌠`	| Value of the combinations corresponding to `list_a`.	|
-| `unzip_b`	| `* 𝌠`	| Value of the combinations corresponding to `list_b`.	|
-| `unzip_c`	| `* 𝌠`	| Value of the combinations corresponding to `list_c`.	|
-| `unzip_d`	| `* 𝌠`	| Value of the combinations corresponding to `list_d`.	|
-| `index`	| `INT 𝌠`	| Range of 0..count which can be used as an index.	|
-| `count`	| `INT`	| Total number of combinations.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `unzip_a` | `* 𝌠` | Value of the combinations corresponding to `list_a`. |
+| `unzip_b` | `* 𝌠` | Value of the combinations corresponding to `list_b`. |
+| `unzip_c` | `* 𝌠` | Value of the combinations corresponding to `list_c`. |
+| `unzip_d` | `* 𝌠` | Value of the combinations corresponding to `list_d`. |
+| `index` | `INT 𝌠` | Range of 0..count which can be used as an index. |
+| `count` | `INT` | Total number of combinations. |
 
 ## XYZ-GridPlot
 
-![XYZ-GridPlot](/media/XyzGridPlot.png)
+![XYZ-GridPlot](/web/docs/XyzGridPlot/XyzGridPlot.png)
 
 (ComfyUI workflow included)
 
@@ -313,26 +313,26 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `images`	| `IMAGE`	| A list of images (including batches)	|
-| `row_labels`	| `*`	| The text used for the row labels at the left side	|
-| `col_labels`	| `*`	| The text used for the column labels at the top	|
-| `gap`	| `INT`	| The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node.	|
-| `font_size`	| `FLOAT`	| The target font size. The text will be shrunk down until it fits (up to `font_size_min=6`).	|
-| `row_label_orientation`	| `COMBO`	| The text orientation of the row labels. Useful if you want to save space.	|
-| `order`	| `BOOLEAN`	| Defines in which order the images should be processed. This is only relevant if you have sub-images.	|
-| `output_is_list`	| `BOOLEAN`	| This is only relevant if you have sub-images or you want to create super-grids.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `images` | `IMAGE` | A list of images (including batches) |
+| `row_labels` | `*` | The text used for the row labels at the left side |
+| `col_labels` | `*` | The text used for the column labels at the top |
+| `gap` | `INT` | The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node. |
+| `font_size` | `FLOAT` | The target font size. The text will be shrunk down until it fits (up to `font_size_min=6`). |
+| `row_label_orientation` | `COMBO` | The text orientation of the row labels. Useful if you want to save space. |
+| `order` | `BOOLEAN` | Defines in which order the images should be processed. This is only relevant if you have sub-images. |
+| `output_is_list` | `BOOLEAN` | This is only relevant if you have sub-images or you want to create super-grids. |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `image`	| `IMAGE 𝌠`	| The XYZ-GridPlot image. If `output_is_list=True` it will be a list of images which you can connect to another XYZ-GridPlot node to create super-grids.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `image` | `IMAGE 𝌠` | The XYZ-GridPlot image. If `output_is_list=True` it will be a list of images which you can connect to another XYZ-GridPlot node to create super-grids. |
 
 ## Workflow Discriminator
 
-![Workflow Discriminator](/media/WorkflowDiscriminator.png)
+![Workflow Discriminator](/web/docs/WorkflowDiscriminator/WorkflowDiscriminator.png)
 
 (ComfyUI workflow included)
 
@@ -345,25 +345,25 @@ Custom nodes with metadata loaders include:
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `objs_0`	| `*`	| (optional) A single object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects.	|
-| `more_objs`	| `*`	| (optional) Another object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects.	|
-| `ignore_jsonpaths`	| `STRING`	| (optional) A list of JSONPaths to ignore in case you want to chain multiple discriminators together.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `objs_0` | `*` | (optional) A single object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects. |
+| `more_objs` | `*` | (optional) Another object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects. |
+| `ignore_jsonpaths` | `STRING` | (optional) A list of JSONPaths to ignore in case you want to chain multiple discriminators together. |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `list_a`	| `* 𝌠`	| 	|
-| `list_b`	| `* 𝌠`	| 	|
-| `list_c`	| `* 𝌠`	| 	|
-| `list_d`	| `* 𝌠`	| 	|
-| `jsonpaths`	| `STRING 𝌠`	| 	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `list_a` | `* 𝌠` |  |
+| `list_b` | `* 𝌠` |  |
+| `list_c` | `* 𝌠` |  |
+| `list_d` | `* 𝌠` |  |
+| `jsonpaths` | `STRING 𝌠` |  |
 
 ## Formatted String
 
-![Formatted String](/media/FormattedString.png)
+![Formatted String](/web/docs/FormattedString/FormattedString.png)
 
 (ComfyUI workflow included)
 
@@ -379,23 +379,23 @@ Note that "search & replace" takes place in Javascript context which runs before
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `fstring`	| `STRING`	| String with variable placeholders which will replaced with their respective values.<br>Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .<br>* Use `{a:.2f}` to round off a float to 2 decimals.<br>* Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.<br>* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.<br><br>Also applies "search & replace" (S&R) syntax such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`.<br>Thus you can also use it as a getter node.<br>Note that "search & replace" takes place in Javascript context which runs before node execution.	|
-| `a`	| `*`	| (optional) value that will be as a string at the `{a}` placeholder.	|
-| `b`	| `*`	| (optional) value that will be as a string at the `{b}` placeholder.	|
-| `c`	| `*`	| (optional) value that will be as a string at the `{c}` placeholder.	|
-| `d`	| `*`	| (optional) value that will be as a string at the `{d}` placeholder.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `fstring` | `STRING` | String with variable placeholders which will replaced with their respective values.<br>Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .<br>* Use `{a:.2f}` to round off a float to 2 decimals.<br>* Use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.<br>* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them like so: `{{ }}`.<br><br>Also applies "search & replace" (S&R) syntax such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`.<br>Thus you can also use it as a getter node.<br>Note that "search & replace" takes place in Javascript context which runs before node execution. |
+| `a` | `*` | (optional) value that will be as a string at the `{a}` placeholder. |
+| `b` | `*` | (optional) value that will be as a string at the `{b}` placeholder. |
+| `c` | `*` | (optional) value that will be as a string at the `{c}` placeholder. |
+| `d` | `*` | (optional) value that will be as a string at the `{d}` placeholder. |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `string`	| `STRING`	| The formatted string with all placeholders replaced with their respective values.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `string` | `STRING` | The formatted string with all placeholders replaced with their respective values. |
 
 ## Convert To Int Float Str
 
-![Convert To Int Float Str](/media/ConvertNumberToIntFloatStr.png)
+![Convert To Int Float Str](/web/docs/ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
 (ComfyUI workflow included)
 
@@ -406,22 +406,22 @@ Use a string `123;234;345` to quickly generate a list of numbers. Don't use comm
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `any`	| `*`	| Anything that can be meaningfully converted to a string with parseable numbers inside	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `any` | `*` | Anything that can be meaningfully converted to a string with parseable numbers inside |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `int`	| `INT 𝌠`	| All the numbers found in the string with the decimals truncated.	|
-| `float`	| `FLOAT 𝌠`	| All the numbers found in the string as floats.	|
-| `string`	| `STRING 𝌠`	| All the numbers found in the string as floats converted to string.	|
-| `count`	| `INT`	| Amount of numbers found in the value.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `int` | `INT 𝌠` | All the numbers found in the string with the decimals truncated. |
+| `float` | `FLOAT 𝌠` | All the numbers found in the string as floats. |
+| `string` | `STRING 𝌠` | All the numbers found in the string as floats converted to string. |
+| `count` | `INT` | Amount of numbers found in the value. |
 
 ## Load Any File
 
-![Load Any File](/media/LoadAnyFile.png)
+![Load Any File](/web/docs/LoadAnyFile/LoadAnyFile.png)
 
 (ComfyUI workflow included)
 
@@ -438,18 +438,18 @@ For performance reasons the number of files are limited to: 1024.
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `filepath`	| `STRING`	| Base directory defaults to input directory. Support glob pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the whitespace!) to specify a different ComfyUI user directory.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `filepath` | `STRING` | Base directory defaults to input directory. Support glob pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the whitespace!) to specify a different ComfyUI user directory. |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `content`	| `STRING 𝌠`	| File content for text files, base64 for binary files.	|
-| `image`	| `IMAGE 𝌠`	| Image batch tensor.	|
-| `mask`	| `MASK 𝌠`	| Mask batch tensor.	|
-| `metadata`	| `STRING 𝌠`	| Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `content` | `STRING 𝌠` | File content for text files, base64 for binary files. |
+| `image` | `IMAGE 𝌠` | Image batch tensor. |
+| `mask` | `MASK 𝌠` | Mask batch tensor. |
+| `metadata` | `STRING 𝌠` | Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`. |
 
 
 # Examples

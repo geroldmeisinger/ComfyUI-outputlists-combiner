@@ -1,6 +1,6 @@
 ## Load Any File
 
-![Load Any File](/media/LoadAnyFile.png)
+![Load Any File](LoadAnyFile/LoadAnyFile.png)
 
 (ComfyUI workflow included)
 
@@ -17,15 +17,15 @@ For performance reasons the number of files are limited to: 1024.
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `filepath`	| `STRING`	| Base directory defaults to input directory. Support glob pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the whitespace!) to specify a different ComfyUI user directory.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `filepath` | `STRING` | Base directory defaults to input directory. Support glob pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the whitespace!) to specify a different ComfyUI user directory. |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `content`	| `STRING 𝌠`	| File content for text files, base64 for binary files.	|
-| `image`	| `IMAGE 𝌠`	| Image batch tensor.	|
-| `mask`	| `MASK 𝌠`	| Mask batch tensor.	|
-| `metadata`	| `STRING 𝌠`	| Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `content` | `STRING 𝌠` | File content for text files, base64 for binary files. |
+| `image` | `IMAGE 𝌠` | Image batch tensor. |
+| `mask` | `MASK 𝌠` | Mask batch tensor. |
+| `metadata` | `STRING 𝌠` | Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`. |

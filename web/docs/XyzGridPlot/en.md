@@ -1,6 +1,6 @@
 ## XYZ-GridPlot
 
-![XYZ-GridPlot](/media/XyzGridPlot.png)
+![XYZ-GridPlot](XyzGridPlot/XyzGridPlot.png)
 
 (ComfyUI workflow included)
 
@@ -26,19 +26,19 @@ Singleline and numeric labels for columns are vertically aligned at bottom and f
 
 ### Inputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `images`	| `IMAGE`	| A list of images (including batches)	|
-| `row_labels`	| `*`	| The text used for the row labels at the left side	|
-| `col_labels`	| `*`	| The text used for the column labels at the top	|
-| `gap`	| `INT`	| The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node.	|
-| `font_size`	| `FLOAT`	| The target font size. The text will be shrunk down until it fits (up to `font_size_min=6`).	|
-| `row_label_orientation`	| `COMBO`	| The text orientation of the row labels. Useful if you want to save space.	|
-| `order`	| `BOOLEAN`	| Defines in which order the images should be processed. This is only relevant if you have sub-images.	|
-| `output_is_list`	| `BOOLEAN`	| This is only relevant if you have sub-images or you want to create super-grids.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `images` | `IMAGE` | A list of images (including batches) |
+| `row_labels` | `*` | The text used for the row labels at the left side |
+| `col_labels` | `*` | The text used for the column labels at the top |
+| `gap` | `INT` | The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node. |
+| `font_size` | `FLOAT` | The target font size. The text will be shrunk down until it fits (up to `font_size_min=6`). |
+| `row_label_orientation` | `COMBO` | The text orientation of the row labels. Useful if you want to save space. |
+| `order` | `BOOLEAN` | Defines in which order the images should be processed. This is only relevant if you have sub-images. |
+| `output_is_list` | `BOOLEAN` | This is only relevant if you have sub-images or you want to create super-grids. |
 
 ### Outputs
 
-| Name	| Type	| Description	|
-| ---	| ---	| ---	|
-| `image`	| `IMAGE 𝌠`	| The XYZ-GridPlot image. If `output_is_list=True` it will be a list of images which you can connect to another XYZ-GridPlot node to create super-grids.	|
+| Name | Type | Description |
+| --- | --- | --- |
+| `image` | `IMAGE 𝌠` | The XYZ-GridPlot image. If `output_is_list=True` it will be a list of images which you can connect to another XYZ-GridPlot node to create super-grids. |
