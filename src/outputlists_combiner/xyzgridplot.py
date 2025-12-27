@@ -408,8 +408,8 @@ The number of images per cells (including batched images) have to be a multiple 
 		rows	= max(1, len(row_labels))
 		cols	= max(1, len(col_labels))
 		size	= rows * cols
-		row_labels	= [str(l) for l in row_labels]
-		col_labels	= [str(l) for l in col_labels]
+		row_labels	= [str(l).strip() for l in row_labels]
+		col_labels	= [str(l).strip() for l in col_labels]
 
 		images, all_same_batch	= flatten_and_pad_images(images, rows, cols, order)
 
