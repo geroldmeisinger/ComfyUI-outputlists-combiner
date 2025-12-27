@@ -7,6 +7,7 @@ from datetime import datetime
 from pathlib import Path
 
 repo_dir	= os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+readme_dir	= Path(f"{repo_dir}/readme")
 sys.path.insert(0, repo_dir)
 
 from src.outputlists_combiner import *
@@ -130,6 +131,18 @@ nodes = [
 	KSamplerImmediateSave(),
 ]
 
+chapters = [
+	"overview",
+	"toc",
+	"installation",
+	"changelog",
+	"background",
+	"nodes",
+	"examples",
+	"advanced_examples",
+	"credits",
+]
+
 def test_generate_badges(active_iso = "en"):
 	lang_default = iso_set2.pop(0)
 	iso_set2.sort(key=lambda x: x[0])
@@ -154,12 +167,25 @@ def test_move_from_downloads():
 	header	= f"<!-- This file was auto-translated with an local LLM and last updated on {datetime.now().strftime('%Y-%m-%d')}. -->\n"
 
 	for iso, _, mdtranslator in iso_set2:
+		iso_suffix	= mdtranslator if mdtranslator else iso
 		lang_dir = docs_dir / iso
 		#lang_dir.mkdir(parents=True, exist_ok=True)
 
+		for chapter in chapters:
+			dls_path	= dls_dir  / f"{chapter}_{iso_suffix}.md"
+			lang_path	= readme_dir / f"{iso}/{chapter}.md"
+
+			if not dls_path.exists(): continue
+
+			try:
+				shutil.move(str(dls_path), str(lang_path))
+				text = lang_path.read_text(encoding="utf-8")
+				lang_path.write_text(header + text, encoding="utf-8")
+			except:
+				continue
+
 		for node in nodes:
 			schema	= node.define_schema()
-			iso_suffix	= mdtranslator if mdtranslator else iso
 			dls_path	= dls_dir  / f"{schema.node_id}_{iso_suffix}.md"
 			lang_path	= lang_dir / f"{schema.node_id}/{iso}.md"
 
@@ -191,14 +217,11 @@ def test_generate_docs():
 	nodes_dir	= Path(f"{repo_dir}/web/docs/")
 	nodes_dir.mkdir(parents=True, exist_ok=True)
 
-	toc_lines	= ["- [Nodes](#nodes)"]
-	nodes_lines = []
+	nodes_lines = ["# Nodes"]
 	for node in nodes:
 		node_lines	= []
 		schema	= node.define_schema()
 		node_name	= schema.display_name or schema.node_id
-		toc_anchor	= node_name.lower().replace(" ", "-")
-		toc_lines.append(f"\t- [{node_name}](#{toc_anchor})")
 
 		node_lines.append(f"## {node_name}\n")
 		#md_lines.append("### Description\n")
@@ -237,19 +260,46 @@ def test_generate_docs():
 
 		# rewrite image path relative to repo root for readme.md
 		node_lines[node_lines_img_idx] = f"![{node_name}](/web/docs/{schema.node_id}/{schema.node_id}.png)\n\n(ComfyUI workflow included)\n"
-		node_text = "\n".join(node_lines)
 
-		nodes_lines.append(node_text)
+		nodes_lines.extend(node_lines)
 
 	# Ensure output directory exists
 	#output_path.parent.mkdir(parents=True, exist_ok=True)
 
 	# Write markdown file
-	header	= "<!--- Auto-generated from src_README.md! Don't edit this file! Edit src_README.md instead! -->"
-	toc_text	= "\n".join(toc_lines)
-	nodes_text	= "\n".join(nodes_lines)
-	readme_src	= Path(f"{repo_dir}/src_README.md").read_text()
-	readme	= readme_src.replace("{HEADER}", header).replace('- [Nodes](#nodes)', toc_text).replace('{NODES}', nodes_text)
+	readme_lines = ["<!--- Auto-generated from readme/! DON'T EDIT THIS FILE! -->"]
 
-	Path(f"{repo_dir}/README.md").write_text(readme, encoding="utf-8")
-	print(nodes_text)
+	toc_idx = -1
+	for chapter in chapters:
+		chapter_path = readme_dir / f"{chapter}.md"
+
+		if chapter == "toc":
+			toc_idx = len(readme_lines)
+			readme_lines.append("")
+		elif	chapter == "nodes":
+			nodes_text = "\n".join(nodes_lines) + "\n"
+			readme_lines.extend(nodes_text.split("\n"))
+		else:
+			if not chapter_path.exists(): continue
+
+			chapter_text	= chapter_path.read_text(encoding="utf-8")
+			chapter_lines	= (chapter_text.strip() + "\n").split("\n")
+			readme_lines.extend(chapter_lines)
+
+	toc_lines = []
+	for line in readme_lines:
+		if line.startswith("## "):
+			subheader	= line[3:]
+			subheader_a	= subheader.lower().replace(" ", "-").replace("(", "").replace(")", "").replace("/", "").replace("=", "")
+			subheader	= subheader.replace("_", "\\_")
+			toc_lines.append(f"\t- [{subheader}](#{subheader_a})")
+		elif line.startswith("# "):
+			header	= line[2:]
+			header_a	= header.lower().replace(" ", "-").replace("(", "").replace(")", "").replace("/", "").replace("=", "")
+			header	= header.replace("_", "\\_")
+			toc_lines.append(f"- [{header}](#{header_a})")
+	toc_text = "\n".join(toc_lines) + "\n"
+
+	readme_lines[toc_idx] = toc_text
+	readme_text = "\n".join(readme_lines)
+	Path(f"{repo_dir}/README.md").write_text(readme_text, encoding="utf-8")
