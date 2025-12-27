@@ -1,21 +1,3 @@
-<div align="center">
-	<img src="/media/promo.png" alt="OutputLists Combiner Promo" width="600" />
-</div>
-
-<h2 align="center">Supercharge multiprompts and grid control!</h2>
-
-<h3 align="center">
-	<a href="#features" target="_blank">Features</a> ·
-	<a href="#installation" target="_blank">Installation</a> ·
-	<a href="#changelog" target="_blank">Changelog</a> ·
-	<a href="#nodes" target="_blank">Nodes</a> ·
-	<a href="#examples" target="_blank">Examples</a>
-</h3>
-
-<div align="center">
-    <a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
-</div>
-
 # Overview
 
 - **[XYZ-GridPlot](#xyz-gridplot-simple)** perfectly integrates with ComfyUI's paradigm. No weird samplers! No node black magic!
