@@ -4,7 +4,8 @@
 
 (ComfyUI workflow included)
 
-Compare workflows and discriminate differences as JSON paths.
+Compares workflows and discriminates them to extract the different values as individual OutputLists.
+You can use this node to restore how each individual image was created from a list of images with the same workflow.
 Note that ComfyUI's `IMAGE` doesn't contain the workflow metadata and you need to load the images with specialized image+metadata loaders and connect the metadata to this node.
 Custom nodes with metadata loaders include:
 * `Load Any File.metadata` -> `JSON OutputList(jsonpath=$.["PNG:Prompt"]).value`

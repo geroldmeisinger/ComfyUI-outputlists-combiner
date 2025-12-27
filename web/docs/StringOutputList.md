@@ -4,21 +4,21 @@
 
 (ComfyUI workflow included)
 
-Creates a OutputList by separating the string in the textfield.
+Creates an OutputList by splitting the string in the textfield with a separator.
 `value` and `index` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
 
 ### Inputs
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `separator` | `STRING` | The string to split the textfield values by. |
-| `values` | `STRING` | The string which will be separated. Note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed. |
+| `separator` | `STRING` | The string used to split the textfield values by. |
+| `values` | `STRING` | The text you want to split into a list. Note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed of whitespace. |
 
 ### Outputs
 
 | Name | Type | Description |
 | --- | --- | --- |
 | `value` | `* 𝌠` | The values from the list. |
-| `index` | `INT 𝌠` | Range of 0..count which can be used as an index. |
+| `index` | `INT 𝌠` | Range of 0..count. You can use this as an index. |
 | `count` | `INT` | The number of items in the list. |
-| `inspect_combo` | `COMBO` | A dummy output only used to pre-fill the list with values from an other `COMBO` input and will automatically disconnect again |
+| `inspect_combo` | `COMBO` | A dummy-output you can use to link to a `COMBO` and pre-fill with it's values. The connection will then be automatically re-linked to `value` output. |

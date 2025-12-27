@@ -21,27 +21,27 @@ class LoadAnyFile(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= f"""Load any text or binary file and provide the file content as string or base64 string and additionally try to load it as a `IMAGE` with metadata.
+			description	= f"""Loads any text or binary file and provides the file content as string or base64 string. Additionally tries to load it as a `IMAGE`. And also tries to load any metadata.
 
-`filepath` supports ComfyUI's annotated filepaths ` [input]` ` [output]` or ` [temp]`.
-`filepath` also support glob pattern expansion `subdir/**/*.png`.
+`filepath` supports ComfyUI's annotated filepaths `[input]` `[output]` or `[temp]`.
+`filepath` also support glob-pattern expansions `subdir/**/*.png`.
 Internally uses python's [glob.iglob](https://docs.python.org/3/library/glob.html#glob.iglob).
 
-`metadata` calls `exiftool`, if it's installed and available at the path, otherwise uses `PIL.Image.info` as a fallback.
+`metadata` calls `exiftool`, if it's installed and available at `PATH`, otherwise uses `PIL.Image.info` as a fallback.
 
 For security reason only the following directories are supported: `[input] [output] [temp]`.
 For performance reasons the number of files are limited to: {MAX_RESULTS}.
 """,
-			node_id     	= "LoadAnyFile",
+			node_id	= "LoadAnyFile",
 			display_name	= "Load Any File",
-			category    	= "Utility",
-			inputs      	= [
-				io.String.Input("annotated_filepath", display_name="filepath"	,  tooltip="Base directory defaults to input directory. Support glob pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the whitespace!) to specify a different ComfyUI user directory."),
+			category	= "Utility",
+			inputs	= [
+				io.String.Input("annotated_filepath", display_name="filepath"	,  tooltip="Base directory defaults to `[input]` user-directory. Supports glob-pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory."),
 			],
 			outputs	= [
-				io.String	.Output("string"  	, display_name="content" 	, is_output_list=True, tooltip="File content for text files, base64 for binary files."),
-				io.Image 	.Output("image"   	, display_name="image"   	, is_output_list=True, tooltip="Image batch tensor."),
-				io.Mask  	.Output("mask"    	, display_name="mask"    	, is_output_list=True, tooltip="Mask batch tensor."),
+				io.String	.Output("string"	, display_name="content"	, is_output_list=True, tooltip="File content for text files, base64 for binary files."),
+				io.Image	.Output("image"	, display_name="image"	, is_output_list=True, tooltip="Image batch tensor."),
+				io.Mask	.Output("mask"	, display_name="mask"	, is_output_list=True, tooltip="Mask batch tensor."),
 				io.String	.Output("metadata"	, display_name="metadata"	, is_output_list=True, tooltip="Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`."),
 			],
 		)
@@ -54,9 +54,9 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			ret = io.NodeOutput([], [], [], [])
 			return ret
 
-		ret_strings 	= []
-		ret_images  	= []
-		ret_masks   	= []
+		ret_strings	= []
+		ret_images	= []
+		ret_masks	= []
 		ret_metadata	= []
 		file_paths = get_files(annotated_filepath)
 		for file_path in file_paths:
@@ -65,7 +65,7 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 
 			# check if binary
 			try:
-				result  	= chardet.detect(raw_data[:1024]) # trunc for performance
+				result	= chardet.detect(raw_data[:1024]) # trunc for performance
 				encoding	= result["encoding"]
 				if encoding:
 					filecontent = raw_data.decode(encoding)
@@ -99,7 +99,7 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			except (UnidentifiedImageError, OSError, ValueError):
 				# fallback to black 64x64 tensors
 				image	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
-				mask 	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
+				mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 
 			# run exiftool
 			if not exif_json and is_binary:
@@ -205,8 +205,8 @@ def get_files(annotated_filepath: str) -> list[str]:
 # from ComfyUI/nodes.py LoadImage
 def load_image(img: Image) -> tuple[torch.tensor, torch.tensor]:
 	output_images	= []
-	output_masks 	= []
-	w, h         	= None, None
+	output_masks	= []
+	w, h	= None, None
 
 	excluded_formats = ['MPO']
 
@@ -235,13 +235,13 @@ def load_image(img: Image) -> tuple[torch.tensor, torch.tensor]:
 		else:
 			mask = torch.zeros((64,64), dtype=torch.float32, device="cpu")
 		output_images	.append(image)
-		output_masks 	.append(mask.unsqueeze(0))
+		output_masks	.append(mask.unsqueeze(0))
 
 	if len(output_images) > 1 and img.format not in excluded_formats:
 		output_image	= torch.cat(output_images	, dim=0)
-		output_mask 	= torch.cat(output_masks 	, dim=0)
+		output_mask	= torch.cat(output_masks	, dim=0)
 	else:
 		output_image	= output_images[0]
-		output_mask 	= output_masks[0]
+		output_mask	= output_masks[0]
 
 	return (output_image, output_mask)

@@ -8,9 +8,9 @@ class NumberOutputList(io.ComfyNode):
 	@classmethod
 	def define_schema(self) -> io.Schema:
 		ret = io.Schema(
-			description=f"""Create a OutputList by generating a numbers of values in a range.
-Uses [numpy.linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html) internally because it works more reliably with floatingpoint values.
-If you want to define number lists with arbitrary steps instead check out the JSON OutputList and define an array like `[1, 42, 123]`.
+			description=f"""Creates an OutputList with a range of numeric values.
+Uses [numpy.linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html) internally, because it works more reliably with floating-point values.
+If you want to define number lists with arbitrary steps instead check out the JSON OutputList and define an array, e.g. `[1, 42, 123]`.
 `int`, `float`, `string` and `index` {OUTPUTLIST_NOTE}
 """,
 			node_id	= "NumberOutputList",
@@ -18,8 +18,8 @@ If you want to define number lists with arbitrary steps instead check out the JS
 			category	= "Utility",
 			inputs	= [
 				io.Float	.Input("start"	, display_name="start"	, default=	0	,	tooltip="Start value to generate the range from."	),
-				io.Float	.Input("stop"	, display_name="stop"	, default=	10	,	tooltip="End value. If `endpoint=include` this number will be included in the list."	),
-				io.Int	.Input("num"	, display_name="num"	, default=	10	, min=1                                  ,	tooltip="The number of items in the list (not to be confused with a `step`)."	),
+				io.Float	.Input("stop"	, display_name="stop"	, default=	10	,	tooltip="End value. If `endpoint=include` then this number is included in the list."	),
+				io.Int	.Input("num"	, display_name="num"	, default=	10	, min=1                                  ,	tooltip="The number of items in the list (don't confuse it with a `step`)."	),
 				io.Boolean	.Input("endpoint"	, display_name="endpoint"	, default=	False	, label_on="include", label_off="exclude",	tooltip="Decides if the `stop` value should be included or excluded in the items."	),
 			],
 			outputs	= [

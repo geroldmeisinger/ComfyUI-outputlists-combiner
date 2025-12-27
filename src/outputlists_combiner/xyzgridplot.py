@@ -346,32 +346,32 @@ class XyzGridPlot(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= f"""Generate a XYZ-Gridplot from a list of images.
-Takes a list of images (including batches) and will flatten the list first (thus `batch_size=1`).
+			description	= f"""Generates a XYZ-Gridplot from a list of images.
+It takes a list of images (including batches) and flattens them into a long list first (thus `batch_size=1`).
 
 **Grid shape**
-The shape of the grid is determined:
-1. by the number of row labels
-2. by the number of column labels
-3. by the remaining sub-images.
-You can use `order=inside_out` to reverse how the images are selected (useful if `batch_size>1` and you want to plot the batches).
+Determines the shape of the grid by:
+1. the number of row labels
+2. the number of column labels
+3. the remaining sub-images.
+You can use `order=inside_out` to reverse the image selection (useful if `batch_size>1` and you want to label the batches).
 
 **Alignment**
-* If a label got wrapped the whole axis is considered "multiline" and will be align at top and justified.
-* If all the labels are numbers or all end in parseable numbers (e.g. `strength: 1.`) the whole axis is considered "numeric" and will be right aligned.
-* All other texts are considered "singleline" and will be horizontally centered.
-* Singleline and numeric labels in columns are vertically aligned at bottom, and in rows are vertically centered.
+* If a label gets wrapped into the next line the whole axis is considered "multiline" and aligns them at top with justified-spacing.
+* If all the labels are numbers or all end in numbers (e.g. `strength: 1.`) the whole axis is considered "numeric" and aligns them right.
+* All other texts are considered "singleline" and aligns them centered.
+* Aligns singleline and numeric labels for columns at bottom, and for rows aligns them vertically in the middle.
 
 **Font-size**
-* For the column label areas the height is determined by `font_size` or `half of largest sub-images packing height in any row` (whichever is greater).
-* For the row label areas the width is determined by the widest width of the sub-images packing (with a minimum of {LABELAREA_ROW_HEIGHT_MIN}px).
-* The text will be shrunk down until it fits (down to `font_size_min={FONT_SIZE_MIN}`) and the same font size will be used for the whole axis (row labels or column labels).
-If the font size is already at the minimum, any remaining text will be clipped.
+* The height of the column label area is determined by `font_size` or `half of largest sub-images packing height in any row` (whichever is greater).
+* The width of the row label area is determined by the widest width of the sub-images packing (with a minimum of {LABELAREA_ROW_HEIGHT_MIN}px).
+* The text is shrunk down until it fits (down to `font_size_min={FONT_SIZE_MIN}`) and uses the same font size for the whole axis (row labels or column labels).
+If the font size is already at the minimum, clips any remaining text.
 
 **Sub-images packing**
-Sub-images (usually from batches) will be shaped into the most square area (the "sub-images packing"), unless `output_is_list=True`, in which case every cell only uses one image and a list of whole image grids will be created instead.
+Shapes the sub-images (usually from batches) into the most square area (the "sub-images packing"), unless `output_is_list=True`, in which case uses only one image for each cell and create a list of whole image grids instead.
 You can use this list of image grids to connect another XyzGridPlot node to create super-grids.
-If the sub-images consist of batches of different sizes, the missing cells will be padded.
+If the sub-images consist of batches of different sizes, fills up the missing cells with empty images.
 The number of images per cells (including batched images) have to be a multiple of `rows * columns`.
 """,
 			node_id	= "XyzGridPlot",
@@ -380,16 +380,16 @@ The number of images per cells (including batched images) have to be a multiple 
 			is_input_list	= True,
 			inputs=[
 				io.Image	.Input("images"	, display_name="images"	,	tooltip=f"A list of images (including batches)"),
-				io.AnyType	.Input("row_labels"	, display_name="row_labels"	, optional=True,	tooltip=f"The text used for the row labels at the left side {INPUTLIST_NOTE}"),
-				io.AnyType	.Input("col_labels"	, display_name="col_labels"	, optional=True,	tooltip=f"The text used for the column labels at the top {INPUTLIST_NOTE}"),
-				io.Int	.Input("gap"	, display_name="gap"	, default= 0, min=0, max=1024,	tooltip=f"The gap between the sub-image packing. Note that within the sub-images themselves no gap will be used. If you want a gap between the sub-images connect another XyzGridPlot node."),
-				io.Float	.Input("font_size"	, display_name="font_size"	, default=50, min=6, max=1000,	tooltip=f"The target font size. The text will be shrunk down until it fits (up to `font_size_min={FONT_SIZE_MIN}`)."),
-				io.Combo	.Input("row_label_orientation"	, display_name="row_label_orientation"	, default="horizontal", options=["horizontal", "vertical"],	tooltip=f"The text orientation of the row labels. Useful if you want to save space."),
+				io.AnyType	.Input("row_labels"	, display_name="row_labels"	, optional=True,	tooltip=f"Row label texts at the left side {INPUTLIST_NOTE}"),
+				io.AnyType	.Input("col_labels"	, display_name="col_labels"	, optional=True,	tooltip=f"Column label texts at the top {INPUTLIST_NOTE}"),
+				io.Int	.Input("gap"	, display_name="gap"	, default= 0, min=0, max=1024,	tooltip=f"Gap between the sub-image packings. Note that within the sub-images themselves uses no gap. If you want a gap between the sub-images connect another XyzGridPlot node."),
+				io.Float	.Input("font_size"	, display_name="font_size"	, default=50, min=6, max=1000,	tooltip=f"Target font size. The text will be shrunk down until it fits (down to `font_size_min={FONT_SIZE_MIN}`)."),
+				io.Combo	.Input("row_label_orientation"	, display_name="row_label_orientation"	, default="horizontal", options=["horizontal", "vertical"],	tooltip=f"Text orientation of the row labels. Useful if you want to save space."),
 				io.Boolean	.Input("order"	, display_name="order"	, default=True , label_on="outside-in", label_off="inside-out",	tooltip=f"Defines in which order the images should be processed. This is only relevant if you have sub-images. Useful if `batch_size>1` and you want to plot the batches."),
 				io.Boolean	.Input("output_is_list"	, display_name="output_is_list"	, default=False, label_on="True"      , label_off="False",	tooltip=f"This is only relevant if you have sub-images or you want to create super-grids."),
 			],
 			outputs=[
-				io.Image.Output("image", is_output_list=True, tooltip="The XYZ-GridPlot image. If `output_is_list=True` it will be a list of images which you can connect to another XYZ-GridPlot node to create super-grids."),
+				io.Image.Output("image", is_output_list=True, tooltip="The XYZ-GridPlot image. If `output_is_list=True` creates a list of images which you can connect to another XYZ-GridPlot node to create super-grids."),
 			],
 		)
 		return ret
