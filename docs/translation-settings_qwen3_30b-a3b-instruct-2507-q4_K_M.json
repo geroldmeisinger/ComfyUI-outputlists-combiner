@@ -1,0 +1,109 @@
+{
+  "translationConfigs": {
+    "gtxFreeAPI": {
+      "batchSize": 100
+    },
+    "deeplx": {
+      "url": "",
+      "chunkSize": 1000,
+      "delayTime": 200,
+      "limit": 10
+    },
+    "deepl": {
+      "url": "",
+      "apiKey": "",
+      "chunkSize": 5000,
+      "delayTime": 200,
+      "limit": 20
+    },
+    "deepseek": {
+      "apiKey": "",
+      "model": "deepseek-chat",
+      "temperature": 0.7,
+      "limit": 50
+    },
+    "openai": {
+      "apiKey": "",
+      "model": "gpt-5-mini",
+      "temperature": 1,
+      "limit": 50
+    },
+    "gemini": {
+      "apiKey": "",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.7,
+      "limit": 50
+    },
+    "perplexity": {
+      "apiKey": "",
+      "model": "sonar",
+      "temperature": 0.7,
+      "limit": 50
+    },
+    "azureopenai": {
+      "url": "",
+      "apiKey": "",
+      "model": "gpt-5-mini",
+      "apiVersion": "2025-08-07",
+      "temperature": 0.7,
+      "limit": 50
+    },
+    "siliconflow": {
+      "apiKey": "",
+      "model": "deepseek-ai/DeepSeek-V3",
+      "temperature": 0.7,
+      "limit": 50
+    },
+    "groq": {
+      "apiKey": "",
+      "model": "openai/gpt-oss-20b",
+      "temperature": 0.7,
+      "limit": 50
+    },
+    "llm": {
+      "url": "http://127.0.0.1:11434/v1/chat/completions",
+      "apiKey": "",
+      "model": "qwen3:30b-a3b-instruct-2507-q4_K_M",
+      "temperature": 0.3,
+      "batchSize": "1000",
+      "contextWindow": "1000"
+    },
+    "azure": {
+      "apiKey": "",
+      "chunkSize": 10000,
+      "delayTime": 200,
+      "region": "eastasia",
+      "limit": 100
+    },
+    "google": {
+      "apiKey": "",
+      "delayTime": 200,
+      "limit": 100
+    },
+    "webgoogletranslate": {
+      "limit": 1
+    }
+  },
+  "sysPrompt": "You are a language translator for a technical documentation of a custom node pack for the image processing app \"ComfyUI\", which enables users to define node-based workflows and generate images with AI. Respond only with the translated, localized text. DO NOT add explanations, comments, or any extra text! If the target language differentiates between formal and informal, use the informal language.\n\nKeep all names in english, especially: \"Comfy\", \"ComfyUI\", \"Python\", \"CSV\", \"TSV\", \"Excel\"\nKeep all technical terms in english, especially: workflow, node, batch, batch_size, tensor, string, array, dictionary, base64 etc. but you can translate basic math terms: int, float",
+  "userPrompt": "Translate the following text from \"${sourceLanguage}\" to \"${targetLanguage}\":\n\n${content}",
+  "translationMethod": "llm",
+  "sourceLanguage": "en",
+  "targetLanguage": "de",
+  "target_langs": [
+	"ru",
+	"zh",
+	"ja",
+	"ga",
+	"fo",
+	"or",
+	"tg",
+	"is",
+	"si",
+	"mt",
+	"uz",
+	"ka"
+  ],
+  "multiLanguageMode": true,
+  "exportDate": "2025-12-27T20:18:24.810Z",
+  "version": "1.0"
+}

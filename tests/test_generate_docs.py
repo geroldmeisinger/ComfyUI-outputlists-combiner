@@ -18,7 +18,7 @@ iso_set2	= [
 	("zh_hans"	, "Chinese (Simplified)"	, "zh"	),
 	("zh_hant"	, "Chinese (Traditional)"	, "zh-hant"	),
 	("fr"	, "French"	, ""),
-	("pt"	, "Portuguese", "pt-pt"	, ""),
+	("pt"	, "Portuguese"	, "pt-pt"),
 	("de"	, "German"	, ""),
 	("ro"	, "Romanian"	, ""),
 	("sv"	, "Swedish"	, ""),
@@ -53,7 +53,7 @@ iso_set2	= [
 	("ga"	, "Irish"	, ""),
 	("fo"	, "Faroese"	, ""),
 	("hi"	, "Hindi"	, ""),
-	("pa"	, "Punjabi"	, ""),
+	#("pa"	, "Punjabi"	, ""), # doesn't work with Qwen3
 	("bn"	, "Bengali"	, ""),
 	("or"	, "Oriya"	, ""),
 	("tg"	, "Tajik"	, ""),
@@ -102,7 +102,7 @@ iso_set2	= [
 	("ht"	, "Haitian"	, ""),
 	("sw"	, "Swahili"	, ""),
 ]
-isos = [*iso_set2[0:3], *sorted(iso_set2[4:], key = lambda x: x[0])]
+isos = [*iso_set2[0:3], *sorted(iso_set2[3:], key = lambda x: x[0])]
 
 comfy_iso2 = [
 	("en"	, "English"),
