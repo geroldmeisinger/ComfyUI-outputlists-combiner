@@ -14,8 +14,10 @@ from src.outputlists_combiner.util import INPUTLIST_NOTE, OUTPUTLIST_NOTE
 
 iso_set2	= [
 	("en"	, "English"),
+	("zh_hans"	, "Chinese (Simplified)"	, "zh"),
+	("zh_hant"	, "Chinese (Traditional)")	, "zh-hant",
 	("fr"	, "French"),
-	("pt"	, "Portuguese"),
+	("pt"	, "Portuguese", "pt-pt"),
 	("de"	, "German"),
 	("ro"	, "Romanian"),
 	("sv"	, "Swedish"),
@@ -66,8 +68,6 @@ iso_set2	= [
 	("ur"	, "Urdu"),
 	("bs"	, "Bosnian"),
 	("hy"	, "Armenian"),
-        	("zh_hans", "Chinese (Simplified)"),
-        	("zh_hant", "Chinese (Traditional)"),
 	("my"	, "Burmese"),
 	("ar"	, "Arabic"),
 	("he"	, "Hebrew"),
@@ -127,11 +127,10 @@ nodes = [
 	FormattedString(),
 	ConvertNumberToIntFloatStr(),
 	LoadAnyFile(),
-	#KSamplerImmediateSave(),
+	KSamplerImmediateSave(),
 ]
 
 def test_generate_badges(active_iso = "en"):
-	return
 	lang_default = iso_set2.pop(0)
 	iso_set2.sort(key=lambda x: x[0])
 	iso_set2.insert(0, lang_default)
@@ -154,13 +153,14 @@ def test_move_from_downloads():
 	dls_dir	= Path(f"~/Downloads").expanduser()
 	header	= f"<!-- This file was auto-translated with an local LLM and last updated on {datetime.now().strftime('%Y-%m-%d')}. -->\n"
 
-	for iso, _ in iso_set2:
+	for iso, _, mdtranslator in iso_set2:
 		lang_dir = docs_dir / iso
 		#lang_dir.mkdir(parents=True, exist_ok=True)
 
 		for node in nodes:
 			schema	= node.define_schema()
-			dls_path	= dls_dir  / f"{schema.node_id}_{iso}.md"
+			iso_suffix	= mdtranslator if mdtranslator else iso
+			dls_path	= dls_dir  / f"{schema.node_id}_{iso_suffix}.md"
 			lang_path	= lang_dir / f"{schema.node_id}/{iso}.md"
 
 			if not dls_path.exists(): continue
