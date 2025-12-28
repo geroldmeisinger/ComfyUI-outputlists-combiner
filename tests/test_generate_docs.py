@@ -53,7 +53,7 @@ iso_set2	= [
 	("ga"	, "Irish"	, ""),
 	("fo"	, "Faroese"	, ""),
 	("hi"	, "Hindi"	, ""),
-	#("pa"	, "Punjabi"	, ""), # doesn't work with Qwen3
+	("pa"	, "Punjabi"	, ""),
 	("bn"	, "Bengali"	, ""),
 	("or"	, "Oriya"	, ""),
 	("tg"	, "Tajik"	, ""),
