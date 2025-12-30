@@ -3,8 +3,9 @@ from typing import Iterable
 
 import nums_from_string
 import skia
-from comfy_api.latest import io
 from skia import textlayout as tl
+
+from comfy_api.latest import io
 
 from .util import *
 
@@ -25,10 +26,11 @@ def fit_texts(label_infos: Iterable[tuple[str, int]], height_max: int, font_size
 	return True
 
 def find_uniform_font_size(label_infos: Iterable[tuple[str, int]], height_max: int, font_size_target: float, font_size_min: float, font_coll: tl.FontCollection, para_style: tl.ParagraphStyle, text_style: tl.TextStyle) -> float:
-	EPS = 0.1
+	EPS	= 0.1
+	FONT_SIZE_F	= 1.5
 	is_singleline = all(t.count(" ") <= 3 for t, *_ in label_infos)
 
-	if fit_texts(label_infos, font_size_target * 1.2 if is_singleline else height_max, font_size_target, font_coll, para_style, text_style):
+	if fit_texts(label_infos, font_size_target * FONT_SIZE_F if is_singleline else height_max, font_size_target, font_coll, para_style, text_style):
 		return font_size_target
 
 	# Binary search between target size and min size
@@ -37,7 +39,7 @@ def find_uniform_font_size(label_infos: Iterable[tuple[str, int]], height_max: i
 
 	while (font_size_high - font_size_low) > EPS:
 		font_size_mid	= (font_size_low + font_size_high) / 2
-		fits	= fit_texts(label_infos, font_size_mid * 1.2 if is_singleline else height_max, font_size_mid, font_coll, para_style, text_style)
+		fits	= fit_texts(label_infos, font_size_mid * FONT_SIZE_F if is_singleline else height_max, font_size_mid, font_coll, para_style, text_style)
 		if fits:
 			font_size_low = font_size_mid
 		else:
