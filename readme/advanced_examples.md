@@ -125,4 +125,3 @@ https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
 Also see
 * [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
 * [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
-

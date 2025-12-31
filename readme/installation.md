@@ -20,4 +20,3 @@ git clone https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 cd ComfyUI-outputlists-combiner
 uv pip install -r requirements.txt
 ```
-

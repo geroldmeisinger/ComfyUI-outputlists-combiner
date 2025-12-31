@@ -102,4 +102,3 @@ Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the d
 ## Cycle OutputLists
 
 ![Cycle OuputLists example](/workflows/Example_08b_CycleOutputLists.png)
-

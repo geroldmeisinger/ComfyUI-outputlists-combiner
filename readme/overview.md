@@ -12,4 +12,3 @@ If you find this custom node useful:
 - 💰 **[Donate](https://github.com/sponsors/geroldmeisinger)** for further development and greatly appreciate my efforts!
 
 # Table of Content
-
