@@ -7,13 +7,14 @@ from io import BytesIO
 from json import dumps
 
 import chardet
-import folder_paths
-import node_helpers
 import numpy as np
 import torch
-from comfy_api.latest import io
 from exiftool import ExifToolHelper
 from PIL import Image, ImageOps, ImageSequence, UnidentifiedImageError
+
+import folder_paths
+import node_helpers
+from comfy_api.latest import io
 
 MAX_RESULTS = 2 ** 10
 
@@ -63,61 +64,60 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			with open(file_path, "rb") as f:
 				raw_data = f.read()
 
-			# check if binary
+			is_binary = True
+			is_base64 = False
+
+			# check if textfile or binary or base64
 			try:
 				result	= chardet.detect(raw_data[:1024]) # trunc for performance
 				encoding	= result["encoding"]
-				if encoding:
-					filecontent = raw_data.decode(encoding)
+				if encoding and result["confidence"] > 0.9:
+					filecontent	= raw_data.decode(encoding)
+					is_binary	= False
+
+					# check if base64
+					try:
+						_ = base64.b64decode(filecontent, validate=True)
+						is_base64 = True
+					except (base64.binascii.Error, ValueError): pass
 				else:
-					filecontent = None
+					filecontent = base64.b64encode(raw_data).decode("utf-8")
 			except (UnicodeDecodeError, TypeError):
-				filecontent = None
-
-			# check if base64
-			if filecontent is not None:
-				try:
-					_ = base64.b64decode(filecontent, validate=True)
-					is_binary = False
-				except (base64.binascii.Error, ValueError):
-					is_binary = True
-			else:
-				is_binary = True
-
-			# get file content as text or base64
-			if is_binary or filecontent is None:
 				filecontent = base64.b64encode(raw_data).decode("utf-8")
-				image_data = raw_data
-			else:
-				image_data = filecontent.encode("utf-8")
-
-			# try to load binary or base64 as image
-			exif_json = ""
-			try:
-				pil_img	= node_helpers.pillow(Image.open, BytesIO(image_data))
-				image, mask = load_image(pil_img)
-			except (UnidentifiedImageError, OSError, ValueError):
-				# fallback to black 64x64 tensors
-				image	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
-				mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 
 			# run exiftool
-			if not exif_json and is_binary:
+			metadata = "{}"
+			try:
+				with ExifToolHelper() as et:
+					exif	= et.get_metadata(file_path)[0]
+					metadata	= dumps(exif, indent=4)
+			except FileNotFoundError: pass # exiftool not found in path
+
+			# try to load binary or base64 as image
+			if is_binary or is_base64:
+				pil_img = None
+
 				try:
-					with ExifToolHelper() as et:
-						exif = et.get_metadata(file_path)[0]
-						exif_json = dumps(exif, indent=4)
-				except FileNotFoundError: # exiftool not found in path
-					if pil_img:
+					image_data	= raw_data if is_binary else filecontent
+					pil_img	= node_helpers.pillow(Image.open, BytesIO(image_data))
+					image, mask	= load_image(pil_img)
+
+					if not metadata and pil_img:
 						# get info from standard PNG otherwise fall back to exiftool
 						if hasattr(pil_img, "info") and pil_img.info and not "exif" in pil_img.info:
 							pil_img.info["SourceFile"] = file_path
-							exif_json = dumps(pil_img.info, indent=4, default=to_base64)
+							metadata = dumps(pil_img.info, indent=4, default=to_base64)
+				except (UnidentifiedImageError, OSError, ValueError):
+					image	= torch.zeros((1, 64, 64, 3), dtype=torch.float32, device="cpu")
+					mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
+			else:
+				image	= torch.zeros((1, 64, 64, 3), dtype=torch.float32, device="cpu")
+				mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
 
-			ret_strings.append(filecontent)
-			ret_images.append(image)
-			ret_masks.append(mask)
-			ret_metadata.append(exif_json or "{}")
+			ret_strings	.append(filecontent)
+			ret_images	.append(image)
+			ret_masks	.append(mask)
+			ret_metadata	.append(metadata)
 
 		ret = io.NodeOutput(ret_strings, ret_images, ret_masks, ret_metadata)
 		return ret
@@ -139,9 +139,8 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 		if not annotated_filepath: return True # https://github.com/comfyanonymous/ComfyUI/issues/11017
 
 		file_paths = get_files(annotated_filepath)
-		for file_path in file_paths:
-			if not os.path.exists(file_path):
-				return "Invalid file: {}".format(file_path)
+		if len(file_paths) == 0:
+			return f"No files found in '{annotated_filepath}'"
 
 		return True
 
@@ -155,47 +154,41 @@ def get_files(annotated_filepath: str) -> list[str]:
 		cand_real = os.path.realpath(candidate)
 		return cand_real == base_real or cand_real.startswith(base_real + os.sep)
 
-	pattern, base_dir = folder_paths.annotated_filepath(annotated_filepath)
-	base_real = os.path.realpath(base_dir or folder_paths.get_input_directory())
+	pattern, base_dir	= folder_paths.annotated_filepath(annotated_filepath)
+	base_real	= os.path.realpath(base_dir or folder_paths.get_input_directory())
 
-	full_pattern = os.path.join(base_real, pattern)
-	has_glob = any(c in pattern for c in "*?[")
-	recursive = "**" in pattern
+	full_pattern	= os.path.join(base_real, pattern)
+	has_glob	= any(c in pattern for c in "*?[")
+	recursive	= "**" in pattern
 
-	results = []
-	count = 0
+	results	= []
+	count	= 0
 
 	# Directory listing without glob
 	if not has_glob and os.path.isdir(full_pattern):
 		with os.scandir(full_pattern) as it:
 			for entry in it:
-				if not entry.is_file():
-					continue
+				if not entry.is_file(): continue
 
 				p = entry.path
 				if is_safe_path(base_real, p):
 					results.append(p)
 					count += 1
 
-				if count >= MAX_RESULTS:
-					break
+				if count >= MAX_RESULTS: break
 
 		return sorted(results)
 
-	# Glob path — streamed
+	# Glob path - streamed
 	for match in glob.iglob(full_pattern, recursive=recursive):
-		if count >= MAX_RESULTS:
-			break
+		if count >= MAX_RESULTS: break
 
 		# Skip directories early
 		try:
-			if not os.path.isfile(match):
-				continue
-		except OSError:
-			continue
+			if not os.path.isfile(match): continue
+		except OSError: continue
 
-		if not is_safe_path(base_real, match):
-			continue
+		if not is_safe_path(base_real, match): continue
 
 		results.append(match)
 		count += 1
