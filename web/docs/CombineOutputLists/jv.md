@@ -1,25 +1,24 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## Kombinasi OutputLists
+## Gabungan OutputLists
 
-![Kombinasi OutputLists](CombineOutputLists/CombineOutputLists.png)
+![Gabungan OutputLists](CombineOutputLists/CombineOutputLists.png)
 
-(workflow ComfyUI yang termasuk)
+(Workflow ComfyUI kalebu)
 
-Mengambil hingga 4 OutputLists dan menghasilkan setiap kombinasi dari mereka.
+Nglumpukaké kaping 4 OutputLists lan ngasilaké kabeh kombinasié.
 
-Contoh: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
+Conto: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` gunakan(s) `is_output_list=True` (ditandai dengan simbol `𝌠`) dan akan diproses secara berurutan oleh node yang sesuai.
+`unzip_a` .. `unzip_d` nggunakaké `is_output_list=True` (diwenehi dening simbol `𝌠`) lan bakal diproses secara urut déngan node sing padha.
 
-Semua daftar opsional dan daftar kosong akan diabaikan.
+Kabeh daptar bisa diisi lan daptar kosong bakal diabaikan.
 
-Secara teknis, ini menghitung *produk Kartesius* dan menghasilkan setiap kombinasi yang dibagi ke dalam elemennya (`unzip`), sementara daftar kosong akan diganti dengan nilai `None` dan akan menghasilkan `None` pada keluaran yang sesuai.
+Secara teknis nglumpukaké *produksian Cartesius* lan nampilaké kabeh kombinasi sing wis dipisah-pisah menurut eleméné (`unzip`), sedangkan daptar kosong bakal diganti karo unit `None` lan bakal mbusak `None` ing output sing padha.
 
-Contoh: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
+Conto: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
 ### Input
 
-| Nama | Jenis | Deskripsi |
+| Jeneng | Tipe | Deskripsi |
 | --- | --- | --- |
 | `list_a` | `*` | (opsional) |
 | `list_b` | `*` | (opsional) |
@@ -28,12 +27,12 @@ Contoh: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", N
 
 ### Output
 
-| Nama | Jenis | Deskripsi |
+| Jeneng | Tipe | Deskripsi |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | Nilai kombinasi yang sesuai dengan `list_a`. |
-| `unzip_b` | `* 𝌠` | Nilai kombinasi yang sesuai dengan `list_b`. |
-| `unzip_c` | `* 𝌠` | Nilai kombinasi yang sesuai dengan `list_c`. |
-| `unzip_d` | `* 𝌠` | Nilai kombinasi yang sesuai dengan `list_d`. |
-| `index` | `INT 𝌠` | Rentang 0..count yang bisa digunakan sebagai indeks. |
+| `unzip_a` | `* 𝌠` | Nilai saka kombinasi sing padha karo `list_a`. |
+| `unzip_b` | `* 𝌠` | Nilai saka kombinasi sing padha karo `list_b`. |
+| `unzip_c` | `* 𝌠` | Nilai saka kombinasi sing padha karo `list_c`. |
+| `unzip_d` | `* 𝌠` | Nilai saka kombinasi sing padha karo `list_d`. |
+| `index` | `INT 𝌠` | Cakupan 0..count sing bisa digunakaké minangka index. |
 | `count` | `INT` | Jumlah total kombinasi. |
 

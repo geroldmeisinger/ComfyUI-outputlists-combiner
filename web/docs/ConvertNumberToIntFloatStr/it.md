@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Converti in Intero, Float, Stringa
+## Converti in Intero, Virgola Mobile, Stringa
 
-![Converti in Intero, Float, Stringa](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Converti in Intero, Virgola Mobile, Stringa](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Workflow ComfyUI incluso)
+(ComfyUI workflow incluso)
 
-Convertisce qualsiasi valore numerico in `INT`, `FLOAT`, `STRING`.
-Utilizza internamente `nums_from_string.get_nums`, che è molto permissivo nei numeri che accetta. Qualsiasi valore, da interi reali, da float reali, da stringhe contenenti interi o float, da stringhe che contengono più numeri con separatori di migliaia.
-Usa una stringa come `123;234;345` per generare rapidamente una lista di numeri. Non usare le virgole come separatori, poiché potrebbero essere interpretate come separatori di migliaia.
+Converte qualsiasi cosa di tipo numerico in `INTERO` `VIRGOLA_MOBILE` `STRINGA`.
+Utilizza internamente `nums_from_string.get_nums` che è molto permissiva nel tipo di numeri che accetta. Accetta qualsiasi cosa tra numeri interi effettivi, numeri in virgola mobile effettivi, interi o numeri in virgola mobile come stringhe, stringhe che contengono più numeri con separatori delle migliaia.
+Usa una stringa `123;234;345` per generare rapidamente una lista di numeri. Non usare le virgole come separatori poiché potrebbero essere interpretate come separatori delle migliaia.
 `int`, `float` e `string` usano `is_output_list=True` (indicato dal simbolo `𝌠`) e saranno elaborati sequenzialmente dai nodi corrispondenti.
 
 ### Input
 
 | Nome | Tipo | Descrizione |
 | --- | --- | --- |
-| `any` | `*` | Qualsiasi cosa che può essere convertita in una stringa con numeri leggibili all'interno |
+| `any` | `*` | Qualsiasi cosa che possa essere convertita in modo significativo in una stringa con numeri analizzabili al suo interno |
 
 ### Output
 
 | Nome | Tipo | Descrizione |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Tutti i numeri trovati nella stringa con i decimali troncati. |
-| `float` | `FLOAT 𝌠` | Tutti i numeri trovati nella stringa come float. |
-| `string` | `STRING 𝌠` | Tutti i numeri trovati nella stringa convertiti in stringa come float. |
-| `count` | `INT` | Quantità di numeri trovati nel valore. |
+| `int` | `INTERO 𝌠` | Tutti i numeri trovati nella stringa con la parte decimale eliminata. |
+| `float` | `VIRGOLA_MOBILE 𝌠` | Tutti i numeri trovati nella stringa come virgola mobile. |
+| `string` | `STRINGA 𝌠` | Tutti i numeri trovati nella stringa come virgola mobile convertiti in stringa. |
+| `count` | `INTERO` | Quantità di numeri trovati nel valore. |
 

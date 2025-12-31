@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Számok átalakítása egészre, tizedesre, szövegre
+## Konvertálás INT, FLOAT, STR típusba
 
-![Számok átalakítása egészre, tizedesre, szövegre](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Convert To Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI munkafolyamat beépítve)
+(ComfyUI workflow mellékletként)
 
-Bármilyen számhoz hasonló értéket egész, tizedes vagy szövegként alakít át.
-Belsőleg a `nums_from_string.get_nums` függvényt használja, amely nagyon széles körben elfogadja a számokat. Valódi egészek, valódi tizedesek, egészek vagy tizedesek szövegként, szövegek, amelyek több számot tartalmaznak százasválasztókkel.
-Használj egy szöveget, például `123;234;345`, hogy gyorsan számok listáját hozhatsz létre. Ne használj vesszőket elválasztóként, mert ezek százasválasztóként is értelmezhetők.
-Az `int`, `float` és `string` kimenetek `is_output_list=True` (a `𝌠` szimbólum által jelölve) használják, és soronként feldolgozódnak megfelelő csomópontok által.
+Bármilyen számhoz hasonló értéket `INT` `FLOAT` `STRING` típusba konvertál.
+Belsőleg a `nums_from_string.get_nums` függvényt használja, amely nagyon engedelmes a fogadott számokkal kapcsolatban. Minden, amit valódi egész szám, valódi lebegőpontos szám, egész vagy lebegőpontos szám sztringként, vagy több számot tartalmazó sztringek, ezres elválasztóval.
+Használjon sztringet `123;234;345` formátumban a számok listájának gyors létrehozásához. Ne használjon vesszőt elválasztóként, mivel az ezres elválasztóként lehet értelmezve.
+Az `int`, `float` és `string` használja a `is_output_list=True` (a `𝌠` szimbólummal jelölt) paramétert, és szekvenciálisan lesznek feldolgozva a megfelelő csomópontok által.
 
 ### Bemenetek
 
 | Név | Típus | Leírás |
 | --- | --- | --- |
-| `any` | `*` | Bármilyen érték, amit értelmezhetően szöveggé alakíthatunk, amelyben értelmezhető számok vannak |
+| `any` | `*` | Bármi, amit értelmezhetően konvertálni lehet sztringgé, parse-olható számokkal bennük |
 
 ### Kimenetek
 
 | Név | Típus | Leírás |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | A szövegben található számok, amelyek tizedeseket kiválasztottak. |
-| `float` | `FLOAT 𝌠` | A szövegben található számok tizedesekként. |
-| `string` | `STRING 𝌠` | A szövegben található számok tizedesekként, majd szöveggé alakítva. |
-| `count` | `INT` | A megadott értékben található számok száma. |
+| `int` | `INT 𝌠` | A sztringben található összes szám, a tizedesjegyek elvágva. |
+| `float` | `FLOAT 𝌠` | A sztringben található összes szám lebegőpontosan. |
+| `string` | `STRING 𝌠` | A sztringben található összes szám lebegőpontosan konvertálva sztringgé. |
+| `count` | `INT` | A számok mennyisége a megadott értékben. |
 

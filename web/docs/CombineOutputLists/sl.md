@@ -1,39 +1,38 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## Kombinacije OutputList-ov
+## Izpisi Seznamov - Kombinacije
 
-![Kombinacije OutputList-ov](CombineOutputLists/CombineOutputLists.png)
+![OutputLists Combinations](CombineOutputLists/CombineOutputLists.png)
 
-(vključen workflow ComfyUI)
+(ComfyUI workflow vključen)
 
-Prijemlja do 4 OutputList in generira vse kombinacije med njimi.
+Vzame do 4 sezname izpisa in ustvari vse kombinacije med njimi.
 
 Primer: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` do `unzip_d` uporabljajo `is_output_list=True` (označeno z simbolom `𝌠`) in bodo posredovane po vrsti preko odgovarjajočih vozlišč.
+`unzip_a` .. `unzip_d` uporablja `is_output_list=True` (označeno z simbolom `𝌠`) in bodo obdelani zaporedno z ustreznimi vozli.
 
-Vse sezname so nepotrebni in prazni seznama bodo zanemarjeni.
+Vsi seznami so izbirni in prazni seznami bodo prezrani.
 
-Teoretično izračuna *kartezijev produkt* in izpiše vsako kombinacijo razdeljeno na elemente (`unzip`), medtem ko bodo prazni seznama zamenjani z `None` in bodo izpustili `None` na odgovarjajočem izhodu.
+Tekoče izračuna *Kartezični produkt* in izpise vsako kombinacijo ločeno na svoje elemente (`unzip`), pri čemer bodo prazni seznami zamenjani z enotami `None`, ki bodo izpustile `None` na ustreznem izhodu.
 
 Primer: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
-### Vhodni podatki
+### Vhodi
 
-| Ime | Tip | Opis |
+| Ime | Vrsta | Opis |
 | --- | --- | --- |
-| `list_a` | `*` | (neobvezno) |
-| `list_b` | `*` | (neobvezno) |
-| `list_c` | `*` | (neobvezno) |
-| `list_d` | `*` | (neobvezno) |
+| `list_a` | `*` | (izbirno) |
+| `list_b` | `*` | (izbirno) |
+| `list_c` | `*` | (izbirno) |
+| `list_d` | `*` | (izbirno) |
 
-### Izhodni podatki
+### Izpisi
 
-| Ime | Tip | Opis |
+| Ime | Vrsta | Opis |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | Vrednost kombinacij, ki odgovarjajo `list_a`. |
-| `unzip_b` | `* 𝌠` | Vrednost kombinacij, ki odgovarjajo `list_b`. |
-| `unzip_c` | `* 𝌠` | Vrednost kombinacij, ki odgovarjajo `list_c`. |
-| `unzip_d` | `* 𝌠` | Vrednost kombinacij, ki odgovarjajo `list_d`. |
-| `index` | `INT 𝌠` | Rang 0..count, ki ga lahko uporabimo kot indeks. |
+| `unzip_a` | `* 𝌠` | Vrednost kombinacij, ki ustrezajo `list_a`. |
+| `unzip_b` | `* 𝌠` | Vrednost kombinacij, ki ustrezajo `list_b`. |
+| `unzip_c` | `* 𝌠` | Vrednost kombinacij, ki ustrezajo `list_c`. |
+| `unzip_d` | `* 𝌠` | Vrednost kombinacij, ki ustrezajo `list_d`. |
+| `index` | `INT 𝌠` | Obseg 0..count, ki se lahko uporabi kot kazalo. |
 | `count` | `INT` | Skupno število kombinacij. |
 

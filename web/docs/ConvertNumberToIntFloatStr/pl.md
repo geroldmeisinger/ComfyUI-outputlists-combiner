@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Konwersja do INT, FLOAT, STRING
+## Konwertuj do INT, FLOAT, STR
 
-![Konwersja do INT, FLOAT, STRING](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Convert To Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(workflow ComfyUI włączony)
+(Dołączono workflow ComfyUI)
 
-Konwertuje wszystko, co wygląda na liczbę, do `INT`, `FLOAT`, `STRING`.
-Wewnętrznie wykorzystuje `nums_from_string.get_nums`, który jest bardzo elastyczny w zakresie akceptowanych liczb. Akceptuje rzeczywiste inty, rzeczywiste floaty, inty i floaty w postaci stringów, stringi zawierające wiele liczb z separatorami tysięcy.
-Użyj stringu `123;234;345`, aby szybko wygenerować listę liczb. Nie używaj przecinków jako separatorów, ponieważ mogą być traktowane jako separatorzy tysięcy.
-`int`, `float` i `string` używają `is_output_list=True` (oznaczone symbolu `𝌠`) i będą przetwarzane sekwencyjnie przez odpowiednie węzły.
+Konwertuje dowolną wartość przypominającą liczbę do `INT` `FLOAT` `STRING`.
+Wewnętrznie używa `nums_from_string.get_nums`, który jest bardzo tolerancyjny wobec akceptowanych liczb. Akceptuje zarówno rzeczywiste liczby całkowite, rzeczywiste liczby zmiennoprzecinkowe, liczby całkowite lub zmiennoprzecinkowe w postaci ciągów znaków, ciągi znaków zawierające wiele liczb ze separatorami tysięcy.
+Aby szybko wygenerować listę liczb, użyj ciągu znaków `123;234;345`. Nie używaj przecinków jako separatorów, ponieważ mogą być interpretowane jako separatory tysięcy.
+`int`, `float` i `string` używają `is_output_list=True` (oznaczone symbolem `𝌠`) i będą przetwarzane sekwencyjnie przez odpowiednie węzły.
 
 ### Wejścia
 
 | Nazwa | Typ | Opis |
 | --- | --- | --- |
-| `any` | `*` | Coś, co można sensownie przekonwertować na string z liczbami wewnątrz, które są analizowalne |
+| `any` | `*` | Dowolna wartość, którą można sensownie przekonwertować do ciągu znaków z parsowalnymi liczbami w środku |
 
 ### Wyjścia
 
 | Nazwa | Typ | Opis |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Wszystkie znalezione liczby w stringu z ułamkami usuniętymi. |
-| `float` | `FLOAT 𝌠` | Wszystkie znalezione liczby w stringu jako liczby zmiennoprzecinkowe. |
-| `string` | `STRING 𝌠` | Wszystkie znalezione liczby w stringu jako liczby zmiennoprzecinkowe przekonwertowane na string. |
-| `count` | `INT` | Ilość znalezionych liczb w wartości. |
+| `int` | `INT 𝌠` | Wszystkie liczby znalezione w ciągu znaków z obciętymi miejscami dziesiętnymi. |
+| `float` | `FLOAT 𝌠` | Wszystkie liczby znalezione w ciągu znaków jako liczby zmiennoprzecinkowe. |
+| `string` | `STRING 𝌠` | Wszystkie liczby znalezione w ciągu znaków jako liczby zmiennoprzecinkowe przekonwertowane do ciągu znaków. |
+| `count` | `INT` | Liczba znalezionych liczb w wartości. |
 

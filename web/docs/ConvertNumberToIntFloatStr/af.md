@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Verwissel Na Int, Vloei, Streng
+## Konverteer Na Int Float Str
 
-![Verwissel Na Int, Vloei, Streng](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Konverteer Na Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI werkstroom ingesluit)
+(ComfyUI workflow ingesluit)
 
-Verwissel alles wat getal-lyk is na `INT` `FLOAT` `STRING`.
-Gebruik `nums_from_string.get_nums` intern wat baie verskeur is in die getalle wat dit aanvaar. Alles van werklike ints, werklike floats, ints of floats as streng, streng wat meerdere getalle bevat met duisend-skeidinge.
-Gebruik 'n streng `123;234;345` om 'n lys van getalle snellik te genereer. Gebruik nie kommas as scheidingsmerke want hulle kan as duisend-skeidinge geïnterpreteer word.
-`int`, `float` en `string` gebruik `is_output_list=True` (aangedui deur die simbool `𝌠`) en sal oor die ooreenkomstige nodes seegewys word.
+Konverteer enige nummer-tipe waardes na `INT` `FLOAT` `STRING`.
+Gebruik `nums_from_string.get_nums` intern wat baie permissief is in die getalle dit aanvaar. Enige ting van werklike int's, werklike floats, int's of floats as string, string wat verskeie getalle met duisend-skeiding bevat.
+Gebruik 'n string `123;234;345` om vinnig 'n lys van getalle te genereer. Gebruik nie kommas as skeiders nie aangesien hulle geïnterpreteer kan word as duisend-skeiding.
+`int`, `float` en `string` gebruik `is_output_list=True` (aangedui deur die simbool `𝌠`) en sal sekwensieel deur ooreenstemmende nodes verwerk word.
 
-### Ingangsgegevens
+### Invoere
 
-| Naam | Tipe | Omschrijving |
+| Naam | Tipe | Beskrywing |
 | --- | --- | --- |
-| `any` | `*` | Elke ding wat betekenisvol kan verander na 'n streng met leesbare getalle binne |
+| `any` | `*` | Enige ding wat betekenlik na 'n string gekonverteer kan word met ontleesbare getalle binne |
 
-### Uitgangsgegevens
+### Uitvoere
 
-| Naam | Tipe | Omschrijving |
+| Naam | Tipe | Beskrywing |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Al die getalle wat in die streng gevind is met desimale afgesny. |
-| `float` | `FLOAT 𝌠` | Al die getalle wat in die streng gevind is as vloei. |
-| `string` | `STRING 𝌠` | Al die getalle wat in die streng gevind is as vloei omgevoer na streng. |
+| `int` | `INT 𝌠` | Al die getalle wat in die string gevind is met die desimale gesny. |
+| `float` | `FLOAT 𝌠` | Al die getalle wat in die string gevind is as floats. |
+| `string` | `STRING 𝌠` | Al die getalle wat in die string gevind is as floats gekonverteer na string. |
 | `count` | `INT` | Aantal getalle wat in die waarde gevind is. |
 

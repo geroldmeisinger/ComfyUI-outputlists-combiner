@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
 ## Převést na celé číslo, desetinné číslo, řetězec
 
 ![Převést na celé číslo, desetinné číslo, řetězec](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Zahrnuto do pracovního postupu ComfyUI)
+(ComfyUI workflow zahrnut)
 
-Převádí všechny číselné hodnoty na `INT`, `FLOAT`, `STRING`.
-Vnitřně používá `nums_from_string.get_nums`, který je velmi široce přijímající v číselných hodnotách. Přijímá všechny skutečné celá čísla, skutečné desetinná čísla, celá čísla nebo desetinná čísla jako řetězce, řetězce obsahující více čísel s oddělovači tisíců.
-Použijte řetězec `123;234;345`, abyste rychle vytvořili seznam čísel. Nenechávejte používat čárky jako oddělovače, protože mohou být interpretovány jako oddělovače tisíců.
-Typy `int`, `float` a `string` používají `is_output_list=True` (označené symbolem `𝌠`) a budou postupně zpracovávány odpovídajícími uzly.
+Převede cokoli číselného na `CELÉ ČÍSLO` `DESETINNÉ ČÍSLO` `ŘETĚZEC`.
+Interně používá `nums_from_string.get_nums`, který je velmi permissivní v číslech, která přijímá. Cokoli od skutečných celých čísel, skutečných desetinných čísel, celých čísel nebo desetinných čísel jako řetězců, řetězců obsahujících více čísel se separátory tisíců.
+Použijte řetězec `123;234;345` pro rychlé vygenerování seznamu čísel. Nepoužívejte čárky jako separátory, protože mohou být interpretovány jako separátory tisíců.
+`int`, `float` a `string` používají `is_output_list=True` (označeno symbolem `𝌠`) a budou zpracovány sekvenčně odpovídajícími uzly.
 
 ### Vstupy
 
 | Název | Typ | Popis |
 | --- | --- | --- |
-| `any` | `*` | Libovolné, co lze převést na řetězec s číselnými hodnotami, které lze analyzovat |
+| `any` | `*` | Cokoli, co lze smysluplně převést na řetězec s čitelnými čísly uvnitř |
 
 ### Výstupy
 
 | Název | Typ | Popis |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Všechna nalezená čísla v řetězci s odřezáním desetinných míst. |
-| `float` | `FLOAT 𝌠` | Všechna nalezená čísla v řetězci jako desetinná čísla. |
-| `string` | `STRING 𝌠` | Všechna nalezená čísla v řetězci jako desetinná čísla převedená na řetězec. |
-| `count` | `INT` | Počet nalezených čísel v hodnotě. |
+| `int` | `CELÉ ČÍSLO 𝌠` | Všechna čísla nalezená v řetězci s odříznutými desetinnými místy. |
+| `float` | `DESETINNÉ ČÍSLO 𝌠` | Všechna čísla nalezená v řetězci jako desetinná čísla. |
+| `string` | `ŘETĚZEC 𝌠` | Všechna čísla nalezená v řetězci jako desetinná čísla převedená na řetězec. |
+| `count` | `CELÉ ČÍSLO` | Počet čísel nalezených ve vstupu. |
 

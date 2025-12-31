@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Pārveidot uz INT FLOAT STR
+## Pārveidot uz Int Float Str
 
-![Pārveidot uz INT FLOAT STR](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Pārveidot uz Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI workflow included)
+(ComfyUI workflow iekļauts)
 
-Pārveido jebkādu skaitļu kādu formu uz `INT`, `FLOAT`, `STRING`.
-Izmanto `nums_from_string.get_nums` interni, kas ir ļoti atvērts skaitļu pieņēmumos. Izmanto skaitļus, tiešus int, tiešus float, int vai float kā stringu, stringus ar vairākiem skaitļiem ar tūkstošu atdalījumiem.
-Izmanto stringu `123;234;345`, lai ātri izveidotu skaitļu sarakstu. Neizmanto komatu kā atdalītāju, jo tās var tikt interpretētas kā tūkstošu atdalītāji.
-`int`, `float` un `string` izmanto `is_output_list=True` (parādīts simbolā `𝌠`) un tiks apstrādāti secīgi atbilstošajos mezglos.
+Pārveido jebko, kas līdzīgs skaitlim, uz `INT` `FLOAT` `STRING`.
+Izmanto `nums_from_string.get_nums` iekšēji, kas ļoti atļaujoši pieņem skaitļus. Viss no patiesiem veselajiem skaitļiem, patiesiem decimālskaitļiem, veseliem skaitļiem vai decimālskaitļiem kā virknes, virknēm, kas satur vairākus skaitļus ar tūkstošu atdalītājiem.
+Lietojiet virkni `123;234;345`, lai ātri izveidotu skaitļu sarakstu. Neizmantojiet komatus kā atdalītājus, jo tie var tikt interpretēti kā tūkstošu atdalītāji.
+`int`, `float` un `string` izmanto `is_output_list=True` (apzīmēts ar simbolu `𝌠`) un tiks apstrādāti secīgi ar atbilstošajiem mezgliem.
 
-### Ievadi
-
-| Nosaukums | Tips | Apraksts |
-| --- | --- | --- |
-| `any` | `*` | Jebkāds, kas var būt nozīmīgi pārveidots uz stringu ar izlasāmiem skaitļiem iekšā |
-
-### Izejas
+### Ievades
 
 | Nosaukums | Tips | Apraksts |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Visi skaitļi, kas atrasti stringā, ar desmitu dalījumu izslēgti. |
-| `float` | `FLOAT 𝌠` | Visi skaitļi, kas atrasti stringā, kā float. |
-| `string` | `STRING 𝌠` | Visi skaitļi, kas atrasti stringā, kā float pārveidoti uz stringu. |
-| `count` | `INT` | Skaitlis skaitļu, kas atrasti vērtībā. |
+| `any` | `*` | Viss, kas var būt nozīmīgi pārveidots uz virkni ar analizējamiem skaitļiem iekšā |
+
+### Izvades
+
+| Nosaukums | Tips | Apraksts |
+| --- | --- | --- |
+| `int` | `INT 𝌠` | Visi skaitļi, kas atrasti virknē, ar decimāldaļām atribūtām. |
+| `float` | `FLOAT 𝌠` | Visi skaitļi, kas atrasti virknē kā decimālskaitļi. |
+| `string` | `STRING 𝌠` | Visi skaitļi, kas atrasti virknē kā decimālskaitļi, pārveidoti uz virkni. |
+| `count` | `INT` | Skaitļu skaits, kas atrasts vērtībā. |
 

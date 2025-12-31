@@ -1,39 +1,38 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## Combinacion de OutputLists
+## Combinatziones de lista de àrtigos
 
-![Combinacion de OutputLists](CombineOutputLists/CombineOutputLists.png)
+![Combinatziones de lista de àrtigos](CombineOutputLists/CombineOutputLists.png)
 
-(Workflow de ComfyUI inclusu)
+(ComfyUI workflow inclùidu)
 
-Toghe a 4 OutputLists e genera cada combinacion de e.
+Pigat finas a 4 lista de àrtigos e generat cada combinatzione de elas.
 
-Esempio: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
+Esempiu: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` usan `is_output_list=True` (indicadu cun sìmbolo `𝌠`) e seran processadu sequentzialmente cun nodu corrispondente.
+`unzip_a` .. `unzip_d` impreadu `is_output_list=True` (indikadu dae su simbolo `𝌠`) e at a èssere processadu in manera sequentziale dae nodos corrisponentes.
 
-Tutu listas sunt opzionali e listas bìtus sunt ignoradas.
+Todas sas listas sunt optzionales e sas listas bòidas ant a èssere ignoradas.
 
-Tècnicamente cunputa *prodotu cartesianu* e emite cada combinacion sìpàrada in e elementus (`unzip`), in canu listas bìtus sunt sostituidas cun unitas de `None` e emeten `None` in sa uscita corrispondente.
+In manera tecnicu, custu at a calculare *su produtu cartesiu* e a impreare cada combinatzione dividida in sòrbitis elementos (`unzip`), mentres sas listas bòidas ant a èssere trocadas cun unidades de `None` e ant a emìtere `None` in s’òrtidu respetivu.
 
-Esempio: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
+Esempiu: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
-### Inputos
+### Ingressos
 
-| Isu | Tipu | Descripcione |
+| Nàmene | Genire | Descritzione |
 | --- | --- | --- |
-| `list_a` | `*` | (opzionali) |
-| `list_b` | `*` | (opzionali) |
-| `list_c` | `*` | (opzionali) |
-| `list_d` | `*` | (opzionali) |
+| `list_a` | `*` | (optzionale) |
+| `list_b` | `*` | (optzionale) |
+| `list_c` | `*` | (optzionale) |
+| `list_d` | `*` | (optzionale) |
 
-### Ouscitas
+### Àrtigos
 
-| Isu | Tipu | Descripcione |
+| Nàmene | Genire | Descritzione |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | Valore de sa combinacion corrispondente a `list_a`. |
-| `unzip_b` | `* 𝌠` | Valore de sa combinacion corrispondente a `list_b`. |
-| `unzip_c` | `* 𝌠` | Valore de sa combinacion corrispondente a `list_c`. |
-| `unzip_d` | `* 𝌠` | Valore de sa combinacion corrispondente a `list_d`. |
-| `index` | `INT 𝌠` | Rangu de 0..count chi podet esse usadu cun indixe. |
-| `count` | `INT` | Numeru totale de combinacion. |
+| `unzip_a` | `* 𝌠` | Balore de sas combinatziones corrisponentes a `list_a`. |
+| `unzip_b` | `* 𝌠` | Balore de sas combinatziones corrisponentes a `list_b`. |
+| `unzip_c` | `* 𝌠` | Balore de sas combinatziones corrisponentes a `list_c`. |
+| `unzip_d` | `* 𝌠` | Balore de sas combinatziones corrisponentes a `list_d`. |
+| `index` | `INT 𝌠` | Intervalu de 0..count chi si podet impreare comente un’ìnditze. |
+| `count` | `INT` | Nùmeru totale de combinatziones. |
 

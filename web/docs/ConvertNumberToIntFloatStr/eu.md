@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Int Float Strra konvertitu
+## Bihurtu Int Float Str bihurtzailea
 
-![Int Float Strra konvertitu](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Bihurtu Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
 (ComfyUI workflow included)
 
-Baztertzen du zehaztua ez den zenbakiak `INT` `FLOAT` `STRING` bezalakoak eginez.
-`nums_from_string.get_nums` erabiltzen du, zenbakiak onartzen ditu zehaztua ez dena. Zenbakiak, zenbakiak edo zenbakiak string formakoak, edo stringak bestelako zenbakiak dituztenak.
-`123;234;345` stringa erabili nahi du zehaztua ez den zenbakiak sortzeko. Komadak erabili gabe, zehaztua ez den zenbakiak zehaztua ez dena izan daiteke.
-`int`, `float` eta `string` `is_output_list=True` (𝌠 simboloa) erabiltzen dute eta hemen dagoen nodoen bidez sekuentzialki prozesatzen dira.
+Zenbaki bezalako edozer `INT` `FLOAT` `STRING` bihurtzen du.
+`nums_from_string.get_nums` erabiltzen du barnean, eta zenbakiak onartzea oso lasaiagoa da. Egiazko int-ak, egiazko float-ak, int-ak edo float-ak string bezala, milakoen bereizleak dituzten hainbat zenbaki dituen string-ak bezala.
+Erabili `123;234;345` string bat zenbaki-zerrenda azkar bat sortzeko. Ez erabili komak bereizle bezala, milakoen bereizle bezala interpretatu daitezkeelako.
+`int`, `float` eta `string` erabiltzen du `is_output_list=True` (`.𝌠` ikurraz adierazita) eta elkarreragileen node-ekin sekuentzialki prozesatuko dira.
 
-### Sarrera
+### Sarrerak
 
-| Izena | Tipoa | Deskribapena |
+| Izena | Mota | Deskribapena |
 | --- | --- | --- |
-| `any` | `*` | Stringra konvertitzeko zehaztua ez dena, eta hemen dagoen zenbakiak onartzen direla |
+| `any` | `*` | String batean azpizkioak dituen zenbaki bezalako edozer |
 
-### Egitura
+### Irteerak
 
-| Izena | Tipoa | Deskribapena |
+| Izena | Mota | Deskribapena |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Stringan aurkitutako zenbakiak, desbideak trunkatu ziren. |
-| `float` | `FLOAT 𝌠` | Stringan aurkitutako zenbakiak, float formakoak. |
-| `string` | `STRING 𝌠` | Stringan aurkitutako zenbakiak, float formakoak string formakoak. |
-| `count` | `INT` | Aurkitutako zenbakiak kopurua. |
+| `int` | `INT 𝌠` | String-ean aurkitutako zenbaki guztiak komatik moztu ondoren. |
+| `float` | `FLOAT 𝌠` | String-ean aurkitutako zenbaki guztiak float bezala. |
+| `string` | `STRING 𝌠` | String-ean aurkitutako zenbaki guztiak float bezala bihurtu eta string bezala. |
+| `count` | `INT` | Balioan aurkitutako zenbaki kopurua. |
 

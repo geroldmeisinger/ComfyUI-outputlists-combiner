@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Konvète a Int Float Str
+## Konvèti nan Entye, Flotant, Chenn
 
-![Konvète a Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Konvèti nan Entye, Flotant, Chenn](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Workflow ComfyUI yon kote)
+(ComfyUI workflow ap gen yon pwogrè)
 
-Konvète tout chose ki se pare a `INT` `FLOAT` `STRING`.
-Fèt utilisation `nums_from_string.get_nums` ki a kapab akseptèt tout chose ki se pare a nivo. Tout chose ki se pare a entèy, flot, entèy oswa flot ki se pare a chif, chif ki genyen plis d'entèy ak sèparatè kilyon.
-Fèt utilisation chif `123;234;345` pou genyen list chif. Pase pas koma pou sèparatè, pouke yo kapab genyen sèparatè kilyon.
-`int`, `float` ak `string` fèt utilisation `is_output_list=True` (indikat pa simbol `𝌠`) ak genyen procese sekwansial pa nòd korespondan.
+Konvèti tout bagay ki ap sanble yon nimewo an `ENTYE` `FLOTANT` `CHENN`.
+Ap itilize `nums_from_string.get_nums` anndan li ki oswa oswa trè pèmisif nan nimewo li ap aksepte yo. Tout bagay k ap genyen entye, flotant, entye oswa flotant k ap genyen nan yon chenn, chenn ki genyen plizyè nimewo avèk sèparatè milyè.
+Sèvi ak yon chenn `123;234;345` pou kreye yon lis nimewo anpil. Pa sèvi ak kòma kòm sèparatè yo se yo ap pwoblèm nan sèparatè milyè yo.
+`int`, `float` ak `string` itilize `is_output_list=True` (indike pa simbòl `𝌠`) ak ap pwosese sèkilyèman pa nòd ki koresponn yo.
 
-### Alòt
+### Antre yo
 
-| Nom | Tip | Deskripsyon |
+| Non | Tip | Deskrisyon |
 | --- | --- | --- |
-| `any` | `*` | Tout chose ki kapab konvète a chif pou genyen chif kapab analizye |
+| `any` | `*` | Tout bagay ki kapab konvèti nan yon chenn avèk nimewo ki kapab analize yo |
 
-### Ouput
+### Sòti yo
 
-| Nom | Tip | Deskripsyon |
+| Non | Tip | Deskrisyon |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Tòt chif genyen dèy a chif ki genyen dèy a ak desimèl kapab tronke. |
-| `float` | `FLOAT 𝌠` | Tòt chif genyen dèy a chif ki genyen dèy a ak flot. |
-| `string` | `STRING 𝌠` | Tòt chif genyen dèy a chif ki genyen dèy a ak flot konvète a chif. |
-| `count` | `INT` | Nivo chif genyen dèy a. |
+| `int` | `ENTYE 𝌠` | Tout nimewo ki te jwenn nan chenn an avèk desimal yo te rale. |
+| `float` | `FLOTANT 𝌠` | Tout nimewo ki te jwenn nan chenn an kòm flotan. |
+| `string` | `CHENN 𝌠` | Tout nimewo ki te jwenn nan chenn an kòm flotan ki te konvèti nan chenn. |
+| `count` | `ENTYE` | Kantite nimewo ki te jwenn nan valè a. |
 

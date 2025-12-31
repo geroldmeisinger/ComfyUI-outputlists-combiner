@@ -1,39 +1,38 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## Gabungan OutputLists
+## Kombinasi OutputLists
 
-![Gabungan OutputLists](CombineOutputLists/CombineOutputLists.png)
+![Kombinasi OutputLists](CombineOutputLists/CombineOutputLists.png)
 
-(kerja dalam ComfyUI workflow)
+(Aliran kerja ComfyUI disertakan)
 
-Mengambil hingga 4 OutputLists dan menghasilkan setiap kombinasi darinya.
+Mengambil sehingga 4 OutputLists dan menghasilkan setiap kombinasi daripadanya.
 
 Contoh: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` hingga `unzip_d` menggunakan `is_output_list=True` (ditunjukkan oleh simbol `𝌠`) dan akan diproses secara berurutan oleh node yang sesuai.
+`unzip_a` .. `unzip_d` menggunakan `is_output_list=True` (ditunjukkan oleh simbol `𝌠`) dan akan diproses secara berturut-turut oleh node yang bersesuaian.
 
-Semua senarai adalah opsional dan senarai kosong akan diabaikan.
+Semua senarai adalah pilihan dan senarai kosong akan diabaikan.
 
-Secara teknis, ia menghitung *hasil kali Cartesius* dan mengeluarkan setiap kombinasi yang dibagi ke dalam elemennya (`unzip`), sementara senarai kosong akan diganti dengan nilai `None` dan akan mengeluarkan `None` pada keluaran yang sesuai.
+Secara teknikal ia mengira *hasil darab Cartesius* dan mengeluarkan setiap kombinasi yang dipisahkan kepada elemen-elemennya (`unzip`), manakala senarai kosong akan digantikan dengan unit `None` dan mereka akan mengeluarkan `None` pada output yang bersesuaian.
 
 Contoh: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
 ### Input
 
-| Nama | Jenis | Perihalan |
+| Nama | Jenis | Keterangan |
 | --- | --- | --- |
-| `list_a` | `*` | (opsional) |
-| `list_b` | `*` | (opsional) |
-| `list_c` | `*` | (opsional) |
-| `list_d` | `*` | (opsional) |
+| `list_a` | `*` | (pilihan) |
+| `list_b` | `*` | (pilihan) |
+| `list_c` | `*` | (pilihan) |
+| `list_d` | `*` | (pilihan) |
 
 ### Output
 
-| Nama | Jenis | Perihalan |
+| Nama | Jenis | Keterangan |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | Nilai kombinasi yang sesuai dengan `list_a`. |
-| `unzip_b` | `* 𝌠` | Nilai kombinasi yang sesuai dengan `list_b`. |
-| `unzip_c` | `* 𝌠` | Nilai kombinasi yang sesuai dengan `list_c`. |
-| `unzip_d` | `* 𝌠` | Nilai kombinasi yang sesuai dengan `list_d`. |
-| `index` | `INT 𝌠` | Range 0..count yang boleh digunakan sebagai indeks. |
-| `count` | `INT` | Jumlah gabungan keseluruhan. |
+| `unzip_a` | `* 𝌠` | Nilai kombinasi yang bersesuaian dengan `list_a`. |
+| `unzip_b` | `* 𝌠` | Nilai kombinasi yang bersesuaian dengan `list_b`. |
+| `unzip_c` | `* 𝌠` | Nilai kombinasi yang bersesuaian dengan `list_c`. |
+| `unzip_d` | `* 𝌠` | Nilai kombinasi yang bersesuaian dengan `list_d`. |
+| `index` | `INT 𝌠` | Julat 0..count yang boleh digunakan sebagai indeks. |
+| `count` | `INT` | Jumlah total kombinasi. |
 

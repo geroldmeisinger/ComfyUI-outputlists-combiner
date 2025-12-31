@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Konvertere til Int Float Str
+## Konverter til heltal, flydende tal og streng
 
-![Konvertere til Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Konverter til heltal, flydende tal og streng](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
 (ComfyUI workflow inkluderet)
 
-Konverterer alt, hvad det kan se ud til at være et tal, til `INT`, `FLOAT` og `STRING`.
-Bruger `nums_from_string.get_nums` indeni, som er meget forbundet med tal, der kan accepteres. Alt fra egentlige heltal, egentlige flydende tal, heltal eller flydende tal som streng, til streng, der indeholder flere tal med tusendel-afskilte.
-Brug en streng som `123;234;345` for at hurtigt generere en liste med tal. Brug ikke komma som separator, da de kan fortolkes som tusendel-afskilte.
-`int`, `float` og `string` bruger `is_output_list=True` (indikert af symbol `𝌠`) og vil blive behandlet sekventielt af tilhørende noder.
+Konverterer alt nummer-lignende til `HELTAL` `FLYDENDE TAL` `STRENG`.
+Bruger `nums_from_string.get_nums` internt, som er meget eftergivende i de tal den accepterer. Alt fra faktiske heltal, faktiske flydende tal, heltal eller flydende tal som strenge, strenge som indeholder flere tal med tusind-separatore.
+Brug en streng `123;234;345` til hurtigt at generere en liste af tal. Brug ikke kommaer som separator, da de kan fortolkes som tusind-separatore.
+`int`, `float` og `string` bruger `is_output_list=True` (angivet af symbolet `𝌠`) og vil blive behandlet sekventielt af tilsvarende noder.
 
-### Indstillinger
-
-| Navn | Type | Beskrivelse |
-| --- | --- | --- |
-| `any` | `*` | Noget, der kan forstås som en streng med parsebare tal indeni |
-
-### Udgangspunkter
+### Input
 
 | Navn | Type | Beskrivelse |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Alle tal, der blev fundet i strengen, med decimaler skåret af. |
-| `float` | `FLOAT 𝌠` | Alle tal, der blev fundet i strengen som flydende tal. |
-| `string` | `STRING 𝌠` | Alle tal, der blev fundet i strengen som flydende tal, konverteret til streng. |
-| `count` | `INT` | Antallet af tal, der blev fundet i værdien. |
+| `any` | `*` | Alt der kan konverteres meningsfuldt til en streng med fortolkelige tal inde |
+
+### Output
+
+| Navn | Type | Beskrivelse |
+| --- | --- | --- |
+| `int` | `HELTAL 𝌠` | Alle tal fundet i strengen med decimaler trunkeret. |
+| `float` | `FLYDENDE TAL 𝌠` | Alle tal fundet i strengen som flydende tal. |
+| `string` | `STRENG 𝌠` | Alle tal fundet i strengen som flydende tal konverteret til streng. |
+| `count` | `HELTAL` | Antal tal fundet i værdien. |
 

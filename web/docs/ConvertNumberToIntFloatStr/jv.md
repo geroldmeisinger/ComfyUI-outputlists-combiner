@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
 ## Konversi Menjadi Int Float Str
 
-![Convert To Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Konversi Menjadi Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(workflow ComfyUI termasuk)
+(Workflow ComfyUI kalebu)
 
-Mengubah apa pun yang mirip dengan angka menjadi `INT` `FLOAT` `STRING`.
-Menggunakan `nums_from_string.get_nums` secara internal yang sangat mengizinkan dalam angka yang diterimanya. Apapun dari bilangan bulat sebenarnya, bilangan desimal sebenarnya, bilangan bulat atau desimal sebagai string, string yang mengandung beberapa angka dengan pemisah ribuan.
-Gunakan string `123;234;345` untuk dengan cepat menghasilkan daftar angka. Jangan gunakan koma sebagai pemisah karena mereka mungkin dianggap sebagai pemisah ribuan.
-`int`, `float` dan `string` menggunakan `is_output_list=True` (ditandai dengan simbol `𝌠`) dan akan diproses secara berurutan oleh node yang sesuai.
+Mengonversi apa waèh sing ana nomoré menyang `INT` `FLOAT` `STRING`.
+Nggunakaké `nums_from_string.get_nums` ing ngisoré sing cukup luntur ing nomor sing diterimaké. Apa waèh saka int ényata, float ényata, int utawa float minangka string, string sing ngandhaké saka nomor-nomor karo pangaturan ribuan.
+Gunakaké string `123;234;345` supaya gampang nggawé daptar nomor. Jangan nggunakaké koma minangka pangaturan karo karo bisa diartikan minangka pangaturan ribuan.
+`int`, `float` lan `string` nggunakaké `is_output_list=True` (indikasi dening simbol `𝌠`) lan bakal diprosés kanthi urutan dening node sing padha.
 
 ### Input
 
-| Nama | Jenis | Deskripsi |
+| Jeneng | Tipe | Description |
 | --- | --- | --- |
-| `any` | `*` | Apa pun yang dapat diubah secara bermakna menjadi string dengan angka yang dapat dibaca di dalamnya |
+| `any` | `*` | Apa waèh sing bisa dikonversi kanthi bermakna menyang string karo nomor sing bisa dibaca |
 
 ### Output
 
-| Nama | Jenis | Deskripsi |
+| Jeneng | Tipe | Description |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Semua angka yang ditemukan dalam string dengan desimal yang dipotong. |
-| `float` | `FLOAT 𝌠` | Semua angka yang ditemukan dalam string sebagai bilangan desimal. |
-| `string` | `STRING 𝌠` | Semua angka yang ditemukan dalam string sebagai bilangan desimal yang dikonversi ke string. |
-| `count` | `INT` | Jumlah angka yang ditemukan dalam nilai tersebut. |
+| `int` | `INT 𝌠` | Kabèh nomor sing ditemokaké ing string karo desimal dipotong. |
+| `float` | `FLOAT 𝌠` | Kabèh nomor sing ditemokaké ing string kanthi float. |
+| `string` | `STRING 𝌠` | Kabèh nomor sing ditemokaké ing string kanthi float dikonversi menyang string. |
+| `count` | `INT` | Jumlah nomor sing ditemokaké ing nilai. |
 

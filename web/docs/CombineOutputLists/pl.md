@@ -1,19 +1,18 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## Kombinacje OutputListów
+## Kombinacje OutputLists
 
-![Kombinacje OutputListów](CombineOutputLists/CombineOutputLists.png)
+![Kombinacje OutputLists](CombineOutputLists/CombineOutputLists.png)
 
-(workflow ComfyUI włączony)
+(Dołączone workflow ComfyUI)
 
-Pobiera do 4 OutputListy i generuje wszystkie ich kombinacje.
+Przyjmuje do 4 OutputLists i generuje wszystkie kombinacje między nimi.
 
 Przykład: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` używają `is_output_list=True` (oznaczone symbolem `𝌠`) i będą przetwarzane sekwencyjnie przez odpowiednie węzły.
+`unzip_a` .. `unzip_d` używa(y) `is_output_list=True` (oznaczone symbolem `𝌠`) i będą przetwarzane sekwencyjnie przez odpowiednie węzły.
 
-Wszystkie listy są opcjonalne i puste listy będą ignorowane.
+Wszystkie listy są opcjonalne, a puste listy będą ignorowane.
 
-Technicznie oblicza *iloczyn kartezjański* i wyprowadza każdą kombinację podzieloną na jej elementy (`unzip`), w którym puste listy będą zastąpione jednostkami `None` i będą emityować `None` na odpowiednim wyjściu.
+Technicznie oblicza *iloczyn kartezjański* i wyprowadza każdą kombinację podzieloną na jej elementy (`unzip`), podczas gdy puste listy zostaną zastąpione jednostkami `None`, które będą emitować `None` na odpowiednim wyjściu.
 
 Przykład: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
@@ -30,10 +29,10 @@ Przykład: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B"
 
 | Nazwa | Typ | Opis |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | Wartości kombinacji odpowiadające `list_a`. |
-| `unzip_b` | `* 𝌠` | Wartości kombinacji odpowiadające `list_b`. |
-| `unzip_c` | `* 𝌠` | Wartości kombinacji odpowiadające `list_c`. |
-| `unzip_d` | `* 𝌠` | Wartości kombinacji odpowiadające `list_d`. |
-| `index` | `INT 𝌠` | Zasięg od 0 do count, który może być używany jako indeks. |
+| `unzip_a` | `* 𝌠` | Wartość kombinacji odpowiadająca `list_a`. |
+| `unzip_b` | `* 𝌠` | Wartość kombinacji odpowiadająca `list_b`. |
+| `unzip_c` | `* 𝌠` | Wartość kombinacji odpowiadająca `list_c`. |
+| `unzip_d` | `* 𝌠` | Wartość kombinacji odpowiadająca `list_d`. |
+| `index` | `INT 𝌠` | Zakres 0..count, który może być użyty jako indeks. |
 | `count` | `INT` | Całkowita liczba kombinacji. |
 

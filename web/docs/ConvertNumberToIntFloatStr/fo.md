@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Broyt til Int Float Str
+## Broyt um Tal, Fleyt og Streng
 
-![Broyt til Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Broyt um Tal, Fleyt og Streng](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI vinnslu inkluderð)
+(ComfyUI workflow íðgu)
 
-Broytir hvørju töluleg tíð til `INT` `FLOAT` `STRING`.
-Notar `nums_from_string.get_nums` í inntaksum, sem er mjøk tilgjøgnum í tölurnar sem hún tekur. Alt frá raunverulegum int, raunverulegum float, int eða float sem streng, strengir sem innihalda fleiri tölur með tusundavísi.
-Nota streng `123;234;345` til at snúrða listi av tölum. Nota ekki kommur sem vísi, sidan kannat verða tolðar sem tusundavísi.
-`int`, `float` og `string` notar `is_output_list=True` (táknað við symbolið `𝌠`) og verður handhøvuduð sekvensið av samsvarandi nýtum.
+Broytir alt, ið líkist tal, til `INT` `FLOAT` `STRING`.
+Nýtir `nums_from_string.get_nums` innan í seg sjálva, ið er mjúkt við tølum, ið tey taka. Alt frá rætta tølum, rætta fleytum, tølum ella fleytum sum eru strengir, strengir ið innihalda fleiri tølum við tusen-skiljari.
+Nýt einn streng `123;234;345` fyri at snúa upp eitt listi av tølum. Brúka ikki kommur sum skiljari, tí tey kunnu verða túlkað sum tusen-skiljari.
+`int`, `float` og `string` nýtir `is_output_list=True` (merkt við symbolið `𝌠`) og verða handtert í fylgjandi rætta av samsvarandi nodes.
 
 ### Inntak
 
-| Nafn | Týp | Lýsing |
+| Navn | Slag | Lýsing |
 | --- | --- | --- |
-| `any` | `*` | Hvørju sem kann hava menningaða broyting til streng með lesanlegum tölum inni |
+| `any` | `*` | Alt, ið kunnu verða meningsfullt broytt til ein streng við tøl, ið kunnu lesast |
 
 ### Úttak
 
-| Nafn | Týp | Lýsing |
+| Navn | Slag | Lýsing |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Allar tölurnar fundin í strengnum með desimaltölum krossaðar. |
-| `float` | `FLOAT 𝌠` | Allar tölurnar fundin í strengnum sem float. |
-| `string` | `STRING 𝌠` | Allar tölurnar fundin í strengnum sem float broytt til streng. |
-| `count` | `INT` | Fjöldi tala fundin í gildinu. |
+| `int` | `INT 𝌠` | Alt tølinn, ið funnið var í strenginum, við desimalanna strika. |
+| `float` | `FLOAT 𝌠` | Alt tølinn, ið funnið var í strenginum sum fleytum. |
+| `string` | `STRING 𝌠` | Alt tølinn, ið funnið var í strenginum sum fleytum broytt til streng. |
+| `count` | `INT` | Mengi av tølum, ið funnið var í víldi. |
 

@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Konversi ke Int, Float, String
+## Konversi Menjadi Int Float Str
 
-![Konversi ke Int, Float, String](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Convert To Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(workflow ComfyUI termasuk)
+(ComfyUI workflow disertakan)
 
-Mengubah segala sesuatu yang mirip angka menjadi `INT`, `FLOAT`, dan `STRING`.
-Menggunakan `nums_from_string.get_nums` secara internal yang sangat mengizinkan dalam angka yang diterimanya. Angka dari bilangan bulat, bilangan desimal, bilangan bulat atau desimal dalam bentuk string, string yang mengandung beberapa angka dengan pemisah ribuan.
-Gunakan string `123;234;345` untuk dengan cepat menghasilkan daftar angka. Jangan gunakan koma sebagai pemisah karena koma bisa dianggap sebagai pemisah ribuan.
-`int`, `float`, dan `string` menggunakan `is_output_list=True` (ditandai dengan simbol `𝌠`) dan akan diproses secara berurutan oleh node yang sesuai.
+Mengonversi apapun yang mirip angka menjadi `INT` `FLOAT` `STRING`.
+Menggunakan `nums_from_string.get_nums` secara internal yang sangat permissive dalam angka-angka yang diterimanya. Apa pun dari integer sebenarnya, float sebenarnya, integer atau float sebagai string, string yang mengandung beberapa angka dengan pemisah ribuan.
+Gunakan string `123;234;345` untuk dengan cepat menghasilkan daftar angka. Jangan gunakan koma sebagai pemisah karena mereka mungkin diinterpretasikan sebagai pemisah ribuan.
+`int`, `float` dan `string` menggunakan `is_output_list=True` (ditunjukkan oleh simbol `𝌠`) dan akan diproses secara berurutan oleh node-node yang sesuai.
 
-### Input
+### Masukan
 
-| Nama | Tipe | Deskripsi |
+| Nama | Jenis | Deskripsi |
 | --- | --- | --- |
-| `any` | `*` | Apapun yang dapat diubah secara bermakna menjadi string dengan angka yang dapat dibaca di dalamnya |
+| `any` | `*` | Apapun yang dapat dikonversi secara bermakna menjadi string dengan angka-angka yang dapat diuraikan |
 
-### Output
+### Keluaran
 
-| Nama | Tipe | Deskripsi |
+| Nama | Jenis | Deskripsi |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Semua angka yang ditemukan dalam string dengan desimal dibulatkan. |
-| `float` | `FLOAT 𝌠` | Semua angka yang ditemukan dalam string dalam bentuk desimal. |
-| `string` | `STRING 𝌠` | Semua angka yang ditemukan dalam string dalam bentuk desimal yang dikonversi menjadi string. |
+| `int` | `INT 𝌠` | Semua angka yang ditemukan dalam string dengan desimal dipotong. |
+| `float` | `FLOAT 𝌠` | Semua angka yang ditemukan dalam string sebagai float. |
+| `string` | `STRING 𝌠` | Semua angka yang ditemukan dalam string sebagai float dikonversi ke string. |
 | `count` | `INT` | Jumlah angka yang ditemukan dalam nilai tersebut. |
 

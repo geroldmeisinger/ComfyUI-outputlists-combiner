@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Pretvori u Cijeli broj, Decimalni broj, String
+## Konvertuj u cijeli broj, decimalni broj, niz znakova
 
-![Pretvori u Cijeli broj, Decimalni broj, String](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Konvertuj u cijeli broj, decimalni broj, niz znakova](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Uključen je ComfyUI workflow)
+(ComfyUI radni tok je uključen)
 
-Pretvara sve što izgleda kao broj u `INT`, `FLOAT`, `STRING`.
-Koristi unutrašnje `nums_from_string.get_nums` koji je vrlo otporan prema brojevima koje prihvata. Brojeve iz stvarnih cijelih brojeva, stvarnih decimalnih brojeva, cijelih ili decimalnih brojeva kao stringova, stringova koji sadrže više brojeva s razdvojnicama za tisuće.
-Koristite string `123;234;345` da bi brzo generirali listu brojeva. Ne koristite zarez kao razdvojnik jer se mogu interpretirati kao razdvojnici za tisuće.
-`int`, `float` i `string` koriste `is_output_list=True` (označeno simbolom `𝌠`) i će biti obradjeni redom odgovarajućim čvorovima.
+Konvertuje bilo šta slično broju u `CJELI BROJ` `DECIMALNI BROJ` `NIZ ZNAKOVA`.
+Unutrašnje korištenje `nums_from_string.get_nums` koje je veoma propusno prema brojevima koje prihvaća. Bilo šta od stvarnih cijelih brojeva, stvarnih decimalnih brojeva, cijelih ili decimalnih brojeva kao niz znakova, nizovi znakova koji sadrže više brojeva sa separatorima za hiljade.
+Koristi niz znakova `123;234;345` za brzo generisanje liste brojeva. Ne koristite zareze kao separatora jer mogu biti tumačeni kao separatori za hiljade.
+`cijeli broj`, `decimalni broj` i `niz znakova` koriste `is_output_list=True` (označeno simbolom `𝌠`) i biće obrađeni redoslijedom odgovarajućim čvorovima.
 
-### Ulazni podaci
+### Ulazi
 
-| Ime | Tip | Opis |
+| Naziv | Tip | Opis |
 | --- | --- | --- |
-| `any` | `*` | Bilo šta što može biti značajno pretvoren u string sa brojevima koji mogu biti parsirani unutar |
+| `bilošta` | `*` | Bilo šta što može biti značajno konvertovano u niz znakova sa brojevima koje je moguće parsirati |
 
-### Iznosi
+### Izlazi
 
-| Ime | Tip | Opis |
+| Naziv | Tip | Opis |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Svi brojevi pronađeni u stringu s decimalkama izrezane. |
-| `float` | `FLOAT 𝌠` | Svi brojevi pronađeni u stringu kao decimalni brojevi. |
-| `string` | `STRING 𝌠` | Svi brojevi pronađeni u stringu kao decimalni brojevi pretvorenih u string. |
-| `count` | `INT` | Broj brojeva pronađenih u vrijednosti. |
+| `cijeli broj` | `CJELI BROJ 𝌠` | Svi brojevi pronađeni u nizu znakova sa odsijecanim decimalama. |
+| `decimalni broj` | `DECIMALNI BROJ 𝌠` | Svi brojevi pronađeni u nizu znakova kao decimalni brojevi. |
+| `niz znakova` | `NIZ ZNAKOVA 𝌠` | Svi brojevi pronađeni u nizu znakova kao decimalni brojevi konvertovani u niz znakova. |
+| `broj` | `CJELI BROJ` | Količina brojeva pronađenih u vrijednosti. |
 

@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Pretvori u cjelobroj, decimalni broj, string
+## Pretvori u cijeli broj, decimalni broj, niz znakova
 
-![Pretvori u cjelobroj, decimalni broj, string](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Convert To Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Uključen je ComfyUI workflow)
+(ComfyUI workflow uključen)
 
-Pretvara bilo koji broj-like podatak u `INT`, `FLOAT`, `STRING`.
-Koristi unutrašnje `nums_from_string.get_nums` koji je vrlo otkriven u brojevima koje prihvaća. Bilo koji broj, stvarni cijeli broj, stvarni decimalni broj, cijeli ili decimalni broj kao string, string koji sadrži više brojeva s razdvojnicama za tisuće.
-Koristite string `123;234;345` da bi brzo generirali listu brojeva. Ne koristite zarez kao razdvojnik jer se mogu shvatiti kao razdvojnici za tisuće.
-`int`, `float` i `string` koriste `is_output_list=True` (označeno simbolom `𝌠`) i će biti obradjeni redom odgovarajućim čvorovima.
+Pretvara bilo što brojčano u `CJELI BROJ` `DECIMALNI BROJ` `NIZ ZNAKOVA`.
+Unutar sebe koristi `nums_from_string.get_nums` što je vrlo propusno prema brojevima koje prihvaća. Bilo što od stvarnih cijelih brojeva, stvarnih decimalnih brojeva, cijelih ili decimalnih brojeva kao niz znakova, niz znakova koji sadrže više brojeva s razdjelnikom tisućica.
+Koristite niz znakova `123;234;345` za brzo generiranje liste brojeva. Ne koristite zareze kao razdjelnike jer ih može biti interpretirano kao razdjelnici tisućica.
+`cijeli broj`, `decimalni broj` i `niz znakova` koristi(e) `is_output_list=True` (označeno simbolom `𝌠`) i bit će obrađeno redoslijedom odgovarajućim čvorovima.
 
 ### Ulazi
 
-| Ime | Tip | Opis |
+| Ime | Vrsta | Opis |
 | --- | --- | --- |
-| `any` | `*` | Bilo šta što može biti značajno pretvoren u string s brojevima koji su mogući za analizu |
+| `bilo što` | `*` | Bilo što što se može značajno pretvoriti u niz znakova s brojevima koje je moguće parsirati |
 
 ### Izlazi
 
-| Ime | Tip | Opis |
+| Ime | Vrsta | Opis |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Svi brojevi pronađeni u stringu s odbacivanjem decimalnih znamenki. |
-| `float` | `FLOAT 𝌠` | Svi brojevi pronađeni u stringu kao decimalni brojevi. |
-| `string` | `STRING 𝌠` | Svi brojevi pronađeni u stringu kao decimalni brojevi pretvorenih u string. |
-| `count` | `INT` | Broj brojeva pronađenih u vrijednosti. |
+| `cijeli broj` | `CJELI BROJ 𝌠` | Svi brojevi pronađeni u nizu znakova s odbaceni decimalni dijel. |
+| `decimalni broj` | `DECIMALNI BROJ 𝌠` | Svi brojevi pronađeni u nizu znakova kao decimalni brojevi. |
+| `niz znakova` | `NIZ ZNAKOVA 𝌠` | Svi brojevi pronađeni u nizu znakova kao decimalni brojevi pretvoreni u niz znakova. |
+| `broj` | `CJELI BROJ` | Količina brojeva pronađenih u vrijednosti. |
 

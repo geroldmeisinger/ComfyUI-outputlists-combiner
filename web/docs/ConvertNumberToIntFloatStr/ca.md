@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Convertir a enter, float, string
+## Convertir a Int Float Str
 
-![Convertir a enter, float, string](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Convertir a Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Workflow de ComfyUI inclòs)
+(ComfyUI workflow inclòs)
 
-Converteix qualsevol cosa que tingui un valor numèric a `INT`, `FLOAT` o `STRING`.
-Utilitza `nums_from_string.get_nums` internament, que és molt permisiv en els números que accepta. Tots els valors, des de nombres reals, nombres decimals, strings amb nombres enters o decimals, fins a strings que continguin diversos nombres amb separadors de milers.
-Utilitza una cadena com `123;234;345` per generar ràpidament una llista de nombres. No utilitzi coma com a separador, ja que pot ser interpretada com a separador de milers.
-`int`, `float` i `string` utilitzen `is_output_list=True` (indicat per el símbol `𝌠`) i seran processats seqüencialment per nodes corresponents.
+Converteix qualsevol cosa semblant a un número a `INT` `FLOAT` `STRING`.
+Utilitza internament `nums_from_string.get_nums` que és molt permisivo amb els números que accepta. Qualsevol cosa des d'enters reals, decimals reals, enters o decimals com a cadenes, cadenes que contenen múltiples números amb separadors de milers.
+Utilitza una cadena `123;234;345` per generar ràpidament una llista de números. No utilitzis comes com a separadors ja que poden ser interpretades com a separadors de milers.
+`int`, `float` i `string` utilitzen `is_output_list=True` (indicat pel símbol `𝌠`) i seran processats seqüencialment per els nodes corresponents.
 
 ### Entrades
 
 | Nom | Tipus | Descripció |
 | --- | --- | --- |
-| `any` | `*` | Qualsevol cosa que pugui convertir-se significativament a una cadena amb nombres interpretables dins |
+| `any` | `*` | Qualsevol cosa que es pugui convertir significativament a una cadena amb números analitzables dins |
 
 ### Sortides
 
 | Nom | Tipus | Descripció |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Tots els nombres trobats a la cadena amb decimals truncats. |
-| `float` | `FLOAT 𝌠` | Tots els nombres trobats a la cadena com a flotants. |
-| `string` | `STRING 𝌠` | Tots els nombres trobats a la cadena com a flotants convertits a cadena. |
-| `count` | `INT` | Quantitat de nombres trobats a la valor. |
+| `int` | `INT 𝌠` | Tots els números trobats a la cadena amb els decimals truncats. |
+| `float` | `FLOAT 𝌠` | Tots els números trobats a la cadena com a decimals. |
+| `string` | `STRING 𝌠` | Tots els números trobats a la cadena com a decimals convertits a cadena. |
+| `count` | `INT` | Quantitat de números trobats al valor. |
 

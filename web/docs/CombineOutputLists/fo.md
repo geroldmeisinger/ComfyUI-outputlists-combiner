@@ -1,39 +1,38 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## OutputLists kombinásjoner
+## OutputLists kombinatiónir
 
-![OutputLists kombinásjoner](CombineOutputLists/CombineOutputLists.png)
+![OutputLists Kombinatiónir](CombineOutputLists/CombineOutputLists.png)
 
-(ComfyUI virkni inkludert)
+(ComfyUI workflow viðlægt)
 
-Teknar upp til 4 OutputLists og ger hver kombinásjon av dei.
+Takur upp til 4 OutputLists og gerir allar kombinatiónir av tær.
 
-Dæmi: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
+Dømi: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` notar `is_output_list=True` (indikerað av symbolinum `𝌠`) og verður handhøvuduð sekvensið av tilhøyrandi nýtarni.
+`unzip_a` .. `unzip_d` nýtir `is_output_list=True` (merkt við symbolinum `𝌠`) og verður ræst í fylgjandi ræðu av samsvarandi nodes.
 
-Allar listur eru frivilligar og tómur listar verða burtið.
+Allar listir eru valfrítt og tómar listir verða ignorerðir.
 
-Tækniskt reknar det *Cartesian produkt* og gefur hver kombinásjon uppdelta í elementin („unzip“), medan tómur listar verða erstatdur av einingum af `None` og deyra `None` á tilhøyrandi útgang.
+Tæknilega reiknar hon *Cartesian product* og skilar hverri kombinatión upp í einstøkum elementum (`unzip`), meðan tómar listir verða settir í staðin fyri einingar av `None` og verða að senda `None` á samsvarandi útgang.
 
-Dæmi: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
+Dømi: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
 ### Inntak
 
-| Nafn | Týp | Lýsing |
+| Navn | Slagur | Lýsing |
 | --- | --- | --- |
-| `list_a` | `*` | (frivilligt) |
-| `list_b` | `*` | (frivilligt) |
-| `list_c` | `*` | (frivilligt) |
-| `list_d` | `*` | (frivilligt) |
+| `list_a` | `*` | (valfrítt) |
+| `list_b` | `*` | (valfrítt) |
+| `list_c` | `*` | (valfrítt) |
+| `list_d` | `*` | (valfrítt) |
 
-### Útgangar
+### Útgangur
 
-| Nafn | Týp | Lýsing |
+| Navn | Slagur | Lýsing |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | Gildið av kombinásjunum tilhøyrandi `list_a`. |
-| `unzip_b` | `* 𝌠` | Gildið av kombinásjunum tilhøyrandi `list_b`. |
-| `unzip_c` | `* 𝌠` | Gildið av kombinásjunum tilhøyrandi `list_c`. |
-| `unzip_d` | `* 𝌠` | Gildið av kombinásjunum tilhøyrandi `list_d`. |
-| `index` | `INT 𝌠` | Rúm 0..tala sem kan verða notuð sem index. |
-| `count` | `INT` | Samanlagt tal av kombinásjum. |
+| `unzip_a` | `* 𝌠` | Virði av kombinatiónirnar samsvarandi `list_a`. |
+| `unzip_b` | `* 𝌠` | Virði av kombinatiónirnar samsvarandi `list_b`. |
+| `unzip_c` | `* 𝌠` | Virði av kombinatiónirnar samsvarandi `list_c`. |
+| `unzip_d` | `* 𝌠` | Virði av kombinatiónirnar samsvarandi `list_d`. |
+| `index` | `INT 𝌠` | Ræða frá 0..count sum kann nýtast sum index. |
+| `count` | `INT` | Talsmætti kombinatiónir. |
 

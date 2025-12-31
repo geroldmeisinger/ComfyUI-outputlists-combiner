@@ -1,39 +1,38 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## Combinaties van OutputLists
+## OutputLists Combinaties
 
-![Combinaties van OutputLists](CombineOutputLists/CombineOutputLists.png)
+![OutputLists Combinaties](CombineOutputLists/CombineOutputLists.png)
 
-(ComfyUI workflow ingevoegd)
+(ComfyUI workflow inbegrepen)
 
-Neemt tot 4 OutputLists op en genereert elke combinatie daarvan.
+Neemt maximaal 4 OutputLists en genereert elke combinatie ervan.
 
 Voorbeeld: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` gebruiken `is_output_list=True` (aangegeven door het symbool `𝌠`) en worden sequentieel verwerkt door de bijbehorende knopen.
+`unzip_a` .. `unzip_d` gebruikt `is_output_list=True` (aangegeven door het symbool `𝌠`) en zal worden verwerkt sequentieel door de overeenkomstige nodes.
 
 Alle lijsten zijn optioneel en lege lijsten worden genegeerd.
 
-Technisch berekent het het *Cartesische product* en geeft elke combinatie uitgesplitst per element (`unzip`), terwijl lege lijsten worden vervangen door `None` en `None` wordt uitgevoerd op de respectieve uitvoer.
+Technisch gezien berekent het *het Cartesisch product* en output elk combination gesplitst in hun elementen (`unzip`), waarbij lege lijsten worden vervangen door eenheid van `None` en die zullen `None` uitsturen op de respectievelijke output.
 
 Voorbeeld: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
-### Ingangen
+### Invoeren
 
-| Naam | Type | Omschrijving |
+| Naam | Type | Beschrijving |
 | --- | --- | --- |
 | `list_a` | `*` | (optioneel) |
 | `list_b` | `*` | (optioneel) |
 | `list_c` | `*` | (optioneel) |
 | `list_d` | `*` | (optioneel) |
 
-### Uitgangen
+### Uitvoeren
 
-| Naam | Type | Omschrijving |
+| Naam | Type | Beschrijving |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | De waarde van de combinaties die overeenkomen met `list_a`. |
-| `unzip_b` | `* 𝌠` | De waarde van de combinaties die overeenkomen met `list_b`. |
-| `unzip_c` | `* 𝌠` | De waarde van de combinaties die overeenkomen met `list_c`. |
-| `unzip_d` | `* 𝌠` | De waarde van de combinaties die overeenkomen met `list_d`. |
-| `index` | `INT 𝌠` | Bereik van 0..count dat kan worden gebruikt als index. |
-| `count` | `INT` | Totaal aantal combinaties. |
+| `unzip_a` | `* 𝌠` | Waarde van de combinaties die overeenkomen met `list_a`. |
+| `unzip_b` | `* 𝌠` | Waarde van de combinaties die overeenkomen met `list_b`. |
+| `unzip_c` | `* 𝌠` | Waarde van de combinaties die overeenkomen met `list_c`. |
+| `unzip_d` | `* 𝌠` | Waarde van de combinaties die overeenkomen met `list_d`. |
+| `index` | `INT 𝌠` | Bereik van 0..count die als index kan worden gebruikt. |
+| `count` | `INT` | Totale aantal combinaties. |
 

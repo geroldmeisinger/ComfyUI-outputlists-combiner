@@ -1,19 +1,18 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
 ## OutputLists kombinatsioonid
 
-![OutputLists kombinatsioonid](CombineOutputLists/CombineOutputLists.png)
+![OutputLists Combinations](CombineOutputLists/CombineOutputLists.png)
 
-(ComfyUI töövoolu sisend)
+(ComfyUI töövoog on kaasas)
 
-Võtab kuni 4 OutputLists ja loob iga võimaliku kombinatsiooni nende vahel.
+Võtab kuni 4 OutputListi ja loob nende kõigi kombinatsioonid.
 
 Näide: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` kasutab `is_output_list=True` (märkitud sümboliga `𝌠`) ja on eelkõige käivitatud vastavate node-ide kaudu.
+`unzip_a` .. `unzip_d` kasutavad `is_output_list=True` (märgitud sümboliga `𝌠`) ja neid töödeldakse järjestikku vastavate sõlmede poolt.
 
-Kõik loendud on valikulised ja tühi loendid tulevad täpselt üle.
+Kõik loendid on valikulised ja tühjad loendid ignoreeritakse.
 
-Täpselt arvutab *karteesi produktsi* ja väljastab iga kombinatsiooni elementideks (`unzip`), kus tühi loendid asendatakse `None` ja need väljastavad `None` vastavate väljundite kaudu.
+Tehniliselt arvutab see *Cartesian product* ja väljastab iga kombinatsiooni elementideks jagatuna (`unzip`), kus tühjad loendid asendatakse ühikutega `None` ja need annavad `None` vastavas väljundis.
 
 Näide: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
@@ -34,6 +33,6 @@ Näide: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", N
 | `unzip_b` | `* 𝌠` | Kombinatsioonide väärtus, mis vastab `list_b`. |
 | `unzip_c` | `* 𝌠` | Kombinatsioonide väärtus, mis vastab `list_c`. |
 | `unzip_d` | `* 𝌠` | Kombinatsioonide väärtus, mis vastab `list_d`. |
-| `index` | `INT 𝌠` | 0..count vahemik, mis saab kasutada indeksina. |
-| `count` | `INT` | Kombinatsioonide kogus. |
+| `index` | `INT 𝌠` | Vahemik 0..count, mida saab kasutada indeksina. |
+| `count` | `INT` | Kogu kombinatsioonide arv. |
 

@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Konvertuoti į Int, Float, Str
+## Konvertuoti į sveikąjį, dešimtainį skaičių, eilutę
 
-![Konvertuoti į Int, Float, Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Konvertuoti į sveikąjį, dešimtainį skaičių, eilutę](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI workflow included)
+(ComfyUI darbo eiga įtraukta)
 
-Konvertuoja kiekvieną skaičių panašią reikšmę į `INT`, `FLOAT`, `STRING`.
-Vykdo `nums_from_string.get_nums` iš vidaus, kuris labai atleidžia skaičius, kuriuos priima. Visi skaičiai – tikroji int, tikroji float, int arba float kaip string, stringai, kurie turi kelių skaičių su tūkstančių skaitmenimis.
-Naudojant stringą `123;234;345`, greitai gauti skaičių listą. Ne naudok komate kaip skaitmenų skirstymo ženklą, nes jie gali būti interpretuojami kaip tūkstančių skaitmenys.
-`int`, `float` ir `string` naudoja `is_output_list=True` (pažymėta simboliu `𝌠`) ir bus procesuojami seka į atitinkamus node'us.
+Konvertuoja bet ką panašų į skaičių į `SVEIKAS` `DEŠIMTAINIS` `EILUTĖ`.
+Naudoja viduje `nums_from_string.get_nums`, kuris labai leidžiamas priimti skaičius. Bet ką nuo tikrųjų sveikųjų skaičių, tikrųjų dešimtainių skaičių, sveikųjų ar dešimtainių skaičių kaip eilučių, eilučių, kurios turi kelis skaičius su tūkstantmečių skyrikliukais.
+Naudokite eilutę `123;234;345`, kad greitai sugeneruotumėte skaičių sąrašą. Nenaudokite kablelių kaip skyrikliukų, nes jie gali būti interpretuojami kaip tūkstantmečių skyrikliukai.
+`int`, `float` ir `string` naudoja `is_output_list=True` (pažymėta simboliu `𝌠`) ir bus apdoroti iš eilės atitinkamais mazgais.
 
 ### Įvestys
 
 | Pavadinimas | Tipas | Aprašymas |
 | --- | --- | --- |
-| `any` | `*` | Ką nors, ką galima pritaikyti į stringą su pritaikomais skaičiais viduje |
+| `betkas` | `*` | Bet ką, kas gali būti prasmingai konvertuojama į eilutę su skaitmenimis |
 
 ### Išvestys
 
 | Pavadinimas | Tipas | Aprašymas |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Visi rastieji skaičiai stringe su dešimtainiais skaitmenimis ištrintais. |
-| `float` | `FLOAT 𝌠` | Visi rastieji skaičiai stringe kaip float. |
-| `string` | `STRING 𝌠` | Visi rastieji skaičiai stringe kaip float pakeisti į stringą. |
-| `count` | `INT` | Skaičius rastų skaičių reikšmėje. |
+| `sveikas` | `SVEIKAS 𝌠` | Visi skaičiai, rasti eilutėje, su iškirptomis dešimtainėmis. |
+| `dešimtainis` | `DEŠIMTAINIS 𝌠` | Visi skaičiai, rasti eilutėje, kaip dešimtainiai skaičiai. |
+| `eilutė` | `EILUTĖ 𝌠` | Visi skaičiai, rasti eilutėje, kaip dešimtainiai skaičiai, konvertuoti į eilutę. |
+| `skaičius` | `SVEIKAS` | Kiek skaičių rasta reikšmėje. |
 

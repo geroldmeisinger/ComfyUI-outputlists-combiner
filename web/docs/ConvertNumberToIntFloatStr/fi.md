@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Muuta kokonaisluku, desimaaliluku ja merkkijonoksi
+## Muunna kokonaisluvuksi, desimaaliluvuksi, merkkijonoksi
 
-![Muuta kokonaisluku, desimaaliluku ja merkkijonoksi](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Muunna kokonaisluvuksi, desimaaliluvuksi, merkkijonoksi](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI -työkalu sisältyy)
+(ComfyUI-työnkulku mukana)
 
-Muuttaa mitä tahansa lukuun liittyvää muotoa kokonaisluvuksi, desimaaliluvuksi tai merkkijonoksi.
-Käyttää sisäisesti `nums_from_string.get_nums`, joka on erittäin laajassa numeron hyväksennyksessä. Tarkoittaa todellisia kokonaislukuja, todellisia desimaalilukuja, kokonaislukuja tai desimaalilukuja merkkijonoina, merkkijonoja, joissa on useita lukuja tuhannen-erotuksilla.
-Käytä merkkijonoa `123;234;345` saadaksesi nopeasti luvun listan. Älä käytä pilkkuja erotuksina, koska ne voidaan tulkita tuhannen-erotuksina.
-`int`, `float` ja `string` käyttävät `is_output_list=True` (merkityksellä `𝌠`) ja käsitellään vastaavasti vastaavilla solmuilla.
+Muuntaa kaiken luvullisen muotoisen `INT` `FLOAT` `STRING`.
+Käyttää sisäisesti `nums_from_string.get_nums` -toimintoa, joka on erittäin suvaitsevainen hyväksyessään lukuja. Hyväksyy kaiken: oikeat kokonaisluvut, oikeat desimaaliluvut, kokonais- tai desimaaliluvut merkkijonoina, merkkijonot, jotka sisältävät useita numeroita tuhaterottimilla.
+Käytä merkkijonoa `123;234;345` luodaksesi nopeasti listan numeroista. Älä käytä pilkkuja erotinmerkkeinä, koska ne saattavat tulkita tuhaterottimina.
+`int`, `float` ja `string` käyttävät `is_output_list=True` (merkitty symbolilla `𝌠`) ja ne käsitellään peräkkäin vastaavien solmujen toimesta.
 
 ### Syötteet
 
 | Nimi | Tyyppi | Kuvaus |
 | --- | --- | --- |
-| `any` | `*` | Mitä tahansa, joka voidaan merkityksellisesti muuttaa merkkijonoon, jossa on tulkittavat numerot sisällä |
+| `any` | `*` | Mikä tahansa, mikä voidaan järkevästi muuttaa merkkijonoksi, jossa on jäsennettäviä lukuja |
 
-### Tulokset
+### Tulosteet
 
 | Nimi | Tyyppi | Kuvaus |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Kaikki löydetty luvut merkkijonosta desimaalien poistettuna. |
-| `float` | `FLOAT 𝌠` | Kaikki löydetty luvut merkkijonosta desimaalilukuna. |
-| `string` | `STRING 𝌠` | Kaikki löydetty luvut merkkijonosta desimaalilukuna muunnettuna merkkijonoksi. |
-| `count` | `INT` | Luku, joka löydetty arvosta. |
+| `int` | `INT 𝌠` | Kaikki merkkijonosta löydetyt luvut, desimaalit poistettuna. |
+| `float` | `FLOAT 𝌠` | Kaikki merkkijonosta löydetyt luvut desimaalilukuna. |
+| `string` | `STRING 𝌠` | Kaikki merkkijonosta löydetyt luvut desimaalilukuna muutettuna merkkijonoksi. |
+| `count` | `INT` | Arvosta löydettyjen lukujen määrä. |
 

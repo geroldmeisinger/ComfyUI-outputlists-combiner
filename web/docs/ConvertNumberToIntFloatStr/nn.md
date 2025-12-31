@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Konverter til INT FLOAT STR
+## Konverter til heiltal, desimaltal og tekst
 
-![Konverter til INT FLOAT STR](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Konverter til heiltal, desimaltal og tekst](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Komplett ComfyUI workflow inkludert)
+(ComfyUI workflow inkludert)
 
-Konverterer allt som ser ut som et tall til `INT` `FLOAT` `STRING`.
-Bruker `nums_from_string.get_nums` intern, som er veldig lenge i det som det tar inn som tall. Alt frå reelle int, reelle float, int eller float som streng, strenger som inneholder fleire tall med tusen-separatører.
-Bruk ein streng `123;234;345` for å raskt lage ein liste med tall. Bruk ikkje komma som separatør, for dei kan tolkes som tusen-separatører.
-`int`, `float` og `string` brukar `is_output_list=True` (indikert av symbolet `𝌠`) og vil bli behandlet sekvensielt av tilhørende noder.
+Konverterer kva som helst tal-líkt til `HEILTAL` `DESIMALTAL` `TEKST`.
+Brukar `nums_from_string.get_nums` internt, som er veldig tolerant i tal som er akseptert. Kva som helst frå faktiske heiltal, faktiske desimaltal, heiltal eller desimaltal som tekst, tekst som inneheld fleire tal med tusen-skiljeteikn.
+Bruk ein tekst `123;234;345` for å raskt generere ei liste med tal. Ikkje bruk komma som skiljeteikn sidan dei kan bli tolka som tusen-skiljeteikn.
+`int`, `float` og `string` brukar `is_output_list=True` (indikert av symbolet `𝌠`) og vil bli handsama sekvensielt av tilhøyrande noder.
 
 ### Inndata
 
-| Navn | Type | Beskrivelse |
+| Namn | Type | Skildring |
 | --- | --- | --- |
-| `any` | `*` | Alt som kan konverterast til ein streng med lesbare tall inne i den |
+| `any` | `*` | Kva som helst som kan konverterast menanfull til ein tekst med tal som kan lesast |
 
 ### Utdata
 
-| Navn | Type | Beskrivelse |
+| Namn | Type | Skildring |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Alle tala som finst i strengen med desimaler klippa av. |
-| `float` | `FLOAT 𝌠` | Alle tala som finst i strengen som flytta. |
-| `string` | `STRING 𝌠` | Alle tala som finst i strengen som flytta konvertert til streng. |
-| `count` | `INT` | Antall tala som finst i verdi. |
+| `int` | `HEILTAL 𝌠` | Alle tal finne i teksten med desimalane forkortet. |
+| `float` | `DESIMALTAL 𝌠` | Alle tal finne i teksten som desimaltal. |
+| `string` | `TEKST 𝌠` | Alle tal finne i teksten som desimaltal konvertert til tekst. |
+| `count` | `HEILTAL` | Mengd av tal finne i verdien. |
 

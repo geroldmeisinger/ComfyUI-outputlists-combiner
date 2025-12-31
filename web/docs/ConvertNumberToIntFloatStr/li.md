@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Konvertèr na int float str
+## Convèrt Toe Int Float Str
 
-![Convert To Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Convèrt Toe Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI workflow included)
+(ComfyUI workflow bijgevoegd)
 
-Konvertèr wat dan ook getal-lik tot `INT` `FLOAT` `STRING`.
-Gebruik `nums_from_string.get_nums` intern, wat zeer vrij is in de getallen die het accepteert. Alles van echte ints, echte floats, ints of floats als strings, strings die meerdere getallen bevatten met duizendtale-scheidingsstreepjes.
-Gebruik ‘n string `123;234;345` om snel een lijst met getallen te generèren. Gebruik geen komma’s als scheiding, want die kunnen worden geïnterpreteerd als duizendtale-scheidingsstreepjes.
-`int`, `float` en `string` gebruiken `is_output_list=True` (aangegeven door het symbool `𝌠`) en worden daardoor sequentieel verwerkt door de bijbehorende nodes.
+Convèrt iegels nummer-achtig tot `INT` `FLOAT` `STRING`.
+Gebruk `nums_from_string.get_nums` interne wat zeer permissief is mit de nummers die geaccepteerd zien. Iegels wat van daodwerkeleke ints, daodwerkeleke floats, ints of floats as string, strings wat meerdere nummers bevat met duizendtseperators.
+Gebruk `123;234;345` um schnell ‘n leeste met nummers te make. Gebruk geen komma’s um te sèparèr um ze neet te interpreteer es duizendtseperators.
+`int`, `float` en `string` gebruk `is_output_list=True` (aangegeven door ‘t symbool `𝌠`) en zien verwerkt in sequentiele nodes.
 
-### Ingangen
+### Invoere
 
-| Naam | Type | Omschrijving |
+| Naom | Type | Beschrèving |
 | --- | --- | --- |
-| `any` | `*` | Elke waarde die zinvol kan worden geconverteerd naar een string met leesbare getallen erin |
+| `any` | `*` | Iegels wat zoe meaningfully convèrt oet tot ‘n string mit parseable nummers |
 
-### Uitgangen
+### Uitvoere
 
-| Naam | Type | Omschrijving |
+| Naom | Type | Beschrèving |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Alle getallen gevonden in de string met de komma’s afgeknipt. |
-| `float` | `FLOAT 𝌠` | Alle getallen gevonden in de string als floats. |
-| `string` | `STRING 𝌠` | Alle getallen gevonden in de string als floats geconverteerd naar string. |
-| `count` | `INT` | Aantal getallen gevonden in de waarde. |
+| `int` | `INT 𝌠` | Alle nummers gevènd in ‘t string met de decimalen afgekort. |
+| `float` | `FLOAT 𝌠` | Alle nummers gevènd in ‘t string as floats. |
+| `string` | `STRING 𝌠` | Alle nummers gevènd in ‘t string as floats convèrt oet tot string. |
+| `count` | `INT` | Aantal nummers gevènd in ‘t value. |
 

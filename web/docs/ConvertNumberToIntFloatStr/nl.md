@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Omzetten naar geheel getal, float, string
+## Converteren naar Int Float Str
 
-![Omzetten naar geheel getal, float, string](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Convert To Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI workflow ingebouwd)
+(ComfyUI workflow inclusief)
 
-Zet alles dat getallachtig is om naar `INT`, `FLOAT` of `STRING`.
-Gebruikt intern `nums_from_string.get_nums`, die zeer openbaard is in de getallen die het aanneemt. Alles van echte ints, echte floats, ints of floats als strings, strings die meerdere getallen bevatten met duizendtaldelers.
-Gebruik een string zoals `123;234;345` om snel een lijst met getallen te genereren. Gebruik geen komma's als scheiding, want deze kunnen worden geïnterpreteerd als duizendtaldelers.
-`int`, `float` en `string` gebruiken `is_output_list=True` (aangegeven door het symbool `𝌠`) en worden daarmee sequentieel verwerkt door de bijbehorende knooppunten.
+Converteert alles wat getal-achtig is naar `INT` `FLOAT` `STRING`.
+Gebruikt intern `nums_from_string.get_nums` wat zeer permissief is in de getallen die het aanvaardt. Van echte integers, echte floats, integers of floats als strings, strings die meerdere getallen met duizendtallen-scheiding bevatten.
+Gebruik een string `123;234;345` om snel een lijst van getallen te genereren. Gebruik geen komma's als scheidingstekens, want die kunnen worden geïnterpreteerd als duizendtallen-scheiding.
+`int`, `float` en `string` gebruiken `is_output_list=True` (aangegeven door het symbool `𝌠`) en worden sequentieel verwerkt door de bijbehorende nodes.
 
-### Ingangsgegevens
+### Invoer
 
-| Naam | Type | Omschrijving |
+| Naam | Type | Beschrijving |
 | --- | --- | --- |
-| `any` | `*` | Elke waarde die op een betekenisvolle manier kan worden omgezet naar een string met leesbare getallen erin |
+| `any` | `*` | Alles wat op een betekenisvolle manier kan worden geconverteerd naar een string met parsebare getallen erin |
 
-### Uitgangen
+### Uitvoer
 
-| Naam | Type | Omschrijving |
+| Naam | Type | Beschrijving |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Alle getallen gevonden in de string met de komma's afgeknipt. |
+| `int` | `INT 𝌠` | Alle getallen gevonden in de string met decimalen afgekapt. |
 | `float` | `FLOAT 𝌠` | Alle getallen gevonden in de string als floats. |
-| `string` | `STRING 𝌠` | Alle getallen gevonden in de string als floats omgezet naar string. |
+| `string` | `STRING 𝌠` | Alle getallen gevonden in de string als floats geconverteerd naar string. |
 | `count` | `INT` | Aantal getallen gevonden in de waarde. |
 

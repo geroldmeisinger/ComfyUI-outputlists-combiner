@@ -1,39 +1,38 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## OutputLists Combinations
+## OutputLists Birliyi
 
 ![OutputLists Combinations](CombineOutputLists/CombineOutputLists.png)
 
-(ComfyUI workflow included)
+(ComfyUI workflow daxildir)
 
-4 OutputLists-dan istifadə edər və onlara əsaslanan hər bir kombinasiyasını yaradır.
+4-cü OutputList və onların hər birini əmələ gətirir.
 
-Məsələ: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
+Nümunə: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` `is_output_list=True` (𝌠 simvolu ilə göstərilir) və mənfi nöqtələr tərəfindən mənfi nöqtələrə təsir edir.
+`unzip_a` .. `unzip_d` `is_output_list=True` (simvol ilə göstərilmiş `𝌠`) istifadə edir və müvafiq düyünlər tərəfindən ardıcıl olaraq işlənir.
 
-Bütün listlər mütləq deyil və boş listlər qeyd olunmur.
+Bütün siyahılar istəyə bağlıdır və boş siyahılar gözardı olunur.
 
-Təsirli olaraq, *Kartezian hasil* hesablanır və hər bir kombinasiya elementləri ilə (unzip) çıxarılır, boş listlər `None` ilə əvəz olunur və onların mənfi nöqtələri `None` olur.
+Texnik olaraq *Karteziyani hasil* hesablayır və hər bir kombinasiyanı elementlərinə bölünmüş şəkildə çıxarır (`unzip`), bu zaman boş siyahılar `None` ilə əvəz olunur və onlar müvafiq çıxışda `None` çıxarır.
 
-Məsələ: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
+Nümunə: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
-### Inputs
+### Girişlər
 
-| Name | Type | Description |
+| Ad | Növ | İzahat |
 | --- | --- | --- |
-| `list_a` | `*` | (optional) |
-| `list_b` | `*` | (optional) |
-| `list_c` | `*` | (optional) |
-| `list_d` | `*` | (optional) |
+| `list_a` | `*` | (istəyə bağlı) |
+| `list_b` | `*` | (istəyə bağlı) |
+| `list_c` | `*` | (istəyə bağlı) |
+| `list_d` | `*` | (istəyə bağlı) |
 
-### Outputs
+### Çıxışlar
 
-| Name | Type | Description |
+| Ad | Növ | İzahat |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | `list_a`-ya uyğun kombinasiyanın qiyməti. |
-| `unzip_b` | `* 𝌠` | `list_b`-ya uyğun kombinasiyanın qiyməti. |
-| `unzip_c` | `* 𝌠` | `list_c`-ya uyğun kombinasiyanın qiyməti. |
-| `unzip_d` | `* 𝌠` | `list_d`-ya uyğun kombinasiyanın qiyməti. |
-| `index` | `INT 𝌠` | 0..count aralığında olan və index kimi istifadə edilə bilən qiymət. |
-| `count` | `INT` | Kombinasiyanın əsas sayının qiyməti. |
+| `unzip_a` | `* 𝌠` | `list_a`-ya uyğun kombinasiyaların dəyəri. |
+| `unzip_b` | `* 𝌠` | `list_b`-ya uyğun kombinasiyaların dəyəri. |
+| `unzip_c` | `* 𝌠` | `list_c`-ya uyğun kombinasiyaların dəyəri. |
+| `unzip_d` | `* 𝌠` | `list_d`-ya uyğun kombinasiyaların dəyəri. |
+| `index` | `INT 𝌠` | 0..count aralığı, indeks kimi istifadə edilə bilər. |
+| `count` | `INT` | Ümumi kombinasiya sayı. |
 

@@ -1,39 +1,38 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
 ## OutputLists kombinācijas
 
-![OutputLists kombinācijas](CombineOutputLists/CombineOutputLists.png)
+![OutputLists Combinations](CombineOutputLists/CombineOutputLists.png)
 
-(ComfyUI workflow iekļauts)
+(ComfyUI darbplūsma iekļauta)
 
-Izņem 4 OutputLists un izveido visus to kombinācijas.
+Ņem līdz 4 OutputLists un ģenerē visus tos kombinācijas.
 
 Piemērs: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` izmanto `is_output_list=True` (parādīts simbolā `𝌠`) un tiks apstrādāti secīgi atbilstošajos nodosmās.
+`unzip_a` .. `unzip_d` izmanto `is_output_list=True` (atspoguļots ar simbolu `𝌠`) un tiks apstrādāti secīgi atbilstošos mezglus.
 
-Visi saraksti ir nepieciešami un tukšie saraksti tiks ignorēti.
+Visas sarakstus ir izvēles un tukši saraksti tiks ignorēti.
 
-Techniski tas aprēķina *kartējo produktu* un izvada katru kombināciju, atdalītu to elementos (`unzip`), kur tukšie saraksti tiek aizvietoti ar `None` un tie izsaka `None` atbilstošajā izvadei.
+Tehniski tas aprēķina *Kartēzes reizinājumu* un izvada katru kombināciju sadalītu savos elementos (`unzip`), kamēr tukši saraksti tiks aizvietoti ar `None` vienībām un tie izvadīs `None` atbilstošajā izvadā.
 
 Piemērs: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
-### Ievadi
+### Ievades
 
-| Nosaukums | Tips | Apraksts |
+| Vārds | Tips | Apraksts |
 | --- | --- | --- |
-| `list_a` | `*` | (neobligāts) |
-| `list_b` | `*` | (neobligāts) |
-| `list_c` | `*` | (neobligāts) |
-| `list_d` | `*` | (neobligāts) |
+| `list_a` | `*` | (izvēles) |
+| `list_b` | `*` | (izvēles) |
+| `list_c` | `*` | (izvēles) |
+| `list_d` | `*` | (izvēles) |
 
-### Izejas
+### Izvades
 
-| Nosaukums | Tips | Apraksts |
+| Vārds | Tips | Apraksts |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | Kombināciju vērtība, atbilstoša `list_a`. |
-| `unzip_b` | `* 𝌠` | Kombināciju vērtība, atbilstoša `list_b`. |
-| `unzip_c` | `* 𝌠` | Kombināciju vērtība, atbilstoša `list_c`. |
-| `unzip_d` | `* 𝌠` | Kombināciju vērtība, atbilstoša `list_d`. |
-| `index` | `INT 𝌠` | 0..count diapazons, kas var tikt izmantots kā indekss. |
-| `count` | `INT` | Visu kombināciju kopējā skaits. |
+| `unzip_a` | `* 𝌠` | Kombinācijas vērtība, kas atbilst `list_a`. |
+| `unzip_b` | `* 𝌠` | Kombinācijas vērtība, kas atbilst `list_b`. |
+| `unzip_c` | `* 𝌠` | Kombinācijas vērtība, kas atbilst `list_c`. |
+| `unzip_d` | `* 𝌠` | Kombinācijas vērtība, kas atbilst `list_d`. |
+| `index` | `INT 𝌠` | 0..count diapazons, ko var izmantot kā indeksu. |
+| `count` | `INT` | Kopējais kombināciju skaits. |
 

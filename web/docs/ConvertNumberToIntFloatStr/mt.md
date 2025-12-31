@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Converti għal Int Float Str
+## Ikkonverti għal INT FLOAT STR
 
-![Converti għal Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Ikkonverti għal INT FLOAT STR](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Workflow ta’ ComfyUI inkludut)
+(ComfyUI workflow included)
 
-Jgħin kwalunkwe ġid numriju għal `INT` `FLOAT` `STRING`.
-Jużaw `nums_from_string.get_nums` internament li hija ħafna permittiva fil-numri li tikkabbelha. Kwalunkwe minn ints reali, floats reali, ints jew floats bħall-istruzzjoni, istruzzjonijiet li jikkawżaw numri multipli b’separatori tal-karigi.
-Użaw stringa `123;234;345` biex tibbukkja lista ta’ numri b’veloċità. Ma tixtieq komma bħall-separaturi minħabba li jistgħu jkunu interpretaħ bħall-separaturi tal-karigi.
-`int`, `float` u `string` jużaw `is_output_list=True` (indikat b’isim `𝌠`) u jkunu processed secqwenzjalment minn nodi korrispondenti.
+Ikkonverti kwalunkwe ħaġa li tassomigħ numru għal `INT` `FLOAT` `STRING`.
+Jibbraw `nums_from_string.get_nums` internament li jkun ħafna permissiv fit-numri jibżgħu. Kwalunkwe ħaġa minn inti attwali, floati attwali, inti jew floati bħala stringi, stringi li jikunu fihom numri multipli ma’ separaturi ta’ ħlief.
+Użaw string `123;234;345` biex jinħolqu list ta’ numri malajr. Ma tużawx virgoli bħala separaturi minħabba li jistgħu jiġu interpretati bħala separaturi ta’ ħlief.
+`int`, `float` u `string` jibbraw `is_output_list=True` (indikat bil-simbolu `𝌠`) u jkunu pproċessati seqqunzjalment minn nodi korrispondenti.
 
-### Input
+### Inputs
 
-| Isem | Tip | Deskrittjoni |
+| Isem | Tip | Deskrizzjoni |
 | --- | --- | --- |
-| `any` | `*` | Kwalunkwe li jista’ jkun konvertit b’mod munti għal stringa b’numri li jistgħu jinkludu.
+| `any` | `*` | Kwalunkwe ħaġa li tista’ tiġi kkonvertita b’mod ifidili għal stringi b’numri li jistgħu jiġu parsejati |
 
-### Uscite
+### Outputs
 
-| Isem | Tip | Deskrittjoni |
+| Isem | Tip | Deskrizzjoni |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Kull il-numri li ġew ikkawżaw fil-stringa b’dħul tal-decimal. |
-| `float` | `FLOAT 𝌠` | Kull il-numri ikkawżaw fil-stringa bħall-floats. |
-| `string` | `STRING 𝌠` | Kull il-numri ikkawżaw fil-stringa bħall-floats konvertiti għal stringa. |
-| `count` | `INT` | Numru ta’ numri ikkawżaw fil-valur. |
+| `int` | `INT 𝌠` | Kollha numri mibduta fis-stringi b’dawk li jkunu ħarġgħa. |
+| `float` | `FLOAT 𝌠` | Kollha numri mibduta fis-stringi bħala floati. |
+| `string` | `STRING 𝌠` | Kollha numri mibduta fis-stringi bħala floati kkonvertiti għal string. |
+| `count` | `INT` | Amtar ta’ numri mibduta fis-valur. |
 

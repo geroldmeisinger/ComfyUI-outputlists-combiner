@@ -1,19 +1,18 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## Combinacions de OutputLists
+## Combinacions de llistes de sortida
 
-![Combinacions de OutputLists](CombineOutputLists/CombineOutputLists.png)
+![Combinacions de llistes de sortida](CombineOutputLists/CombineOutputLists.png)
 
-(Workflow de ComfyUI inclòs)
+(ComfyUI workflow inclosa)
 
-Toma fins a 4 OutputLists i genera totes les combinacions entre elles.
+Agafa fins a 4 llistes de sortida i genera totes les combinacions possibles.
 
 Exemple: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` utilitzen `is_output_list=True` (indicat per el símbol `𝌠`) i seran processats seqüencialment per nodes corresponents.
+`unzip_a` .. `unzip_d` utilitza(n) `is_output_list=True` (indicat pel símbol `𝌠`) i seran processats seqüencialment pels nodes corresponents.
 
-All lists are optional and empty lists will be ignored.
+Totes les llistes són opcionals i les llistes buides seran ignorades.
 
-Tècnicament calcula el *producte cartesià* i emet cada combinació separada en els seus elements (`unzip`), mentre que les llistes buides seran substituïdes per unitats de `None` i emeten `None` a l'output corresponent.
+Tècnicament calcula *el producte cartesià* i genera cada combinació dividida en els seus elements (`unzip`), mentre que les llistes buides seran reemplaçades amb unitats de `None` i aquestes generaràn `None` a la sortida corresponent.
 
 Exemple: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
@@ -30,10 +29,10 @@ Exemple: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", 
 
 | Nom | Tipus | Descripció |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | Valor de les combinacions corresponents a `list_a`. |
-| `unzip_b` | `* 𝌠` | Valor de les combinacions corresponents a `list_b`. |
-| `unzip_c` | `* 𝌠` | Valor de les combinacions corresponents a `list_c`. |
-| `unzip_d` | `* 𝌠` | Valor de les combinacions corresponents a `list_d`. |
-| `index` | `INT 𝌠` | Rang de 0..count que pot utilitzar-se com a índex. |
+| `unzip_a` | `* 𝌠` | Valor de les combinacions corresponent a `list_a`. |
+| `unzip_b` | `* 𝌠` | Valor de les combinacions corresponent a `list_b`. |
+| `unzip_c` | `* 𝌠` | Valor de les combinacions corresponent a `list_c`. |
+| `unzip_d` | `* 𝌠` | Valor de les combinacions corresponent a `list_d`. |
+| `index` | `INT 𝌠` | Interval de 0..count que pot ser utilitzat com a índex. |
 | `count` | `INT` | Nombre total de combinacions. |
 

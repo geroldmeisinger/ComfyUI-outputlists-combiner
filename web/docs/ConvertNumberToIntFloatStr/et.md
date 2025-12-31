@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Teisendamine täisarv, kümnendarv, stringiks
+## Teisenda täisarvuks, ujukomaarvuks ja sõngruks
 
-![Teisendamine täisarv, kümnendarv, stringiks](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Teisenda täisarvuks, ujukomaarvuks ja sõngruks](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Sisendus töövoolus ComfyUI)
+(ComfyUI töövoog on kaasatud)
 
-Teisendab kõiki numberlikke väärtusi `INT` `FLOAT` `STRING` vormi.
-Kasutab sisemiselt `nums_from_string.get_nums`, mis on väga laiendatud numbrid arvutamiseks. Sellele võib sobida tõelised täisarvud, tõelised kümnendarvud, täisarvud või kümnendarvud kui stringid, stringid, mis sisaldavad mitmeid numbreid miljardisega eraldajatega.
-Kasutage stringi `123;234;345` täisarvude hulga kiirest loomiseks. Kõrvaldage komaga eraldajaid, kuna need võivad tõuseda miljardisega eraldajateks.
-`int`, `float` ja `string` kasutavad `is_output_list=True` (märgitakse sümboliga `𝌠`) ja on käivitatud vastavate node-ide kaudu järjekorras.
+Teisendab kõik arvulised väärtused `INT` `FLOAT` `STRING` tüüpi.
+Kasutab sisemiselt `nums_from_string.get_nums` meetodit, mis on väga lubav arvude suhtes, mida see aktsepteerib. Kõik alates tegelike täisarvudest, tegelikest ujukomaarvudest, täisarvudest või ujukomaarvudest sõnena, sõnadest, mis sisaldavad mitmeid arve koos tuhandete eraldajadega.
+Kasuta sõne `123;234;345`, et kiiresti genereerida arvude loend. Ära kasuta komme eraldajana, kuna need võivad tõlgendada tuhandete eraldajatena.
+`int`, `float` ja `string` kasutavad `is_output_list=True` (märgitud sümboliga `𝌠`) ja neid töödeldakse järjestikku vastavate sõlmede poolt.
 
 ### Sisendid
 
 | Nimi | Tüüp | Kirjeldus |
 | --- | --- | --- |
-| `any` | `*` | Mis tahes väärtus, mis saab tähendavalt teisendada stringiks, mille sisu sisaldab loetavaid numbreid |
+| `any` | `*` | Midagi, mis saab mõistlikult teisendada sõnks, mis sisaldab analüüsida saadavaid arve |
 
-### Väljad
+### Väljundid
 
 | Nimi | Tüüp | Kirjeldus |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Sisendist leidud numbrid, milles kümnendkohad on kõrvaldavad. |
-| `float` | `FLOAT 𝌠` | Sisendist leidud numbrid, millel on kümnendkohad. |
-| `string` | `STRING 𝌠` | Sisendist leidud numbrid, millel on kümnendkohad, teisendatud stringiks. |
-| `count` | `INT` | Leidud numbreid väärtusest. |
+| `int` | `INT 𝌠` | Kõik stringis leitud arvud, kus komakohtade lõikamine on tehtud. |
+| `float` | `FLOAT 𝌠` | Kõik stringis leitud arvud ujukomaarvudena. |
+| `string` | `STRING 𝌠` | Kõik stringis leitud arvud ujukomaarvudena teisendatuna sõnks. |
+| `count` | `INT` | Arvude arv väärtuses leitud. |
 

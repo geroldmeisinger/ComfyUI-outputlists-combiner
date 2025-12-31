@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Tiontú go Int Float Str
+## Tiontaigh Go Int Float Str
 
-![Tiontú go Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Tiontaigh Go Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI workflow tá faoina chéile)
+(ComfyUI workflow san áireamh)
 
-Tiontú gach rud a bhfuil é aon chéim leis an gceann de chéile go `INT` `FLOAT` `STRING`.
-Úsáidtear `nums_from_string.get_nums` go hiontach i bhfeidhm a chéile a chuireann go leor ar na séimh a bhfuil i bhfeidhm. Gach rud ó intí ceart, floatí ceart, intí nó floatí mar sheol, seolanna a bhfuil na séimh i bhfeidhm le haghaidh milseodh.
-Úsáid seol `123;234;345` chun liosta de shéimh a chruthú go tapúla. Ná úsáid comaí mar sheolanna mar gheall ar an mbun a bhfuil i bhfeidhm mar sheolanna milseodh.
-`int`, `float` agus `string` úsáidtear `is_output_list=True` (tugtha ag an smíomh `𝌠`) agus beidh iad a dhéanamh ar an gceann de chéile ag na nodanna cothrom.
+Tiontaigh gach rud atá cosúil le uimhir go `INT` `FLOAT` `STRING`.
+Úsáideann sé `nums_from_string.get_nums` laistigh den nó, atá an-taicí i dtip le haghaidh uimhreacha a ghlacann iad. Gach rud ó intí iomlán, floatí iomlán, intí nó floatí mar shreanganna, sreanganna atá le haghaidh il-uimhreacha le deichneoirí míle.
+Úsáid sreang `123;234;345` chun liosta uimhreacha a ghiniúint go tapa. Ná húsáid commas mar deighilteoirí toisc go bhféadfaidh siad a bheith interpreted mar deichneoirí míle.
+Úsáideann `int`, `float` agus `string` `is_output_list=True` (sonraithe ag an t-síneán `𝌠`) agus déanfar iad a phróiseáil go seicheal trí nodes comhfhreagracha.
 
-### Ionchuranna
+### Ionchuir
 
-| Ainm | Cineál | Cur síos |
+| Ainm | Cineál | Cur Síos |
 | --- | --- | --- |
-| `any` | `*` | Gach rud a bhfuil é aon chéim leis an gceann de chéile go seol a bhfuil séimh a chur i bhfeidhm a chur i bhfeidhm |
+| `any` | `*` | Gach rud ar féidir é a thiontú go sreang le haghaidh uimhreacha a léitear iad |
 
-### Ithchuranna
+### Aschuir
 
-| Ainm | Cineál | Cur síos |
+| Ainm | Cineál | Cur Síos |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Na séimh a thuighear i gceann de chéile le haghaidh na díobhanna. |
-| `float` | `FLOAT 𝌠` | Na séimh a thuighear i gceann de chéile mar float. |
-| `string` | `STRING 𝌠` | Na séimh a thuighear i gceann de chéile mar float a thiontú go seol. |
-| `count` | `INT` | Uimhir na séimh a thuighear i gceann de chéile. |
+| `int` | `INT 𝌠` | Gach uimhir a aimsíodar sa sreang le decimalí a tharlaíodh. |
+| `float` | `FLOAT 𝌠` | Gach uimhir a aimsíodar sa sreang mar floatí. |
+| `string` | `STRING 𝌠` | Gach uimhir a aimsíodar sa sreang mar floatí a thiontú go sreang. |
+| `count` | `INT` | Cómhaid uimhreacha a aimsíodar san luach. |
 

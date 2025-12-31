@@ -1,25 +1,24 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-27. -->
-## Kombinazzjoni ta’ OutputLists
+## Kombinazzjonijiet tal-Listen tal-Uscita
 
-![Kombinazzjoni ta’ OutputLists](CombineOutputLists/CombineOutputLists.png)
+![Kombinazzjonijiet tal-Listen tal-Uscita](CombineOutputLists/CombineOutputLists.png)
 
-(Workflow ta’ ComfyUI inkluż)
+(ComfyUI workflow inkluddat)
 
-Jikkupri 4 OutputLists u jipproduċi kwalunkwe kombinazzjoni tagħhom.
+Jibbaq 4 OutputLists fil-massimu u jibbni koll kombinazzjonijiet tagħhom.
 
 Eżempju: `[1, 2, 3] x ["A", "B"] = [(1, "A"), (1, "B"), (2, "A"), (2, "B"), (3, "A"), (3, "B")]`
 
-`unzip_a` .. `unzip_d` jistgħu jikbru `is_output_list=True` (indikat minn `𝌠`) u jinħolqu sekwentjalment mit-tajjeb tal-karigi kien.
+`unzip_a` .. `unzip_d` jibbażaw fuq `is_output_list=True` (indikat bil-simbolu `𝌠`) u jipperċessaw sekwenzjalment minn nodi korrispondenti.
 
-Kull lista hija opzjonali u listi vojt jinħolqu.
+Koll il-listen huma opzjonali u el-listi vojti jinżlu.
 
-Tiknikament jikkalkula *l-prodott karteżjanu* u jippubblika kwalunkwe kombinazzjoni miktuba f’elementi (`unzip`), imbagħad listi vojt jinżlu b’unitajiet ta’ `None` u jipproduċu `None` fuq l-outputs kien.
+Teknikament jikkomputa *il-prodott kartiżjan* u jibbni kull kombinazzjoni mbżonnita f’elementi tagħha (`unzip`), wħall-listi vojti jinbidlu bil-unità ta’ `None` u jibbini `None` fuq l-uscita rispettiva.
 
 Eżempju: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
 ### Input
 
-| Isem | Tip | Deskrittjoni |
+| Isem | Tip | Deskrizzjoni |
 | --- | --- | --- |
 | `list_a` | `*` | (opzjonali) |
 | `list_b` | `*` | (opzjonali) |
@@ -28,12 +27,12 @@ Eżempju: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B",
 
 ### Output
 
-| Isem | Tip | Deskrittjoni |
+| Isem | Tip | Deskrizzjoni |
 | --- | --- | --- |
-| `unzip_a` | `* 𝌠` | Valuri tal-kombinazzjonijiet li jikkorrispondu mal `list_a`. |
-| `unzip_b` | `* 𝌠` | Valuri tal-kombinazzjonijiet li jikkorrispondu mal `list_b`. |
-| `unzip_c` | `* 𝌠` | Valuri tal-kombinazzjonijiet li jikkorrispondu mal `list_c`. |
-| `unzip_d` | `* 𝌠` | Valuri tal-kombinazzjonijiet li jikkorrispondu mal `list_d`. |
-| `index` | `INT 𝌠` | Range ta’ 0..count li jista’ jkun istifed bħal indekss. |
+| `unzip_a` | `* 𝌠` | Valur tal-kombinazzjonijiet korrispondenti għall-`list_a`. |
+| `unzip_b` | `* 𝌠` | Valur tal-kombinazzjonijiet korrispondenti għall-`list_b`. |
+| `unzip_c` | `* 𝌠` | Valur tal-kombinazzjonijiet korrispondenti għall-`list_c`. |
+| `unzip_d` | `* 𝌠` | Valur tal-kombinazzjonijiet korrispondenti għall-`list_d`. |
+| `index` | `INT 𝌠` | Gamma ta’ 0..count li tista’ tintużax bħala indeks. |
 | `count` | `INT` | Numru totali tal-kombinazzjonijiet. |
 

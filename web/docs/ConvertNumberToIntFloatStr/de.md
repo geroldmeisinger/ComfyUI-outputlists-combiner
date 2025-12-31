@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## In Int Float Str umwandeln
+## In Ganzzahl, Fließkommazahl, Zeichenkette Umwandeln
 
-![In Int Float Str umwandeln](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![In Ganzzahl, Fließkommazahl, Zeichenkette Umwandeln](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(ComfyUI Workflow enthalten)
+(ComfyUI workflow inkludiert)
 
-Wandelt alles nummerartige in `INT` `FLOAT` `STRING` um.
-Verwendet intern `nums_from_string.get_nums`, das sehr flexibel bei der Akzeptanz von Zahlen ist. Egal ob echte Integers, echte Floats, Integers oder Floats als Strings, Strings, die mehrere Zahlen mit Tausendertrennern enthalten.
-Verwenden Sie einen String wie `123;234;345`, um eine Liste von Zahlen schnell zu erzeugen. Verwenden Sie keine Kommas als Trennzeichen, da diese als Tausendertrennzeichen interpretiert werden könnten.
-`int`, `float` und `string` verwenden `is_output_list=True` (durch das Symbol `𝌠` angegeben) und werden nacheinander von den entsprechenden Knoten verarbeitet.
+Wandelt alles Zahlähnliche in `GANZZAHL` `FLIEßKOMMAZAHL` `ZEICHENKETTE` um.
+Verwendet intern `nums_from_string.get_nums`, welches sehr nachlässig mit den akzeptierten Zahlen umgeht. Von echten Ganzzahlen, echten Fließkommazahlen, Ganzzahlen oder Fließkommazahlen als Zeichenkette, Zeichenketten, die mehrere Zahlen mit Tausendertrennzeichen enthalten.
+Verwenden Sie eine Zeichenkette `123;234;345`, um schnell eine Liste von Zahlen zu generieren. Verwenden Sie keine Kommas als Trennzeichen, da diese als Tausendertrennzeichen interpretiert werden könnten.
+`int`, `float` und `string` verwenden `is_output_list=True` (angezeigt durch das Symbol `𝌠`) und werden sequenziell von den entsprechenden Knoten verarbeitet.
 
-### Eingänge
+### Eingaben
 
 | Name | Typ | Beschreibung |
 | --- | --- | --- |
-| `any` | `*` | Jedes Element, das sinnvoll in einen String umgewandelt werden kann, der parsebare Zahlen enthält |
+| `any` | `*` | Alles, was sinnvoll in eine Zeichenkette mit parsebaren Zahlen umgewandelt werden kann |
 
 ### Ausgaben
 
 | Name | Typ | Beschreibung |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Alle in dem String gefundenen Zahlen mit der Dezimalstelle abgerundet. |
-| `float` | `FLOAT 𝌠` | Alle in dem String gefundenen Zahlen als Float. |
-| `string` | `STRING 𝌠` | Alle in dem String gefundenen Zahlen als Float umgewandelt in einen String. |
-| `count` | `INT` | Anzahl der gefundenen Zahlen im Wert. |
+| `int` | `GANZZAHL 𝌠` | Alle in der Zeichenkette gefundenen Zahlen mit abgeschnittenen Dezimalstellen. |
+| `float` | `FLIEßKOMMAZAHL 𝌠` | Alle in der Zeichenkette gefundenen Zahlen als Fließkommazahlen. |
+| `string` | `ZEICHENKETTE 𝌠` | Alle in der Zeichenkette gefundenen Zahlen als Fließkommazahlen, konvertiert in Zeichenkette. |
+| `count` | `GANZZAHL` | Anzahl der in dem Wert gefundenen Zahlen. |
 

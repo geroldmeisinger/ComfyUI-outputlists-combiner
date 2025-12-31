@@ -1,27 +1,26 @@
-<!-- This file was auto-translated with a local LLM and last updated on 2025-12-28. -->
-## Konverter til INT FLOAT STR
+## Konverter Til Int Float Str
 
-![Konverter til INT FLOAT STR](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
+![Konverter Til Int Float Str](ConvertNumberToIntFloatStr/ConvertNumberToIntFloatStr.png)
 
-(Komplett ComfyUI workflow inkludert)
+(ComfyUI workflow inkludert)
 
-Konverterer alt som ser ut som et tall til `INT`, `FLOAT`, `STRING`.
-Bruker `nums_from_string.get_nums` intern, som er veldig lenge i det som det tar som tall. Alt fra egentlige int, egentlige float, int eller float som strenger, strenger som inneholder flere tall med tusenavskilte.
-Bruk en streng `123;234;345` for å raskt generere en liste med tall. Bruk ikke komma som separator fordi de kan tolkes som tusenavskilte.
-`int`, `float` og `string` bruker `is_output_list=True` (indikert av symbolet `𝌠`) og vil behandles sekvensielt av tilhørende noder.
+Konverterer hva som helst nummerlig til `INT` `FLOAT` `STRING`.
+Bruker `nums_from_string.get_nums` internt, som er veldig tilgivende i de tallene den aksepterer. Alt fra faktiske heltall, faktiske desimaltall, heltall eller desimaltall som strenger, strenger som inneholder flere tall med tusen-separatorer.
+Bruk en streng `123;234;345` for å raskt generere en liste med tall. Ikke bruk komma som separator, da de kan tolkes som tusen-separatorer.
+`int`, `float` og `string` bruk(er) `is_output_list=True` (indikert ved symbolet `𝌠`) og vil bli behandlet sekvensielt av tilsvarende noder.
 
-### Inndata
-
-| Navn | Type | Beskrivelse |
-| --- | --- | --- |
-| `any` | `*` | Noe som kan omgjøres til en streng med lesbare tall inneholdt |
-
-### Utdata
+### Innputter
 
 | Navn | Type | Beskrivelse |
 | --- | --- | --- |
-| `int` | `INT 𝌠` | Alle tallene funnet i strengen med desimaler avkortet. |
-| `float` | `FLOAT 𝌠` | Alle tallene funnet i strengen som flyttall. |
-| `string` | `STRING 𝌠` | Alle tallene funnet i strengen som flyttall konvertert til streng. |
-| `count` | `INT` | Antall tall funnet i verdi. |
+| `any` | `*` | Alt som kan konverteres meningsfullt til en streng med tall som kan parses |
+
+### Utputter
+
+| Navn | Type | Beskrivelse |
+| --- | --- | --- |
+| `int` | `INT 𝌠` | Alle tallene funnet i strengen med desimaler fjernet. |
+| `float` | `FLOAT 𝌠` | Alle tallene funnet i strengen som desimaltall. |
+| `string` | `STRING 𝌠` | Alle tallene funnet i strengen som desimaltall konvertert til streng. |
+| `count` | `INT` | Antall tall funnet i verdien. |
 
