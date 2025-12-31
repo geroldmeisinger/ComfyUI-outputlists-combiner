@@ -9,7 +9,7 @@ from json import dumps
 import chardet
 import numpy as np
 import torch
-from exiftool import ExifToolHelper
+from exiftool import ExifTool, ExifToolHelper
 from PIL import Image, ImageOps, ImageSequence, UnidentifiedImageError
 
 import folder_paths
@@ -85,6 +85,8 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			except (UnicodeDecodeError, TypeError):
 				filecontent = base64.b64encode(raw_data).decode("utf-8")
 
+			image_data	= raw_data if is_binary else filecontent
+
 			# run exiftool
 			metadata = "{}"
 			try:
@@ -94,9 +96,8 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			except FileNotFoundError: pass # exiftool not found in path
 
 			# try to load binary or base64 as image
+			pil_img = None
 			if is_binary or is_base64:
-				pil_img = None
-
 				try:
 					image_data	= raw_data if is_binary else filecontent
 					pil_img	= node_helpers.pillow(Image.open, BytesIO(image_data))
@@ -108,11 +109,20 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 							pil_img.info["SourceFile"] = file_path
 							metadata = dumps(pil_img.info, indent=4, default=to_base64)
 				except (UnidentifiedImageError, OSError, ValueError):
-					image	= torch.zeros((1, 64, 64, 3), dtype=torch.float32, device="cpu")
-					mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
+					image	= torch.zeros((1,	64, 64, 3	), dtype=torch.float32, device="cpu")
+					mask	= torch.zeros((	64, 64	), dtype=torch.float32, device="cpu")
 			else:
-				image	= torch.zeros((1, 64, 64, 3), dtype=torch.float32, device="cpu")
-				mask	= torch.zeros((64, 64), dtype=torch.float32, device="cpu")
+				image	= torch.zeros((1,	64, 64, 3	), dtype=torch.float32, device="cpu")
+				mask	= torch.zeros((	64, 64	), dtype=torch.float32, device="cpu")
+
+			# try to load preview thumbnail PNG
+			if not pil_img and "File:PreviewPNG" in metadata:
+				try:
+					with ExifTool(encoding=None, common_args=[]) as et:
+						preview_data = et.execute("-b", "-PreviewPNG", file_path, raw_bytes=True)
+						pil_img	= node_helpers.pillow(Image.open, BytesIO(preview_data))
+						image, mask	= load_image(pil_img)
+				except: pass # exiftool not found in path
 
 			ret_strings	.append(filecontent)
 			ret_images	.append(image)
