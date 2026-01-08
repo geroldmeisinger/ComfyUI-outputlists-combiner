@@ -354,6 +354,7 @@ class XyzGridPlot(io.ComfyNode):
 It takes a list of images (including batches) and flattens them into a long list first (thus `batch_size=1`).
 
 **Grid shape**
+
 Determines the shape of the grid by:
 1. the number of row labels
 2. the number of column labels
@@ -361,18 +362,21 @@ Determines the shape of the grid by:
 You can use `order=inside_out` to reverse the image selection (useful if `batch_size>1` and you want to label the batches).
 
 **Alignment**
+
 * If a label gets wrapped into the next line the whole axis is considered "multiline" and aligns them at top with justified-spacing.
 * If all the labels are numbers or all end in numbers (e.g. `strength: 1.`) the whole axis is considered "numeric" and aligns them right.
 * All other texts are considered "singleline" and aligns them centered.
 * Aligns singleline and numeric labels for columns at bottom, and for rows aligns them vertically in the middle.
 
 **Font-size**
+
 * The height of the column label area is determined by `font_size` or `half of largest sub-images packing height in any row` (whichever is greater).
 * The width of the row label area is determined by the widest width of the sub-images packing (with a minimum of {LABELAREA_ROW_HEIGHT_MIN}px).
 * The text is shrunk down until it fits (down to `font_size_min={FONT_SIZE_MIN}`) and uses the same font size for the whole axis (row labels or column labels).
 If the font size is already at the minimum, clips any remaining text.
 
 **Sub-images packing**
+
 Shapes the sub-images (usually from batches) into the most square area (the "sub-images packing"), unless `output_is_list=True`, in which case uses only one image for each cell and create a list of whole image grids instead.
 You can use this list of image grids to connect another XyzGridPlot node to create super-grids.
 If the sub-images consist of batches of different sizes, fills up the missing cells with empty images.

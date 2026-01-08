@@ -1,5 +1,6 @@
 # Changelog
 
+- 0.0.11 fixed understaffed XYZGridPlot, fixed node documentation language codes
 - 0.0.10 fixed font_size in XYZGridPlot, fixed Load Any File, translated node documentation
 - 0.0.8 more flexible XYZGridPlot, better label rendering in XYZGridPlot, WorkflowDiscriminator node, node documentation
 - 0.0.6 SpreadsheetOutputList, XYZGridPlot

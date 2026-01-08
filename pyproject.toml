@@ -4,7 +4,7 @@ build-backend	= "setuptools.build_meta"
 
 [project]
 name	= "ComfyUI-outputlists_combiner"
-version	= "0.0.10"
+version	= "0.0.11"
 description	= "Handle multiprompts and images within one run. Quick OutputLists from spreadsheet, JSON, multiline text, numberranges for sequential processing. Combinations of lists and prompts. Load any file with metadata and glob patterns. Native XYZ-GridPlots, with supergrids and videogrids. Inspect COMBO in LoRA loader, sampler etc. Strings with placeholders."
 authors	= [{name = "Gerold Meisinger"}]
 readme	= "README.md"
