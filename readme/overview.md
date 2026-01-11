@@ -6,6 +6,8 @@
 - **Quick OutputLists** from CSV and Excel [Spreadsheets](#spreadsheet-outputlist), [JSON data](#json-outputlist), [multiline texts](#string-outputlist), [number ranges](#number-outputlist)...
 - **[Formatted strings](#formatted-string)** for flexible and beautiful [filenames](#combine-rowcolumn-for-filename), [labels](#animating-lora-strength), [additional metadata](#workflow-discriminator)...
 
+https://github.com/user-attachments/assets/766e5802-f382-48d1-b113-9a1ebd7398fd
+
 If you find this custom node useful:
 
 - ⭐ **Star the repo** to make others discover the project and motivate the developer!
