@@ -55,8 +55,8 @@ app.registerExtension(
 					const info	= await api.fetchApi(`/object_info/${targetClassName}`)
 					const json	= await info.json()
 
-					const target	= json[targetClassName].input.required[targetInputName]
-					const values	= Array.isArray(target[0]) ? target[0] : [target[0]]
+					const target	= json[targetClassName].input?.required?.[targetInputName] ?? json[targetClassName].input?.optional?.[targetInputName]
+					const values	= target[0] === "COMBO" ? target[1].options : Array.isArray(target[0]) ? target[0] : [target[0]]
 					const sep	= separatorWidget.value.replace(/\\n/g, "\n").replace(/\\t/g, "\t") // respect escape sequences
 
 					valuesWidget.value = values.join(sep)
