@@ -46,29 +46,22 @@ The saved images will appear in your ComfyUI output folder.
             outputs=[
                 io.Image.Output("images", display_name="images", tooltip="The same images that were saved (passthrough)."),
             ],
-            hidden=[
-                io.Prompt.Input("prompt"),
-                io.ExtraPngInfo.Input("extra_pnginfo"),
-            ],
+            # Hidden inputs for prompt/pnginfo removed due to API incompatibility
             is_output_node=True,
         )
 
-    def __init__(self):
-        self.output_dir = folder_paths.get_output_directory()
-        self.type = "output"
-        self.compress_level = 4
-
     @classmethod
     def execute(cls, images, filename_prefix="ComfyUI", prompt=None, extra_pnginfo=None) -> io.NodeOutput:
-        # Get instance attributes via a temporary instance
         output_dir = folder_paths.get_output_directory()
         compress_level = 4
         
+        # Get path for saving
         full_output_folder, filename, counter, subfolder, filename_prefix = folder_paths.get_save_image_path(
             filename_prefix, output_dir, images[0].shape[1], images[0].shape[0]
         )
         
         results = []
+        # Loop through batch (images is [Batch, Height, Width, Channels])
         for batch_number, image in enumerate(images):
             i = 255. * image.cpu().numpy()
             img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
@@ -94,4 +87,3 @@ The saved images will appear in your ComfyUI output folder.
 
         # Return both the UI update AND the passthrough image
         return io.NodeOutput(images, ui={"images": results})
-
