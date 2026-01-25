@@ -99,6 +99,28 @@ The `Load Checkpoint` node suffers from [the same problem](https://github.com/Co
 
 Another workaround is to use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) but you will loose the OutputLists abilities.
 
+## Multi-parameter Iteration with Inspire-Pack
+
+Custom nodes:
+* [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack)
+
+Standard `ForeachList` loops only accept a single `ITEM_LIST` input, making it difficult to iterate over multiple synchronized parameters (e.g. iterating CFG and Sampler simultaneously).
+
+**OutputLists Compress** and **OutputLists Unpack** solve this by packing multiple lists into tuples and extracting them inside the loop.
+
+![XYZ-GridPlots with Supergrids example](media/multiparam-iteration-with-inspire-pack.png)
+
+**How it works:**
+1.  Use `OutputLists Combinations` to create synchronized lists (e.g., `unzip_a`, `unzip_b`).
+2.  Connect the unzipped lists to `OutputLists Compress`. This creates a list of tuples (e.g., `[(7.0, "euler"), (7.5, "dpm++")]`).
+3.  Connect the `item_list` output directly to `ForeachListBegin`.
+4.  Inside the loop, connect the `item` output to `OutputLists Unpack` to separate the values back into individual outputs for your workflow (e.g., connecting to a KSampler).
+
+**Notes:**
+*   All input lists to Compress must have the same length (guaranteed if coming from `OutputLists Combinations`).
+*   Unpack supports up to 4 parameters. Unused outputs will be `None`.
+*   Works with any node that consumes `ITEM_LIST`, not just Inspire-Pack.
+
 ## Discriminate multiple files
 
 ![Iterate checkpoints example](/workflows/ExampleAdv_06_DiscriminateMultipleFiles.png)
