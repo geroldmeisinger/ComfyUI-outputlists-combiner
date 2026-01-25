@@ -5,6 +5,9 @@ from .json_outputlist import JSONOutputList
 from .ksampler_immediate_saveimage import KSamplerImmediateSave
 from .load_any_file import LoadAnyFile
 from .number_outputlist import NumberOutputList
+from .outputlists_compress import OutputListsCompress
+from .outputlists_unpack import OutputListsUnpack
+from .save_image_passthrough import SaveImagePassthrough
 from .spreadsheet_outputlist import SpreadsheetOutputList
 from .string_outputlist import StringOutputList
 from .workflow_discriminator import WorkflowDiscriminator
