@@ -134,7 +134,7 @@ Also see
 
 ## For-Loops
 
-**DISCLAIMER: The following example is in no way intended to glorify the use of for-loops in ComfyUI or any other forms of violence. In no event can the copyright holder be held liable to damages to your brain or mental functions. No one knows how for for-loops actually work in ComfyUI and I do in no way claim to posses this wisdom either.**
+**DISCLAIMER: The following example is in no way intended to glorify the use of for-loops in ComfyUI or any other forms of violence. In no event can the copyright holder be held liable to damages to your brain or mental functions. No one knows how for-loops actually work in ComfyUI and I do in no way claim to posses this wisdom either.**
 
 **Only use this if you are effected by the [execution stalling problem](#the-execution-stalling-problem)!**
 
@@ -144,11 +144,23 @@ Custom nodes:
 * (optional) [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) for `Preview Image Bridge`
 * (optional) [was-ns](https://github.com/ltdrdata/was-node-suite-comfyui)/[was-node-suite-comfyui (old)](https://github.com/WASasquatch/was-node-suite-comfyui) for `Image Save Passthrough`
 
-![For-Loop example](/workflows/ExampleAdv_08_ForLoops.png)
+**For-Loop over images**
+
+![For-Loop images example](/workflows/ExampleAdv_08a_ForLoops_Images.png)
 
 (ComfyUI workflow included)
 
 This workflow makes use of Easy-Use's `For Loop Start`+`For Loop End` and `Index Any` and basic-data-handling's `create LIST`, `append (LIST)` and `convert to Data List` to iterate over an outputlist and map the results to a new outputlist, while executing all the sub-nodes within the for-loop for each item. Note that Easy-Use's `For Loop` is rather intended as a feedback cycle and as such more complicated then it needs to be for this simple value transformation and mapping. What happens here is that we use the outputlists `count` as the number of cycles, and start with an empty list as the accumlator. The for-loop index is used to access the item in the list, then generates the corresponding and appends it to the list. In the next cycle the list (with one image) is fed back to the start and then generates the next image and appends. In order for an output node (`Preview Image`, `Save Image` etc.) to be considered part of the node expansion it needs a "passthrough". You can either use Inspire-Pack's `Preview Image Bridge` or WAS's `Image Save Passthrough`.
+
+**For-Loop over checkpoints**
+
+![For-Loop checkpoints example](/workflows/ExampleAdv_08b_ForLoops_Checkpoints.png)
+
+(ComfyUI workflow included)
+
+The same as above except we are iterate over SDXL checkpoints instead of strings. This workflow loads the checkpoints one-by-one and unloads them after usage.
+
+Note: You have to start with `--cache-none` for this to work. I tried [Unload Models](https://github.com/SeanScripts/ComfyUI-Unload-Model) and [Purge VRAM V2](https://github.com/chflame163/ComfyUI_LayerStyle) but they didn't work with default cache setting.
 
 **Background**
 
