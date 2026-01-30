@@ -52,3 +52,34 @@ This is useful if you want to save the intermediate images for grids immediately
 			"result" : (images.out(0),),
 			"expand" : graph.finalize(),
 		}
+
+# class SaveImagePassthrough(io.ComfyNode):
+#	@classmethod
+#	def define_schema(cls) -> io.Schema:
+#		return io.Schema(
+#			description	= """Save Image Passthrough""",
+#			node_id	= "SaveImagePassthrough",
+#			display_name	= "Save Image Passthrough",
+#			category	= "_for_testing",
+#			inputs	= [
+#				io.Image.Input("images", display_name="images", tooltip="The images to save."),
+#				io.String.Input("filename_prefix", default="ComfyUI", tooltip="The prefix for the file to save. This may include formatting information such as %date :yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes."),
+#			],
+#			outputs=[
+#				io.Image.Output("images", display_name="images", tooltip="Images"),
+#			],
+#             hidden	= [
+#				io.Hidden.prompt,
+#				io.Hidden.extra_pnginfo,
+#             ],
+#			enable_expand=True,
+#		)
+
+#	@classmethod
+#	def execute(self, images, filename_prefix):
+#		graph	= GraphBuilder()
+#		save	= graph.node("SaveImage", images=images, filename_prefix=filename_prefix, prompt=self.hidden.prompt, extra_pnginfo=self.hidden.extra_pnginfo)
+#		return {
+#			"result" : (images,),
+#			"expand" : graph.finalize(),
+#		}
