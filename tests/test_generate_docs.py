@@ -142,6 +142,7 @@ chapters = [
 	"nodes",
 	"examples",
 	"advanced_examples",
+	"thirdparty",
 	"credits",
 ]
 

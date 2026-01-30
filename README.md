@@ -19,13 +19,15 @@
 
 # Overview
 
+- **Quick OutputLists** from CSV and Excel [Spreadsheets](#spreadsheet-outputlist), [JSON data](#json-outputlist), [multiline texts](#string-outputlist), [number ranges](#number-outputlist)...
+- **[List combinations](#outputlists-combinations)** with native support for [LoRA strength](#compare-lora-model-and-lora-strength), [image size-variants](#combine-numbers), [prompt combinations](#combine-prompts)...
 - **[XYZ-GridPlot](#xyz-gridplot-simple)** perfectly integrates with ComfyUI's paradigm. No weird samplers! No node black magic!
 - **[Inspect combo](#combine-samplers-and-schedulers)** to iterate lists of [LoRAs](#compare-lora-model-and-lora-strength), [samplers/schedulers](#combine-samplers-and-schedulers), [checkpoints](#iterate-checkpoints)...
-- **[List combinations](#outputlists-combinations)** with native support for [LoRA strength](#compare-lora-model-and-lora-strength), [image size-variants](#combine-numbers), [prompt combinations](#combine-prompts)...
-- **Quick OutputLists** from CSV and Excel [Spreadsheets](#spreadsheet-outputlist), [JSON data](#json-outputlist), [multiline texts](#string-outputlist), [number ranges](#number-outputlist)...
 - **[Formatted strings](#formatted-string)** for flexible and beautiful [filenames](#combine-rowcolumn-for-filename), [labels](#animating-lora-strength), [additional metadata](#workflow-discriminator)...
 
 https://github.com/user-attachments/assets/766e5802-f382-48d1-b113-9a1ebd7398fd
+
+The original repo is located at https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 
 If you find this custom node useful:
 
@@ -66,6 +68,7 @@ If you find this custom node useful:
 	- [Repeat OutputLists](#repeat-outputlists)
 	- [Cycle OutputLists](#cycle-outputlists)
 - [Advanced Examples](#advanced-examples)
+	- [The execution stalling problem](#the-execution-stalling-problem)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
 	- [Baking Values Into Workflow](#baking-values-into-workflow)
@@ -75,6 +78,12 @@ If you find this custom node useful:
 	- [Iterate checkpoints](#iterate-checkpoints)
 	- [Discriminate multiple files](#discriminate-multiple-files)
 	- [Animating LoRA strength](#animating-lora-strength)
+	- [For-Loops](#for-loops)
+- [Third-party custom nodes](#third-party-custom-nodes)
+	- [Data Lists](#data-lists)
+	- [Multi-Prompts](#multi-prompts)
+	- [List-like types](#list-like-types)
+	- [XYZ-GridPlots](#xyz-gridplots)
 - [Credits](#credits)
 
 # Installation
@@ -575,6 +584,16 @@ Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the d
 
 # Advanced Examples
 
+## The execution stalling problem
+
+One thing you may have noticed when you make a large image grid is that you have to wait for ALL intermediate images to be processed before anything is saved and the grid created. Thus you could loose a lot of processed images when something happens or you cancel the job (though ComfyUI keeps them in cache and should pick up immediately). Another problem that occurs with loader nodes is that the load ALL resources at once before passing on execution which will eventually lead to OOM.
+
+I have filled a [RFC](https://github.com/Comfy-Org/rfcs/discussions/43) specifically for this problem and proposed changes to the execution scheme of ComfyUI. In the meantime there are multiple workarounds:
+* Ignore it and just wait it out (I recommend to start ComfyUI with `--cache-ram` though, so you can pick up were you left off anytime)
+* Use the `KSampler immediate Save Image` BETA node if your workflow just uses the standard `CheckpointLoaderSimple -> KSampler -> VAE Decode -> Save Image` pattern (see [below](#immediately-save-intermediate-images-of-image-grid)).
+* Use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) to cancel out the effect of outputlists
+* Use [for-loops](#for-loops) with passthrough nodes (see below)
+
 ## XYZ-GridPlots with Supergrids
 
 I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
@@ -587,12 +606,7 @@ Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For 
 
 ## Immediately save intermediate images of image grid
 
-One thing you may have noticed when you make a large image grid is that you have to wait for ALL intermediate images to be processed before anything is saved and the grid created. Thus you could loose a lot of processed images when something happens or you cancel the job (though ComfyUI keeps them in cache and should pick up immediately). If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` beta-node. For this node to be visible in the node searchbox you need to activate `Settings -> Comfy -> Show experimental nodes in search`.
-
-Custom nodes:
-* [images-grid-comfy-plugin](https://github.com/LEv145/images-grid-comfy-plugin)
-* [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
-* [ComfyUI_essentials](https://github.com/cubiq/ComfyUI_essentials) (optional)
+If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` beta-node. For this node to be visible in the node searchbox you need to activate `Settings -> Comfy -> Show experimental nodes in search`.
 
 ![ImageGrids example](/workflows/ExampleAdv_00b_XYZGridPlot_ImmediateSave.png)
 
@@ -670,9 +684,11 @@ https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
 
 (ComfyUI workflow included)
 
-The `Load Checkpoint` node suffers from [the same problem](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) as the `KSampler` in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `KSampler Immediate Save` but note that this only works for default `Load Checkpoint -> KSampler -> VAE Decode -> Save Image` pattern, i.e. no `CFGGuider`, no `ModelShift`, no dual samplers etc. If you need them you have to implement your own node expansion or extend [ksampler_immediate_saveimage.py](src/outputlists_combiner/ksampler_immediate_saveimage.py). I know this is unfortunate and probably to difficult for some people (it's not that hard actually, you just have to be careful when connecting node in code).
+The `Load Checkpoint` node also suffers from [the execution stalling problem](#the-execution-stalling-problem) in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `KSampler Immediate Save` but note that this only works for default `Load Checkpoint -> KSampler -> VAE Decode -> Save Image` pattern, i.e. no `CFGGuider`, no `ModelShift`, no dual samplers etc. If you need them you have to implement your own node expansion or extend [ksampler_immediate_saveimage.py](src/outputlists_combiner/ksampler_immediate_saveimage.py). I know this is unfortunate and probably to difficult for some people (it's not that hard actually, you just have to be careful when connecting node in code).
 
 Another workaround is to use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) but you will loose the OutputLists abilities.
+
+Another workaround is to use [for-loops](#for-loops).
 
 ## Discriminate multiple files
 
@@ -694,24 +710,382 @@ Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
 Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Formatted String` with `{0:0.2f]` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
 
-
 https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
 
 Also see
 * [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
 * [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
 
+## For-Loops
+
+**DISCLAIMER: The following example is in no way intended to glorify the use of for-loops in ComfyUI or any other forms of violence. In no event can the copyright holder be held liable to damages to your brain or mental functions. No one knows how for for-loops actually work in ComfyUI and I do in no way claim to posses this wisdom either.**
+
+**Only use this if you are effected by the [execution stalling problem](#the-execution-stalling-problem)!**
+
+Custom nodes:
+* [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
+* [basic data handling](https://github.com/StableLlama/ComfyUI-basic_data_handling)
+* (optional) [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) for `Preview Image Bridge`
+* (optional) [was-ns](https://github.com/ltdrdata/was-node-suite-comfyui)/[was-node-suite-comfyui (old)](https://github.com/WASasquatch/was-node-suite-comfyui) for `Image Save Passthrough`
+
+![For-Loop example](/workflows/ExampleAdv_08_ForLoops.png)
+
+(ComfyUI workflow included)
+
+This workflow makes use of Easy-Use's `For Loop Start`+`For Loop End` and `Index Any` and basic-data-handling's `create LIST`, `append (LIST)` and `convert to Data List` to iterate over an outputlist and map the results to a new outputlist, while executing all the sub-nodes within the for-loop for each item. Note that Easy-Use's `For Loop` is rather intended as a feedback cycle and as such more complicated then it needs to be for this simple value transformation and mapping. What happens here is that we use the outputlists `count` as the number of cycles, and start with an empty list as the accumlator. The for-loop index is used to access the item in the list, then generates the corresponding and appends it to the list. In the next cycle the list (with one image) is fed back to the start and then generates the next image and appends. In order for an output node (`Preview Image`, `Save Image` etc.) to be considered part of the node expansion it needs a "passthrough". You can either use Inspire-Pack's `Preview Image Bridge` or WAS's `Image Save Passthrough`.
+
+**Background**
+
+In August 2024 ComfyUI introduced [execution inversion](https://github.com/comfyanonymous/ComfyUI/pull/2666) which changed how nodes are processed. Read the [Execution Model Announcement](https://blog.comfy.org/p/august-2024-flux-support-new-frontend-for-loops-and-more?open=false#%C2%A7pr-2666-execution-inversion) and the [Execution Model Inversion Guide](https://docs.comfy.org/development/comfyui-server/execution_model_inversion_guide).
+
+Confused? Good, because you are in good company. It's another example of sophisticated engineering wasted due to lack of any useful documentation. Anyway, one point of this feature is that it enables [Node Expansion](https://docs.comfy.org/custom-nodes/backend/expansion). You can think of it as a custom node which automatically copy-pastes and links other nodes in the background. If done the right way - by inspecting the node graph and the dependencies during runtime using `dynprompt` and copy-pasting the nodes in between multiple times - this gives rise to looping functionality (see code [here](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/flow_control.py)). Many other custom node packs implement different variants of looping, but again - in a cycle of elitism - lack any useful documentation and examples, hence why they are not used anywhere. Which brings me to the conclusion that no one (NO ONE!) knows how for-loops in ComfyUI actually work and they are merely a cruel inside joke to mess with everyone.
+
+Also note that most loop nodes want to support some form of feedback cycle and use the previous result as the input for the next cycle (e.g. a img2img loop). As such the nodes within the loop always need an input image, but because the first output image hasn't been generated yet, they need an initial value independent of the generation. In programming terms you could compare that to a `reduce` (or Arrow Loop) as opposed to a `map` (or Functor).
+
+**Alternative loop variants**
+
+* [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
+* [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) ([Hidden example](https://github.com/ltdrdata/ComfyUI-Impact-Pack/issues/824#issuecomment-2493301831))
+* [Control-Flow Utils](https://github.com/VykosX/ControlFlowUtils) ([In-Depth Node Explanation](https://github.com/VykosX/ControlFlowUtils/wiki/ControlFlowUtils-%E2%80%90-In-Depth-Node-Explanation))
+* [Akatz-Loop-Nodes](https://github.com/akatz-ai/Akatz-Loop-Nodes)
+* [Execution Inversion Demo](https://github.com/BadCafeCode/execution-inversion-demo-comfyui)
+
+If you are one of these developers and read this, thank you for your work, but please fix your documentation and examples!
+
+# Third-party custom nodes
+
+I consider the following custom nodes essential for any ComfyUI installation and especially for this custom node pack:
+
+- [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
+- [rgthree](https://github.com/rgthree/rgthree-comfy)
+- [ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials)
+- [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
+- [Crystools](https://github.com/crystian/ComfyUI-Crystools)
+- [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
+- [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
+
+Remember that the core feature of OutputLists Combiner revolves around [data lists](https://docs.comfy.org/custom-nodes/backend/lists). One of my design goals was to introduce new custom nodes only if they are necessary in every common use-case and avoid cluttering with more duplicate functionality that is already available in other essential nodes. The following is a reference of useful third-party custom nodes which support the use of data lists, multi-prompting or XYZ-GridPlots. The list is opionated and incomplete on purpose. I left out: specializations (string lists, mask lists), niche-uses, endless list manipulation variants, and unpopular custom node packs.
+
+Many custom nodes provide some support for data lists, multi-prompting and XYZ-GridPlots but always lack some essential features, resort to black magic or are not thought all the way through. I also want use this reference to discuss some shortcomings of other nodes and make some arguments why the OutputLists Combiner was necessary.
+
+## Data Lists
+
+Any node which declares `INPUT_IS_LIST = True` or `OUTPUT_IS_LIST = (..., True, ...)` (in Scheme v1), `is_output_list = True` or `is_input_list = True` (in [Scheme v3](https://docs.comfy.org/custom-nodes/v3_migration)) makes use of [data lists](https://docs.comfy.org/custom-nodes/backend/lists). You can search for these patterns in code if want to find which ones make use of it.
+
+### Core
+
+`Rebatch Images`
+
+![Rebatch Images](/media/Core_RebatchImages.png)
+
+`ImageFromBatch`
+
+![ImageFromBatch](/media/Core_ImageFromBatch.png)
+
+- Useful in conjunction with the [PrimitiveInt control_after_generate=increment pattern](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner?tab=readme-ov-file#the-primitiveint-control_after_generateincrement-pattern).
+- Also see `Select Nth Item (Any list)`.
+
+### Custom Scripts
+
+[Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
+
+`Show Text`
+
+![Show Text](/media/CustomScripts_ShowText.png)
+
+The main advantage of this node is that it adds a new entry for every list item, whereas most other string output nodes only show the first or last entry.
+
+`Repeater`
+
+![Repeater](/media/CustomScripts_Repeater.png)
+
+### Impact Pack
+
+[Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
+
+`List Bridge`
+
+![List Bridge](/media/ImpactPack_ListBridge.png)
+
+Uses `INPUT_IS_LIST=True` which means it collects and concatenates all input lists.
+
+`Make List (Any)`
+
+![Make List (Any)](/media/ImpactPack_MakeListAny.png)
+
+- Useful if you want to manually create a data list.
+- Also see `List of Any`.
+
+`Make Image List`
+
+![Make Image List](/media/ImpactPack_MakeImageList.png)
+
+Same as `Make List (Any)` except it's type-safe on images.
+
+`Select Nth Item (Any list)`
+
+![Select Nth Item (Any list)](/media/ImpactPack_SelectNthItem.png)
+
+- Useful in conjunction with the [PrimitiveInt control_after_generate=increment pattern](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner?tab=readme-ov-file#the-primitiveint-control_after_generateincrement-pattern).
+- Also see `ImageFromBatch`.
+
+`Image List To Image Batch`
+
+![Image List To Image Batch](/media/ImpactPack_ImageListToImageBatch.png)
+
+`Image Batch To Image List`
+
+![Image Batch To Image List](/media/ImpactPack_ImageBatchToImageList.png)
+
+### Inspire Pack
+
+[Inspire Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack)
+
+`Float Range`
+
+![Float Range](/media/InspirePack_FloatRange.png)
+
+An alternative to [Number OutputList](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner?tab=readme-ov-file#number-outputlist) if you prefer `steps` instead.
+
+### Crystools
+
+`Pipe To` and `Pipe From`
+
+![Pipe To and Pipe From](/media/Crystools_Pipe.png)
+
+`List of Any`
+
+![List of Any](/media/Crystools_ListOfAny.png)
+
+- Useful if you want to manually create a data list.
+- Also see `Make List (Any)`.
+
+### KJNodes
+
+[KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
+
+`Get Images From Batch Indexed`
+
+![Get Images From Batch Indexed](/media/Crystools_GetImagesFromBatchIndexed.png)
+
+### ComfyUI Essentials
+
+[ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials)
+
+`Batch Count` and `Get Image Size`
+
+![Batch Count](/media/ComfyUIEssentials_BatchCount.png)
+![Get Image Size](/media/ComfyUIEssentials_GetImageSize.png)
+
+`Image List To Batch`
+
+![Image List To Batch](/media/ComfyUIEssentials_ImageListToBatch.png)
+
+An alternative to `Image List To Image Batch` although I recommend the Impact-Pack version because it also provides the inverse.
+
+### Easy-Use
+
+[Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
+
+`Length Any`
+
+![Length Any](/media/EasyUse_LengthAny.png)
+
+`Index Any`
+
+![Index Any](/media/EasyUse_IndexAny.png)
+
+An alternative to `Select Nth Item (Any list)`
+
+`Image List To Image Batch`
+
+![Image List To Image Batch](/media/EasyUse_ImageListToImageBatch.png)
+
+An alternative to the Impact-Pack variant.
+
+`Image Batch To Image List`
+
+![Image Batch To Image List](/media/EasyUse_ImageBatchToImageList.png)
+
+An alternative to the Impact-Pack variant.
+
+### ComfyRoll
+
+[ComfyRoll](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes)
+
+See [List Nodes](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes/wiki/List-Nodes)
+
+### Basic Data Handling
+
+[Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling)
+
+See [Data List](https://github.com/StableLlama/ComfyUI-basic_data_handling#data-list)
+
+### Bjornulf
+
+[Bjornulf Custom nodes](https://github.com/justUmen/Bjornulf_custom_nodes)
+
+### Job Iterator
+
+[Job-Iterator](https://github.com/ali1234/comfyui-job-iterator)
+
+## Multi-Prompts
+
+### Core
+
+`Load Image Dataset from Folder`
+
+![Load Image Dataset from Folder](/media/Core_LoadImageDatasetFromFolder.png)
+
+- Core node, but I recommend [Load Any File](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner?tab=readme-ov-file#load-any-file) instead.
+- Note: this is a BETA node and you need to activate experimental nodes in settings.
+
+`Regex`
+
+### Impact-Pack
+
+[Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
+
+### Inspire-Pack
+
+[Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack)
+
+`Load Image List From Dir (Inspire)` and `Load Image Batch From Dir (Inspire)`)
+
+![Load Image List From Dir](/media/InspirePack_LoadImageListFromDir.png)
+![Load Image Batch From Dir](/media/InspirePack_LoadImageBatchFromDir.png)
+
+- Allows to load from arbitrary directory (warning: this has security implications!).
+- I recommend [Load Any File](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner?tab=readme-ov-file#load-any-file) instead, but this one provides more settings.
+
+`Load Prompts From Dir`
+
+![Load Prompts From Dir](/media/InspirePack_LoadPromptsFromDir.png)
+
+`Load Prompts From File`
+
+![Load Prompts From File](/media/InspirePack_LoadPromptsFromFile.png)
+
+### Easy-Use
+
+See [PromptList](https://docs.easyuse.yolain.com/en/nodes/prompt#promptlist)
+
+See [Wildcards](https://docs.easyuse.yolain.com/en/nodes/prompt#wildcards)
+
+## List-like types
+
+When you open the node searchbox and filter by types you often stumble upon list-like types, which are not actual data lists, and contribute to some confusion:
+
+- `FLOATS` from Core and only used in `Create Hook Keyframes From Floats`
+- `LIST` from [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui): a wrapper for python list of any type
+- `ListString` from [Crystools](https://github.com/crystian/ComfyUI-Crystools): a wrapper for python list of strings
+- `RangeFloat` and `RangeInt` from [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
+- `INT,FLOAT` from [ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials): a variable type which supports `INT` and `FLOAT`, sometimes declared as `NUMBER`
+
+## XYZ-GridPlots
+
+### OutputLists Combiner
+
+**Recommended!**
+
+[OutputLists Combiner](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner)
+
+- very versatile dispite the minimal amount of nodes
+- native integration of LoRAs, checkpoints and other COMBOs, no custom KSampler required
+- lots of examples
+- lots of documentation including multi-lingual node documentation
+
+### Images Grid
+
+[Images Grid](https://github.com/LEv145/images-grid-comfy-plugin)
+
+- Very simple and intuitive but restricted feature set
+- Minor issue: manual list population with separators instead of native lists
+- Minor issue: duplicate nodes (`ImagesGridByColumns`, `ImagesGridByRows`)
+
+### Core
+
+`Image Grid`
+
+- Simple image grid but no support for labels
+- Note: this is a BETA node and you need to activate experimental nodes in settings
+
+### WAS Node Suite
+
+[WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
+
+`Create Grid Image` and `Create Grid Image from Batch`
+
+- Simple image grid but no support for labels
+
+### Soze
+
+[Soze](https://github.com/SozeInc/ComfyUI_Soze)
+
+- versatile due to data lists
+- requires a lot of manual entries due to extra textfields for every input
+- no documentation, no examples, only a node overview image
+
+### Easy-Use
+
+[Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
+
+`xyAny`
+
+- [No documentation](https://docs.easyuse.yolain.com/en/nodes/xyInputs)
+- [Useless and hidden example](https://github.com/yolain/ComfyUI-Yolain-Workflows?tab=readme-ov-file#1-7-xy%E5%AF%B9%E6%AF%94)
+
+### ComfyRoll
+
+[ComfyRoll](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes)
+
+- [Useless examples](https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes/wiki/XY-Grid-Nodes)
+
+### TinyTerra
+
+[TinyTerra](https://github.com/TinyTerra/ComfyUI_tinyterraNodes)
+
+`xyPlot` (and `advanced xyPlot`)
+
+- requires custom KSampler and doesn't integrate natively with ComfyUI
+- requires to learn custom syntax to enter images and labels manually, or use custom context-menu black magic to fill entries, or use extra nodes to generate them
+
+### Efficiency Nodes
+
+[Efficiency Nodes](https://github.com/LucianoCirino/efficiency-nodes-comfyui)
+
+- requires custom KSampler
+- lots of specialized nodes for singular use-cases (for Sampler/Scheduler, LoRAs etc.)
+
+### D2 Nodes
+
+[D2 Nodes](https://github.com/da2el-ai/D2-nodes-ComfyUI)
+
+- [hidden examples](https://github.com/da2el-ai/D2-nodes-ComfyUI/tree/main/workflow)
+- requires custom KSampler
+- lots of specialized nodes for singular use-cases (for Sampler/Scheduler, LoRAs etc.)
+
+### qq-nodes
+
+[qq-nodes](https://github.com/kenjiqq/qq-nodes-comfyui)
+
+- requires multiple round-trip black magic to populate the grid
+
 # Credits
 
 - [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+- [Job Iterator](https://github.com/ali1234/comfyui-job-iterator)
 - [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
 - [rgthree](https://github.com/rgthree/rgthree-comfy)
 - [ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials)
 - [Impackt-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools)
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
-- [Simple_Readable_Metadata](https://github.com/ShammiG/ComfyUI-Simple_Readable_Metadata-SG)
+- [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
+- [Simple Readable Metadata](https://github.com/ShammiG/ComfyUI-Simple_Readable_Metadata-SG)
 
 [![Star History Chart](https://api.star-history.com/svg?repos=geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)](https://www.star-history.com/#geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)
+
+The original repo is located at https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 
 <a href="https://www.buymeacoffee.com/GeroldMeisinger" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
