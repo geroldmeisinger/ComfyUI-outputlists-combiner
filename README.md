@@ -1096,7 +1096,13 @@ When you open the node searchbox and filter by types you often stumble upon list
 - [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
 - [Simple Readable Metadata](https://github.com/ShammiG/ComfyUI-Simple_Readable_Metadata-SG)
 
-[![Star History Chart](https://api.star-history.com/svg?repos=geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)](https://www.star-history.com/#geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left)
+<a href="https://www.star-history.com/?repos=geroldmeisinger%2FComfyUI-outputlists-combiner&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=geroldmeisinger/ComfyUI-outputlists-combiner&type=date&theme=dark&legend=top-left&sealed_token=O_fzwwpfYfiDJD0lGW8DWEo0HzVwS7H1PWWSOMjKP0EGtrR7B_ERdL4w5Jb-97wz1i0kR5mDToKVTPNlvQQR3UGu4tamtdMLAvC-1yesfB84l1pJLPmRvk5QCDH0-4hI0ioByj3bdN8HRyvT6KkK_kD3ZRoP88hukJYn2BadCgvIb6bmQ2XHTpfyoaMq" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left&sealed_token=O_fzwwpfYfiDJD0lGW8DWEo0HzVwS7H1PWWSOMjKP0EGtrR7B_ERdL4w5Jb-97wz1i0kR5mDToKVTPNlvQQR3UGu4tamtdMLAvC-1yesfB84l1pJLPmRvk5QCDH0-4hI0ioByj3bdN8HRyvT6KkK_kD3ZRoP88hukJYn2BadCgvIb6bmQ2XHTpfyoaMq" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=geroldmeisinger/ComfyUI-outputlists-combiner&type=date&legend=top-left&sealed_token=O_fzwwpfYfiDJD0lGW8DWEo0HzVwS7H1PWWSOMjKP0EGtrR7B_ERdL4w5Jb-97wz1i0kR5mDToKVTPNlvQQR3UGu4tamtdMLAvC-1yesfB84l1pJLPmRvk5QCDH0-4hI0ioByj3bdN8HRyvT6KkK_kD3ZRoP88hukJYn2BadCgvIb6bmQ2XHTpfyoaMq" />
+ </picture>
+</a>
 
 The original repo is located at https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 
