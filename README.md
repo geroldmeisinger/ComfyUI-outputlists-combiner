@@ -756,13 +756,23 @@ Also note that most loop nodes want to support some form of feedback cycle and u
 
 **Alternative loop variants**
 
-* [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
-* [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) ([Hidden example](https://github.com/ltdrdata/ComfyUI-Impact-Pack/issues/824#issuecomment-2493301831))
+* [official TensorLoop](https://github.com/kijai/ComfyUI/blob/2bf117a8257a3a1351d7f8db55a9f2ade8870277/comfy_extras/nodes_looping.py)
+* [Execution Inversion Demo](https://github.com/BadCafeCode/execution-inversion-demo-comfyui) ([code1](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/flow_control.py) [code2](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/utility_nodes.py))
+* [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use) ([code](https://github.com/yolain/ComfyUI-Easy-Use/blob/4de1ab3b66e48da916b6f263bacd001df53a2720/py/nodes/logic.py#L591))
+* [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) ([Hidden example](https://github.com/ltdrdata/ComfyUI-Impact-Pack/issues/824#issuecomment-2493301831)) ([code](https://github.com/ltdrdata/ComfyUI-Inspire-Pack/blob/d23db9aa544de9a6d4c609cb7005fa9e0d42031d/inspire/list_nodes.py#L82))
 * [Control-Flow Utils](https://github.com/VykosX/ControlFlowUtils) ([In-Depth Node Explanation](https://github.com/VykosX/ControlFlowUtils/wiki/ControlFlowUtils-%E2%80%90-In-Depth-Node-Explanation))
-* [Akatz-Loop-Nodes](https://github.com/akatz-ai/Akatz-Loop-Nodes)
-* [Execution Inversion Demo](https://github.com/BadCafeCode/execution-inversion-demo-comfyui)
+* [Akatz-Loop-Nodes](https://github.com/akatz-ai/Akatz-Loop-Nodes) ([code](https://github.com/akatz-ai/Akatz-Loop-Nodes/blob/main/flow_control.py))
 
 If you are one of these developers and read this, thank you for your work, but please fix your documentation and examples!
+
+**Non-loops**
+
+The following packages have loop in there name but don't provide actual looping functionality in the sense described above:
+
+* [Bjornulf_custom_nodes](https://github.com/justUmen/Bjornulf_custom_nodes) just data lists
+* [Hullabalo/ComfyUI-Loop](https://github.com/Hullabalo/ComfyUI-Loop) multi-run blackmagic
+* [O-oshir/comfy-loop-utilities](https://github.com/O-oshir/comfy-loop-utilities) just data lists
+* [t22m003/ComfyUI_LoopNode](https://github.com/t22m003/ComfyUI_LoopNode) just data lists
 
 # Third-party custom nodes
 
