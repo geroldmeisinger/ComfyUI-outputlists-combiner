@@ -8,9 +8,9 @@
 
 <h3 align="center">
 	<a href="#installation"	target="_blank">Installation	</a> ·
-	<a href="#changelog"	target="_blank">Changelog	</a> ·
-	<a href="#nodes"	target="_blank">Nodes	</a> ·
-	<a href="#examples"	target="_blank">Examples	</a>
+	<a href="#changelog"   	target="_blank">Changelog   	</a> ·
+	<a href="#nodes"       	target="_blank">Nodes       	</a> ·
+	<a href="#examples"    	target="_blank">Examples    	</a>
 </h3>
 
 <div align="center">
@@ -763,6 +763,11 @@ Also note that most loop nodes want to support some form of feedback cycle and u
 * [Control-Flow Utils](https://github.com/VykosX/ControlFlowUtils) ([In-Depth Node Explanation](https://github.com/VykosX/ControlFlowUtils/wiki/ControlFlowUtils-%E2%80%90-In-Depth-Node-Explanation))
 * [Akatz-Loop-Nodes](https://github.com/akatz-ai/Akatz-Loop-Nodes) ([code](https://github.com/akatz-ai/Akatz-Loop-Nodes/blob/main/flow_control.py))
 
+Not in the registry:
+* [WainWong ComfyUI-Loop-image](https://github.com/WainWong/ComfyUI-Loop-image)
+* [jeankassio ComfyUI-ForLoops](https://github.com/jeankassio/ComfyUI-ForLoops)
+* [ThepExcel ComfyAngel](https://github.com/ThepExcel/ComfyAngel)
+
 If you are one of these developers and read this, thank you for your work, but please fix your documentation and examples!
 
 **Non-loops**
@@ -773,6 +778,7 @@ The following packages have loop in there name but don't provide actual looping 
 * [Hullabalo/ComfyUI-Loop](https://github.com/Hullabalo/ComfyUI-Loop) multi-run blackmagic
 * [O-oshir/comfy-loop-utilities](https://github.com/O-oshir/comfy-loop-utilities) just data lists
 * [t22m003/ComfyUI_LoopNode](https://github.com/t22m003/ComfyUI_LoopNode) just data lists
+* multiple looped sampler implementations which only work for one use-case
 
 # Third-party custom nodes
 
