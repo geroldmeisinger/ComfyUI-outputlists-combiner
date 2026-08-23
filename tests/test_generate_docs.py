@@ -129,6 +129,8 @@ nodes = [
 	FormattedString(),
 	ConvertNumberToIntFloatStr(),
 	LoadAnyFile(),
+	IterateBegin(),
+	IterateEnd(),
 	KSamplerImmediateSave(),
 ]
 
@@ -142,6 +144,8 @@ chapters = [
 	"nodes",
 	"examples",
 	"advanced_examples",
+	"video_examples",
+	"for_loops",
 	"thirdparty",
 	"credits",
 ]

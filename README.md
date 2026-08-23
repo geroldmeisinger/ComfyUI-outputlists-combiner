@@ -55,6 +55,8 @@ If you find this custom node useful:
 	- [Formatted String](#formatted-string)
 	- [Convert To Int Float Str](#convert-to-int-float-str)
 	- [Load Any File](#load-any-file)
+	- [Iterate Begin](#iterate-begin)
+	- [Iterate End](#iterate-end)
 - [Examples](#examples)
 	- [Simple OutputList](#simple-outputlist)
 	- [Combine prompts](#combine-prompts)
@@ -77,7 +79,10 @@ If you find this custom node useful:
 	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 	- [Discriminate multiple files](#discriminate-multiple-files)
 	- [Animating LoRA strength](#animating-lora-strength)
-	- [For-Loops](#for-loops)
+- [Examples for Video workflows](#examples-for-video-workflows)
+	- [Iterate durations](#iterate-durations)
+	- [Iterate resolutions](#iterate-resolutions)
+- [For-Loops](#for-loops)
 - [Third-party custom nodes](#third-party-custom-nodes)
 	- [Data Lists](#data-lists)
 	- [Multi-Prompts](#multi-prompts)
@@ -246,6 +251,7 @@ All lists use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will
 | `header_rows` | `INT` | Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`. |
 | `header_cols` | `INT` | Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`. |
 | `select_nth` | `INT` | Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern. |
+| `separator` | `STRING` | Separator character used for .csv files |
 | `string_or_base64` | `STRING` | CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64. |
 
 ### Outputs
@@ -474,6 +480,62 @@ For performance reasons the number of files are limited to: 1024.
 | `image` | `IMAGE 𝌠` | Image batch tensor. |
 | `mask` | `MASK 𝌠` | Mask batch tensor. |
 | `metadata` | `STRING 𝌠` | Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`. |
+
+## Iterate Begin
+
+![Iterate Begin](/web/docs/IterateBegin/IterateBegin.png)
+
+(ComfyUI workflow included)
+
+Iterate a sub-workflow by executing it from a data list sequentially in item-major order (as opposed to node-major)."
+You need to connect the `flow_control` from a `IterateBegin` to a `IterateEnd` node.
+Only use this if a sub-workflow takes a long time to process without any visible progress (see [execution stalling problem](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner#the-execution-stalling-problem)).
+Make sure to use the passthrough output slots on output nodes (`Preview Image`, `Save Image` etc.) so the intermediate results are visible.
+Internally uses the node expansion mechanism which duplicates the sub-workflow multiple times for each list item.
+
+`lists` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+
+### Inputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `datalist` | `*` | (optional) |
+| `_` | `*` | Ignore! Only used internally |
+
+### Outputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `flow_control` | `FLOW_CONTROL` | You need to connect the `flow_control` from a `IterateBegin` to a `IterateEnd` node. |
+| `item` | `*` |  |
+| `index` | `INT` |  |
+
+## Iterate End
+
+![Iterate End](/web/docs/IterateEnd/IterateEnd.png)
+
+(ComfyUI workflow included)
+
+Iterate a sub-workflow by executing it from a data list sequentially in item-major order (as opposed to node-major)."
+You need to connect the `flow_control` from a `IterateBegin` to a `IterateEnd` node.
+Only use this if a sub-workflow takes a long time to process without any visible progress (see [execution stalling problem](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner#the-execution-stalling-problem)).
+Make sure to use the passthrough output slots on output nodes (`Preview Image`, `Save Image` etc.) so the intermediate results are visible.
+Internally uses the node expansion mechanism which duplicates the sub-workflow multiple times for each list item.
+
+`lists` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+
+### Inputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `flow_control` | `FLOW_CONTROL` | Connect it to a `IterateBegin` node |
+| `item` | `*` | You need to connect the `flow_control` from a `IterateBegin` to a `IterateEnd` node. |
+
+### Outputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `datalist` | `* 𝌠` |  |
 
 
 # Examples
@@ -726,7 +788,21 @@ Also see
 * [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
 * [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
 
-## For-Loops
+# Examples for Video workflows
+
+## Iterate durations
+
+![Iterate durations video example](/workflows/ExampleVid_00_MinimaxH3_Durations.png)
+
+(ComfyUI workflow included)
+
+## Iterate resolutions
+
+![Iterate durations video example](/workflows/ExampleVid_01_MinimaxH3_Resolutions.png)
+
+(ComfyUI workflow included)
+
+# For-Loops
 
 **DISCLAIMER: The following example is in no way intended to glorify the use of for-loops in ComfyUI or any other forms of violence. In no event can the copyright holder be held liable to damages to your brain or mental functions. No one knows how for-loops actually work in ComfyUI and I do in no way claim to posses this wisdom either.**
 

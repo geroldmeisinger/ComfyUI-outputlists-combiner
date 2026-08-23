@@ -17,6 +17,7 @@ All lists use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will
 | `header_rows` | `INT` | Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`. |
 | `header_cols` | `INT` | Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`. |
 | `select_nth` | `INT` | Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern. |
+| `separator` | `STRING` | Separator character used for .csv files |
 | `string_or_base64` | `STRING` | CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64. |
 
 ### Outputs
