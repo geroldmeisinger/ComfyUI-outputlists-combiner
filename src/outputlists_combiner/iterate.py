@@ -63,6 +63,7 @@ class IterateEnd(io.ComfyNode):
 			],
 			enable_expand	= True,
 			hidden	= [io.Hidden.unique_id, io.Hidden.dynprompt],
+			is_output_node	= True, # always execute this node so users don't have to put an output node afterwards
 		)
 		return ret
 
