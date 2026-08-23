@@ -123,6 +123,7 @@ Newer Skia versions requires `libEGL.so` to be present on Linux hosts, see [offi
 
 # Changelog
 
+- 0.0.12 added Iterate loop nodes, added separator field in SpreadsheetOutputList
 - 0.0.11 fixed understaffed XYZGridPlot, fixed node documentation language codes
 - 0.0.10 fixed font_size in XYZGridPlot, fixed Load Any File, translated node documentation
 - 0.0.8 more flexible XYZGridPlot, better label rendering in XYZGridPlot, WorkflowDiscriminator node, node documentation
