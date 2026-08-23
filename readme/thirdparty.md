@@ -256,6 +256,15 @@ When you open the node searchbox and filter by types you often stumble upon list
 - Simple image grid but no support for labels
 - Note: this is a BETA node and you need to activate experimental nodes in settings
 
+### Pixaroma
+
+[Pixaroma](https://github.com/pixaroma/ComfyUI-Pixaroma#-xy-plot-pixaroma)
+
+- [YouTube - ComfyUI XY Plot Ep21](https://www.youtube.com/watch?v=_M-IGh38UkM) in-depth video tutorial
+- provides a full configuration suite in a XY Plot output node which makes it simple for trivial cases
+- technically works kinda backwards: the output node requests multiple images
+- fundamentally it fights against the ComfyUI paradigm and tries to do everything in one node
+
 ### WAS Node Suite
 
 [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)

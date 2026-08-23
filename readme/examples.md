@@ -65,16 +65,6 @@ Makes use of `inspect_combo` to populate the `String OutputList` with the model 
 
 It might be a little confusing why we need two combinations here, but it is important that the lists are synchronized. Ideally we would only construct a single combination with pairs of `[(modelA, triggerA), (modelB, triggerB), (modelC, triggerC)] x lora-strengths` but then we would need to deconstruct the `(modelX, triggerX)` pairs later.
 
-## The PrimitiveInt control_after_generate=increment pattern
-
-You probably noticed the `control_after_generate` widget before in the `KSampler` for `seed` where it's often set to `random`. This feature can also be created manually with the `Primitive Int` node. If you set it to `control_after_generate=increment` you basically get a counter that increases everytime you run a prompt. When you hook it up as a index in a list selector node, it iterates over entries across multiple prompts. In the `Run` toolbox you can set the amount of prompts to the number of items in your list to iterate the whole list. This pattern essentially cancels out the effect of OutputLists and will only ever process one item at a time. That's especially useful if you want to test something out. Remember to reset the counter to 0 afterwards!
-
-![The PrimitiveInt control_after_generate=increment pattern](/media/PrimitiveIntControlAfterGenerateIncrement.png)
-
-And because it is very tedious to add a selector for every single list, the `Spreadsheet OutputList` includes a `select_nth` widget which applies the index to all lists at once, and makes everything simpler for complex workflows that use multiple lists.
-
-![The PrimitiveInt control_after_generate=increment pattern and Spreadsheet OutputList](/media/PrimitiveIntControlAfterGenerateIncrementSpreadsheet.png)
-
 ## XYZ-GridPlot Simple
 
 ![XYZ-GridPlot Simple example](/workflows/Example_06_XYZ-GridPlot.png)
@@ -102,3 +92,38 @@ Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the d
 ## Cycle OutputLists
 
 ![Cycle OuputLists example](/workflows/Example_08b_CycleOutputLists.png)
+
+## The execution stalling problem
+
+One thing you may have noticed when you make a large image grid is that you have to wait for ALL intermediate images to be processed before anything is saved and the grid created. Thus you could loose a lot of processed images when something happens or you cancel the job (though ComfyUI keeps them in cache and should pick up immediately). Another problem that occurs with loader nodes is that the load ALL resources at once before passing on execution which will eventually lead to OOM.
+
+The reason is that ComfyUI process the data list in node-major mode (one node processes all items before proceeding to the next node) instead of list-major mode (one item is processed by a group of nodes before proceeding to the next item). I have filled a [RFC](https://github.com/Comfy-Org/rfcs/discussions/43) specifically for this problem and proposed changes to the execution scheme of ComfyUI. In the meantime there are multiple workarounds:
+* Ignore it and just wait it out (I recommend to start ComfyUI with `--cache-ram` though, so you can pick up were you left off anytime)
+* Use[Iterate loop nodes]](#iterate loop nodes) with passthrough output nodes (recommended!)
+* Use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) but it requires some manual work.
+
+### Iterate loop nodes
+
+![Iterate loop nodes](/workflows/Example_09_IterateLoopNodes.png)
+
+(ComfyUI workflow included)
+
+Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
+
+(if you want to understand how this works internally see the section [for-loops](#for-loops))
+
+### The PrimitiveInt control_after_generate=increment pattern
+
+You probably noticed the `control_after_generate` widget before in the `KSampler` for `seed` where it's often set to `random`. This feature can also be created manually with the `Primitive Int` node. If you set it to `control_after_generate=increment` you basically get a counter that increases everytime you run a prompt. When you hook it up as a index in a list selector node, it iterates over entries across multiple prompts. In the `Run` toolbox you can set the amount of prompts to the number of items in your list to iterate the whole list. This pattern essentially cancels out the effect of OutputLists and will only ever process one item at a time. That's especially useful if you want to test something out. Remember to reset the counter to 0 afterwards!
+
+![The PrimitiveInt control_after_generate=increment pattern](/media/PrimitiveIntControlAfterGenerateIncrement.png)
+
+And because it is very tedious to add a selector for every single list, the `Spreadsheet OutputList` includes a `select_nth` widget which applies the index to all lists at once, and makes everything simpler for complex workflows that use multiple lists.
+
+![The PrimitiveInt control_after_generate=increment pattern and Spreadsheet OutputList](/media/PrimitiveIntControlAfterGenerateIncrementSpreadsheet.png)
+
+### Node expansion in code
+
+Another solution is node expansion in code but you literally have to rebuild a pattern in code, see [Node expansion in code](https://github.com/geroldmeisinger/rfcs/blob/main/rfcs/0000-execution_mode_in_sequential_processing.md#alternatives).
+
+**Deprecated**: If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` beta-node. For this node to be visible in the node searchbox you need to activate `Settings -> Comfy -> Show experimental nodes in search`.

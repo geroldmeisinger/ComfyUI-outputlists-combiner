@@ -8,9 +8,9 @@
 
 <h3 align="center">
 	<a href="#installation"	target="_blank">Installation	</a> ·
-	<a href="#changelog"   	target="_blank">Changelog   	</a> ·
-	<a href="#nodes"       	target="_blank">Nodes       	</a> ·
-	<a href="#examples"    	target="_blank">Examples    	</a>
+	<a href="#changelog"	target="_blank">Changelog	</a> ·
+	<a href="#nodes"	target="_blank">Nodes	</a> ·
+	<a href="#examples"	target="_blank">Examples	</a>
 </h3>
 
 <div align="center">
@@ -62,20 +62,19 @@ If you find this custom node useful:
 	- [Combine samplers and schedulers](#combine-samplers-and-schedulers)
 	- [Combine row/column for filename](#combine-rowcolumn-for-filename)
 	- [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength)
-	- [The PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern)
 	- [XYZ-GridPlot Simple](#xyz-gridplot-simple)
 	- [Load multiple files with different formats](#load-multiple-files-with-different-formats)
 	- [Repeat OutputLists](#repeat-outputlists)
 	- [Cycle OutputLists](#cycle-outputlists)
-- [Advanced Examples](#advanced-examples)
 	- [The execution stalling problem](#the-execution-stalling-problem)
+- [Advanced Examples](#advanced-examples)
+	- [Iterate checkpoints](#iterate-checkpoints)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
 	- [Baking Values Into Workflow](#baking-values-into-workflow)
 	- [Load all images from grid](#load-all-images-from-grid)
 	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
 	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
-	- [Iterate checkpoints](#iterate-checkpoints)
 	- [Discriminate multiple files](#discriminate-multiple-files)
 	- [Animating LoRA strength](#animating-lora-strength)
 	- [For-Loops](#for-loops)
@@ -544,16 +543,6 @@ Makes use of `inspect_combo` to populate the `String OutputList` with the model 
 
 It might be a little confusing why we need two combinations here, but it is important that the lists are synchronized. Ideally we would only construct a single combination with pairs of `[(modelA, triggerA), (modelB, triggerB), (modelC, triggerC)] x lora-strengths` but then we would need to deconstruct the `(modelX, triggerX)` pairs later.
 
-## The PrimitiveInt control_after_generate=increment pattern
-
-You probably noticed the `control_after_generate` widget before in the `KSampler` for `seed` where it's often set to `random`. This feature can also be created manually with the `Primitive Int` node. If you set it to `control_after_generate=increment` you basically get a counter that increases everytime you run a prompt. When you hook it up as a index in a list selector node, it iterates over entries across multiple prompts. In the `Run` toolbox you can set the amount of prompts to the number of items in your list to iterate the whole list. This pattern essentially cancels out the effect of OutputLists and will only ever process one item at a time. That's especially useful if you want to test something out. Remember to reset the counter to 0 afterwards!
-
-![The PrimitiveInt control_after_generate=increment pattern](/media/PrimitiveIntControlAfterGenerateIncrement.png)
-
-And because it is very tedious to add a selector for every single list, the `Spreadsheet OutputList` includes a `select_nth` widget which applies the index to all lists at once, and makes everything simpler for complex workflows that use multiple lists.
-
-![The PrimitiveInt control_after_generate=increment pattern and Spreadsheet OutputList](/media/PrimitiveIntControlAfterGenerateIncrementSpreadsheet.png)
-
 ## XYZ-GridPlot Simple
 
 ![XYZ-GridPlot Simple example](/workflows/Example_06_XYZ-GridPlot.png)
@@ -582,17 +571,52 @@ Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the d
 
 ![Cycle OuputLists example](/workflows/Example_08b_CycleOutputLists.png)
 
-# Advanced Examples
-
 ## The execution stalling problem
 
 One thing you may have noticed when you make a large image grid is that you have to wait for ALL intermediate images to be processed before anything is saved and the grid created. Thus you could loose a lot of processed images when something happens or you cancel the job (though ComfyUI keeps them in cache and should pick up immediately). Another problem that occurs with loader nodes is that the load ALL resources at once before passing on execution which will eventually lead to OOM.
 
-I have filled a [RFC](https://github.com/Comfy-Org/rfcs/discussions/43) specifically for this problem and proposed changes to the execution scheme of ComfyUI. In the meantime there are multiple workarounds:
+The reason is that ComfyUI process the data list in node-major mode (one node processes all items before proceeding to the next node) instead of list-major mode (one item is processed by a group of nodes before proceeding to the next item). I have filled a [RFC](https://github.com/Comfy-Org/rfcs/discussions/43) specifically for this problem and proposed changes to the execution scheme of ComfyUI. In the meantime there are multiple workarounds:
 * Ignore it and just wait it out (I recommend to start ComfyUI with `--cache-ram` though, so you can pick up were you left off anytime)
-* Use the `KSampler immediate Save Image` BETA node if your workflow just uses the standard `CheckpointLoaderSimple -> KSampler -> VAE Decode -> Save Image` pattern (see [below](#immediately-save-intermediate-images-of-image-grid)).
-* Use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) to cancel out the effect of outputlists
-* Use [for-loops](#for-loops) with passthrough nodes (see below)
+* Use[Iterate loop nodes]](#iterate loop nodes) with passthrough output nodes (recommended!)
+* Use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) but it requires some manual work.
+
+### Iterate loop nodes
+
+![Iterate loop nodes](/workflows/Example_09_IterateLoopNodes.png)
+
+(ComfyUI workflow included)
+
+Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
+
+(if you want to understand how this works internally see the section [for-loops](#for-loops))
+
+### The PrimitiveInt control_after_generate=increment pattern
+
+You probably noticed the `control_after_generate` widget before in the `KSampler` for `seed` where it's often set to `random`. This feature can also be created manually with the `Primitive Int` node. If you set it to `control_after_generate=increment` you basically get a counter that increases everytime you run a prompt. When you hook it up as a index in a list selector node, it iterates over entries across multiple prompts. In the `Run` toolbox you can set the amount of prompts to the number of items in your list to iterate the whole list. This pattern essentially cancels out the effect of OutputLists and will only ever process one item at a time. That's especially useful if you want to test something out. Remember to reset the counter to 0 afterwards!
+
+![The PrimitiveInt control_after_generate=increment pattern](/media/PrimitiveIntControlAfterGenerateIncrement.png)
+
+And because it is very tedious to add a selector for every single list, the `Spreadsheet OutputList` includes a `select_nth` widget which applies the index to all lists at once, and makes everything simpler for complex workflows that use multiple lists.
+
+![The PrimitiveInt control_after_generate=increment pattern and Spreadsheet OutputList](/media/PrimitiveIntControlAfterGenerateIncrementSpreadsheet.png)
+
+### Node expansion in code
+
+Another solution is node expansion in code but you literally have to rebuild a pattern in code, see [Node expansion in code](https://github.com/geroldmeisinger/rfcs/blob/main/rfcs/0000-execution_mode_in_sequential_processing.md#alternatives).
+
+**Deprecated**: If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` beta-node. For this node to be visible in the node searchbox you need to activate `Settings -> Comfy -> Show experimental nodes in search`.
+
+# Advanced Examples
+
+## Iterate checkpoints
+
+The `Load Checkpoint` node also suffers from [the execution stalling problem](#the-execution-stalling-problem) in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes.
+
+![Iterate checkpoints example](/workflows/ExampleAdv_05_Checkpoints_ImmediateSave.png)
+
+(ComfyUI workflow included)
+
+Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
 
 ## XYZ-GridPlots with Supergrids
 
@@ -606,15 +630,13 @@ Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For 
 
 ## Immediately save intermediate images of image grid
 
-If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` beta-node. For this node to be visible in the node searchbox you need to activate `Settings -> Comfy -> Show experimental nodes in search`.
+Generating a huge grid like this also suffer from [the execution stalling problem](#the-execution-stalling-problem). You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes with an output node passthrough.
 
 ![ImageGrids example](/workflows/ExampleAdv_00b_XYZGridPlot_ImmediateSave.png)
 
 (ComfyUI workflow included)
 
-Technically this node is implemented as a [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `CheckpointLoaderSimple`, `KSampler`, `VAE Decode` and `Save Image`.
-
-- **TODO** I'm not happy that this node exists at all as I wanted to avoid custom KSampler nodes. Unfortunately I haven't found a way to [use subgraphs to force immediate processing](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) yet.
+Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
 
 ## Baking Values Into Workflow
 
@@ -677,18 +699,6 @@ Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search AP
 You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
 
 https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
-
-## Iterate checkpoints
-
-![Iterate checkpoints example](/workflows/ExampleAdv_05_Checkpoints_ImmediateSave.png)
-
-(ComfyUI workflow included)
-
-The `Load Checkpoint` node also suffers from [the execution stalling problem](#the-execution-stalling-problem) in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `KSampler Immediate Save` but note that this only works for default `Load Checkpoint -> KSampler -> VAE Decode -> Save Image` pattern, i.e. no `CFGGuider`, no `ModelShift`, no dual samplers etc. If you need them you have to implement your own node expansion or extend [ksampler_immediate_saveimage.py](src/outputlists_combiner/ksampler_immediate_saveimage.py). I know this is unfortunate and probably to difficult for some people (it's not that hard actually, you just have to be careful when connecting node in code).
-
-Another workaround is to use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) but you will loose the OutputLists abilities.
-
-Another workaround is to use [for-loops](#for-loops).
 
 ## Discriminate multiple files
 
@@ -761,12 +771,15 @@ Also note that most loop nodes want to support some form of feedback cycle and u
 * [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use) ([code](https://github.com/yolain/ComfyUI-Easy-Use/blob/4de1ab3b66e48da916b6f263bacd001df53a2720/py/nodes/logic.py#L591))
 * [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) ([Hidden example](https://github.com/ltdrdata/ComfyUI-Impact-Pack/issues/824#issuecomment-2493301831)) ([code](https://github.com/ltdrdata/ComfyUI-Inspire-Pack/blob/d23db9aa544de9a6d4c609cb7005fa9e0d42031d/inspire/list_nodes.py#L82))
 * [Control-Flow Utils](https://github.com/VykosX/ControlFlowUtils) ([In-Depth Node Explanation](https://github.com/VykosX/ControlFlowUtils/wiki/ControlFlowUtils-%E2%80%90-In-Depth-Node-Explanation))
+* [ThepExcel ComfyAngel](https://github.com/ThepExcel/ComfyAngel) (TODO)
 * [Akatz-Loop-Nodes](https://github.com/akatz-ai/Akatz-Loop-Nodes) ([code](https://github.com/akatz-ai/Akatz-Loop-Nodes/blob/main/flow_control.py))
+* [Latent Austronaut Suite](https://github.com/latentastronaut/comfyui-latent-astronaut-suite) ([code](https://github.com/latentastronaut/comfyui-latent-astronaut-suite/blob/main/nodes/for_loop.py), [examples](https://github.com/latentastronaut/comfyui-latent-astronaut-suite/tree/main/workflows))
+* [PixNodes](https://github.com/pixixai/Comfyui-PixNodes) (chinese, [code](https://github.com/pixixai/Comfyui-PixNodes/tree/main/nodes/Loop))
+* [Deforum](https://github.com/deforum/deforum-comfy-nodes)
 
 Not in the registry:
 * [WainWong ComfyUI-Loop-image](https://github.com/WainWong/ComfyUI-Loop-image)
 * [jeankassio ComfyUI-ForLoops](https://github.com/jeankassio/ComfyUI-ForLoops)
-* [ThepExcel ComfyAngel](https://github.com/ThepExcel/ComfyAngel)
 
 If you are one of these developers and read this, thank you for your work, but please fix your documentation and examples!
 
@@ -1037,6 +1050,15 @@ When you open the node searchbox and filter by types you often stumble upon list
 
 - Simple image grid but no support for labels
 - Note: this is a BETA node and you need to activate experimental nodes in settings
+
+### Pixaroma
+
+[Pixaroma](https://github.com/pixaroma/ComfyUI-Pixaroma#-xy-plot-pixaroma)
+
+- [YouTube - ComfyUI XY Plot Ep21](https://www.youtube.com/watch?v=_M-IGh38UkM) in-depth video tutorial
+- provides a full configuration suite in a XY Plot output node which makes it simple for trivial cases
+- technically works kinda backwards: the output node requests multiple images
+- fundamentally it fights against the ComfyUI paradigm and tries to do everything in one node
 
 ### WAS Node Suite
 

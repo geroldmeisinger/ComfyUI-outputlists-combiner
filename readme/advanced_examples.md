@@ -1,14 +1,14 @@
 # Advanced Examples
 
-## The execution stalling problem
+## Iterate checkpoints
 
-One thing you may have noticed when you make a large image grid is that you have to wait for ALL intermediate images to be processed before anything is saved and the grid created. Thus you could loose a lot of processed images when something happens or you cancel the job (though ComfyUI keeps them in cache and should pick up immediately). Another problem that occurs with loader nodes is that the load ALL resources at once before passing on execution which will eventually lead to OOM.
+The `Load Checkpoint` node also suffers from [the execution stalling problem](#the-execution-stalling-problem) in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes.
 
-I have filled a [RFC](https://github.com/Comfy-Org/rfcs/discussions/43) specifically for this problem and proposed changes to the execution scheme of ComfyUI. In the meantime there are multiple workarounds:
-* Ignore it and just wait it out (I recommend to start ComfyUI with `--cache-ram` though, so you can pick up were you left off anytime)
-* Use the `KSampler immediate Save Image` BETA node if your workflow just uses the standard `CheckpointLoaderSimple -> KSampler -> VAE Decode -> Save Image` pattern (see [below](#immediately-save-intermediate-images-of-image-grid)).
-* Use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) to cancel out the effect of outputlists
-* Use [for-loops](#for-loops) with passthrough nodes (see below)
+![Iterate checkpoints example](/workflows/ExampleAdv_05_Checkpoints_ImmediateSave.png)
+
+(ComfyUI workflow included)
+
+Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
 
 ## XYZ-GridPlots with Supergrids
 
@@ -22,15 +22,13 @@ Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For 
 
 ## Immediately save intermediate images of image grid
 
-If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` beta-node. For this node to be visible in the node searchbox you need to activate `Settings -> Comfy -> Show experimental nodes in search`.
+Generating a huge grid like this also suffer from [the execution stalling problem](#the-execution-stalling-problem). You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes with an output node passthrough.
 
 ![ImageGrids example](/workflows/ExampleAdv_00b_XYZGridPlot_ImmediateSave.png)
 
 (ComfyUI workflow included)
 
-Technically this node is implemented as a [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion) and uses the default `CheckpointLoaderSimple`, `KSampler`, `VAE Decode` and `Save Image`.
-
-- **TODO** I'm not happy that this node exists at all as I wanted to avoid custom KSampler nodes. Unfortunately I haven't found a way to [use subgraphs to force immediate processing](https://github.com/Comfy-Org/docs/discussions/532#discussioncomment-15115385) yet.
+Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
 
 ## Baking Values Into Workflow
 
@@ -93,18 +91,6 @@ Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search AP
 You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
 
 https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
-
-## Iterate checkpoints
-
-![Iterate checkpoints example](/workflows/ExampleAdv_05_Checkpoints_ImmediateSave.png)
-
-(ComfyUI workflow included)
-
-The `Load Checkpoint` node also suffers from [the execution stalling problem](#the-execution-stalling-problem) in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `KSampler Immediate Save` but note that this only works for default `Load Checkpoint -> KSampler -> VAE Decode -> Save Image` pattern, i.e. no `CFGGuider`, no `ModelShift`, no dual samplers etc. If you need them you have to implement your own node expansion or extend [ksampler_immediate_saveimage.py](src/outputlists_combiner/ksampler_immediate_saveimage.py). I know this is unfortunate and probably to difficult for some people (it's not that hard actually, you just have to be careful when connecting node in code).
-
-Another workaround is to use the [PrimitiveInt control\_after\_generate=increment pattern](#the-primitiveint-control_after_generateincrement-pattern) but you will loose the OutputLists abilities.
-
-Another workaround is to use [for-loops](#for-loops).
 
 ## Discriminate multiple files
 
@@ -172,10 +158,29 @@ Also note that most loop nodes want to support some form of feedback cycle and u
 
 **Alternative loop variants**
 
-* [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
-* [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) ([Hidden example](https://github.com/ltdrdata/ComfyUI-Impact-Pack/issues/824#issuecomment-2493301831))
+* [official TensorLoop](https://github.com/kijai/ComfyUI/blob/2bf117a8257a3a1351d7f8db55a9f2ade8870277/comfy_extras/nodes_looping.py)
+* [Execution Inversion Demo](https://github.com/BadCafeCode/execution-inversion-demo-comfyui) ([code1](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/flow_control.py) [code2](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/utility_nodes.py))
+* [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use) ([code](https://github.com/yolain/ComfyUI-Easy-Use/blob/4de1ab3b66e48da916b6f263bacd001df53a2720/py/nodes/logic.py#L591))
+* [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) ([Hidden example](https://github.com/ltdrdata/ComfyUI-Impact-Pack/issues/824#issuecomment-2493301831)) ([code](https://github.com/ltdrdata/ComfyUI-Inspire-Pack/blob/d23db9aa544de9a6d4c609cb7005fa9e0d42031d/inspire/list_nodes.py#L82))
 * [Control-Flow Utils](https://github.com/VykosX/ControlFlowUtils) ([In-Depth Node Explanation](https://github.com/VykosX/ControlFlowUtils/wiki/ControlFlowUtils-%E2%80%90-In-Depth-Node-Explanation))
-* [Akatz-Loop-Nodes](https://github.com/akatz-ai/Akatz-Loop-Nodes)
-* [Execution Inversion Demo](https://github.com/BadCafeCode/execution-inversion-demo-comfyui)
+* [ThepExcel ComfyAngel](https://github.com/ThepExcel/ComfyAngel) (TODO)
+* [Akatz-Loop-Nodes](https://github.com/akatz-ai/Akatz-Loop-Nodes) ([code](https://github.com/akatz-ai/Akatz-Loop-Nodes/blob/main/flow_control.py))
+* [Latent Austronaut Suite](https://github.com/latentastronaut/comfyui-latent-astronaut-suite) ([code](https://github.com/latentastronaut/comfyui-latent-astronaut-suite/blob/main/nodes/for_loop.py), [examples](https://github.com/latentastronaut/comfyui-latent-astronaut-suite/tree/main/workflows))
+* [PixNodes](https://github.com/pixixai/Comfyui-PixNodes) (chinese, [code](https://github.com/pixixai/Comfyui-PixNodes/tree/main/nodes/Loop))
+* [Deforum](https://github.com/deforum/deforum-comfy-nodes)
+
+Not in the registry:
+* [WainWong ComfyUI-Loop-image](https://github.com/WainWong/ComfyUI-Loop-image)
+* [jeankassio ComfyUI-ForLoops](https://github.com/jeankassio/ComfyUI-ForLoops)
 
 If you are one of these developers and read this, thank you for your work, but please fix your documentation and examples!
+
+**Non-loops**
+
+The following packages have loop in there name but don't provide actual looping functionality in the sense described above:
+
+* [Bjornulf_custom_nodes](https://github.com/justUmen/Bjornulf_custom_nodes) just data lists
+* [Hullabalo/ComfyUI-Loop](https://github.com/Hullabalo/ComfyUI-Loop) multi-run blackmagic
+* [O-oshir/comfy-loop-utilities](https://github.com/O-oshir/comfy-loop-utilities) just data lists
+* [t22m003/ComfyUI_LoopNode](https://github.com/t22m003/ComfyUI_LoopNode) just data lists
+* multiple looped sampler implementations which only work for one use-case

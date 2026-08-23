@@ -21,6 +21,7 @@ async def comfy_entrypoint() -> ComfyExtension:
 				ConvertNumberToIntFloatStr,
 				LoadAnyFile,
 				KSamplerImmediateSave,
+				IterateBegin, IterateEnd,
 			]
 
 	return OutputListsCombiner()
