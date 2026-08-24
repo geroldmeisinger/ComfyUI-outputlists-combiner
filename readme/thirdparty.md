@@ -7,6 +7,7 @@ I consider the following custom nodes essential for any ComfyUI installation and
 - [ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials)
 - [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools)
+- [Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling)
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
 - [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
 

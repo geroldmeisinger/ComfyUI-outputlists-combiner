@@ -83,6 +83,7 @@ If you find this custom node useful:
 - [Examples for Video workflows](#examples-for-video-workflows)
 	- [Iterate durations](#iterate-durations)
 	- [Iterate resolutions](#iterate-resolutions)
+	- [Iterate durations, measure time, write CSV](#iterate-durations,-measure-time,-write-csv)
 - [For-Loops](#for-loops)
 - [Third-party custom nodes](#third-party-custom-nodes)
 	- [Data Lists](#data-lists)
@@ -811,6 +812,21 @@ Also see
 
 (ComfyUI workflow included)
 
+## Iterate durations, measure time, write CSV
+
+The following workflow is a extension of "Iterate durations", it generations multiple videos, measures the time and writes it to a CSV file.
+
+![Iterate durations, measure time, write CSV](/workflows/ExampleVid_03_MinimaxH3_Durations_Timer_CSV.png)
+
+(ComfyUI workflow included)
+
+Custom nodes:
+- [Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling) for `save STRING to file` and `load STRING from file`
+- [Crystools](https://github.com/crystian/ComfyUI-Crystools) for `Pipe to` `Pipe from`
+- [KJNodes](https://github.com/kijai/ComfyUI-KJNodes) for `Timer`
+
+Make sure you understand how `Iterate Begin/End` works (see simpler examples above) and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template before the `KSampler` and `VAE Decode` nodes to measure there execution time. It's important that all dependent nodes are finished before `Timer=start` (otherwise, if we only used the noise seed for example, the timer might start before all the models are loaded). It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node (otherwise, if we made `KSampler.samples` go to `VAE Decode` independently it might run the decoder before stopping the timer). The comma-separated lines for the CSV files are built with a `Formatted String` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
+
 # For-Loops
 
 **DISCLAIMER: The following example is in no way intended to glorify the use of for-loops in ComfyUI or any other forms of violence. In no event can the copyright holder be held liable to damages to your brain or mental functions. No one knows how for-loops actually work in ComfyUI and I do in no way claim to posses this wisdom either.**
@@ -887,6 +903,7 @@ I consider the following custom nodes essential for any ComfyUI installation and
 - [ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials)
 - [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools)
+- [Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling)
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
 - [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
 
@@ -1213,7 +1230,7 @@ When you open the node searchbox and filter by types you often stumble upon list
 - [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
 - [rgthree](https://github.com/rgthree/rgthree-comfy)
 - [ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials)
-- [Impackt-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
+- [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools)
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
 - [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)

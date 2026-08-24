@@ -5,7 +5,7 @@
 - [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
 - [rgthree](https://github.com/rgthree/rgthree-comfy)
 - [ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials)
-- [Impackt-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
+- [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools)
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
 - [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
