@@ -1,5 +1,6 @@
 # Changelog
 
+- 0.0.13 fixed nested Iterate loop nodes
 - 0.0.12 added Iterate loop nodes, added separator field in SpreadsheetOutputList
 - 0.0.11 fixed understaffed XYZGridPlot, fixed node documentation language codes
 - 0.0.10 fixed font_size in XYZGridPlot, fixed Load Any File, translated node documentation

@@ -77,13 +77,15 @@ If you find this custom node useful:
 	- [Baking Values Into Workflow](#baking-values-into-workflow)
 	- [Load all images from grid](#load-all-images-from-grid)
 	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
-	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 	- [Discriminate multiple files](#discriminate-multiple-files)
 	- [Animating LoRA strength](#animating-lora-strength)
+	- [Nested iterate loop nodes](#nested-iterate-loop-nodes)
 - [Examples for Video workflows](#examples-for-video-workflows)
+	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 	- [Iterate durations](#iterate-durations)
 	- [Iterate resolutions](#iterate-resolutions)
 	- [Iterate durations, measure time, write CSV](#iterate-durations,-measure-time,-write-csv)
+	- [Iterate resolutions, iterate durations, measure time, write CSV](#iterate-resolutions,-iterate-durations,-measure-time,-write-csv)
 - [For-Loops](#for-loops)
 - [Third-party custom nodes](#third-party-custom-nodes)
 	- [Data Lists](#data-lists)
@@ -124,6 +126,7 @@ Newer Skia versions requires `libEGL.so` to be present on Linux hosts, see [offi
 
 # Changelog
 
+- 0.0.13 fixed nested Iterate loop nodes
 - 0.0.12 added Iterate loop nodes, added separator field in SpreadsheetOutputList
 - 0.0.11 fixed understaffed XYZGridPlot, fixed node documentation language codes
 - 0.0.10 fixed font_size in XYZGridPlot, fixed Load Any File, translated node documentation
@@ -552,7 +555,7 @@ Internally uses the node expansion mechanism which duplicates the sub-workflow m
 
 ## Simple OutputList
 
-![Simple OutputList example](/workflows/Example_00_Simple_OutputList.png)
+![Simple OutputList example](/workflows/simple/Simple_OutputList.png)
 
 (ComfyUI workflow included)
 
@@ -560,7 +563,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 
 ## Combine prompts
 
-![Combine prompts example](/workflows/Example_01_Combine_Prompts.png)
+![Combine prompts example](/workflows/simple/Combine_Prompts.png)
 
 (ComfyUI workflow included)
 
@@ -570,7 +573,7 @@ To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as i
 
 ## Combine numbers
 
-![Combine numbers example](/workflows/Example_02_Combine_Numbers.png)
+![Combine numbers example](/workflows/simple/Combine_Numbers.png)
 
 (ComfyUI workflow included)
 
@@ -580,7 +583,7 @@ Notice that images within a batch always have to be same width and height, whera
 
 ## Combine samplers and schedulers
 
-![Combine samplers and schedulers example](/workflows/Example_03_Combine_Samplers_Schedulers.png)
+![Combine samplers and schedulers example](/workflows/simple/Combine_Samplers_Schedulers.png)
 
 (ComfyUI workflow included)
 
@@ -590,7 +593,7 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 
 ## Combine row/column for filename
 
-![Combine row/column for filename example](/workflows/Example_04_Combine_RowCol_Filename.png)
+![Combine row/column for filename example](/workflows/simple/Combine_RowCol_Filename.png)
 
 (ComfyUI workflow included)
 
@@ -598,7 +601,7 @@ Makes use of the `index` combined the same way as the prompts, which gives as th
 
 ## Compare LoRA-model and LoRA-strength
 
-![Combine LoRA-model and LoRA-strength example](/workflows/Example_05_Compare_LoRAModel_LoRAStrength.png)
+![Combine LoRA-model and LoRA-strength example](/workflows/simple/Compare_LoRAModel_LoRAStrength.png)
 
 (ComfyUI workflow included)
 
@@ -617,7 +620,7 @@ It might be a little confusing why we need two combinations here, but it is impo
 
 ## XYZ-GridPlot Simple
 
-![XYZ-GridPlot Simple example](/workflows/Example_06_XYZ-GridPlot.png)
+![XYZ-GridPlot Simple example](/workflows/simple/XYZ-GridPlot.png)
 
 (ComfyUI workflow included)
 
@@ -629,7 +632,7 @@ https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
 
 ## Load multiple files with different formats
 
-![Load multiple files example](/workflows/Example_07_LoadMultipleFiles.png)
+![Load multiple files example](/workflows/simple/LoadMultipleFiles.png)
 
 (ComfyUI workflow included)
 
@@ -637,11 +640,11 @@ Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the d
 
 ## Repeat OutputLists
 
-![Repeat OutputLists example](/workflows/Example_08a_RepeatOutputLists.png)
+![Repeat OutputLists example](/workflows/simple/Example_08a_RepeatOutputLists.png)
 
 ## Cycle OutputLists
 
-![Cycle OuputLists example](/workflows/Example_08b_CycleOutputLists.png)
+![Cycle OuputLists example](/workflows/simple/Example_08b_CycleOutputLists.png)
 
 ## The execution stalling problem
 
@@ -654,7 +657,7 @@ The reason is that ComfyUI process the data list in node-major mode (one node pr
 
 ### Iterate loop nodes
 
-![Iterate loop nodes](/workflows/Example_09_IterateLoopNodes.png)
+![Iterate loop nodes](/workflows/simple/IterateLoopNodes.png)
 
 (ComfyUI workflow included)
 
@@ -684,7 +687,7 @@ Another solution is node expansion in code but you literally have to rebuild a p
 
 The `Load Checkpoint` node also suffers from [the execution stalling problem](#the-execution-stalling-problem) in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes.
 
-![Iterate checkpoints example](/workflows/ExampleAdv_05_Checkpoints_ImmediateSave.png)
+![Iterate checkpoints example](/workflows/advanced/Checkpoints_ImmediateSave.png)
 
 (ComfyUI workflow included)
 
@@ -739,7 +742,7 @@ It's is not perfect because in the end you still have to manually put the image 
 
 Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `cell_{c:02d}-{a}-{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of `Load Any File`,
 
-![Load Image with Formatted String](/workflows/ExampleAdv_02_LoadWithFormattedString.png)
+![Load Image with Formatted String](/workflows/advanced/LoadWithFormattedString.png)
 
 (ComfyUI workflow included)
 
@@ -756,25 +759,15 @@ Custom nodes:
 
 PromptManager keeps track of all the prompt you generated in a database which you can annotate with tags and categories. The following workflow allows you to search by text, tags and categories to get selection of the prompts and iterate them.
 
-![Load prompts with GET HTTP and extract JSON with JSON OutputList](/workflows/ExampleAdv_03_PromptManager.png)
+![Load prompts with GET HTTP and extract JSON with JSON OutputList](/workflows/advanced/PromptManager.png)
 
 (ComfyUI workflow included)
 
 Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search API route at `http://127.0.0.1:8188/prompt_manager/search` and `JSON OutputList` to extract the `text` field using a JSONPath. The prompts are emitted as an OutputList and will be processed sequentially.
 
-## XYZ-GridPlots with Videos
-
-![XYZ-GridPlots with Videos example](/workflows/ExampleAdv_04_XYZGridPlot_Videos.png)
-
-(ComfyUI workflow included)
-
-You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
-
-https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
-
 ## Discriminate multiple files
 
-![Iterate checkpoints example](/workflows/ExampleAdv_06_DiscriminateMultipleFiles.png)
+![Iterate checkpoints example](/workflows/advanced/DiscriminateMultipleFiles.png)
 
 (ComfyUI workflow included)
 
@@ -786,7 +779,7 @@ Custom nodes: [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
 
 Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
-![Animating LoRA strength example](/workflows/ExampleAdv_07_AnimatingLoRAStrength.png)
+![Animating LoRA strength example](/workflows/advanced/AnimatingLoRAStrength.png)
 
 (ComfyUI workflow included)
 
@@ -798,25 +791,45 @@ Also see
 * [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
 * [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
 
+## Nested iterate loop nodes
+
+![Nested iterate loop nodes example](/workflows/advanced/NestedIterateLoopNodes.png)
+
+(ComfyUI workflow included)
+
 # Examples for Video workflows
+
+## XYZ-GridPlots with Videos
+
+![XYZ-GridPlots with Videos example](/workflows/video/XYZGridPlotVideos.png)
+
+(ComfyUI workflow included)
+
+You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
+
+https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
 
 ## Iterate durations
 
-![Iterate durations video example](/workflows/ExampleVid_00_MinimaxH3_Durations.png)
+![Iterate durations video example](/workflows/video/Duration.png)
 
 (ComfyUI workflow included)
+
+Makes use of `Number OutputList` to generate a range of durations `[1.0, 2.0, 3.0, ...]` as a data list. The data list is connected with `Iterate Begin -> workflow -> Iterate End` to run the sub-workflow sequentially over the list.
 
 ## Iterate resolutions
 
-![Iterate durations video example](/workflows/ExampleVid_01_MinimaxH3_Resolutions.png)
+![Iterate resolutions video example](/workflows/video/Resolution.png)
 
 (ComfyUI workflow included)
 
+Makes use of `Spreadsheet OutputList` to convert the resolution table note from the official text2video template into a list of resolutions `[(608,352),(736,416),(864,480), ...]` as a data list. The data list is connected with `Iterate Begin -> workflow -> Iterate End` to run the sub-workflow sequentially over the list.
+
 ## Iterate durations, measure time, write CSV
 
-The following workflow is a extension of "Iterate durations", it generations multiple videos, measures the time and writes it to a CSV file.
+The following workflow is a extension of "Iterate durations", it generations multiple videos, measures the times and writes them to a CSV file.
 
-![Iterate durations, measure time, write CSV](/workflows/ExampleVid_03_MinimaxH3_Durations_Timer_CSV.png)
+![Iterate durations, measure time, write CSV](/workflows/video/Duration_Timer_CSV.png)
 
 (ComfyUI workflow included)
 
@@ -825,7 +838,88 @@ Custom nodes:
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools) for `Pipe to` `Pipe from`
 - [KJNodes](https://github.com/kijai/ComfyUI-KJNodes) for `Timer`
 
-Make sure you understand how `Iterate Begin/End` works (see simpler examples above) and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template before the `KSampler` and `VAE Decode` nodes to measure there execution time. It's important that all dependent nodes are finished before `Timer=start` (otherwise, if we only used the noise seed for example, the timer might start before all the models are loaded). It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node (otherwise, if we made `KSampler.samples` go to `VAE Decode` independently it might run the decoder before stopping the timer). The comma-separated lines for the CSV files are built with a `Formatted String` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
+Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template before the `KSampler` and `VAE Decode` nodes to measure their execution time. It's important that all dependent nodes are finished before `Timer=start` (otherwise, if we only used the noise seed for example, the timer might start before all the models are loaded). It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node (otherwise, if we made `KSampler.samples` go to `VAE Decode` independently it might run the decoder before stopping the timer). The comma-separated lines for the CSV files are built with a `Formatted String` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
+
+Example output for duration:
+
+```csv
+index,duration,sampler,decode_video,decode_audio,total,unit
+0,2000,48571,11047,330,59948,ms
+1,3000,61037,14469,370,75876,ms
+2,4000,90756,20683,434,111873,ms
+3,5000,99017,24955,530,124502,ms
+```
+
+![plot duration](/media/Duration_Timer_CSV_plot_duration.png)
+
+```csv
+index,duration,sampler,decode_video,decode_audio,total,unit
+0,5,56212,26062,824,83098,steps
+1,10,109488,24594,505,134587,steps
+2,15,170691,21602,511,192804,steps
+3,20,193693,24987,520,219200,steps
+```
+
+You can easily adopt this workflow for other values:
+
+**step size**
+
+```csv
+index,stepsize,sampler,decode_video,decode_audio,total,unit
+0,5,56212,26062,824,83098,steps
+1,10,109488,24594,505,134587,steps
+2,15,170691,21602,511,192804,steps
+3,20,193693,24987,520,219200,steps
+```
+
+![plot step size](/media/Duration_Timer_CSV_plot_stepsize.png)
+
+**step resolution**
+
+```csv
+index,resolution,sampler,decode_video,decode_audio,total,MP
+0,608 x 352,209384,20935,411,230730,0.21
+1,736 x 416,325715,26882,414,353011,0.31
+2,864 x 480,528057,62051,519,590627,0.41
+3,960 x 544,705908,50888,559,757355,0.52
+4,1056 x 608,959507,60587,519,1020613,0.64
+5,1152 x 640,1278660,74005,571,1353236,0.74
+```
+
+![plot step resolution](/media/Duration_Timer_CSV_plot_resolution.png)
+
+
+## Iterate resolutions, iterate durations, measure time, write CSV
+
+The following workflow is a extension of "Iterate durations, measure time, write CSV", it generations multiple videos for each combination of resolution x durations, measures the time and writes it to a CSV file.
+
+![Iterate durations, measure time, write CSV](/workflows/video/Resolution_Duration_Timer_CSV.png)
+
+(ComfyUI workflow included)
+
+Custom nodes:
+- [Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling) for `save STRING to file` and `load STRING from file`
+- [Crystools](https://github.com/crystian/ComfyUI-Crystools) for `Pipe to` `Pipe from`
+- [KJNodes](https://github.com/kijai/ComfyUI-KJNodes) for `Timer`
+
+Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template to measure the total execution time (in contrast to the individual times of the sampler and decoder as in the previous example). Note that this also includes the model loading time and will produce wrong results on the first generation. To mitigate this a zero duration run was added. It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node. The comma-separated lines for the CSV files are built with a `Formatted String` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
+
+Example output
+```csv
+resolution\video length,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0
+608 x 352,34694,46922,57616,78560,114835,134380,150945,183893
+736 x 416,29459,49666,84211,109523,168462,202305,223172,261975
+864 x 480,34779,70248,119980,161840,259740,314701,359692,445586
+960 x 544,36226,79850,147996,203899,315231,383680,491456,603520
+1056 x 608,35898,103637,172406,243467,417185,507748,753206,794601
+1152 x 640,33885,113704,186834,262586,454986,601821,896350,1212095
+1216 x 672,39751,178621,211445,304997,552472,728026,1240525,1390142
+1280 x 736,41593,187896,253539,368939,669417,850895,1483785,1791947
+```
+
+![heatmap resolution x duration](/media/Resolution_Duration_Timer_CSV_heatmap.png)
+
+![plot resolution x duration](/media/Resolution_Duration_Timer_CSV_plot.png)
 
 # For-Loops
 

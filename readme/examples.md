@@ -2,7 +2,7 @@
 
 ## Simple OutputList
 
-![Simple OutputList example](/workflows/Example_00_Simple_OutputList.png)
+![Simple OutputList example](/workflows/simple/Simple_OutputList.png)
 
 (ComfyUI workflow included)
 
@@ -10,7 +10,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 
 ## Combine prompts
 
-![Combine prompts example](/workflows/Example_01_Combine_Prompts.png)
+![Combine prompts example](/workflows/simple/Combine_Prompts.png)
 
 (ComfyUI workflow included)
 
@@ -20,7 +20,7 @@ To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as i
 
 ## Combine numbers
 
-![Combine numbers example](/workflows/Example_02_Combine_Numbers.png)
+![Combine numbers example](/workflows/simple/Combine_Numbers.png)
 
 (ComfyUI workflow included)
 
@@ -30,7 +30,7 @@ Notice that images within a batch always have to be same width and height, whera
 
 ## Combine samplers and schedulers
 
-![Combine samplers and schedulers example](/workflows/Example_03_Combine_Samplers_Schedulers.png)
+![Combine samplers and schedulers example](/workflows/simple/Combine_Samplers_Schedulers.png)
 
 (ComfyUI workflow included)
 
@@ -40,7 +40,7 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 
 ## Combine row/column for filename
 
-![Combine row/column for filename example](/workflows/Example_04_Combine_RowCol_Filename.png)
+![Combine row/column for filename example](/workflows/simple/Combine_RowCol_Filename.png)
 
 (ComfyUI workflow included)
 
@@ -48,7 +48,7 @@ Makes use of the `index` combined the same way as the prompts, which gives as th
 
 ## Compare LoRA-model and LoRA-strength
 
-![Combine LoRA-model and LoRA-strength example](/workflows/Example_05_Compare_LoRAModel_LoRAStrength.png)
+![Combine LoRA-model and LoRA-strength example](/workflows/simple/Compare_LoRAModel_LoRAStrength.png)
 
 (ComfyUI workflow included)
 
@@ -67,7 +67,7 @@ It might be a little confusing why we need two combinations here, but it is impo
 
 ## XYZ-GridPlot Simple
 
-![XYZ-GridPlot Simple example](/workflows/Example_06_XYZ-GridPlot.png)
+![XYZ-GridPlot Simple example](/workflows/simple/XYZ-GridPlot.png)
 
 (ComfyUI workflow included)
 
@@ -79,7 +79,7 @@ https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
 
 ## Load multiple files with different formats
 
-![Load multiple files example](/workflows/Example_07_LoadMultipleFiles.png)
+![Load multiple files example](/workflows/simple/LoadMultipleFiles.png)
 
 (ComfyUI workflow included)
 
@@ -87,11 +87,11 @@ Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the d
 
 ## Repeat OutputLists
 
-![Repeat OutputLists example](/workflows/Example_08a_RepeatOutputLists.png)
+![Repeat OutputLists example](/workflows/simple/Example_08a_RepeatOutputLists.png)
 
 ## Cycle OutputLists
 
-![Cycle OuputLists example](/workflows/Example_08b_CycleOutputLists.png)
+![Cycle OuputLists example](/workflows/simple/Example_08b_CycleOutputLists.png)
 
 ## The execution stalling problem
 
@@ -104,7 +104,7 @@ The reason is that ComfyUI process the data list in node-major mode (one node pr
 
 ### Iterate loop nodes
 
-![Iterate loop nodes](/workflows/Example_09_IterateLoopNodes.png)
+![Iterate loop nodes](/workflows/simple/IterateLoopNodes.png)
 
 (ComfyUI workflow included)
 

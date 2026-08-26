@@ -4,7 +4,7 @@
 
 The `Load Checkpoint` node also suffers from [the execution stalling problem](#the-execution-stalling-problem) in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes.
 
-![Iterate checkpoints example](/workflows/ExampleAdv_05_Checkpoints_ImmediateSave.png)
+![Iterate checkpoints example](/workflows/advanced/Checkpoints_ImmediateSave.png)
 
 (ComfyUI workflow included)
 
@@ -59,7 +59,7 @@ It's is not perfect because in the end you still have to manually put the image 
 
 Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `cell_{c:02d}-{a}-{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of `Load Any File`,
 
-![Load Image with Formatted String](/workflows/ExampleAdv_02_LoadWithFormattedString.png)
+![Load Image with Formatted String](/workflows/advanced/LoadWithFormattedString.png)
 
 (ComfyUI workflow included)
 
@@ -76,25 +76,15 @@ Custom nodes:
 
 PromptManager keeps track of all the prompt you generated in a database which you can annotate with tags and categories. The following workflow allows you to search by text, tags and categories to get selection of the prompts and iterate them.
 
-![Load prompts with GET HTTP and extract JSON with JSON OutputList](/workflows/ExampleAdv_03_PromptManager.png)
+![Load prompts with GET HTTP and extract JSON with JSON OutputList](/workflows/advanced/PromptManager.png)
 
 (ComfyUI workflow included)
 
 Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search API route at `http://127.0.0.1:8188/prompt_manager/search` and `JSON OutputList` to extract the `text` field using a JSONPath. The prompts are emitted as an OutputList and will be processed sequentially.
 
-## XYZ-GridPlots with Videos
-
-![XYZ-GridPlots with Videos example](/workflows/ExampleAdv_04_XYZGridPlot_Videos.png)
-
-(ComfyUI workflow included)
-
-You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
-
-https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
-
 ## Discriminate multiple files
 
-![Iterate checkpoints example](/workflows/ExampleAdv_06_DiscriminateMultipleFiles.png)
+![Iterate checkpoints example](/workflows/advanced/DiscriminateMultipleFiles.png)
 
 (ComfyUI workflow included)
 
@@ -106,7 +96,7 @@ Custom nodes: [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
 
 Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
-![Animating LoRA strength example](/workflows/ExampleAdv_07_AnimatingLoRAStrength.png)
+![Animating LoRA strength example](/workflows/advanced/AnimatingLoRAStrength.png)
 
 (ComfyUI workflow included)
 
@@ -118,3 +108,8 @@ Also see
 * [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
 * [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
 
+## Nested iterate loop nodes
+
+![Nested iterate loop nodes example](/workflows/advanced/NestedIterateLoopNodes.png)
+
+(ComfyUI workflow included)
