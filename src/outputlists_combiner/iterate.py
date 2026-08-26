@@ -22,8 +22,9 @@ class IterateBegin(io.ComfyNode):
 			display_name	= "Iterate Begin",
 			category    	= "Utility",
 			inputs      	= [
-				io.AnyType.Input("datalist", display_name="datalist"        	, tooltip=f"(optional) {INPUTLIST_NOTE}"),
-				io.AnyType.Input("_results", display_name="_", optional=True	, tooltip="Ignore! Only used internally"),
+				io.AnyType	.Input("datalist"	, display_name="datalist"            	, tooltip=f"(optional) {INPUTLIST_NOTE}"),
+				io.AnyType	.Input("_results"	, display_name="_", optional=True    	, tooltip="Ignore! Only used internally"),
+				#io.String	.Input("label"   	, display_name="label", optional=True	, tooltip=""),
 			],
 			outputs=[
 				io.FlowControl	.Output("flow_control"	, display_name="flow_control"	, tooltip=FLOWCONTROL_NOTE	),
@@ -33,11 +34,12 @@ class IterateBegin(io.ComfyNode):
 			is_input_list    	= True,
 			accept_all_inputs	= True,
 			hidden           	= [io.Hidden.unique_id],
+			#is_output_node  	= True,
 		)
 		return ret
 
 	@classmethod
-	def execute(cls, datalist: list, _results: list = []) -> io.NodeOutput:
+	def execute(cls, datalist: list, _results: list = [], **kwargs) -> io.NodeOutput:
 		results     	= _results[0] if isinstance(_results, list) and len(_results) == 1 else []
 		flow_control	= (cls.hidden.unique_id, results, len(datalist))
 		index       	= len(results)
@@ -55,8 +57,9 @@ class IterateEnd(io.ComfyNode):
 			display_name	= "Iterate End",
 			category    	= "Utility",
 			inputs      	= [
-				io.FlowControl	.Input("flow_control"	, display_name="flow_control"	, tooltip="Connect it to a `IterateBegin` node"	),
-				io.AnyType    	.Input("item"        	, display_name="item"        	, tooltip=FLOWCONTROL_NOTE                     	),
+				io.FlowControl	.Input("flow_control"	, display_name="flow_control"        	, tooltip="Connect it to a `IterateBegin` node"	),
+				io.AnyType    	.Input("item"        	, display_name="item"                	, tooltip=FLOWCONTROL_NOTE                     	),
+				#io.String    	.Input("label"       	, display_name="label", optional=True	, tooltip=""),
 			],
 			outputs	= [
 				io.AnyType.Output("datalist", display_name="datalist", is_output_list=True, tooltip=f"{OUTPUTLIST_NOTE}"),
@@ -64,6 +67,7 @@ class IterateEnd(io.ComfyNode):
 			enable_expand 	= True,
 			hidden        	= [io.Hidden.unique_id, io.Hidden.dynprompt],
 			is_output_node	= True, # always execute this node so users don't have to put an output node afterwards
+			is_input_list 	= True, # prevent data lists from executing this node multiple times
 		)
 		return ret
 
@@ -92,9 +96,9 @@ class IterateEnd(io.ComfyNode):
 				IterateEnd._collect_contained(child_id, upstream, contained)
 
 	@classmethod
-	def execute(cls, flow_control, item):
-		iterate_begin_id, results_prev, length = flow_control
-		results = results_prev + [item]
+	def execute(cls, flow_control, item, **kwargs):
+		iterate_begin_id, results_prev, length = flow_control[0]
+		results = results_prev + (item if len(item) == 1 else [item]) # check if item is a unit or a data list and convert to python list
 
 		if len(results) >= length:
 			# HACK why do I have to add a list layer for every recursion?

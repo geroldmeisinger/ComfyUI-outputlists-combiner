@@ -3,7 +3,6 @@ import re
 from io import BytesIO, StringIO
 
 import pandas as pd
-
 from comfy_api.latest import io
 
 from .util import OUTPUTLIST_NOTE
