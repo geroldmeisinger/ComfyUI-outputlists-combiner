@@ -689,7 +689,7 @@ Another solution is node expansion in code but you literally have to rebuild a p
 
 The `Load Checkpoint` node also suffers from [the execution stalling problem](#the-execution-stalling-problem) in that it loads ALL checkpoints at once before emitting them which will likely cause OOM. You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes.
 
-![Iterate checkpoints example](/workflows/advanced/Checkpoints_ImmediateSave.png)
+![Iterate checkpoints example](/workflows/advanced/CheckpointsImmediateSave.png)
 
 (ComfyUI workflow included)
 
@@ -699,7 +699,7 @@ Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `fl
 
 I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
 
-![XYZ-GridPlots with Supergrids example](/workflows/XYZGridPlot_Supergrids.png)
+![XYZ-GridPlots with Supergrids example](/workflows/advanced/XYZGridPlotSupergrids.png)
 
 (ComfyUI workflow included)
 
@@ -709,7 +709,7 @@ Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For 
 
 Generating a huge grid like this also suffer from [the execution stalling problem](#the-execution-stalling-problem). You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes with an output node passthrough.
 
-![ImageGrids example](/workflows/XYZGridPlot_ImmediateSave.png)
+![ImageGrids example](/workflows/advanced/XYZGridPlotImmediateSave.png)
 
 (ComfyUI workflow included)
 
@@ -723,13 +723,13 @@ Custom nodes:
 
 You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. Thus we need store the individual values in the metadata. The following workflow makes use of Crystools' `Save image with Metadata` and `Load image with Metadata` and Impact-Pack's `Select Nth Item`.
 
-![Save Index in Metadata example](/workflows/IndexInMetadata.png)
+![Save Index in Metadata example](/workflows/advanced/IndexInMetadata.png)
 
 (ComfyUI workflow included)
 
 Uses the `index` of the combined list to store it as a JSON. It also uses the `index` of the individual lists combined the same way as the prompts, which gives as the rows and columns, for additional information, including the prompt: `{{ "prompt": "{a}", "index": {b}, "row": {c}, "col": {d} }}`
 
-![Load Index from Metadata example](/workflows/IndexFromMetadata.png)
+![Load Index from Metadata example](/workflows/advanced/IndexFromMetadata.png)
 
 (ComfyUI workflow included)
 
