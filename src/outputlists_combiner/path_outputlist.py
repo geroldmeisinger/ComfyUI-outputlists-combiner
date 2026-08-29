@@ -18,9 +18,9 @@ Internally uses python's [glob.iglob](https://docs.python.org/3/library/glob.htm
 
 `bare_strings` is intended for different styles of path recombinations, e.g. "{fulldir}/{basename}.{ext}" vs "{fulldir}{basename}{ext}"
 
-For security reason only the following directories are supported: `[input] [output] [temp]`.
 As a design choice the ComfyUI user directory annotation is used in the glob pattern (to allow more flexible patterns) insted of providing a separate variable (in a combo box).
 """,
+# TODO: For security reason only the following directories are supported: `[input] [output] [temp]`.
 			node_id	= "PathOutputList",
 			display_name	= "Path OutputList",
 			category	= CATEGORY,

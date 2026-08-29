@@ -107,7 +107,7 @@ def split_file_paths(filepath: str, annotation: str, bare_strings: bool) -> dict
 	filepath_annotated	= filepath + f" [{annotation}]"
 	dir_rel, filename	= os.path.split(filepath)
 	basename, ext	= os.path.splitext(filename)
-	dir_parent	= os.path.dirname(dir_rel)
+	dir_parent	= os.path.basename(dir_rel)
 
 	ret = {
 		"filepath_annotated"	: filepath_annotated,

@@ -37,8 +37,10 @@ This is useful if you want to save the intermediate images for grids immediately
 			outputs=[
 				io.Image.Output("image", is_output_list=False, tooltip="The decoded image."),
 			],
-			is_output_node=True,
-			enable_expand=True,
+			is_output_node	= True,
+			is_deprecated	= True, # use IterateBegin - IterateEnd instead
+			is_experimental	= True,
+			enable_expand	= True,
 		)
 
 	@classmethod

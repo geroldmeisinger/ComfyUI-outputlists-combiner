@@ -7,11 +7,13 @@ from comfy_api.latest import InputImpl, io
 from .util import *
 
 
-# duplicate of nodes_video.py LoadVideo except it fixes https://github.com/comfyanonymous/ComfyUI/issues/11017
 class LoadAnyVideo(io.ComfyNode):
 	@classmethod
 	def define_schema(cls):
 		return io.Schema(
+			description="""This node is a duplicate of nodes_video.py LoadVideo except with the fix included from [issue#11017](https://github.com/comfyanonymous/ComfyUI/issues/11017)
+It is required to load videos based on annotated filepaths which are restricted to user directories.
+""",
 			node_id="LoadAnyVideo",
 			search_aliases=["import any video", "open any video", "video any file"],
 			display_name="Load Any Video",
@@ -22,6 +24,7 @@ class LoadAnyVideo(io.ComfyNode):
 			outputs=[
 				io.Video.Output(),
 			],
+			is_experimental	= True,
 		)
 
 	@classmethod
