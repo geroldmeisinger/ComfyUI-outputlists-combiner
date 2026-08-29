@@ -49,7 +49,7 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 			ret = io.NodeOutput([], [], [], [], [], [], [])
 			return ret
 
-		filepaths = get_files(glob, limit)
+		filepaths = get_files(glob, limit, False)
 		if len(filepaths) == 0:
 			ret = io.NodeOutput([], [], [], [], [], [], [])
 			return ret
@@ -59,7 +59,7 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 		ret	= { key: [value[key] for value in components] for key in components[0] }
 
 		return io.NodeOutput(
-			[ret["filepath_rel"]],
+			ret["filepath_annotated"],
 			ret["filepath_rel"],
 			ret["filename"],
 			ret["basename"],
@@ -70,11 +70,11 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 			)
 
 	@classmethod
-	def fingerprint_inputs(cls, annotated_filepath: str) -> str:
-		if not annotated_filepath: return str(time.time()) # https://github.com/comfyanonymous/ComfyUI/issues/11017
+	def fingerprint_inputs(cls, glob: str, limit: int, bare_strings: bool) -> str:
+		if not glob: return str(time.time()) # https://github.com/comfyanonymous/ComfyUI/issues/11017
 
 		m	= hashlib.sha256()
-		file_paths = get_files(annotated_filepath)
+		file_paths = get_files(glob, limit, False)
 		for file_path in file_paths:
 			with open(file_path, 'rb') as f:
 				m.update(f.read())
@@ -82,10 +82,10 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 		return ret
 
 	@classmethod
-	def validate_inputs(cls, glob: str) -> bool | str:
+	def validate_inputs(cls, glob: str, limit: int, bare_strings: bool) -> bool | str:
 		if not glob: return True # https://github.com/comfyanonymous/ComfyUI/issues/11017
 
-		file_paths = get_files(glob)
+		file_paths = get_files(glob, limit, False)
 		if len(file_paths) == 0:
 			return f"No files found in '{glob}'"
 
