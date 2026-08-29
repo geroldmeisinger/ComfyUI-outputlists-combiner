@@ -3,6 +3,8 @@ import folder_paths
 from comfy_api.latest import io
 from comfy_execution.graph_utils import GraphBuilder
 
+from .util import *
+
 
 class KSamplerImmediateSave(io.ComfyNode):
 	@classmethod
@@ -15,7 +17,7 @@ This is useful if you want to save the intermediate images for grids immediately
 """,
 			node_id	= "KSamplerImmediateSave",
 			display_name	= "KSampler Immediate Save",
-			category	= "_for_testing",
+			category	= CATEGORY,
 			inputs	= [
 				# CheckpointLoaderSimple
 				io.Combo	.Input("ckpt_name"	, display_name="cpkt_name", options=folder_paths.get_filename_list("checkpoints"),	tooltip="The name of the checkpoint (model) to load."),

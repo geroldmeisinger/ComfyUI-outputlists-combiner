@@ -2,9 +2,10 @@ import re
 from collections import defaultdict
 from json import dumps, loads
 
-from comfy_api.latest import io
 from deepdiff import DeepDiff
 from jsonpath_ng import parse
+
+from comfy_api.latest import io
 
 from .util import *
 
@@ -23,7 +24,7 @@ Custom nodes with metadata loaders include:
 """,
 			node_id	= "WorkflowDiscriminator",
 			display_name	= "Workflow Discriminator",
-			category	= "Utility",
+			category	= CATEGORY,
 			is_input_list	= True,
 			inputs=[
 				io.AnyType	.Input("objs_0"	, display_name="objs_0"	, optional=True	, tooltip=f"(optional) A single object (or a list of objects), usually of a workflow. {NOTE}"),

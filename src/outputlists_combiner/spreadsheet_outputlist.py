@@ -3,9 +3,10 @@ import re
 from io import BytesIO, StringIO
 
 import pandas as pd
+
 from comfy_api.latest import io
 
-from .util import OUTPUTLIST_NOTE
+from .util import *
 
 
 class SpreadsheetOutputList(io.ComfyNode):
@@ -17,29 +18,29 @@ You can use the `Load any File` node to load a file in base64-encoding.
 Internally uses *pandas* [read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html) and [read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html) to load spreadsheet files.
 All lists {OUTPUTLIST_NOTE}
 """,
-			node_id     	= "SpreadsheetOutputList",
+			node_id	= "SpreadsheetOutputList",
 			display_name	= "Spreadsheet OutputList",
-			category    	= "Utility",
-			inputs      	= [
-				io.String	.Input("rows_and_cols"	, display_name="rows_and_cols"	, default=	"A B C D"	,             	tooltip="Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`)."),
-				io.Int   	.Input("header_rows"  	, display_name="header_rows"  	, default= 	1, min=  	0, max=65535,	tooltip="Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`."),
-				io.Int   	.Input("header_cols"  	, display_name="header_cols"  	, default= 	1, min=  	0, max=65535,	tooltip="Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`."),
-				io.Int   	.Input("select_nth"   	, display_name="select_nth"   	, default=	-1, min= 	-1, max=65535,	tooltip="Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern."),
-				io.String	.Input("separator"    	, display_name="separator"    	, default=	","      	,             	tooltip="Separator character used for .csv files"),
+			category	= CATEGORY,
+			inputs	= [
+				io.String	.Input("rows_and_cols"	, display_name="rows_and_cols"	, default=	"A B C D"	,	tooltip="Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`)."),
+				io.Int	.Input("header_rows"	, display_name="header_rows"	, default=	1, min=	0, max=65535,	tooltip="Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`."),
+				io.Int	.Input("header_cols"	, display_name="header_cols"	, default=	1, min=	0, max=65535,	tooltip="Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`."),
+				io.Int	.Input("select_nth"	, display_name="select_nth"	, default=	-1, min=	-1, max=65535,	tooltip="Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern."),
+				io.String	.Input("separator"	, display_name="separator"	, default=	","	,	tooltip="Separator character used for .csv files"),
 				io.String	.Input("string_or_base64",
 					display_name	= "string_or_base64",
-					multiline   	= True,
-					default     	= "",
-					placeholder 	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
-					tooltip     	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
+					multiline	= True,
+					default	= "",
+					placeholder	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
+					tooltip	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
 				)
 			],
 			outputs=[
-				io.String	.Output("list_a"	, display_name="list_a"	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
-				io.String	.Output("list_b"	, display_name="list_b"	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
-				io.String	.Output("list_c"	, display_name="list_c"	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
-				io.String	.Output("list_d"	, display_name="list_d"	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
-				io.Int   	.Output("count" 	, display_name="count" 	, is_output_list=False	, tooltip="Number of items in the longest list."),
+				io.String	.Output("list_a"	, display_name="list_a"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.String	.Output("list_b"	, display_name="list_b"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.String	.Output("list_c"	, display_name="list_c"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.String	.Output("list_d"	, display_name="list_d"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.Int	.Output("count"	, display_name="count"	, is_output_list=False	, tooltip="Number of items in the longest list."),
 			]
 		)
 		return ret
@@ -59,20 +60,20 @@ All lists {OUTPUTLIST_NOTE}
 	@classmethod
 	def execute(self, string_or_base64: str, rows_and_cols: str, header_rows: int, header_cols: int, select_nth: int, separator: str = ","):
 		limit	= 4
-		data 	= string_or_base64.strip()
+		data	= string_or_base64.strip()
 
 		# load spreadsheet with pandas
 		try:
 			decoded	= base64.b64decode(data, validate=True)
-			xls    	= pd.read_excel(BytesIO(decoded), sheet_name=None, header=None)
+			xls	= pd.read_excel(BytesIO(decoded), sheet_name=None, header=None)
 		except Exception:
 			try:
-				df 	= pd.read_csv(StringIO(data), sep=separator, engine="python", header=None)
+				df	= pd.read_csv(StringIO(data), sep=separator, engine="python", header=None)
 				xls	= {None: df}
 			except Exception:
 				return ([[] for _ in range(limit)], 0)
 
-		sheet_names  	= list(xls.keys())
+		sheet_names	= list(xls.keys())
 		default_sheet	= sheet_names[0]
 
 		# regex to select rows and columns with optional sheet reference (e.g. A, 1, AB, $MySheet.123, $'My Sheet'.ABC)
@@ -108,7 +109,7 @@ $""", re.VERBOSE)
 			if not m: continue
 
 			sheet	= m.group(1) or m.group(2) or m.group(3) or default_sheet
-			key  	= m.group(4)
+			key	= m.group(4)
 
 			if sheet not in xls: continue
 

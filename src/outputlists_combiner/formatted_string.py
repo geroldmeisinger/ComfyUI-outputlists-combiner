@@ -1,5 +1,7 @@
 from comfy_api.latest import io
 
+from .util import *
+
 
 class FormattedString(io.ComfyNode):
 	DESCRIPTION = """Creates a string that contains placeholder variables and replaces them with their respective values.
@@ -16,17 +18,17 @@ Note that "search & replace" takes place in Javascript context and runs before n
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description 	= FormattedString.DESCRIPTION,
-			node_id     	= "FormattedString",
+			description	= FormattedString.DESCRIPTION,
+			node_id	= "FormattedString",
 			display_name	= "Formatted String",
-			category    	= "Utility",
-			inputs      	= [
+			category	= CATEGORY,
+			inputs	= [
 				io.String.Input("fstring",
 					display_name	= "fstring",
-					multiline   	= True,
-					default     	= "{a}_{b}_{c}_{d}",
-					placeholder 	= "f-string with placeholder variables {a} {b} {c} {d}",
-					tooltip     	= FormattedString.DESCRIPTION,
+					multiline	= True,
+					default	= "{a}_{b}_{c}_{d}",
+					placeholder	= "f-string with placeholder variables {a} {b} {c} {d}",
+					tooltip	= FormattedString.DESCRIPTION,
 				),
 				io.AnyType.Input("a", display_name="a", optional=True, tooltip="(optional) value that will be as a string at the `{a}` placeholder."),
 				io.AnyType.Input("b", display_name="b", optional=True, tooltip="(optional) value that will be as a string at the `{b}` placeholder."),

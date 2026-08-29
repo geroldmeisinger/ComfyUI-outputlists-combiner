@@ -16,6 +16,8 @@ Technically it computes *the Cartesian product* and outputs each combination spl
 
 Example: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
+Alternative usage: If you connect one list to a unit value it essentially works as a on-signal node (a.k.a execution order enforcer).
+
 ### Inputs
 
 | Name | Type | Description |

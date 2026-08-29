@@ -20,6 +20,7 @@ async def comfy_entrypoint() -> ComfyExtension:
 				FormattedString,
 				ConvertNumberToIntFloatStr,
 				LoadAnyFile,
+				PathOutputList,
 				KSamplerImmediateSave,
 				IterateBegin, IterateEnd,
 			]

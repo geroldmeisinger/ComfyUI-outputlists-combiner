@@ -2,7 +2,7 @@ import itertools
 
 from comfy_api.latest import io
 
-from .util import INPUTLIST_NOTE, OUTPUTLIST_NOTE
+from .util import *
 
 
 class CombineOutputLists(io.ComfyNode):
@@ -20,10 +20,12 @@ All lists are optional and empty lists will be ignored.
 Technically it computes *the Cartesian product* and outputs each combination splitted up into their elements (`unzip`), whereas empty lists will be replaced with units of `None` and they will emit `None` on the respective output.
 
 Example: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
+
+Alternative usage: If you connect one list to a unit value it essentially works as a on-signal node (a.k.a execution order enforcer).
 """,
 			node_id      	= "CombineOutputLists",
 			display_name 	= "OutputLists Combinations",
-			category     	= "Utility",
+			category     	= CATEGORY,
 			is_input_list	= True,
 			inputs=[
 				io.AnyType.Input("list_a", display_name="list_a", optional=True, tooltip=f"(optional) {INPUTLIST_NOTE}"),
