@@ -87,11 +87,11 @@ Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the d
 
 ## Repeat OutputLists
 
-![Repeat OutputLists example](/workflows/simple/Example_08a_RepeatOutputLists.png)
+![Repeat OutputLists example](/workflows/simple/RepeatOutputLists.png)
 
 ## Cycle OutputLists
 
-![Cycle OuputLists example](/workflows/simple/Example_08b_CycleOutputLists.png)
+![Cycle OuputLists example](/workflows/simple/CycleOutputLists.png)
 
 ## The execution stalling problem
 

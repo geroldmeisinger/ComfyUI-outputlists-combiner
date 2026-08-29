@@ -124,13 +124,13 @@ nodes = [
 	JSONOutputList(),
 	SpreadsheetOutputList(),
 	CombineOutputLists(),
-	XyzGridPlot(),
-	WorkflowDiscriminator(),
 	FormattedString(),
 	ConvertNumberToIntFloatStr(),
+	XyzGridPlot(),
 	LoadAnyFile(),
 	IterateBegin(),
 	IterateEnd(),
+	WorkflowDiscriminator(),
 	KSamplerImmediateSave(),
 ]
 
@@ -292,7 +292,7 @@ def test_generate_docs():
 </div>""")
 
 	def get_link_md(header: str) -> tuple[str, str]:
-		header_a = header.lower().replace(" ", "-").replace("(", "").replace(")", "").replace("/", "").replace("=", "")
+		header_a = header.lower().replace(" ", "-").replace("(", "").replace(")", "").replace("/", "").replace("=", "").replace(",", "")
 		header_t	= header.replace("_", "\\_")
 		return header_t, header_a
 

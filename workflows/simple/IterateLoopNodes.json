@@ -199,7 +199,7 @@
                 },
                 {
                     "label": "_",
-                    "localized_name": "_results",
+                    "localized_name": "_",
                     "name": "_results",
                     "shape": 7,
                     "type": "*",
@@ -1462,10 +1462,10 @@
     "config": {},
     "extra": {
         "ds": {
-            "scale": 1,
+            "scale": 0.8264462809917354,
             "offset": [
-                350,
-                -150
+                128.05999999999966,
+                204.2999999999998
             ]
         }
     },

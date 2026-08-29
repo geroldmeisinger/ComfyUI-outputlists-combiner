@@ -34,6 +34,8 @@ The following workflow is a extension of "Iterate durations", it generations mul
 
 (ComfyUI workflow included)
 
+Accompanying [reddit discussion](https://www.reddit.com/r/comfyui/s/WEUYDmVxlH)
+
 Custom nodes:
 - [Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling) for `save STRING to file` and `load STRING from file`
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools) for `Pipe to` `Pipe from`
@@ -52,14 +54,6 @@ index,duration,sampler,decode_video,decode_audio,total,unit
 ```
 
 ![plot duration](/media/Duration_Timer_CSV_plot_duration.png)
-
-```csv
-index,duration,sampler,decode_video,decode_audio,total,unit
-0,5,56212,26062,824,83098,steps
-1,10,109488,24594,505,134587,steps
-2,15,170691,21602,511,192804,steps
-3,20,193693,24987,520,219200,steps
-```
 
 You can easily adopt this workflow for other values:
 
@@ -97,6 +91,8 @@ The following workflow is a extension of "Iterate durations, measure time, write
 ![Iterate durations, measure time, write CSV](/workflows/video/Resolution_Duration_Timer_CSV.png)
 
 (ComfyUI workflow included)
+
+Accompanying [reddit discussion](https://www.reddit.com/r/comfyui/s/WEUYDmVxlH)
 
 Custom nodes:
 - [Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling) for `save STRING to file` and `load STRING from file`

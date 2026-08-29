@@ -14,7 +14,7 @@ Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `fl
 
 I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
 
-![XYZ-GridPlots with Supergrids example](/workflows/ExampleAdv_00a_XYZGridPlot_Supergrids.png)
+![XYZ-GridPlots with Supergrids example](/workflows/XYZGridPlot_Supergrids.png)
 
 (ComfyUI workflow included)
 
@@ -24,7 +24,7 @@ Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For 
 
 Generating a huge grid like this also suffer from [the execution stalling problem](#the-execution-stalling-problem). You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes with an output node passthrough.
 
-![ImageGrids example](/workflows/ExampleAdv_00b_XYZGridPlot_ImmediateSave.png)
+![ImageGrids example](/workflows/XYZGridPlot_ImmediateSave.png)
 
 (ComfyUI workflow included)
 
@@ -38,13 +38,13 @@ Custom nodes:
 
 You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. Thus we need store the individual values in the metadata. The following workflow makes use of Crystools' `Save image with Metadata` and `Load image with Metadata` and Impact-Pack's `Select Nth Item`.
 
-![Save Index in Metadata example](/workflows/ExampleAdv_01a_IndexInMetadata.png)
+![Save Index in Metadata example](/workflows/IndexInMetadata.png)
 
 (ComfyUI workflow included)
 
 Uses the `index` of the combined list to store it as a JSON. It also uses the `index` of the individual lists combined the same way as the prompts, which gives as the rows and columns, for additional information, including the prompt: `{{ "prompt": "{a}", "index": {b}, "row": {c}, "col": {d} }}`
 
-![Load Index from Metadata example](/workflows/ExampleAdv_01b_IndexFromMetadata.png)
+![Load Index from Metadata example](/workflows/IndexFromMetadata.png)
 
 (ComfyUI workflow included)
 

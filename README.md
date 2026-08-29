@@ -51,13 +51,13 @@ If you find this custom node useful:
 	- [JSON OutputList](#json-outputlist)
 	- [Spreadsheet OutputList](#spreadsheet-outputlist)
 	- [OutputLists Combinations](#outputlists-combinations)
-	- [XYZ-GridPlot](#xyz-gridplot)
-	- [Workflow Discriminator](#workflow-discriminator)
 	- [Formatted String](#formatted-string)
 	- [Convert To Int Float Str](#convert-to-int-float-str)
+	- [XYZ-GridPlot](#xyz-gridplot)
 	- [Load Any File](#load-any-file)
 	- [Iterate Begin](#iterate-begin)
 	- [Iterate End](#iterate-end)
+	- [Workflow Discriminator](#workflow-discriminator)
 - [Examples](#examples)
 	- [Simple OutputList](#simple-outputlist)
 	- [Combine prompts](#combine-prompts)
@@ -84,8 +84,8 @@ If you find this custom node useful:
 	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 	- [Iterate durations](#iterate-durations)
 	- [Iterate resolutions](#iterate-resolutions)
-	- [Iterate durations, measure time, write CSV](#iterate-durations,-measure-time,-write-csv)
-	- [Iterate resolutions, iterate durations, measure time, write CSV](#iterate-resolutions,-iterate-durations,-measure-time,-write-csv)
+	- [Iterate durations, measure time, write CSV](#iterate-durations-measure-time-write-csv)
+	- [Iterate resolutions, iterate durations, measure time, write CSV](#iterate-resolutions-iterate-durations-measure-time-write-csv)
 - [For-Loops](#for-loops)
 - [Third-party custom nodes](#third-party-custom-nodes)
 	- [Data Lists](#data-lists)
@@ -295,6 +295,8 @@ Technically it computes *the Cartesian product* and outputs each combination spl
 
 Example: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", None), (2, None, "A", None), (2, None, "B", None)]`
 
+Alternative usage: If you connect one list to a unit value it essentially works as a on-signal node (a.k.a execution order enforcer).
+
 ### Inputs
 
 | Name | Type | Description |
@@ -314,95 +316,6 @@ Example: `[1, 2] x [] x ["A", "B"] x [] = [(1, None, "A", None), (1, None, "B", 
 | `unzip_d` | `* 𝌠` | Value of the combinations corresponding to `list_d`. |
 | `index` | `INT 𝌠` | Range of 0..count which can be used as an index. |
 | `count` | `INT` | Total number of combinations. |
-
-## XYZ-GridPlot
-
-![XYZ-GridPlot](/web/docs/XyzGridPlot/XyzGridPlot.png)
-
-(ComfyUI workflow included)
-
-Generates a XYZ-Gridplot from a list of images.
-It takes a list of images (including batches) and flattens them into a long list first (thus `batch_size=1`).
-
-**Grid shape**
-
-Determines the shape of the grid by:
-1. the number of row labels
-2. the number of column labels
-3. the remaining sub-images.
-You can use `order=inside_out` to reverse the image selection (useful if `batch_size>1` and you want to label the batches).
-
-**Alignment**
-
-* If a label gets wrapped into the next line the whole axis is considered "multiline" and aligns them at top with justified-spacing.
-* If all the labels are numbers or all end in numbers (e.g. `strength: 1.`) the whole axis is considered "numeric" and aligns them right.
-* All other texts are considered "singleline" and aligns them centered.
-* Aligns singleline and numeric labels for columns at bottom, and for rows aligns them vertically in the middle.
-
-**Font-size**
-
-* The height of the column label area is determined by `font_size` or `half of largest sub-images packing height in any row` (whichever is greater).
-* The width of the row label area is determined by the widest width of the sub-images packing (with a minimum of 256px).
-* The text is shrunk down until it fits (down to `font_size_min=6`) and uses the same font size for the whole axis (row labels or column labels).
-If the font size is already at the minimum, clips any remaining text.
-
-**Sub-images packing**
-
-Shapes the sub-images (usually from batches) into the most square area (the "sub-images packing"), unless `output_is_list=True`, in which case uses only one image for each cell and create a list of whole image grids instead.
-You can use this list of image grids to connect another XyzGridPlot node to create super-grids.
-If the sub-images consist of batches of different sizes, fills up the missing cells with empty images.
-The number of images per cells (including batched images) have to be a multiple of `rows * columns`.
-
-### Inputs
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `images` | `IMAGE` | A list of images (including batches) |
-| `row_labels` | `*` | Row label texts at the left side |
-| `col_labels` | `*` | Column label texts at the top |
-| `gap` | `INT` | Gap between the sub-image packings. Note that within the sub-images themselves uses no gap. If you want a gap between the sub-images connect another XyzGridPlot node. |
-| `font_size` | `FLOAT` | Target font size. The text will be shrunk down until it fits (down to `font_size_min=6`). |
-| `row_label_orientation` | `COMBO` | Text orientation of the row labels. Useful if you want to save space. |
-| `order` | `BOOLEAN` | Defines in which order the images should be processed. This is only relevant if you have sub-images. Useful if `batch_size>1` and you want to plot the batches. |
-| `output_is_list` | `BOOLEAN` | This is only relevant if you have sub-images or you want to create super-grids. |
-
-### Outputs
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `image` | `IMAGE 𝌠` | The XYZ-GridPlot image. If `output_is_list=True` creates a list of images which you can connect to another XYZ-GridPlot node to create super-grids. |
-
-## Workflow Discriminator
-
-![Workflow Discriminator](/web/docs/WorkflowDiscriminator/WorkflowDiscriminator.png)
-
-(ComfyUI workflow included)
-
-Compares workflows and discriminates them to extract the different values as individual OutputLists.
-You can use this node to restore how each individual image was created from a list of images with the same workflow.
-Note that ComfyUI's `IMAGE` doesn't contain the workflow metadata and you need to load the images with specialized image+metadata loaders and connect the metadata to this node.
-Custom nodes with metadata loaders include:
-* `Load Any File.metadata` -> `JSON OutputList(jsonpath=$.["PNG:Prompt"]).value`
-* [Crystool](https://github.com/crystian/ComfyUI-Crystools) `🪛 Load image with metadata.Metadata RAW` -> `🪛 Metadata extractor.prompt`
-* [Simple_Readable_Metadata](https://github.com/ShammiG/ComfyUI-Simple_Readable_Metadata-SG) `Simple Readable Metadata-SG.metadata_raw`
-
-### Inputs
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `objs_0` | `*` | (optional) A single object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects. |
-| `more_objs` | `*` | (optional) Another object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects. |
-| `ignore_jsonpaths` | `STRING` | (optional) A list of JSONPaths to ignore in case you want to chain multiple discriminators together. |
-
-### Outputs
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `list_a` | `* 𝌠` |  |
-| `list_b` | `* 𝌠` |  |
-| `list_c` | `* 𝌠` |  |
-| `list_d` | `* 𝌠` |  |
-| `jsonpaths` | `STRING 𝌠` |  |
 
 ## Formatted String
 
@@ -461,6 +374,63 @@ Use a string `123;234;345` to quickly generate a list of numbers. Don't use comm
 | `float` | `FLOAT 𝌠` | All the numbers found in the string as floats. |
 | `string` | `STRING 𝌠` | All the numbers found in the string as floats converted to string. |
 | `count` | `INT` | Amount of numbers found in the value. |
+
+## XYZ-GridPlot
+
+![XYZ-GridPlot](/web/docs/XyzGridPlot/XyzGridPlot.png)
+
+(ComfyUI workflow included)
+
+Generates a XYZ-Gridplot from a list of images.
+It takes a list of images (including batches) and flattens them into a long list first (thus `batch_size=1`).
+
+**Grid shape**
+
+Determines the shape of the grid by:
+1. the number of row labels
+2. the number of column labels
+3. the remaining sub-images.
+You can use `order=inside_out` to reverse the image selection (useful if `batch_size>1` and you want to label the batches).
+
+**Alignment**
+
+* If a label gets wrapped into the next line the whole axis is considered "multiline" and aligns them at top with justified-spacing.
+* If all the labels are numbers or all end in numbers (e.g. `strength: 1.`) the whole axis is considered "numeric" and aligns them right.
+* All other texts are considered "singleline" and aligns them centered.
+* Aligns singleline and numeric labels for columns at bottom, and for rows aligns them vertically in the middle.
+
+**Font-size**
+
+* The height of the column label area is determined by `font_size` or `half of largest sub-images packing height in any row` (whichever is greater).
+* The width of the row label area is determined by the widest width of the sub-images packing (with a minimum of 256px).
+* The text is shrunk down until it fits (down to `font_size_min=6`) and uses the same font size for the whole axis (row labels or column labels).
+If the font size is already at the minimum, clips any remaining text.
+
+**Sub-images packing**
+
+Shapes the sub-images (usually from batches) into the most square area (the "sub-images packing"), unless `output_is_list=True`, in which case uses only one image for each cell and create a list of whole image grids instead.
+You can use this list of image grids to connect another XyzGridPlot node to create super-grids.
+If the sub-images consist of batches of different sizes, fills up the missing cells with empty images.
+The number of images per cells (including batched images) have to be a multiple of `rows * columns`.
+
+### Inputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `images` | `IMAGE` | A list of images (including batches) |
+| `row_labels` | `*` | Row label texts at the left side |
+| `col_labels` | `*` | Column label texts at the top |
+| `gap` | `INT` | Gap between the sub-image packings. Note that within the sub-images themselves uses no gap. If you want a gap between the sub-images connect another XyzGridPlot node. |
+| `font_size` | `FLOAT` | Target font size. The text will be shrunk down until it fits (down to `font_size_min=6`). |
+| `row_label_orientation` | `COMBO` | Text orientation of the row labels. Useful if you want to save space. |
+| `order` | `BOOLEAN` | Defines in which order the images should be processed. This is only relevant if you have sub-images. Useful if `batch_size>1` and you want to plot the batches. |
+| `output_is_list` | `BOOLEAN` | This is only relevant if you have sub-images or you want to create super-grids. |
+
+### Outputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `image` | `IMAGE 𝌠` | The XYZ-GridPlot image. If `output_is_list=True` creates a list of images which you can connect to another XYZ-GridPlot node to create super-grids. |
 
 ## Load Any File
 
@@ -549,6 +519,38 @@ Internally uses the node expansion mechanism which duplicates the sub-workflow m
 | Name | Type | Description |
 | --- | --- | --- |
 | `datalist` | `* 𝌠` |  |
+
+## Workflow Discriminator
+
+![Workflow Discriminator](/web/docs/WorkflowDiscriminator/WorkflowDiscriminator.png)
+
+(ComfyUI workflow included)
+
+Compares workflows and discriminates them to extract the different values as individual OutputLists.
+You can use this node to restore how each individual image was created from a list of images with the same workflow.
+Note that ComfyUI's `IMAGE` doesn't contain the workflow metadata and you need to load the images with specialized image+metadata loaders and connect the metadata to this node.
+Custom nodes with metadata loaders include:
+* `Load Any File.metadata` -> `JSON OutputList(jsonpath=$.["PNG:Prompt"]).value`
+* [Crystool](https://github.com/crystian/ComfyUI-Crystools) `🪛 Load image with metadata.Metadata RAW` -> `🪛 Metadata extractor.prompt`
+* [Simple_Readable_Metadata](https://github.com/ShammiG/ComfyUI-Simple_Readable_Metadata-SG) `Simple Readable Metadata-SG.metadata_raw`
+
+### Inputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `objs_0` | `*` | (optional) A single object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects. |
+| `more_objs` | `*` | (optional) Another object (or a list of objects), usually of a workflow. `objs_0` and `more_objs` will be concateneted together and exist for convinience, if you only want to compare two objects. |
+| `ignore_jsonpaths` | `STRING` | (optional) A list of JSONPaths to ignore in case you want to chain multiple discriminators together. |
+
+### Outputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `list_a` | `* 𝌠` |  |
+| `list_b` | `* 𝌠` |  |
+| `list_c` | `* 𝌠` |  |
+| `list_d` | `* 𝌠` |  |
+| `jsonpaths` | `STRING 𝌠` |  |
 
 
 # Examples
@@ -640,11 +642,11 @@ Uses `String OutputList` to emit multiple glob patterns that expand, 1. on the d
 
 ## Repeat OutputLists
 
-![Repeat OutputLists example](/workflows/simple/Example_08a_RepeatOutputLists.png)
+![Repeat OutputLists example](/workflows/simple/RepeatOutputLists.png)
 
 ## Cycle OutputLists
 
-![Cycle OuputLists example](/workflows/simple/Example_08b_CycleOutputLists.png)
+![Cycle OuputLists example](/workflows/simple/CycleOutputLists.png)
 
 ## The execution stalling problem
 
@@ -697,7 +699,7 @@ Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `fl
 
 I recommend to start ComfyUI with `--cache-ram` for this example if you want to experiment with the settings alot!
 
-![XYZ-GridPlots with Supergrids example](/workflows/ExampleAdv_00a_XYZGridPlot_Supergrids.png)
+![XYZ-GridPlots with Supergrids example](/workflows/XYZGridPlot_Supergrids.png)
 
 (ComfyUI workflow included)
 
@@ -707,7 +709,7 @@ Uses two `XYZ-GridPlot` in sequence to put one image grid inside the other. For 
 
 Generating a huge grid like this also suffer from [the execution stalling problem](#the-execution-stalling-problem). You can workaround this limitation by using the `Iterate Begin` and `Iterate End` nodes with an output node passthrough.
 
-![ImageGrids example](/workflows/ExampleAdv_00b_XYZGridPlot_ImmediateSave.png)
+![ImageGrids example](/workflows/XYZGridPlot_ImmediateSave.png)
 
 (ComfyUI workflow included)
 
@@ -721,13 +723,13 @@ Custom nodes:
 
 You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. Thus we need store the individual values in the metadata. The following workflow makes use of Crystools' `Save image with Metadata` and `Load image with Metadata` and Impact-Pack's `Select Nth Item`.
 
-![Save Index in Metadata example](/workflows/ExampleAdv_01a_IndexInMetadata.png)
+![Save Index in Metadata example](/workflows/IndexInMetadata.png)
 
 (ComfyUI workflow included)
 
 Uses the `index` of the combined list to store it as a JSON. It also uses the `index` of the individual lists combined the same way as the prompts, which gives as the rows and columns, for additional information, including the prompt: `{{ "prompt": "{a}", "index": {b}, "row": {c}, "col": {d} }}`
 
-![Load Index from Metadata example](/workflows/ExampleAdv_01b_IndexFromMetadata.png)
+![Load Index from Metadata example](/workflows/IndexFromMetadata.png)
 
 (ComfyUI workflow included)
 
@@ -833,6 +835,8 @@ The following workflow is a extension of "Iterate durations", it generations mul
 
 (ComfyUI workflow included)
 
+Accompanying [reddit discussion](https://www.reddit.com/r/comfyui/s/WEUYDmVxlH)
+
 Custom nodes:
 - [Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling) for `save STRING to file` and `load STRING from file`
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools) for `Pipe to` `Pipe from`
@@ -851,14 +855,6 @@ index,duration,sampler,decode_video,decode_audio,total,unit
 ```
 
 ![plot duration](/media/Duration_Timer_CSV_plot_duration.png)
-
-```csv
-index,duration,sampler,decode_video,decode_audio,total,unit
-0,5,56212,26062,824,83098,steps
-1,10,109488,24594,505,134587,steps
-2,15,170691,21602,511,192804,steps
-3,20,193693,24987,520,219200,steps
-```
 
 You can easily adopt this workflow for other values:
 
@@ -896,6 +892,8 @@ The following workflow is a extension of "Iterate durations, measure time, write
 ![Iterate durations, measure time, write CSV](/workflows/video/Resolution_Duration_Timer_CSV.png)
 
 (ComfyUI workflow included)
+
+Accompanying [reddit discussion](https://www.reddit.com/r/comfyui/s/WEUYDmVxlH)
 
 Custom nodes:
 - [Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling) for `save STRING to file` and `load STRING from file`
@@ -961,7 +959,8 @@ Also note that most loop nodes want to support some form of feedback cycle and u
 
 **Alternative loop variants**
 
-* [official TensorLoop](https://github.com/kijai/ComfyUI/blob/2bf117a8257a3a1351d7f8db55a9f2ade8870277/comfy_extras/nodes_looping.py)
+* [KJTensorLoop pullrequest](https://github.com/kijai/ComfyUI/blob/2bf117a8257a3a1351d7f8db55a9f2ade8870277/comfy_extras/nodes_looping.py)
+* [rattus128 Generic Loops](https://github.com/Comfy-Org/ComfyUI/pull/15923) ([code](https://github.com/rattus128/ComfyUI/blob/9334c13639d854e9034d5f119213c40106747f8c/comfy_extras/nodes_loop.py))
 * [Execution Inversion Demo](https://github.com/BadCafeCode/execution-inversion-demo-comfyui) ([code1](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/flow_control.py) [code2](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/utility_nodes.py))
 * [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use) ([code](https://github.com/yolain/ComfyUI-Easy-Use/blob/4de1ab3b66e48da916b6f263bacd001df53a2720/py/nodes/logic.py#L591))
 * [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) ([Hidden example](https://github.com/ltdrdata/ComfyUI-Impact-Pack/issues/824#issuecomment-2493301831)) ([code](https://github.com/ltdrdata/ComfyUI-Inspire-Pack/blob/d23db9aa544de9a6d4c609cb7005fa9e0d42031d/inspire/list_nodes.py#L82))
