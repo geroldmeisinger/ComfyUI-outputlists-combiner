@@ -19,7 +19,7 @@ async def comfy_entrypoint() -> ComfyExtension:
 				WorkflowDiscriminator,
 				FormattedString,
 				ConvertNumberToIntFloatStr,
-				LoadAnyFile,
+				LoadAnyFile, LoadAnyVideo,
 				PathOutputList,
 				KSamplerImmediateSave,
 				IterateBegin, IterateEnd,

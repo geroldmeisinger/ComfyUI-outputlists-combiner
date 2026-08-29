@@ -5,6 +5,7 @@ from .iterate import IterateBegin, IterateEnd
 from .json_outputlist import JSONOutputList
 from .ksampler_immediate_saveimage import KSamplerImmediateSave
 from .load_any_file import LoadAnyFile
+from .load_any_video import LoadAnyVideo
 from .number_outputlist import NumberOutputList
 from .path_outputlist import PathOutputList
 from .spreadsheet_outputlist import SpreadsheetOutputList
