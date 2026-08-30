@@ -124,7 +124,6 @@ nodes = [
 	JSONOutputList(),
 	SpreadsheetOutputList(),
 	CombineOutputLists(),
-	FormattedString(),
 	ConvertNumberToIntFloatStr(),
 	XyzGridPlot(),
 	LoadAnyFile(),

@@ -2,7 +2,7 @@
     "id": "7964b05b-018b-41a8-b811-e82e58d373b9",
     "revision": 0,
     "last_node_id": 133,
-    "last_link_id": 245,
+    "last_link_id": 247,
     "nodes": [
         {
             "id": 77,
@@ -70,8 +70,8 @@
                     "shape": 6,
                     "type": "FLOAT",
                     "links": [
-                        197,
-                        238
+                        238,
+                        246
                     ]
                 },
                 {
@@ -220,7 +220,7 @@
                     "widget": {
                         "name": "text"
                     },
-                    "link": 196
+                    "link": 247
                 },
                 {
                     "localized_name": "direction",
@@ -518,88 +518,6 @@
             "bgcolor": "#653"
         },
         {
-            "id": 98,
-            "type": "FormattedString",
-            "pos": [
-                500,
-                400
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {},
-            "order": 2,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "a",
-                    "name": "values.a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 197
-                },
-                {
-                    "localized_name": "b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "localized_name": "dict",
-                    "name": "dict",
-                    "shape": 7,
-                    "type": "DICT",
-                    "link": null
-                },
-                {
-                    "localized_name": "list",
-                    "name": "list",
-                    "shape": 7,
-                    "type": "ARRAY",
-                    "link": null
-                },
-                {
-                    "localized_name": "fstring",
-                    "name": "fstring",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "fstring"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "string",
-                    "name": "string",
-                    "type": "STRING",
-                    "links": [
-                        196
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "272f15abad5788583ae3bb777e4e586203b4768e",
-                "Node name for S&R": "FormattedString",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {},
-                    "version": "7.5.2"
-                }
-            },
-            "widgets_values": [
-                "LoRA strength: {a:0.2f}"
-            ],
-            "widgets_values_named": {
-                "fstring": "LoRA strength: {a:0.2f}"
-            },
-            "color": "#323",
-            "bgcolor": "#535"
-        },
-        {
             "id": 129,
             "type": "432fe3dd-3522-45de-906c-00e2dde0b271",
             "pos": [
@@ -762,10 +680,71 @@
         },
         {
             "id": 133,
-            "type": "MarkdownNote",
+            "type": "StringFormat",
+            "pos": [
+                500,
+                400
+            ],
+            "size": [
+                250,
+                108
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 246
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "f_string",
+                    "name": "f_string",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "f_string"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        247
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
+            },
+            "widgets_values": [
+                "LoRA strength: {a:0.2f}"
+            ],
+            "widgets_values_named": {
+                "f_string": "LoRA strength: {a:0.2f}"
+            }
+        },
+        {
+            "id": 95,
+            "type": "Note",
             "pos": [
                 100,
-                500
+                450
             ],
             "size": [
                 250,
@@ -776,12 +755,18 @@
             "mode": 0,
             "inputs": [],
             "outputs": [],
-            "properties": {},
+            "properties": {
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "version": "7.5.2",
+                    "input_ue_unconnectable": {}
+                }
+            },
             "widgets_values": [
-                "LoRA: [Realistic Snapshot v5](\nhttps://civitai.com/models/2268008/realistic-snapshot-z-image-turbo-krea-2?modelVersionId=2617751)"
+                "LoRA: Realistic Snapshot v5\nhttps://civitai.com/models/2268008/realistic-snapshot-z-image-turbo-krea-2?modelVersionId=2617751"
             ],
             "widgets_values_named": {
-                "text": "LoRA: [Realistic Snapshot v5](\nhttps://civitai.com/models/2268008/realistic-snapshot-z-image-turbo-krea-2?modelVersionId=2617751)"
+                "text": "LoRA: Realistic Snapshot v5\nhttps://civitai.com/models/2268008/realistic-snapshot-z-image-turbo-krea-2?modelVersionId=2617751"
             },
             "color": "#432",
             "bgcolor": "#653"
@@ -821,22 +806,6 @@
             "VIDEO"
         ],
         [
-            196,
-            98,
-            0,
-            91,
-            9,
-            "STRING"
-        ],
-        [
-            197,
-            77,
-            1,
-            98,
-            0,
-            "FLOAT"
-        ],
-        [
             238,
             77,
             1,
@@ -851,6 +820,22 @@
             91,
             0,
             "IMAGE"
+        ],
+        [
+            246,
+            77,
+            1,
+            133,
+            0,
+            "FLOAT"
+        ],
+        [
+            247,
+            133,
+            0,
+            91,
+            9,
+            "STRING"
         ]
     ],
     "groups": [],
@@ -862,8 +847,8 @@
                 "state": {
                     "lastGroupId": 16,
                     "lastNodeId": 133,
-                    "lastLinkId": 245,
-                    "lastRerouteId": 3
+                    "lastLinkId": 247,
+                    "lastRerouteId": 4
                 },
                 "revision": 0,
                 "config": {},
@@ -1959,19 +1944,21 @@
     "config": {},
     "extra": {
         "ds": {
-            "scale": 0.7513148009015777,
+            "scale": 0.8264462809917356,
             "offset": [
-                521.567425017039,
-                365.65952207458304
+                258.88742501703865,
+                283.1405220745837
             ]
         },
-        "frontendVersion": "1.51.9",
+        "ue_links": [],
+        "links_added_by_ue": [],
+        "workflowRendererVersion": "LG",
         "reroutes": [
             {
                 "id": 2,
                 "pos": [
                     400,
-                    614
+                    514
                 ],
                 "linkIds": [
                     191
@@ -1982,16 +1969,25 @@
                 "parentId": 2,
                 "pos": [
                     1200,
-                    614
+                    514
                 ],
                 "linkIds": [
                     191
                 ]
+            },
+            {
+                "id": 4,
+                "pos": [
+                    450,
+                    314
+                ],
+                "linkIds": [
+                    238,
+                    246
+                ]
             }
         ],
-        "workflowRendererVersion": "LG",
-        "ue_links": [],
-        "links_added_by_ue": [],
+        "frontendVersion": "1.51.9",
         "VHS_latentpreview": false,
         "VHS_latentpreviewrate": 0,
         "VHS_MetadataImage": true,
@@ -2000,6 +1996,14 @@
             {
                 "id": 191,
                 "parentId": 3
+            },
+            {
+                "id": 238,
+                "parentId": 4
+            },
+            {
+                "id": 246,
+                "parentId": 4
             }
         ]
     },

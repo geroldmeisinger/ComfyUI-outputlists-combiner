@@ -1,8 +1,8 @@
 {
     "id": "8a6daf2f-6dbc-4c0a-a232-7f26101e6906",
     "revision": 0,
-    "last_node_id": 29,
-    "last_link_id": 68,
+    "last_node_id": 30,
+    "last_link_id": 71,
     "nodes": [
         {
             "id": 13,
@@ -128,7 +128,7 @@
                     "type": "*",
                     "links": [
                         59,
-                        68
+                        70
                     ]
                 },
                 {
@@ -415,7 +415,7 @@
                     "localized_name": "text",
                     "name": "text",
                     "type": "STRING",
-                    "link": 65
+                    "link": 71
                 }
             ],
             "outputs": [
@@ -585,90 +585,6 @@
             "bgcolor": "#353"
         },
         {
-            "id": 29,
-            "type": "FormattedString",
-            "pos": [
-                1600,
-                0
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {},
-            "order": 5,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "a",
-                    "name": "values.a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 67
-                },
-                {
-                    "localized_name": "b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 68
-                },
-                {
-                    "localized_name": "c",
-                    "name": "values.c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "localized_name": "dict",
-                    "name": "dict",
-                    "shape": 7,
-                    "type": "DICT",
-                    "link": null
-                },
-                {
-                    "localized_name": "list",
-                    "name": "list",
-                    "shape": 7,
-                    "type": "ARRAY",
-                    "link": null
-                },
-                {
-                    "localized_name": "fstring",
-                    "name": "fstring",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "fstring"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "string",
-                    "name": "string",
-                    "type": "STRING",
-                    "links": [
-                        65
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "bf5497abf8ecff5b9a1daed33e66b7b2723280de",
-                "Node name for S&R": "FormattedString"
-            },
-            "widgets_values": [
-                "{b}_{a}"
-            ],
-            "widgets_values_named": {
-                "fstring": "{b}_{a}"
-            },
-            "color": "#323",
-            "bgcolor": "#535"
-        },
-        {
             "id": 28,
             "type": "IterateBegin",
             "pos": [
@@ -711,7 +627,7 @@
                     "name": "item",
                     "type": "*",
                     "links": [
-                        67
+                        69
                     ]
                 },
                 {
@@ -728,6 +644,74 @@
             },
             "color": "#223",
             "bgcolor": "#335"
+        },
+        {
+            "id": 30,
+            "type": "StringFormat",
+            "pos": [
+                1600,
+                0
+            ],
+            "size": [
+                250,
+                150
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 69
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 70
+                },
+                {
+                    "localized_name": "c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "f_string",
+                    "name": "f_string",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "f_string"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        71
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
+            },
+            "widgets_values": [
+                "{b}_{a}"
+            ],
+            "widgets_values_named": {
+                "f_string": "{b}_{a}"
+            }
         }
     ],
     "links": [
@@ -812,29 +796,40 @@
             "FLOW_CONTROL"
         ],
         [
-            65,
-            29,
+            69,
+            28,
+            1,
+            30,
+            0,
+            "*"
+        ],
+        [
+            70,
+            27,
+            1,
+            30,
+            1,
+            "*"
+        ],
+        [
+            71,
+            30,
             0,
             9,
             0,
             "STRING"
-        ],
-        [
-            67,
-            28,
-            1,
-            29,
-            0,
-            "*"
-        ],
-        [
-            68,
-            27,
-            1,
-            29,
-            1,
-            "*"
         ]
+    ],
+    "floatingLinks": [
+        {
+            "id": 2,
+            "origin_id": 27,
+            "origin_slot": 1,
+            "target_id": -1,
+            "target_slot": -1,
+            "type": "*",
+            "parentId": 2
+        }
     ],
     "groups": [],
     "config": {},
@@ -842,8 +837,8 @@
         "ds": {
             "scale": 0.6830134553650705,
             "offset": [
-                -76.42760000000014,
-                775.3445
+                -418.16819999999797,
+                925.5130000000007
             ]
         },
         "reroutes": [
@@ -854,13 +849,16 @@
                     14
                 ],
                 "linkIds": [
-                    68
-                ]
+                    70
+                ],
+                "floating": {
+                    "slotType": "output"
+                }
             }
         ],
         "linkExtensions": [
             {
-                "id": 68,
+                "id": 70,
                 "parentId": 2
             }
         ]

@@ -1,290 +1,15 @@
 {
     "id": "264bc0a8-1d57-4447-bd9b-89157cd4d10c",
     "revision": 0,
-    "last_node_id": 261,
-    "last_link_id": 532,
+    "last_node_id": 274,
+    "last_link_id": 575,
     "nodes": [
         {
-            "id": 154,
-            "type": "IterateBegin",
-            "pos": [
-                -2900,
-                4700
-            ],
-            "size": [
-                250,
-                100
-            ],
-            "flags": {},
-            "order": 16,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "datalist",
-                    "localized_name": "datalist",
-                    "name": "datalist",
-                    "type": "*",
-                    "link": 368
-                },
-                {
-                    "label": "_",
-                    "localized_name": "_results",
-                    "name": "_results",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "flow_control",
-                    "name": "flow_control",
-                    "type": "FLOW_CONTROL",
-                    "links": [
-                        266
-                    ]
-                },
-                {
-                    "localized_name": "item",
-                    "name": "item",
-                    "type": "*",
-                    "links": [
-                        283
-                    ]
-                },
-                {
-                    "localized_name": "index",
-                    "name": "index",
-                    "type": "INT",
-                    "links": [
-                        373,
-                        531
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba",
-                "Node name for S&R": "IterateBegin"
-            },
-            "color": "#223",
-            "bgcolor": "#335"
-        },
-        {
-            "id": 179,
-            "type": "c12b729b-8238-43e6-ab2e-7fa51f64e7d9",
-            "pos": [
-                -200,
-                4800
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {
-                "collapsed": false
-            },
-            "order": 26,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "signal",
-                    "localized_name": "list_a",
-                    "name": "list_a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 365
-                },
-                {
-                    "label": "path",
-                    "localized_name": "list_b",
-                    "name": "list_b",
-                    "type": "*",
-                    "widget": {
-                        "name": "list_b"
-                    },
-                    "link": 304
-                },
-                {
-                    "label": "text",
-                    "localized_name": "list_a_1",
-                    "name": "list_a_1",
-                    "type": "*",
-                    "widget": {
-                        "name": "list_a_1"
-                    },
-                    "link": 532
-                }
-            ],
-            "outputs": [
-                {
-                    "label": "signal",
-                    "localized_name": "unzip_a",
-                    "name": "unzip_a",
-                    "type": "*",
-                    "links": [
-                        383
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.33.0",
-                "previewExposures": []
-            },
-            "widgets_values": [
-                "",
-                ""
-            ],
-            "widgets_values_named": {
-                "list_b": "",
-                "list_a_1": ""
-            },
-            "color": "#323",
-            "bgcolor": "#535"
-        },
-        {
-            "id": 92,
-            "type": "SaveVideo",
-            "pos": [
-                200,
-                5000
-            ],
-            "size": [
-                600,
-                445.36842105263156
-            ],
-            "flags": {},
-            "order": 27,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "video",
-                    "name": "video",
-                    "type": "VIDEO",
-                    "link": 383
-                },
-                {
-                    "localized_name": "filename_prefix",
-                    "name": "filename_prefix",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "filename_prefix"
-                    },
-                    "link": 281
-                },
-                {
-                    "localized_name": "format",
-                    "name": "format",
-                    "type": "COMFY_DYNAMICCOMBO_V3",
-                    "widget": {
-                        "name": "format"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "format.codec",
-                    "name": "format.codec",
-                    "type": "COMFY_DYNAMICCOMBO_V3",
-                    "widget": {
-                        "name": "format.codec"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "codec",
-                    "name": "codec",
-                    "shape": 7,
-                    "type": "COMFY_DYNAMICCOMBO_V3",
-                    "widget": {
-                        "name": "codec"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "video",
-                    "name": "video",
-                    "type": "VIDEO",
-                    "links": [
-                        319
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.33.0",
-                "Node name for S&R": "SaveVideo"
-            },
-            "widgets_values": [
-                "video/MiniMax_H3",
-                "auto",
-                "auto",
-                "auto"
-            ],
-            "widgets_values_named": {
-                "filename_prefix": "video/MiniMax_H3",
-                "format": "auto",
-                "format.codec": "auto",
-                "codec": "auto"
-            },
-            "color": "#432",
-            "bgcolor": "#653"
-        },
-        {
-            "id": 155,
-            "type": "IterateEnd",
-            "pos": [
-                950,
-                4700
-            ],
-            "size": [
-                250,
-                100
-            ],
-            "flags": {},
-            "order": 28,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "flow_control",
-                    "localized_name": "flow_control",
-                    "name": "flow_control",
-                    "type": "FLOW_CONTROL",
-                    "link": 266
-                },
-                {
-                    "label": "item",
-                    "localized_name": "item",
-                    "name": "item",
-                    "type": "*",
-                    "link": 319
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "datalist",
-                    "name": "datalist",
-                    "shape": 6,
-                    "type": "*",
-                    "links": []
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba",
-                "Node name for S&R": "IterateEnd"
-            },
-            "color": "#223",
-            "bgcolor": "#335"
-        },
-        {
-            "id": 163,
+            "id": 167,
             "type": "Note",
             "pos": [
-                -2500,
-                5050
+                400,
+                4800
             ],
             "size": [
                 250,
@@ -292,58 +17,6 @@
             ],
             "flags": {},
             "order": 0,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
-            "widgets_values": [
-                "The passtrough on the output is important so it gets displayed on every iteration."
-            ],
-            "widgets_values_named": {
-                "text": "The passtrough on the output is important so it gets displayed on every iteration."
-            },
-            "color": "#322",
-            "bgcolor": "#533"
-        },
-        {
-            "id": 203,
-            "type": "Note",
-            "pos": [
-                -3750,
-                4950
-            ],
-            "size": [
-                250,
-                100
-            ],
-            "flags": {},
-            "order": 1,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
-            "widgets_values": [
-                "Write CSV header to a new file"
-            ],
-            "widgets_values_named": {
-                "text": "Write CSV header to a new file"
-            },
-            "color": "#322",
-            "bgcolor": "#533"
-        },
-        {
-            "id": 167,
-            "type": "Note",
-            "pos": [
-                950,
-                4800
-            ],
-            "size": [
-                250,
-                100
-            ],
-            "flags": {},
-            "order": 2,
             "mode": 0,
             "inputs": [],
             "outputs": [],
@@ -358,10 +31,279 @@
             "bgcolor": "#533"
         },
         {
+            "id": 160,
+            "type": "PrimitiveString",
+            "pos": [
+                -4500,
+                4850
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "value",
+                    "name": "value",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "value"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        555,
+                        561
+                    ]
+                }
+            ],
+            "title": "Output Dir",
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.33.0",
+                "Node name for S&R": "PrimitiveString"
+            },
+            "widgets_values": [
+                "video/rooftop/durations/"
+            ],
+            "widgets_values_named": {
+                "value": "video/rooftop/durations/"
+            },
+            "color": "#232",
+            "bgcolor": "#353"
+        },
+        {
+            "id": 207,
+            "type": "Note",
+            "pos": [
+                -4500,
+                4700
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "all the green nodes are settings you can customize"
+            ],
+            "widgets_values_named": {
+                "text": "all the green nodes are settings you can customize"
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 263,
+            "type": "CombineOutputLists",
+            "pos": [
+                -650,
+                5100
+            ],
+            "size": [
+                250,
+                150
+            ],
+            "flags": {},
+            "order": 27,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "list_a",
+                    "name": "list_a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 538
+                },
+                {
+                    "localized_name": "list_b",
+                    "name": "list_b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 562
+                },
+                {
+                    "localized_name": "list_c",
+                    "name": "list_c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "list_d",
+                    "name": "list_d",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "unzip_a",
+                    "name": "unzip_a",
+                    "shape": 6,
+                    "type": "*",
+                    "links": null
+                },
+                {
+                    "localized_name": "unzip_b",
+                    "name": "unzip_b",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        541
+                    ]
+                },
+                {
+                    "localized_name": "unzip_c",
+                    "name": "unzip_c",
+                    "shape": 6,
+                    "type": "*",
+                    "links": null
+                },
+                {
+                    "localized_name": "unzip_d",
+                    "name": "unzip_d",
+                    "shape": 6,
+                    "type": "*",
+                    "links": null
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                }
+            ],
+            "title": "Signal on append file",
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "ea722ffc285454421868d288acc10313a665fa41",
+                "Node name for S&R": "CombineOutputLists"
+            }
+        },
+        {
+            "id": 265,
+            "type": "Basic data handling: PathSaveStringFile",
+            "pos": [
+                -3800,
+                5100
+            ],
+            "size": [
+                300,
+                250
+            ],
+            "flags": {},
+            "order": 15,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "text",
+                    "name": "text",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "text"
+                    },
+                    "link": 544
+                },
+                {
+                    "localized_name": "path",
+                    "name": "path",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "path"
+                    },
+                    "link": 557
+                },
+                {
+                    "localized_name": "create_dirs",
+                    "name": "create_dirs",
+                    "shape": 7,
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "create_dirs"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "append",
+                    "name": "append",
+                    "shape": 7,
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "append"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "encoding",
+                    "name": "encoding",
+                    "shape": 7,
+                    "type": "STRING",
+                    "widget": {
+                        "name": "encoding"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "success",
+                    "name": "success",
+                    "type": "BOOLEAN",
+                    "links": [
+                        546
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "basic_data_handling",
+                "ver": "1.6.0",
+                "Node name for S&R": "Basic data handling: PathSaveStringFile"
+            },
+            "widgets_values": [
+                "",
+                "",
+                true,
+                false,
+                "utf-8"
+            ],
+            "widgets_values_named": {
+                "text": "",
+                "path": "",
+                "create_dirs": true,
+                "append": false,
+                "encoding": "utf-8"
+            },
+            "color": "#323",
+            "bgcolor": "#535"
+        },
+        {
             "id": 168,
             "type": "NumberOutputList",
             "pos": [
-                -4200,
+                -4150,
                 4700
             ],
             "size": [
@@ -469,307 +411,37 @@
             "bgcolor": "#353"
         },
         {
-            "id": 160,
-            "type": "PrimitiveString",
+            "id": 203,
+            "type": "Note",
             "pos": [
-                -4550,
-                4850
+                -3800,
+                4950
             ],
             "size": [
-                250,
+                300,
                 100
             ],
             "flags": {},
             "order": 4,
             "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "value",
-                    "name": "value",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "value"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "type": "STRING",
-                    "links": [
-                        303,
-                        374
-                    ]
-                }
-            ],
-            "title": "Output Dir",
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.33.0",
-                "Node name for S&R": "PrimitiveString"
-            },
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
             "widgets_values": [
-                "video/rooftop/durations/"
+                "Write CSV header to a new file"
             ],
             "widgets_values_named": {
-                "value": "video/rooftop/durations/"
+                "text": "Write CSV header to a new file"
             },
-            "color": "#232",
-            "bgcolor": "#353"
+            "color": "#322",
+            "bgcolor": "#533"
         },
         {
-            "id": 180,
-            "type": "FormattedString",
-            "pos": [
-                -4200,
-                5350
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {},
-            "order": 13,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "a",
-                    "localized_name": "a",
-                    "name": "a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 303
-                },
-                {
-                    "label": "b",
-                    "localized_name": "b",
-                    "name": "b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 354
-                },
-                {
-                    "label": "c",
-                    "localized_name": "c",
-                    "name": "c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "label": "d",
-                    "localized_name": "d",
-                    "name": "d",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "localized_name": "fstring",
-                    "name": "fstring",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "fstring"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "string",
-                    "name": "string",
-                    "type": "STRING",
-                    "links": [
-                        304,
-                        359
-                    ]
-                }
-            ],
-            "title": "CSV filename",
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba"
-            },
-            "widgets_values": [
-                "output/{a}timer_{b:03d}.csv"
-            ],
-            "widgets_values_named": {
-                "fstring": "output/{a}timer_{b:03d}.csv"
-            },
-            "color": "#232",
-            "bgcolor": "#353"
-        },
-        {
-            "id": 202,
-            "type": "ComfyMathExpression",
-            "pos": [
-                -950,
-                5300
-            ],
-            "size": [
-                250,
-                150
-            ],
-            "flags": {
-                "collapsed": true
-            },
-            "order": 22,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "a",
-                    "localized_name": "values.a",
-                    "name": "values.a",
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": 529
-                },
-                {
-                    "label": "b",
-                    "localized_name": "values.b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": null
-                },
-                {
-                    "localized_name": "expression",
-                    "name": "expression",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "expression"
-                    },
-                    "link": null
-                },
-                {
-                    "label": "c",
-                    "localized_name": "values.c",
-                    "name": "values.c",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "FLOAT",
-                    "name": "FLOAT",
-                    "type": "FLOAT",
-                    "links": []
-                },
-                {
-                    "localized_name": "INT",
-                    "name": "INT",
-                    "type": "INT",
-                    "links": [
-                        530
-                    ]
-                },
-                {
-                    "localized_name": "BOOL",
-                    "name": "BOOL",
-                    "type": "BOOLEAN",
-                    "links": null
-                }
-            ],
-            "title": "Duration to Seconds",
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.33.0",
-                "Node name for S&R": "ComfyMathExpression"
-            },
-            "widgets_values": [
-                "a * 1000"
-            ],
-            "widgets_values_named": {
-                "expression": "a * 1000"
-            }
-        },
-        {
-            "id": 159,
-            "type": "FormattedString",
-            "pos": [
-                -200,
-                5550
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {},
-            "order": 21,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "a",
-                    "localized_name": "a",
-                    "name": "a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 372
-                },
-                {
-                    "label": "b",
-                    "localized_name": "b",
-                    "name": "b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 373
-                },
-                {
-                    "label": "c",
-                    "localized_name": "c",
-                    "name": "c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 374
-                },
-                {
-                    "label": "d",
-                    "localized_name": "d",
-                    "name": "d",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "localized_name": "fstring",
-                    "name": "fstring",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "fstring"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "string",
-                    "name": "string",
-                    "type": "STRING",
-                    "links": [
-                        281
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba"
-            },
-            "widgets_values": [
-                "{c}{b:02}_{a:.2f}s"
-            ],
-            "widgets_values_named": {
-                "fstring": "{c}{b:02}_{a:.2f}s"
-            }
-        },
-        {
-            "id": 165,
+            "id": 204,
             "type": "Note",
             "pos": [
-                -200,
-                5400
+                -2400,
+                4800
             ],
             "size": [
                 250,
@@ -782,20 +454,20 @@
             "outputs": [],
             "properties": {},
             "widgets_values": [
-                "Build the filepath string from:\ndirectory + index + duration"
+                "This is the standard Minimax H3 template with signal passthroughs added before and after the KSampler and VAE Decodes to measure time."
             ],
             "widgets_values_named": {
-                "text": "Build the filepath string from:\ndirectory + index + duration"
+                "text": "This is the standard Minimax H3 template with signal passthroughs added before and after the KSampler and VAE Decodes to measure time."
             },
             "color": "#322",
             "bgcolor": "#533"
         },
         {
-            "id": 207,
+            "id": 163,
             "type": "Note",
             "pos": [
-                -4550,
-                4700
+                -2750,
+                5050
             ],
             "size": [
                 250,
@@ -808,130 +480,10 @@
             "outputs": [],
             "properties": {},
             "widgets_values": [
-                "all the green nodes are settings you can customize"
+                "The passtrough on the output is important so it gets displayed on every iteration."
             ],
             "widgets_values_named": {
-                "text": "all the green nodes are settings you can customize"
-            },
-            "color": "#322",
-            "bgcolor": "#533"
-        },
-        {
-            "id": 196,
-            "type": "ComfyMathExpression",
-            "pos": [
-                -1200,
-                5100
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {
-                "collapsed": true
-            },
-            "order": 23,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "a",
-                    "localized_name": "values.a",
-                    "name": "values.a",
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": 512
-                },
-                {
-                    "label": "b",
-                    "localized_name": "values.b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": 513
-                },
-                {
-                    "label": "c",
-                    "localized_name": "values.c",
-                    "name": "values.c",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": 522
-                },
-                {
-                    "label": "d",
-                    "localized_name": "values.d",
-                    "name": "values.d",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": null
-                },
-                {
-                    "localized_name": "expression",
-                    "name": "expression",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "expression"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "FLOAT",
-                    "name": "FLOAT",
-                    "type": "FLOAT",
-                    "links": []
-                },
-                {
-                    "localized_name": "INT",
-                    "name": "INT",
-                    "type": "INT",
-                    "links": [
-                        526
-                    ]
-                },
-                {
-                    "localized_name": "BOOL",
-                    "name": "BOOL",
-                    "type": "BOOLEAN",
-                    "links": null
-                }
-            ],
-            "title": "Total Time",
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.33.0",
-                "Node name for S&R": "ComfyMathExpression"
-            },
-            "widgets_values": [
-                "a + b + c"
-            ],
-            "widgets_values_named": {
-                "expression": "a + b + c"
-            }
-        },
-        {
-            "id": 166,
-            "type": "Note",
-            "pos": [
-                350,
-                4850
-            ],
-            "size": [
-                300,
-                100
-            ],
-            "flags": {},
-            "order": 7,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "title": "IMPORTANT!",
-            "properties": {},
-            "widgets_values": [
-                "THE PASSTHROUGH OF THE OUTPUT IS IMPORTANT!\n\nOtherwise you will only get the first output.\nAn output node will only be executed on every iteration if the data passes through it. "
-            ],
-            "widgets_values_named": {
-                "text": "THE PASSTHROUGH OF THE OUTPUT IS IMPORTANT!\n\nOtherwise you will only get the first output.\nAn output node will only be executed on every iteration if the data passes through it. "
+                "text": "The passtrough on the output is important so it gets displayed on every iteration."
             },
             "color": "#322",
             "bgcolor": "#533"
@@ -940,7 +492,7 @@
             "id": 157,
             "type": "ConvertNumberToIntFloatStr",
             "pos": [
-                -2150,
+                -2450,
                 5250
             ],
             "size": [
@@ -950,15 +502,15 @@
             "flags": {
                 "collapsed": true
             },
-            "order": 19,
+            "order": 20,
             "mode": 0,
             "inputs": [
                 {
                     "label": "any",
-                    "localized_name": "number",
+                    "localized_name": "any",
                     "name": "number",
                     "type": "*",
-                    "link": 288
+                    "link": 554
                 }
             ],
             "outputs": [
@@ -976,8 +528,8 @@
                     "type": "FLOAT",
                     "links": [
                         333,
-                        372,
-                        529
+                        529,
+                        559
                     ]
                 },
                 {
@@ -1001,176 +553,537 @@
             }
         },
         {
-            "id": 189,
-            "type": "FormattedString",
+            "id": 155,
+            "type": "IterateEnd",
             "pos": [
-                -1000,
-                5050
+                400,
+                4700
             ],
             "size": [
                 250,
-                200
+                100
             ],
-            "flags": {
-                "collapsed": false
-            },
-            "order": 24,
+            "flags": {},
+            "order": 29,
             "mode": 0,
             "inputs": [
                 {
-                    "label": "a",
-                    "localized_name": "a",
-                    "name": "a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 523
+                    "label": "flow_control",
+                    "localized_name": "flow_control",
+                    "name": "flow_control",
+                    "type": "FLOW_CONTROL",
+                    "link": 266
                 },
                 {
-                    "label": "b",
-                    "localized_name": "b",
-                    "name": "b",
-                    "shape": 7,
+                    "label": "item",
+                    "localized_name": "item",
+                    "name": "item",
                     "type": "*",
-                    "link": 524
-                },
-                {
-                    "label": "c",
-                    "localized_name": "c",
-                    "name": "c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 525
-                },
-                {
-                    "label": "d",
-                    "localized_name": "d",
-                    "name": "d",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 526
-                },
-                {
-                    "localized_name": "fstring",
-                    "name": "fstring",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "fstring"
-                    },
-                    "link": null
+                    "link": 319
                 }
             ],
             "outputs": [
                 {
-                    "localized_name": "string",
-                    "name": "string",
-                    "type": "STRING",
-                    "links": [
-                        527
-                    ]
+                    "localized_name": "datalist",
+                    "name": "datalist",
+                    "shape": 6,
+                    "type": "*",
+                    "links": []
                 }
             ],
-            "title": "CSV line (times)",
             "properties": {
                 "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba"
+                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba",
+                "Node name for S&R": "IterateEnd"
             },
-            "widgets_values": [
-                "{a},{b},{c},{d}"
-            ],
-            "widgets_values_named": {
-                "fstring": "{a},{b},{c},{d}"
-            },
-            "color": "#323",
-            "bgcolor": "#535"
+            "color": "#223",
+            "bgcolor": "#335"
         },
         {
-            "id": 261,
-            "type": "FormattedString",
+            "id": 154,
+            "type": "IterateBegin",
             "pos": [
-                -650,
-                5300
+                -3150,
+                4700
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 17,
+            "mode": 0,
+            "inputs": [
+                {
+                    "label": "datalist",
+                    "localized_name": "datalist",
+                    "name": "datalist",
+                    "type": "*",
+                    "link": 368
+                },
+                {
+                    "label": "_",
+                    "localized_name": "_",
+                    "name": "_results",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "flow_control",
+                    "name": "flow_control",
+                    "type": "FLOW_CONTROL",
+                    "links": [
+                        266
+                    ]
+                },
+                {
+                    "localized_name": "item",
+                    "name": "item",
+                    "type": "*",
+                    "links": [
+                        553
+                    ]
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "type": "INT",
+                    "links": [
+                        560,
+                        575
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba",
+                "Node name for S&R": "IterateBegin"
+            },
+            "color": "#223",
+            "bgcolor": "#335"
+        },
+        {
+            "id": 206,
+            "type": "Note",
+            "pos": [
+                -3400,
+                4700
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 7,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "the Iterator executes the sub-workflow (between Begin and End) multiple times for every item in the data list"
+            ],
+            "widgets_values_named": {
+                "text": "the Iterator executes the sub-workflow (between Begin and End) multiple times for every item in the data list"
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 262,
+            "type": "Basic data handling: PathSaveStringFile",
+            "pos": [
+                -950,
+                5100
             ],
             "size": [
                 250,
                 200
             ],
-            "flags": {
-                "collapsed": false
-            },
-            "order": 25,
+            "flags": {},
+            "order": 26,
             "mode": 0,
             "inputs": [
                 {
-                    "label": "a",
-                    "localized_name": "a",
-                    "name": "a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 530
+                    "localized_name": "text",
+                    "name": "text",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "text"
+                    },
+                    "link": 569
                 },
                 {
-                    "label": "b",
-                    "localized_name": "b",
-                    "name": "b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 531
+                    "localized_name": "path",
+                    "name": "path",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "path"
+                    },
+                    "link": 558
                 },
                 {
-                    "label": "c",
-                    "localized_name": "c",
-                    "name": "c",
+                    "localized_name": "create_dirs",
+                    "name": "create_dirs",
                     "shape": 7,
-                    "type": "*",
-                    "link": 527
-                },
-                {
-                    "label": "d",
-                    "localized_name": "d",
-                    "name": "d",
-                    "shape": 7,
-                    "type": "*",
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "create_dirs"
+                    },
                     "link": null
                 },
                 {
-                    "localized_name": "fstring",
-                    "name": "fstring",
+                    "localized_name": "append",
+                    "name": "append",
+                    "shape": 7,
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "append"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "encoding",
+                    "name": "encoding",
+                    "shape": 7,
                     "type": "STRING",
                     "widget": {
-                        "name": "fstring"
+                        "name": "encoding"
                     },
                     "link": null
                 }
             ],
             "outputs": [
                 {
-                    "localized_name": "string",
-                    "name": "string",
-                    "type": "STRING",
+                    "localized_name": "success",
+                    "name": "success",
+                    "type": "BOOLEAN",
                     "links": [
-                        532
+                        538
                     ]
                 }
             ],
-            "title": "CSV line (all)",
             "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba"
+                "cnr_id": "basic_data_handling",
+                "ver": "1.7.0",
+                "Node name for S&R": "Basic data handling: PathSaveStringFile"
             },
             "widgets_values": [
-                "{b},{a:.0f},{c},ms\n"
+                "",
+                "",
+                true,
+                true,
+                "utf-8"
             ],
             "widgets_values_named": {
-                "fstring": "{b},{a:.0f},{c},ms\n"
+                "text": "",
+                "path": "",
+                "create_dirs": true,
+                "append": true,
+                "encoding": "utf-8"
+            }
+        },
+        {
+            "id": 165,
+            "type": "Note",
+            "pos": [
+                -950,
+                5400
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 8,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "Build the filepath string from:\ndirectory + index + duration"
+            ],
+            "widgets_values_named": {
+                "text": "Build the filepath string from:\ndirectory + index + duration"
             },
-            "color": "#323",
-            "bgcolor": "#535"
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 200,
+            "type": "CombineOutputLists",
+            "pos": [
+                -3450,
+                4900
+            ],
+            "size": [
+                250,
+                150
+            ],
+            "flags": {},
+            "order": 16,
+            "mode": 0,
+            "inputs": [
+                {
+                    "label": "list_a",
+                    "localized_name": "list_a",
+                    "name": "list_a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 546
+                },
+                {
+                    "label": "list_b",
+                    "localized_name": "list_b",
+                    "name": "list_b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 367
+                },
+                {
+                    "label": "list_c",
+                    "localized_name": "list_c",
+                    "name": "list_c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "label": "list_d",
+                    "localized_name": "list_d",
+                    "name": "list_d",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "unzip_a",
+                    "name": "unzip_a",
+                    "shape": 6,
+                    "type": "*",
+                    "links": []
+                },
+                {
+                    "localized_name": "unzip_b",
+                    "name": "unzip_b",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        368,
+                        552
+                    ]
+                },
+                {
+                    "localized_name": "unzip_c",
+                    "name": "unzip_c",
+                    "shape": 6,
+                    "type": "*",
+                    "links": null
+                },
+                {
+                    "localized_name": "unzip_d",
+                    "name": "unzip_d",
+                    "shape": 6,
+                    "type": "*",
+                    "links": null
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                }
+            ],
+            "title": "Signal on save file",
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "1a93429b356469fc591138896761e6a82ba72ccc",
+                "Node name for S&R": "CombineOutputLists"
+            }
+        },
+        {
+            "id": 268,
+            "type": "ShowText|pysssss",
+            "pos": [
+                -3153.1251699115214,
+                4915.664112597928
+            ],
+            "size": [
+                250,
+                226
+            ],
+            "flags": {},
+            "order": 18,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "text",
+                    "name": "text",
+                    "type": "STRING",
+                    "link": 552
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfyui-custom-scripts",
+                "ver": "1.2.5",
+                "Node name for S&R": "ShowText|pysssss"
+            },
+            "widgets_values": [
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "widgets_values_named": {
+                "text_0": "2",
+                "text_1": "3",
+                "text_2": "4",
+                "text_3": "5"
+            },
+            "color": "#432",
+            "bgcolor": "#653"
+        },
+        {
+            "id": 269,
+            "type": "ShowText|pysssss",
+            "pos": [
+                -2750,
+                5200
+            ],
+            "size": [
+                250,
+                150
+            ],
+            "flags": {},
+            "order": 19,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "text",
+                    "name": "text",
+                    "type": "STRING",
+                    "link": 553
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": [
+                        554
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfyui-custom-scripts",
+                "ver": "1.2.5",
+                "Node name for S&R": "ShowText|pysssss"
+            },
+            "widgets_values": [
+                "4"
+            ],
+            "widgets_values_named": {
+                "text_0": "4"
+            },
+            "color": "#432",
+            "bgcolor": "#653"
+        },
+        {
+            "id": 270,
+            "type": "StringFormat",
+            "pos": [
+                -4150,
+                5350
+            ],
+            "size": [
+                250,
+                128
+            ],
+            "flags": {},
+            "order": 14,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 555
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 556
+                },
+                {
+                    "localized_name": "c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "f_string",
+                    "name": "f_string",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "f_string"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        557,
+                        558
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
+            },
+            "widgets_values": [
+                "output/{a}timer_{b:03d}.csv"
+            ],
+            "widgets_values_named": {
+                "f_string": "output/{a}timer_{b:03d}.csv"
+            }
         },
         {
             "id": 201,
             "type": "PrimitiveStringMultiline",
             "pos": [
-                -4200,
+                -4150,
                 5100
             ],
             "size": [
@@ -1178,7 +1091,7 @@
                 100
             ],
             "flags": {},
-            "order": 9,
+            "order": 11,
             "mode": 0,
             "inputs": [
                 {
@@ -1197,7 +1110,7 @@
                     "name": "STRING",
                     "type": "STRING",
                     "links": [
-                        361
+                        544
                     ]
                 }
             ],
@@ -1218,7 +1131,7 @@
             "id": 152,
             "type": "878081aa-1e57-44b9-b85b-061d1cfb1e71",
             "pos": [
-                -1800,
+                -2150,
                 4800
             ],
             "size": [
@@ -1226,7 +1139,7 @@
                 650
             ],
             "flags": {},
-            "order": 20,
+            "order": 21,
             "mode": 0,
             "inputs": [
                 {
@@ -1357,7 +1270,7 @@
                     "name": "VIDEO",
                     "type": "VIDEO",
                     "links": [
-                        365
+                        542
                     ]
                 },
                 {
@@ -1366,7 +1279,7 @@
                     "type": "*",
                     "links": [
                         512,
-                        523
+                        570
                     ]
                 },
                 {
@@ -1375,7 +1288,7 @@
                     "type": "*",
                     "links": [
                         513,
-                        524
+                        571
                     ]
                 },
                 {
@@ -1384,7 +1297,7 @@
                     "type": "INT",
                     "links": [
                         522,
-                        525
+                        572
                     ]
                 }
             ],
@@ -1393,196 +1306,202 @@
                 "ver": "0.33.0",
                 "previewExposures": []
             },
-            "widgets_values": [
-                "Realistic live-action cinematic look, action movie trailer: practical film photography style, a post-rain dusk metropolis, anamorphic lens, shallow depth of field, film grain, city volumetric fog, flying-car traffic between the towers, restrained grading for a premium feel, powerful natural movement.\n\nScene overview: at dusk on a cluster of skyscrapers, the protagonist is being chased, sprinting and leaping across rooftops, jumping from one building's roof to the next with pursuers closing in behind. This is the escape sequence of an action movie trailer: every leap is life-or-death, thrilling and fluid.\n\nStoryboard (each shot a separate scene, rapid cuts, all landing on the musical beats):\n[0s-1.5s] Shot 1: high side angle: the protagonist sprinting at the roof edge, pursuers appearing in the rooftop doorway behind him, wind catching his coat.\n[1s-2.5s] Shot 2: the protagonist leaps across the gap between buildings, body stretching mid-air, towers and flying-car light trails behind him, a slight slow-motion feel.\n[2.5s-4s] Shot 3: he lands, rolls and rises, low-angle shot, tower shadows and fog behind him, he keeps running.\n[4s-5s] Shot 4: freeze: the instant he hits the edge of the next roof and launches into the jump, silhouette, holding.\n\nCamera: each shot its own angle, cuts clean and hard, no dissolves, a slight frame jitter on the jumps.\n\nAudio: wind, rapid footsteps, city ambience, low score underneath, an accent hit on each leap, the score bursting at 4s, closing the last 1s.\n\nNo text, subtitles, logos or watermarks of any kind, no animation or cartoon rendering, no overly-CG look, keep the live-action texture.",
-                608,
-                352,
-                1,
-                1,
-                "minimax/minimax_h3_fl2va_pruned_int8_convrot.safetensors",
-                "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
-                "minimax/minimax_h3_video_vae_fp16.safetensors",
-                "minimax/minimax_h3_audio_vae_fp32.safetensors",
-                true,
-                "minimax/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
-                1,
-                8
-            ],
             "widgets_values_named": {
-                "prompt": "Realistic live-action cinematic look, action movie trailer: practical film photography style, a post-rain dusk metropolis, anamorphic lens, shallow depth of field, film grain, city volumetric fog, flying-car traffic between the towers, restrained grading for a premium feel, powerful natural movement.\n\nScene overview: at dusk on a cluster of skyscrapers, the protagonist is being chased, sprinting and leaping across rooftops, jumping from one building's roof to the next with pursuers closing in behind. This is the escape sequence of an action movie trailer: every leap is life-or-death, thrilling and fluid.\n\nStoryboard (each shot a separate scene, rapid cuts, all landing on the musical beats):\n[0s-1.5s] Shot 1: high side angle: the protagonist sprinting at the roof edge, pursuers appearing in the rooftop doorway behind him, wind catching his coat.\n[1s-2.5s] Shot 2: the protagonist leaps across the gap between buildings, body stretching mid-air, towers and flying-car light trails behind him, a slight slow-motion feel.\n[2.5s-4s] Shot 3: he lands, rolls and rises, low-angle shot, tower shadows and fog behind him, he keeps running.\n[4s-5s] Shot 4: freeze: the instant he hits the edge of the next roof and launches into the jump, silhouette, holding.\n\nCamera: each shot its own angle, cuts clean and hard, no dissolves, a slight frame jitter on the jumps.\n\nAudio: wind, rapid footsteps, city ambience, low score underneath, an accent hit on each leap, the score bursting at 4s, closing the last 1s.\n\nNo text, subtitles, logos or watermarks of any kind, no animation or cartoon rendering, no overly-CG look, keep the live-action texture.",
-                "width": 608,
-                "height": 352,
-                "value_1": 1,
-                "noise_seed": 1,
-                "unet_name": "minimax/minimax_h3_fl2va_pruned_int8_convrot.safetensors",
-                "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
-                "vae_name": "minimax/minimax_h3_video_vae_fp16.safetensors",
-                "vae_name_1": "minimax/minimax_h3_audio_vae_fp32.safetensors",
-                "value": true,
-                "lora_name": "minimax/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
-                "strength_model_1": 1,
-                "value_2": 8
+                "prompt": "",
+                "width": null,
+                "height": null,
+                "value_1": null,
+                "noise_seed": null,
+                "unet_name": null,
+                "clip_name": null,
+                "vae_name": null,
+                "vae_name_1": null,
+                "value": null,
+                "lora_name": null,
+                "strength_model_1": null,
+                "value_2": null
             }
         },
         {
-            "id": 204,
-            "type": "Note",
+            "id": 196,
+            "type": "ComfyMathExpression",
             "pos": [
-                -2050,
-                4800
-            ],
-            "size": [
-                250,
-                100
-            ],
-            "flags": {},
-            "order": 10,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
-            "widgets_values": [
-                "This is the standard Minimax H3 template with signal passthroughs added before and after the KSampler and VAE Decodes to measure time."
-            ],
-            "widgets_values_named": {
-                "text": "This is the standard Minimax H3 template with signal passthroughs added before and after the KSampler and VAE Decodes to measure time."
-            },
-            "color": "#322",
-            "bgcolor": "#533"
-        },
-        {
-            "id": 200,
-            "type": "CombineOutputLists",
-            "pos": [
-                -3300,
-                4900
+                -1600,
+                5100
             ],
             "size": [
                 250,
                 200
             ],
-            "flags": {},
-            "order": 15,
+            "flags": {
+                "collapsed": true
+            },
+            "order": 24,
             "mode": 0,
             "inputs": [
                 {
-                    "label": "list_a",
-                    "localized_name": "list_a",
-                    "name": "list_a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 366
+                    "label": "a",
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": 512
                 },
                 {
-                    "label": "list_b",
-                    "localized_name": "list_b",
-                    "name": "list_b",
+                    "localized_name": "b",
+                    "name": "values.b",
                     "shape": 7,
-                    "type": "*",
-                    "link": 367
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": 513
                 },
                 {
-                    "label": "list_c",
-                    "localized_name": "list_c",
-                    "name": "list_c",
+                    "localized_name": "c",
+                    "name": "values.c",
                     "shape": 7,
-                    "type": "*",
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": 522
+                },
+                {
+                    "localized_name": "d",
+                    "name": "values.d",
+                    "shape": 7,
+                    "type": "FLOAT,INT,BOOLEAN",
                     "link": null
                 },
                 {
-                    "label": "list_d",
-                    "localized_name": "list_d",
-                    "name": "list_d",
-                    "shape": 7,
-                    "type": "*",
+                    "localized_name": "expression",
+                    "name": "expression",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "expression"
+                    },
                     "link": null
                 }
             ],
             "outputs": [
                 {
-                    "localized_name": "unzip_a",
-                    "name": "unzip_a",
-                    "shape": 6,
-                    "type": "*",
+                    "localized_name": "FLOAT",
+                    "name": "FLOAT",
+                    "type": "FLOAT",
                     "links": []
                 },
                 {
-                    "localized_name": "unzip_b",
-                    "name": "unzip_b",
-                    "shape": 6,
-                    "type": "*",
+                    "localized_name": "INT",
+                    "name": "INT",
+                    "type": "INT",
                     "links": [
-                        368,
-                        369
+                        573
                     ]
                 },
                 {
-                    "localized_name": "unzip_c",
-                    "name": "unzip_c",
-                    "shape": 6,
-                    "type": "*",
-                    "links": null
-                },
-                {
-                    "localized_name": "unzip_d",
-                    "name": "unzip_d",
-                    "shape": 6,
-                    "type": "*",
-                    "links": null
-                },
-                {
-                    "localized_name": "index",
-                    "name": "index",
-                    "shape": 6,
-                    "type": "INT",
-                    "links": null
-                },
-                {
-                    "localized_name": "count",
-                    "name": "count",
-                    "type": "INT",
+                    "localized_name": "BOOL",
+                    "name": "BOOL",
+                    "type": "BOOLEAN",
                     "links": null
                 }
             ],
-            "title": "Signal on save file",
+            "title": "Total Time",
             "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "1a93429b356469fc591138896761e6a82ba72ccc",
-                "Node name for S&R": "CombineOutputLists"
+                "cnr_id": "comfy-core",
+                "ver": "0.33.0",
+                "Node name for S&R": "ComfyMathExpression"
+            },
+            "widgets_values": [
+                "a + b + c"
+            ],
+            "widgets_values_named": {
+                "expression": "a + b + c"
             }
         },
         {
-            "id": 206,
-            "type": "Note",
+            "id": 202,
+            "type": "ComfyMathExpression",
             "pos": [
-                -3200,
-                4700
+                -1600,
+                5300
             ],
             "size": [
-                300,
-                100
+                250,
+                150
             ],
-            "flags": {},
-            "order": 11,
+            "flags": {
+                "collapsed": true
+            },
+            "order": 22,
             "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
+            "inputs": [
+                {
+                    "label": "a",
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": 529
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": null
+                },
+                {
+                    "localized_name": "expression",
+                    "name": "expression",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "expression"
+                    },
+                    "link": null
+                },
+                {
+                    "label": "c",
+                    "localized_name": "values.c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "FLOAT",
+                    "name": "FLOAT",
+                    "type": "FLOAT",
+                    "links": []
+                },
+                {
+                    "localized_name": "INT",
+                    "name": "INT",
+                    "type": "INT",
+                    "links": [
+                        574
+                    ]
+                },
+                {
+                    "localized_name": "BOOL",
+                    "name": "BOOL",
+                    "type": "BOOLEAN",
+                    "links": null
+                }
+            ],
+            "title": "Duration to Seconds",
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.33.0",
+                "Node name for S&R": "ComfyMathExpression"
+            },
             "widgets_values": [
-                "the Iterator executes the sub-workflow (between Begin and End) multiple times for every item in the data list"
+                "a * 1000"
             ],
             "widgets_values_named": {
-                "text": "the Iterator executes the sub-workflow (between Begin and End) multiple times for every item in the data list"
-            },
-            "color": "#322",
-            "bgcolor": "#533"
+                "expression": "a * 1000"
+            }
         },
         {
-            "id": 205,
+            "id": 274,
             "type": "Note",
             "pos": [
-                -450,
-                4900
+                -1300,
+                5150
             ],
             "size": [
                 250,
@@ -1590,6 +1509,107 @@
             ],
             "flags": {},
             "order": 12,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "index,duration,sampler,decode_video,decode_audio,total,unit\n"
+            ],
+            "widgets_values_named": {
+                "text": "index,duration,sampler,decode_video,decode_audio,total,unit\n"
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 271,
+            "type": "StringFormat",
+            "pos": [
+                -950,
+                5550
+            ],
+            "size": [
+                250,
+                148
+            ],
+            "flags": {},
+            "order": 23,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 559
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 560
+                },
+                {
+                    "localized_name": "c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 561
+                },
+                {
+                    "localized_name": "d",
+                    "name": "values.d",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "f_string",
+                    "name": "f_string",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "f_string"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        562
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
+            },
+            "widgets_values": [
+                "{c}{b:02}_{a:.2f}s"
+            ],
+            "widgets_values_named": {
+                "f_string": "{c}{b:02}_{a:.2f}s"
+            }
+        },
+        {
+            "id": 205,
+            "type": "Note",
+            "pos": [
+                -950,
+                4950
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 13,
             "mode": 0,
             "inputs": [],
             "outputs": [],
@@ -1604,108 +1624,126 @@
             "bgcolor": "#533"
         },
         {
-            "id": 145,
-            "type": "ShowText|pysssss",
+            "id": 92,
+            "type": "SaveVideo",
             "pos": [
-                -2900,
+                -350,
                 4900
             ],
             "size": [
-                250,
-                250
+                600,
+                445.36842105263156
             ],
             "flags": {},
-            "order": 17,
+            "order": 28,
             "mode": 0,
             "inputs": [
                 {
-                    "localized_name": "text",
-                    "name": "text",
+                    "localized_name": "video",
+                    "name": "video",
+                    "type": "VIDEO",
+                    "link": 542
+                },
+                {
+                    "localized_name": "filename_prefix",
+                    "name": "filename_prefix",
                     "type": "STRING",
-                    "link": 369
+                    "widget": {
+                        "name": "filename_prefix"
+                    },
+                    "link": 541
+                },
+                {
+                    "localized_name": "format",
+                    "name": "format",
+                    "type": "COMFY_DYNAMICCOMBO_V3",
+                    "widget": {
+                        "name": "format"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "codec",
+                    "name": "format.codec",
+                    "type": "COMFY_DYNAMICCOMBO_V3",
+                    "widget": {
+                        "name": "format.codec"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "codec",
+                    "name": "codec",
+                    "shape": 7,
+                    "type": "COMFY_DYNAMICCOMBO_V3",
+                    "widget": {
+                        "name": "codec"
+                    },
+                    "link": null
                 }
             ],
             "outputs": [
                 {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
+                    "localized_name": "video",
+                    "name": "video",
+                    "type": "VIDEO",
+                    "links": [
+                        319
+                    ]
                 }
             ],
             "properties": {
-                "cnr_id": "comfyui-custom-scripts",
-                "ver": "1.2.5",
-                "Node name for S&R": "ShowText|pysssss"
+                "cnr_id": "comfy-core",
+                "ver": "0.33.0",
+                "Node name for S&R": "SaveVideo"
             },
             "widgets_values": [
-                2,
-                3,
-                4,
-                5
+                "video/MiniMax_H3",
+                "auto",
+                "auto",
+                "auto"
             ],
             "widgets_values_named": {
-                "text_0": 2,
-                "text_1": 3,
-                "text_2": 4,
-                "text_3": 5
+                "filename_prefix": "video/MiniMax_H3",
+                "format": "auto",
+                "format.codec": "auto",
+                "codec": "auto"
             },
             "color": "#432",
             "bgcolor": "#653"
         },
         {
-            "id": 147,
-            "type": "ShowText|pysssss",
+            "id": 166,
+            "type": "Note",
             "pos": [
-                -2500,
-                5200
+                -350,
+                4750
             ],
             "size": [
-                250,
+                350,
                 100
             ],
             "flags": {},
-            "order": 18,
+            "order": 9,
             "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "text",
-                    "name": "text",
-                    "type": "STRING",
-                    "link": 283
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": [
-                        288
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfyui-custom-scripts",
-                "ver": "1.2.5",
-                "Node name for S&R": "ShowText|pysssss"
-            },
+            "inputs": [],
+            "outputs": [],
+            "title": "IMPORTANT!",
+            "properties": {},
             "widgets_values": [
-                3
+                "THE PASSTHROUGH OF THE OUTPUT IS IMPORTANT!\n\nOtherwise you will only get the first output.\nAn output node will only be executed on every iteration if the data passes through it. "
             ],
             "widgets_values_named": {
-                "text_0": 3
+                "text": "THE PASSTHROUGH OF THE OUTPUT IS IMPORTANT!\n\nOtherwise you will only get the first output.\nAn output node will only be executed on every iteration if the data passes through it. "
             },
-            "color": "#432",
-            "bgcolor": "#653"
+            "color": "#322",
+            "bgcolor": "#533"
         },
         {
             "id": 198,
             "type": "PrimitiveInt",
             "pos": [
-                -4550,
+                -4500,
                 5350
             ],
             "size": [
@@ -1713,7 +1751,7 @@
                 100
             ],
             "flags": {},
-            "order": 8,
+            "order": 10,
             "mode": 0,
             "inputs": [
                 {
@@ -1732,7 +1770,7 @@
                     "name": "INT",
                     "type": "INT",
                     "links": [
-                        354
+                        556
                     ]
                 }
             ],
@@ -1751,100 +1789,100 @@
             }
         },
         {
-            "id": 199,
-            "type": "Basic data handling: PathSaveStringFile",
+            "id": 272,
+            "type": "StringFormat",
             "pos": [
-                -3750,
-                5100
+                -1300,
+                4900
             ],
             "size": [
-                300,
-                250
+                250,
+                208
             ],
             "flags": {},
-            "order": 14,
+            "order": 25,
             "mode": 0,
             "inputs": [
                 {
-                    "localized_name": "text",
-                    "name": "text",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "text"
-                    },
-                    "link": 361
-                },
-                {
-                    "localized_name": "path",
-                    "name": "path",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "path"
-                    },
-                    "link": 359
-                },
-                {
-                    "localized_name": "create_dirs",
-                    "name": "create_dirs",
+                    "localized_name": "a",
+                    "name": "values.a",
                     "shape": 7,
-                    "type": "BOOLEAN",
+                    "type": "*",
+                    "link": 570
+                },
+                {
+                    "localized_name": "f_string",
+                    "name": "f_string",
+                    "type": "STRING",
                     "widget": {
-                        "name": "create_dirs"
+                        "name": "f_string"
                     },
                     "link": null
                 },
                 {
-                    "localized_name": "encoding",
-                    "name": "encoding",
+                    "localized_name": "b",
+                    "name": "values.b",
                     "shape": 7,
-                    "type": "STRING",
-                    "widget": {
-                        "name": "encoding"
-                    },
-                    "link": null
+                    "type": "*",
+                    "link": 571
                 },
                 {
-                    "localized_name": "append",
-                    "name": "append",
+                    "localized_name": "c",
+                    "name": "values.c",
                     "shape": 7,
-                    "type": "BOOLEAN",
-                    "widget": {
-                        "name": "append"
-                    },
+                    "type": "*",
+                    "link": 572
+                },
+                {
+                    "localized_name": "d",
+                    "name": "values.d",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 573
+                },
+                {
+                    "localized_name": "e",
+                    "name": "values.e",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 574
+                },
+                {
+                    "localized_name": "f",
+                    "name": "values.f",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 575
+                },
+                {
+                    "localized_name": "g",
+                    "name": "values.g",
+                    "shape": 7,
+                    "type": "*",
                     "link": null
                 }
             ],
             "outputs": [
                 {
-                    "localized_name": "success",
-                    "name": "success",
-                    "type": "BOOLEAN",
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
                     "links": [
-                        366
+                        569
                     ]
                 }
             ],
             "properties": {
-                "cnr_id": "basic_data_handling",
-                "ver": "1.6.0",
-                "Node name for S&R": "Basic data handling: PathSaveStringFile"
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
             },
             "widgets_values": [
-                "duration,sampler,decode,total,unit",
-                "",
-                true,
-                "utf-8",
-                false
+                "{f},{e:.0f},{a},{b},{c},{d},ms\n"
             ],
             "widgets_values_named": {
-                "text": "duration,sampler,decode,total,unit",
-                "path": "",
-                "create_dirs": true,
-                "encoding": "utf-8",
-                "append": false
-            },
-            "color": "#323",
-            "bgcolor": "#535"
+                "f_string": "{f},{e:.0f},{a},{b},{c},{d},ms\n"
+            }
         }
     ],
     "links": [
@@ -1855,46 +1893,6 @@
             155,
             0,
             "FLOW_CONTROL"
-        ],
-        [
-            281,
-            159,
-            0,
-            92,
-            1,
-            "STRING"
-        ],
-        [
-            283,
-            154,
-            1,
-            147,
-            0,
-            "STRING"
-        ],
-        [
-            288,
-            147,
-            0,
-            157,
-            0,
-            "STRING"
-        ],
-        [
-            303,
-            160,
-            0,
-            180,
-            0,
-            "STRING"
-        ],
-        [
-            304,
-            180,
-            0,
-            179,
-            1,
-            "STRING"
         ],
         [
             319,
@@ -1913,46 +1911,6 @@
             "FLOAT"
         ],
         [
-            354,
-            198,
-            0,
-            180,
-            1,
-            "INT"
-        ],
-        [
-            359,
-            180,
-            0,
-            199,
-            1,
-            "STRING"
-        ],
-        [
-            361,
-            201,
-            0,
-            199,
-            0,
-            "STRING"
-        ],
-        [
-            365,
-            152,
-            0,
-            179,
-            0,
-            "VIDEO"
-        ],
-        [
-            366,
-            199,
-            0,
-            200,
-            0,
-            "BOOLEAN"
-        ],
-        [
             367,
             168,
             1,
@@ -1967,46 +1925,6 @@
             154,
             0,
             "*"
-        ],
-        [
-            369,
-            200,
-            1,
-            145,
-            0,
-            "STRING"
-        ],
-        [
-            372,
-            157,
-            1,
-            159,
-            0,
-            "FLOAT"
-        ],
-        [
-            373,
-            154,
-            2,
-            159,
-            1,
-            "INT"
-        ],
-        [
-            374,
-            160,
-            0,
-            159,
-            2,
-            "STRING"
-        ],
-        [
-            383,
-            179,
-            0,
-            92,
-            0,
-            "VIDEO"
         ],
         [
             512,
@@ -2033,46 +1951,6 @@
             "INT"
         ],
         [
-            523,
-            152,
-            1,
-            189,
-            0,
-            "*"
-        ],
-        [
-            524,
-            152,
-            2,
-            189,
-            1,
-            "*"
-        ],
-        [
-            525,
-            152,
-            3,
-            189,
-            2,
-            "INT"
-        ],
-        [
-            526,
-            196,
-            1,
-            189,
-            3,
-            "INT"
-        ],
-        [
-            527,
-            189,
-            0,
-            261,
-            2,
-            "STRING"
-        ],
-        [
             529,
             157,
             1,
@@ -2081,28 +1959,188 @@
             "FLOAT"
         ],
         [
-            530,
-            202,
-            1,
-            261,
+            538,
+            262,
             0,
+            263,
+            0,
+            "BOOLEAN"
+        ],
+        [
+            541,
+            263,
+            1,
+            92,
+            1,
+            "STRING"
+        ],
+        [
+            542,
+            152,
+            0,
+            92,
+            0,
+            "VIDEO"
+        ],
+        [
+            544,
+            201,
+            0,
+            265,
+            0,
+            "STRING"
+        ],
+        [
+            546,
+            265,
+            0,
+            200,
+            0,
+            "BOOLEAN"
+        ],
+        [
+            552,
+            200,
+            1,
+            268,
+            0,
+            "STRING"
+        ],
+        [
+            553,
+            154,
+            1,
+            269,
+            0,
+            "STRING"
+        ],
+        [
+            554,
+            269,
+            0,
+            157,
+            0,
+            "STRING"
+        ],
+        [
+            555,
+            160,
+            0,
+            270,
+            0,
+            "STRING"
+        ],
+        [
+            556,
+            198,
+            0,
+            270,
+            1,
             "INT"
         ],
         [
-            531,
+            557,
+            270,
+            0,
+            265,
+            1,
+            "STRING"
+        ],
+        [
+            558,
+            270,
+            0,
+            262,
+            1,
+            "STRING"
+        ],
+        [
+            559,
+            157,
+            1,
+            271,
+            0,
+            "FLOAT"
+        ],
+        [
+            560,
             154,
             2,
-            261,
+            271,
             1,
             "INT"
         ],
         [
-            532,
-            261,
+            561,
+            160,
             0,
-            179,
+            271,
             2,
             "STRING"
+        ],
+        [
+            562,
+            271,
+            0,
+            263,
+            1,
+            "STRING"
+        ],
+        [
+            569,
+            272,
+            0,
+            262,
+            0,
+            "STRING"
+        ],
+        [
+            570,
+            152,
+            1,
+            272,
+            0,
+            "*"
+        ],
+        [
+            571,
+            152,
+            2,
+            272,
+            2,
+            "*"
+        ],
+        [
+            572,
+            152,
+            3,
+            272,
+            3,
+            "INT"
+        ],
+        [
+            573,
+            196,
+            1,
+            272,
+            4,
+            "INT"
+        ],
+        [
+            574,
+            202,
+            1,
+            272,
+            5,
+            "INT"
+        ],
+        [
+            575,
+            154,
+            2,
+            272,
+            6,
+            "INT"
         ]
     ],
     "floatingLinks": [
@@ -2114,6 +2152,15 @@
             "target_slot": -1,
             "type": "INT",
             "parentId": 11
+        },
+        {
+            "id": 7,
+            "origin_id": 160,
+            "origin_slot": 0,
+            "target_id": -1,
+            "target_slot": -1,
+            "type": "STRING",
+            "parentId": 28
         }
     ],
     "groups": [],
@@ -2124,9 +2171,9 @@
                 "version": 1,
                 "state": {
                     "lastGroupId": 6,
-                    "lastNodeId": 261,
-                    "lastLinkId": 532,
-                    "lastRerouteId": 46
+                    "lastNodeId": 274,
+                    "lastLinkId": 575,
+                    "lastRerouteId": 48
                 },
                 "revision": 0,
                 "config": {},
@@ -2722,14 +2769,13 @@
                         "inputs": [
                             {
                                 "label": "a",
-                                "localized_name": "values.a",
+                                "localized_name": "a",
                                 "name": "values.a",
                                 "type": "FLOAT,INT,BOOLEAN",
                                 "link": 205
                             },
                             {
-                                "label": "b",
-                                "localized_name": "values.b",
+                                "localized_name": "b",
                                 "name": "values.b",
                                 "shape": 7,
                                 "type": "FLOAT,INT,BOOLEAN",
@@ -5266,674 +5312,6 @@
                     }
                 ],
                 "extra": {}
-            },
-            {
-                "id": "c12b729b-8238-43e6-ab2e-7fa51f64e7d9",
-                "version": 1,
-                "state": {
-                    "lastGroupId": 6,
-                    "lastNodeId": 261,
-                    "lastLinkId": 532,
-                    "lastRerouteId": 46
-                },
-                "revision": 0,
-                "config": {},
-                "name": "append String To File",
-                "inputNode": {
-                    "id": -10,
-                    "bounding": [
-                        -138,
-                        731,
-                        128,
-                        108
-                    ]
-                },
-                "outputNode": {
-                    "id": -20,
-                    "bounding": [
-                        2450,
-                        750,
-                        128,
-                        68
-                    ]
-                },
-                "inputs": [
-                    {
-                        "id": "33231f4d-0a0e-4c13-8bbf-66e77d8dbf50",
-                        "name": "list_a",
-                        "type": "*",
-                        "linkIds": [
-                            109,
-                            124
-                        ],
-                        "localized_name": "list_a",
-                        "label": "signal",
-                        "shape": 7,
-                        "pos": [
-                            -34,
-                            755
-                        ]
-                    },
-                    {
-                        "id": "c8aeb1b2-51a6-4288-b809-1c8e93c5b200",
-                        "name": "list_b",
-                        "type": "*",
-                        "linkIds": [
-                            110,
-                            123
-                        ],
-                        "localized_name": "list_b",
-                        "label": "path",
-                        "shape": 7,
-                        "pos": [
-                            -34,
-                            775
-                        ]
-                    },
-                    {
-                        "id": "cd79014d-7254-4145-8e23-6747cab14ce8",
-                        "name": "list_a_1",
-                        "type": "*",
-                        "linkIds": [
-                            125
-                        ],
-                        "localized_name": "list_a_1",
-                        "label": "text",
-                        "shape": 7,
-                        "pos": [
-                            -34,
-                            795
-                        ]
-                    }
-                ],
-                "outputs": [
-                    {
-                        "id": "a762a8ce-d8f6-4706-b83d-8c3b33e9d1a1",
-                        "name": "unzip_a",
-                        "type": "*",
-                        "linkIds": [
-                            103
-                        ],
-                        "localized_name": "unzip_a",
-                        "label": "signal",
-                        "shape": 6,
-                        "pos": [
-                            2474,
-                            774
-                        ]
-                    }
-                ],
-                "widgets": [],
-                "nodes": [
-                    {
-                        "id": 87,
-                        "type": "CombineOutputLists",
-                        "pos": [
-                            200,
-                            750
-                        ],
-                        "size": [
-                            250,
-                            150
-                        ],
-                        "flags": {},
-                        "order": 2,
-                        "mode": 0,
-                        "inputs": [
-                            {
-                                "label": "list_a",
-                                "localized_name": "list_a",
-                                "name": "list_a",
-                                "shape": 7,
-                                "type": "*",
-                                "link": 109
-                            },
-                            {
-                                "label": "list_b",
-                                "localized_name": "list_b",
-                                "name": "list_b",
-                                "shape": 7,
-                                "type": "*",
-                                "link": 110
-                            },
-                            {
-                                "label": "list_c",
-                                "localized_name": "list_c",
-                                "name": "list_c",
-                                "shape": 7,
-                                "type": "*",
-                                "link": null
-                            },
-                            {
-                                "label": "list_d",
-                                "localized_name": "list_d",
-                                "name": "list_d",
-                                "shape": 7,
-                                "type": "*",
-                                "link": null
-                            }
-                        ],
-                        "outputs": [
-                            {
-                                "localized_name": "unzip_a",
-                                "name": "unzip_a",
-                                "shape": 6,
-                                "type": "*",
-                                "links": []
-                            },
-                            {
-                                "localized_name": "unzip_b",
-                                "name": "unzip_b",
-                                "shape": 6,
-                                "type": "*",
-                                "links": [
-                                    111
-                                ]
-                            },
-                            {
-                                "localized_name": "unzip_c",
-                                "name": "unzip_c",
-                                "shape": 6,
-                                "type": "*",
-                                "links": null
-                            },
-                            {
-                                "localized_name": "unzip_d",
-                                "name": "unzip_d",
-                                "shape": 6,
-                                "type": "*",
-                                "links": null
-                            },
-                            {
-                                "localized_name": "index",
-                                "name": "index",
-                                "shape": 6,
-                                "type": "INT",
-                                "links": null
-                            },
-                            {
-                                "localized_name": "count",
-                                "name": "count",
-                                "type": "INT",
-                                "links": null
-                            }
-                        ],
-                        "properties": {
-                            "cnr_id": "ComfyUI-outputlists_combiner",
-                            "ver": "1a93429b356469fc591138896761e6a82ba72ccc",
-                            "Node name for S&R": "CombineOutputLists"
-                        }
-                    },
-                    {
-                        "id": 83,
-                        "type": "CombineOutputLists",
-                        "pos": [
-                            2100,
-                            750
-                        ],
-                        "size": [
-                            250,
-                            150
-                        ],
-                        "flags": {},
-                        "order": 0,
-                        "mode": 0,
-                        "inputs": [
-                            {
-                                "label": "list_a",
-                                "localized_name": "list_a",
-                                "name": "list_a",
-                                "shape": 7,
-                                "type": "*",
-                                "link": 124
-                            },
-                            {
-                                "label": "list_b",
-                                "localized_name": "list_b",
-                                "name": "list_b",
-                                "shape": 7,
-                                "type": "*",
-                                "link": 116
-                            },
-                            {
-                                "label": "list_c",
-                                "localized_name": "list_c",
-                                "name": "list_c",
-                                "shape": 7,
-                                "type": "*",
-                                "link": null
-                            },
-                            {
-                                "label": "list_d",
-                                "localized_name": "list_d",
-                                "name": "list_d",
-                                "shape": 7,
-                                "type": "*",
-                                "link": null
-                            }
-                        ],
-                        "outputs": [
-                            {
-                                "localized_name": "unzip_a",
-                                "name": "unzip_a",
-                                "shape": 6,
-                                "type": "*",
-                                "links": [
-                                    103
-                                ]
-                            },
-                            {
-                                "localized_name": "unzip_b",
-                                "name": "unzip_b",
-                                "shape": 6,
-                                "type": "*",
-                                "links": null
-                            },
-                            {
-                                "localized_name": "unzip_c",
-                                "name": "unzip_c",
-                                "shape": 6,
-                                "type": "*",
-                                "links": null
-                            },
-                            {
-                                "localized_name": "unzip_d",
-                                "name": "unzip_d",
-                                "shape": 6,
-                                "type": "*",
-                                "links": null
-                            },
-                            {
-                                "localized_name": "index",
-                                "name": "index",
-                                "shape": 6,
-                                "type": "INT",
-                                "links": null
-                            },
-                            {
-                                "localized_name": "count",
-                                "name": "count",
-                                "type": "INT",
-                                "links": null
-                            }
-                        ],
-                        "properties": {
-                            "cnr_id": "ComfyUI-outputlists_combiner",
-                            "ver": "1a93429b356469fc591138896761e6a82ba72ccc",
-                            "Node name for S&R": "CombineOutputLists"
-                        }
-                    },
-                    {
-                        "id": 86,
-                        "type": "Basic data handling: PathLoadStringFile",
-                        "pos": [
-                            600,
-                            700
-                        ],
-                        "size": [
-                            300,
-                            100
-                        ],
-                        "flags": {},
-                        "order": 1,
-                        "mode": 0,
-                        "inputs": [
-                            {
-                                "localized_name": "path",
-                                "name": "path",
-                                "type": "STRING",
-                                "widget": {
-                                    "name": "path"
-                                },
-                                "link": 111
-                            }
-                        ],
-                        "outputs": [
-                            {
-                                "localized_name": "text",
-                                "name": "text",
-                                "type": "STRING",
-                                "links": [
-                                    112
-                                ]
-                            },
-                            {
-                                "localized_name": "exists",
-                                "name": "exists",
-                                "type": "BOOLEAN",
-                                "links": null
-                            }
-                        ],
-                        "properties": {
-                            "cnr_id": "basic_data_handling",
-                            "ver": "1.6.0",
-                            "Node name for S&R": "Basic data handling: PathLoadStringFile"
-                        },
-                        "widgets_values": [
-                            ""
-                        ],
-                        "widgets_values_named": {
-                            "path": ""
-                        }
-                    },
-                    {
-                        "id": 88,
-                        "type": "StringConcatenate",
-                        "pos": [
-                            1050,
-                            700
-                        ],
-                        "size": [
-                            400,
-                            200
-                        ],
-                        "flags": {
-                            "collapsed": false
-                        },
-                        "order": 3,
-                        "mode": 0,
-                        "inputs": [
-                            {
-                                "localized_name": "string_a",
-                                "name": "string_a",
-                                "type": "STRING",
-                                "widget": {
-                                    "name": "string_a"
-                                },
-                                "link": 112
-                            },
-                            {
-                                "localized_name": "string_b",
-                                "name": "string_b",
-                                "type": "STRING",
-                                "widget": {
-                                    "name": "string_b"
-                                },
-                                "link": 125
-                            },
-                            {
-                                "localized_name": "delimiter",
-                                "name": "delimiter",
-                                "type": "STRING",
-                                "widget": {
-                                    "name": "delimiter"
-                                },
-                                "link": null
-                            }
-                        ],
-                        "outputs": [
-                            {
-                                "localized_name": "STRING",
-                                "name": "STRING",
-                                "type": "STRING",
-                                "links": [
-                                    114
-                                ]
-                            }
-                        ],
-                        "properties": {
-                            "cnr_id": "comfy-core",
-                            "ver": "0.33.0",
-                            "Node name for S&R": "StringConcatenate"
-                        },
-                        "widgets_values": [
-                            "",
-                            "",
-                            ""
-                        ],
-                        "widgets_values_named": {
-                            "string_a": "",
-                            "string_b": "",
-                            "delimiter": ""
-                        }
-                    },
-                    {
-                        "id": 89,
-                        "type": "Basic data handling: PathSaveStringFile",
-                        "pos": [
-                            1650,
-                            750
-                        ],
-                        "size": [
-                            300,
-                            200
-                        ],
-                        "flags": {},
-                        "order": 4,
-                        "mode": 0,
-                        "inputs": [
-                            {
-                                "localized_name": "text",
-                                "name": "text",
-                                "type": "STRING",
-                                "widget": {
-                                    "name": "text"
-                                },
-                                "link": 114
-                            },
-                            {
-                                "localized_name": "path",
-                                "name": "path",
-                                "type": "STRING",
-                                "widget": {
-                                    "name": "path"
-                                },
-                                "link": 123
-                            },
-                            {
-                                "localized_name": "create_dirs",
-                                "name": "create_dirs",
-                                "shape": 7,
-                                "type": "BOOLEAN",
-                                "widget": {
-                                    "name": "create_dirs"
-                                },
-                                "link": null
-                            },
-                            {
-                                "localized_name": "encoding",
-                                "name": "encoding",
-                                "shape": 7,
-                                "type": "STRING",
-                                "widget": {
-                                    "name": "encoding"
-                                },
-                                "link": null
-                            },
-                            {
-                                "localized_name": "append",
-                                "name": "append",
-                                "shape": 7,
-                                "type": "BOOLEAN",
-                                "widget": {
-                                    "name": "append"
-                                },
-                                "link": null
-                            }
-                        ],
-                        "outputs": [
-                            {
-                                "localized_name": "success",
-                                "name": "success",
-                                "type": "BOOLEAN",
-                                "links": [
-                                    116
-                                ]
-                            }
-                        ],
-                        "properties": {
-                            "cnr_id": "basic_data_handling",
-                            "ver": "1.6.0",
-                            "Node name for S&R": "Basic data handling: PathSaveStringFile"
-                        },
-                        "widgets_values": [
-                            "",
-                            "",
-                            true,
-                            "utf-8",
-                            false
-                        ],
-                        "widgets_values_named": {
-                            "text": "",
-                            "path": "",
-                            "create_dirs": true,
-                            "encoding": "utf-8",
-                            "append": false
-                        }
-                    }
-                ],
-                "groups": [],
-                "links": [
-                    {
-                        "id": 111,
-                        "origin_id": 87,
-                        "origin_slot": 1,
-                        "target_id": 86,
-                        "target_slot": 0,
-                        "type": "STRING"
-                    },
-                    {
-                        "id": 112,
-                        "origin_id": 86,
-                        "origin_slot": 0,
-                        "target_id": 88,
-                        "target_slot": 0,
-                        "type": "STRING"
-                    },
-                    {
-                        "id": 114,
-                        "origin_id": 88,
-                        "origin_slot": 0,
-                        "target_id": 89,
-                        "target_slot": 0,
-                        "type": "STRING"
-                    },
-                    {
-                        "id": 116,
-                        "origin_id": 89,
-                        "origin_slot": 0,
-                        "target_id": 83,
-                        "target_slot": 1,
-                        "type": "BOOLEAN"
-                    },
-                    {
-                        "id": 109,
-                        "origin_id": -10,
-                        "origin_slot": 0,
-                        "target_id": 87,
-                        "target_slot": 0,
-                        "type": "*"
-                    },
-                    {
-                        "id": 110,
-                        "origin_id": -10,
-                        "origin_slot": 1,
-                        "target_id": 87,
-                        "target_slot": 1,
-                        "type": "STRING"
-                    },
-                    {
-                        "id": 103,
-                        "origin_id": 83,
-                        "origin_slot": 0,
-                        "target_id": -20,
-                        "target_slot": 0,
-                        "type": "*"
-                    },
-                    {
-                        "id": 123,
-                        "origin_id": -10,
-                        "origin_slot": 1,
-                        "target_id": 89,
-                        "target_slot": 1,
-                        "type": "STRING",
-                        "parentId": 4
-                    },
-                    {
-                        "id": 124,
-                        "origin_id": -10,
-                        "origin_slot": 0,
-                        "target_id": 83,
-                        "target_slot": 0,
-                        "type": "*",
-                        "parentId": 6
-                    },
-                    {
-                        "id": 125,
-                        "origin_id": -10,
-                        "origin_slot": 2,
-                        "target_id": 88,
-                        "target_slot": 1,
-                        "type": "STRING",
-                        "parentId": 8
-                    }
-                ],
-                "reroutes": [
-                    {
-                        "id": 1,
-                        "pos": [
-                            150,
-                            1014
-                        ],
-                        "linkIds": [
-                            123
-                        ]
-                    },
-                    {
-                        "id": 4,
-                        "parentId": 1,
-                        "pos": [
-                            1550,
-                            1014
-                        ],
-                        "linkIds": [
-                            123
-                        ]
-                    },
-                    {
-                        "id": 5,
-                        "pos": [
-                            100,
-                            614
-                        ],
-                        "linkIds": [
-                            124
-                        ]
-                    },
-                    {
-                        "id": 6,
-                        "parentId": 5,
-                        "pos": [
-                            2050,
-                            614
-                        ],
-                        "linkIds": [
-                            124
-                        ]
-                    },
-                    {
-                        "id": 7,
-                        "pos": [
-                            200,
-                            964
-                        ],
-                        "linkIds": [
-                            125
-                        ]
-                    },
-                    {
-                        "id": 8,
-                        "parentId": 7,
-                        "pos": [
-                            1000,
-                            964
-                        ],
-                        "linkIds": [
-                            125
-                        ]
-                    }
-                ],
-                "extra": {}
             }
         ]
     },
@@ -5949,23 +5327,23 @@
                 "id": 11,
                 "parentId": 12,
                 "pos": [
-                    -2600,
+                    -2850,
                     5564
                 ],
                 "linkIds": [
-                    373,
-                    531
+                    560,
+                    575
                 ]
             },
             {
                 "id": 12,
                 "pos": [
-                    -2600,
+                    -2850,
                     4864
                 ],
                 "linkIds": [
-                    373,
-                    531
+                    560,
+                    575
                 ]
             },
             {
@@ -5975,96 +5353,115 @@
                     5664
                 ],
                 "linkIds": [
-                    304
+                    558
                 ]
             },
             {
                 "id": 26,
                 "pos": [
-                    -1900,
+                    -2200,
                     5514
                 ],
                 "linkIds": [
-                    372,
-                    529
+                    529,
+                    559
                 ]
             },
             {
                 "id": 28,
+                "parentId": 48,
                 "pos": [
-                    -4250,
+                    -4200,
                     5614
                 ],
                 "linkIds": [
-                    374
-                ]
+                    561
+                ],
+                "floating": {
+                    "slotType": "output"
+                }
             },
             {
                 "id": 29,
                 "parentId": 24,
                 "pos": [
-                    -350,
+                    -1050,
                     5664
                 ],
                 "linkIds": [
-                    304
+                    558
                 ]
             },
             {
                 "id": 45,
                 "parentId": 26,
                 "pos": [
-                    -1050,
+                    -1650,
                     5514
                 ],
                 "linkIds": [
-                    372,
-                    529
+                    529,
+                    559
                 ]
             },
             {
                 "id": 46,
                 "parentId": 11,
                 "pos": [
-                    -750,
+                    -1300,
                     5564
                 ],
                 "linkIds": [
-                    373,
-                    531
+                    560,
+                    575
+                ]
+            },
+            {
+                "id": 48,
+                "pos": [
+                    -4200,
+                    5314
+                ],
+                "linkIds": [
+                    555,
+                    561
                 ]
             }
         ],
         "ds": {
-            "scale": 1,
+            "scale": 0.620921323059155,
             "offset": [
-                4650,
-                -4600
+                3251.5586500599134,
+                -4606.0571103284165
             ]
         },
         "linkExtensions": [
-            {
-                "id": 304,
-                "parentId": 29
-            },
-            {
-                "id": 372,
-                "parentId": 45
-            },
-            {
-                "id": 373,
-                "parentId": 46
-            },
-            {
-                "id": 374,
-                "parentId": 28
-            },
             {
                 "id": 529,
                 "parentId": 45
             },
             {
-                "id": 531,
+                "id": 555,
+                "parentId": 48
+            },
+            {
+                "id": 558,
+                "parentId": 29
+            },
+            {
+                "id": 559,
+                "parentId": 45
+            },
+            {
+                "id": 560,
+                "parentId": 46
+            },
+            {
+                "id": 561,
+                "parentId": 28
+            },
+            {
+                "id": 575,
                 "parentId": 46
             }
         ]

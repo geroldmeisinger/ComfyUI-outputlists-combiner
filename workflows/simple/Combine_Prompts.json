@@ -1,8 +1,8 @@
 {
     "id": "409461d3-9236-4d34-bfc6-f50135f49c46",
     "revision": 0,
-    "last_node_id": 63,
-    "last_link_id": 83,
+    "last_node_id": 64,
+    "last_link_id": 89,
     "nodes": [
         {
             "id": 19,
@@ -175,111 +175,6 @@
             "bgcolor": "#353"
         },
         {
-            "id": 15,
-            "type": "CombineOutputLists",
-            "pos": [
-                0,
-                250
-            ],
-            "size": [
-                250,
-                150
-            ],
-            "flags": {},
-            "order": 2,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "list_a",
-                    "name": "list_a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 22
-                },
-                {
-                    "localized_name": "list_b",
-                    "name": "list_b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 23
-                },
-                {
-                    "localized_name": "list_c",
-                    "name": "list_c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "localized_name": "list_d",
-                    "name": "list_d",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "unzip_a",
-                    "name": "unzip_a",
-                    "shape": 6,
-                    "type": "*",
-                    "links": [
-                        82
-                    ]
-                },
-                {
-                    "localized_name": "unzip_b",
-                    "name": "unzip_b",
-                    "shape": 6,
-                    "type": "*",
-                    "links": [
-                        83
-                    ]
-                },
-                {
-                    "localized_name": "unzip_c",
-                    "name": "unzip_c",
-                    "shape": 6,
-                    "type": "*",
-                    "links": null
-                },
-                {
-                    "localized_name": "unzip_d",
-                    "name": "unzip_d",
-                    "shape": 6,
-                    "type": "*",
-                    "links": null
-                },
-                {
-                    "localized_name": "index",
-                    "name": "index",
-                    "shape": 6,
-                    "type": "INT",
-                    "links": null
-                },
-                {
-                    "localized_name": "count",
-                    "name": "count",
-                    "type": "INT",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "17a1d4ca023650f2f278228acd809c63f9ee904e",
-                "Node name for S&R": "CombineOutputLists",
-                "aux_id": "geroldmeisinger/ComfyUI-outputlists-combiner",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "version": "7.5.1",
-                    "input_ue_unconnectable": {}
-                }
-            },
-            "color": "#323",
-            "bgcolor": "#535"
-        },
-        {
             "id": 62,
             "type": "d230adad-842e-41c5-b63e-53385f9e9bbc",
             "pos": [
@@ -291,7 +186,7 @@
                 300
             ],
             "flags": {},
-            "order": 5,
+            "order": 4,
             "mode": 0,
             "inputs": [
                 {
@@ -301,7 +196,7 @@
                     "widget": {
                         "name": "text"
                     },
-                    "link": 81
+                    "link": 88
                 },
                 {
                     "name": "width",
@@ -431,14 +326,14 @@
                 550
             ],
             "flags": {},
-            "order": 4,
+            "order": 5,
             "mode": 0,
             "inputs": [
                 {
                     "localized_name": "text",
                     "name": "text",
                     "type": "STRING",
-                    "link": 80
+                    "link": 89
                 }
             ],
             "outputs": [
@@ -531,15 +426,120 @@
             "bgcolor": "#653"
         },
         {
-            "id": 63,
-            "type": "FormattedString",
+            "id": 15,
+            "type": "CombineOutputLists",
+            "pos": [
+                0,
+                250
+            ],
+            "size": [
+                250,
+                150
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "list_a",
+                    "name": "list_a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 22
+                },
+                {
+                    "localized_name": "list_b",
+                    "name": "list_b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 23
+                },
+                {
+                    "localized_name": "list_c",
+                    "name": "list_c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "list_d",
+                    "name": "list_d",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "unzip_a",
+                    "name": "unzip_a",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        84
+                    ]
+                },
+                {
+                    "localized_name": "unzip_b",
+                    "name": "unzip_b",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        85
+                    ]
+                },
+                {
+                    "localized_name": "unzip_c",
+                    "name": "unzip_c",
+                    "shape": 6,
+                    "type": "*",
+                    "links": null
+                },
+                {
+                    "localized_name": "unzip_d",
+                    "name": "unzip_d",
+                    "shape": 6,
+                    "type": "*",
+                    "links": null
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "17a1d4ca023650f2f278228acd809c63f9ee904e",
+                "Node name for S&R": "CombineOutputLists",
+                "aux_id": "geroldmeisinger/ComfyUI-outputlists-combiner",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "version": "7.5.1",
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "color": "#323",
+            "bgcolor": "#535"
+        },
+        {
+            "id": 64,
+            "type": "StringFormat",
             "pos": [
                 300,
                 250
             ],
             "size": [
                 250,
-                200
+                150
             ],
             "flags": {},
             "order": 3,
@@ -550,14 +550,14 @@
                     "name": "values.a",
                     "shape": 7,
                     "type": "*",
-                    "link": 82
+                    "link": 84
                 },
                 {
                     "localized_name": "b",
                     "name": "values.b",
                     "shape": 7,
                     "type": "*",
-                    "link": 83
+                    "link": 85
                 },
                 {
                     "localized_name": "c",
@@ -567,61 +567,37 @@
                     "link": null
                 },
                 {
-                    "localized_name": "dict",
-                    "name": "dict",
-                    "shape": 7,
-                    "type": "DICT",
-                    "link": null
-                },
-                {
-                    "localized_name": "list",
-                    "name": "list",
-                    "shape": 7,
-                    "type": "ARRAY",
-                    "link": null
-                },
-                {
-                    "localized_name": "fstring",
-                    "name": "fstring",
+                    "localized_name": "f_string",
+                    "name": "f_string",
                     "type": "STRING",
                     "widget": {
-                        "name": "fstring"
+                        "name": "f_string"
                     },
                     "link": null
                 }
             ],
             "outputs": [
                 {
-                    "localized_name": "string",
-                    "name": "string",
+                    "localized_name": "STRING",
+                    "name": "STRING",
                     "type": "STRING",
                     "links": [
-                        80,
-                        81
+                        88,
+                        89
                     ]
                 }
             ],
             "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "17a1d4ca023650f2f278228acd809c63f9ee904e",
-                "Node name for S&R": "FormattedString",
-                "aux_id": "geroldmeisinger/ComfyUI-outputlists-combiner",
-                "ue_properties": {
-                    "widget_ue_connectable": {
-                        "fstring": true
-                    },
-                    "version": "7.5.1",
-                    "input_ue_unconnectable": {}
-                }
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
             },
             "widgets_values": [
                 "a {a} with a {b} hat"
             ],
             "widgets_values_named": {
-                "fstring": "a {a} with a {b} hat"
-            },
-            "color": "#323",
-            "bgcolor": "#535"
+                "f_string": "a {a} with a {b} hat"
+            }
         }
     ],
     "links": [
@@ -650,36 +626,36 @@
             "IMAGE"
         ],
         [
-            80,
-            63,
+            84,
+            15,
             0,
-            17,
+            64,
             0,
-            "STRING"
+            "*"
         ],
         [
-            81,
-            63,
+            85,
+            15,
+            1,
+            64,
+            1,
+            "*"
+        ],
+        [
+            88,
+            64,
             0,
             62,
             0,
             "STRING"
         ],
         [
-            82,
-            15,
+            89,
+            64,
             0,
-            63,
+            17,
             0,
-            "*"
-        ],
-        [
-            83,
-            15,
-            1,
-            63,
-            1,
-            "*"
+            "STRING"
         ]
     ],
     "groups": [],
@@ -690,8 +666,8 @@
                 "version": 1,
                 "state": {
                     "lastGroupId": 4,
-                    "lastNodeId": 63,
-                    "lastLinkId": 83,
+                    "lastNodeId": 64,
+                    "lastLinkId": 89,
                     "lastRerouteId": 0
                 },
                 "revision": 0,
@@ -1677,8 +1653,8 @@
         "ds": {
             "scale": 0.6830134553650705,
             "offset": [
-                574.5703090909088,
-                254.1737090909101
+                547.1421586776858,
+                314.4016826446287
             ]
         },
         "ue_links": [],

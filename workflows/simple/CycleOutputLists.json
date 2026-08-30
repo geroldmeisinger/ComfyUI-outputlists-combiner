@@ -1,8 +1,8 @@
 {
     "id": "1d29be08-4b12-4025-a113-38ea46e79c90",
     "revision": 0,
-    "last_node_id": 16,
-    "last_link_id": 16,
+    "last_node_id": 17,
+    "last_link_id": 18,
     "nodes": [
         {
             "id": 14,
@@ -46,120 +46,6 @@
             "bgcolor": "#353"
         },
         {
-            "id": 8,
-            "type": "NumberOutputList",
-            "pos": [
-                600,
-                950
-            ],
-            "size": [
-                250,
-                250
-            ],
-            "flags": {},
-            "order": 2,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "start",
-                    "name": "start",
-                    "type": "FLOAT",
-                    "widget": {
-                        "name": "start"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "stop",
-                    "name": "stop",
-                    "type": "FLOAT",
-                    "widget": {
-                        "name": "stop"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "num",
-                    "name": "num",
-                    "type": "INT",
-                    "widget": {
-                        "name": "num"
-                    },
-                    "link": 14
-                },
-                {
-                    "localized_name": "endpoint",
-                    "name": "endpoint",
-                    "type": "BOOLEAN",
-                    "widget": {
-                        "name": "endpoint"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "int",
-                    "name": "int",
-                    "shape": 6,
-                    "type": "INT",
-                    "links": [
-                        16
-                    ]
-                },
-                {
-                    "localized_name": "float",
-                    "name": "float",
-                    "shape": 6,
-                    "type": "FLOAT",
-                    "links": null
-                },
-                {
-                    "localized_name": "string",
-                    "name": "string",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                },
-                {
-                    "localized_name": "index",
-                    "name": "index",
-                    "shape": 6,
-                    "type": "INT",
-                    "links": []
-                },
-                {
-                    "localized_name": "count",
-                    "name": "count",
-                    "type": "INT",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "272f15abad5788583ae3bb777e4e586203b4768e",
-                "Node name for S&R": "NumberOutputList",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {}
-                }
-            },
-            "widgets_values": [
-                0,
-                0,
-                3,
-                false
-            ],
-            "widgets_values_named": {
-                "start": 0,
-                "stop": 0,
-                "num": 3,
-                "endpoint": false
-            },
-            "color": "#323",
-            "bgcolor": "#535"
-        },
-        {
             "id": 15,
             "type": "Note",
             "pos": [
@@ -184,87 +70,6 @@
             },
             "color": "#432",
             "bgcolor": "#653"
-        },
-        {
-            "id": 16,
-            "type": "FormattedString",
-            "pos": [
-                900,
-                950
-            ],
-            "size": [
-                250,
-                250
-            ],
-            "flags": {},
-            "order": 3,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "a",
-                    "name": "values.a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 16
-                },
-                {
-                    "localized_name": "b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "localized_name": "dict",
-                    "name": "dict",
-                    "shape": 7,
-                    "type": "DICT",
-                    "link": null
-                },
-                {
-                    "localized_name": "list",
-                    "name": "list",
-                    "shape": 7,
-                    "type": "ARRAY",
-                    "link": null
-                },
-                {
-                    "localized_name": "fstring",
-                    "name": "fstring",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "fstring"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "string",
-                    "name": "string",
-                    "type": "STRING",
-                    "links": [
-                        15
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "272f15abad5788583ae3bb777e4e586203b4768e",
-                "Node name for S&R": "FormattedString",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {}
-                }
-            },
-            "widgets_values": [
-                "cat {a}\ndog {a}\nrat {a}\n"
-            ],
-            "widgets_values_named": {
-                "fstring": "cat {a}\ndog {a}\nrat {a}\n"
-            },
-            "color": "#323",
-            "bgcolor": "#535"
         },
         {
             "id": 11,
@@ -297,7 +102,7 @@
                     "widget": {
                         "name": "values"
                     },
-                    "link": 15
+                    "link": 18
                 }
             ],
             "outputs": [
@@ -414,6 +219,181 @@
             },
             "color": "#432",
             "bgcolor": "#653"
+        },
+        {
+            "id": 8,
+            "type": "NumberOutputList",
+            "pos": [
+                600,
+                950
+            ],
+            "size": [
+                250,
+                250
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "start",
+                    "name": "start",
+                    "type": "FLOAT",
+                    "widget": {
+                        "name": "start"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "stop",
+                    "name": "stop",
+                    "type": "FLOAT",
+                    "widget": {
+                        "name": "stop"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "num",
+                    "name": "num",
+                    "type": "INT",
+                    "widget": {
+                        "name": "num"
+                    },
+                    "link": 14
+                },
+                {
+                    "localized_name": "endpoint",
+                    "name": "endpoint",
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "endpoint"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "int",
+                    "name": "int",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": [
+                        17
+                    ]
+                },
+                {
+                    "localized_name": "float",
+                    "name": "float",
+                    "shape": 6,
+                    "type": "FLOAT",
+                    "links": null
+                },
+                {
+                    "localized_name": "string",
+                    "name": "string",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": []
+                },
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "272f15abad5788583ae3bb777e4e586203b4768e",
+                "Node name for S&R": "NumberOutputList",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": [
+                0,
+                0,
+                3,
+                false
+            ],
+            "widgets_values_named": {
+                "start": 0,
+                "stop": 0,
+                "num": 3,
+                "endpoint": false
+            },
+            "color": "#323",
+            "bgcolor": "#535"
+        },
+        {
+            "id": 17,
+            "type": "StringFormat",
+            "pos": [
+                900,
+                950
+            ],
+            "size": [
+                250,
+                150
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 17
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "f_string",
+                    "name": "f_string",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "f_string"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        18
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
+            },
+            "widgets_values": [
+                "cat {a}\ndog {a}\nrat {a}\n"
+            ],
+            "widgets_values_named": {
+                "f_string": "cat {a}\ndog {a}\nrat {a}\n"
+            }
         }
     ],
     "links": [
@@ -434,20 +414,20 @@
             "INT"
         ],
         [
-            15,
-            16,
+            17,
+            8,
+            0,
+            17,
+            0,
+            "INT"
+        ],
+        [
+            18,
+            17,
             0,
             11,
             1,
             "STRING"
-        ],
-        [
-            16,
-            8,
-            0,
-            16,
-            0,
-            "INT"
         ]
     ],
     "groups": [],
@@ -459,8 +439,8 @@
         "ds": {
             "scale": 0.9090909090909091,
             "offset": [
-                -104.26033057851235,
-                -577.3702479338839
+                -65.76033057851232,
+                -588.3702479338832
             ]
         }
     },

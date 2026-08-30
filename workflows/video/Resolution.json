@@ -1,8 +1,8 @@
 {
     "id": "9a5af627-6c61-4d7c-9d9a-af79de391f25",
     "revision": 0,
-    "last_node_id": 167,
-    "last_link_id": 282,
+    "last_node_id": 172,
+    "last_link_id": 297,
     "nodes": [
         {
             "id": 145,
@@ -16,14 +16,14 @@
                 550
             ],
             "flags": {},
-            "order": 8,
+            "order": 9,
             "mode": 0,
             "inputs": [
                 {
                     "localized_name": "text",
                     "name": "text",
                     "type": "STRING",
-                    "link": 256
+                    "link": 297
                 }
             ],
             "outputs": [
@@ -82,7 +82,7 @@
                     "localized_name": "text",
                     "name": "text",
                     "type": "STRING",
-                    "link": 259
+                    "link": 289
                 }
             ],
             "outputs": [
@@ -102,10 +102,10 @@
                 "Node name for S&R": "ShowText|pysssss"
             },
             "widgets_values": [
-                "864"
+                "736"
             ],
             "widgets_values_named": {
-                "text_0": "864"
+                "text_0": "736"
             },
             "color": "#432",
             "bgcolor": "#653"
@@ -129,7 +129,7 @@
                     "localized_name": "text",
                     "name": "text",
                     "type": "STRING",
-                    "link": 261
+                    "link": 290
                 }
             ],
             "outputs": [
@@ -149,147 +149,13 @@
                 "Node name for S&R": "ShowText|pysssss"
             },
             "widgets_values": [
-                "480"
+                "416"
             ],
             "widgets_values_named": {
-                "text_0": "480"
+                "text_0": "416"
             },
             "color": "#432",
             "bgcolor": "#653"
-        },
-        {
-            "id": 149,
-            "type": "SpreadsheetOutputList",
-            "pos": [
-                -1700,
-                5150
-            ],
-            "size": [
-                250,
-                300
-            ],
-            "flags": {},
-            "order": 10,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "rows_and_cols",
-                    "name": "rows_and_cols",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "rows_and_cols"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "header_rows",
-                    "name": "header_rows",
-                    "type": "INT",
-                    "widget": {
-                        "name": "header_rows"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "header_cols",
-                    "name": "header_cols",
-                    "type": "INT",
-                    "widget": {
-                        "name": "header_cols"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "select_nth",
-                    "name": "select_nth",
-                    "type": "INT",
-                    "widget": {
-                        "name": "select_nth"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "separator",
-                    "name": "separator",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "separator"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "string_or_base64",
-                    "name": "string_or_base64",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "string_or_base64"
-                    },
-                    "link": 269
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "list_a",
-                    "name": "list_a",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": [
-                        259
-                    ]
-                },
-                {
-                    "localized_name": "list_b",
-                    "name": "list_b",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": [
-                        261
-                    ]
-                },
-                {
-                    "localized_name": "list_c",
-                    "name": "list_c",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                },
-                {
-                    "localized_name": "list_d",
-                    "name": "list_d",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                },
-                {
-                    "localized_name": "count",
-                    "name": "count",
-                    "type": "INT",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "04696cdbbd50c7b86a9822697cb5303da6d717ab",
-                "Node name for S&R": "SpreadsheetOutputList"
-            },
-            "widgets_values": [
-                "A B C D",
-                0,
-                0,
-                -1,
-                "x",
-                ""
-            ],
-            "widgets_values_named": {
-                "rows_and_cols": "A B C D",
-                "header_rows": 0,
-                "header_cols": 0,
-                "select_nth": -1,
-                "separator": "x",
-                "string_or_base64": ""
-            },
-            "color": "#323",
-            "bgcolor": "#535"
         },
         {
             "id": 152,
@@ -493,7 +359,7 @@
             "inputs": [
                 {
                     "label": "any",
-                    "localized_name": "number",
+                    "localized_name": "any",
                     "name": "number",
                     "type": "*",
                     "link": 280
@@ -522,7 +388,7 @@
                     "shape": 6,
                     "type": "STRING",
                     "links": [
-                        278
+                        293
                     ]
                 },
                 {
@@ -539,58 +405,6 @@
             },
             "color": "#323",
             "bgcolor": "#535"
-        },
-        {
-            "id": 163,
-            "type": "Note",
-            "pos": [
-                -1350,
-                4950
-            ],
-            "size": [
-                250,
-                100
-            ],
-            "flags": {},
-            "order": 0,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
-            "widgets_values": [
-                "The passtrough on the output is important so it gets displayed on every iteration."
-            ],
-            "widgets_values_named": {
-                "text": "The passtrough on the output is important so it gets displayed on every iteration."
-            },
-            "color": "#322",
-            "bgcolor": "#533"
-        },
-        {
-            "id": 161,
-            "type": "Note",
-            "pos": [
-                -2500,
-                5150
-            ],
-            "size": [
-                350,
-                200
-            ],
-            "flags": {},
-            "order": 1,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
-            "widgets_values": [
-                "We are using the original resolution reference here and parse it as a spreadsheet (separator=|). Remove the first two header rows and make the columns available as:\nA=<empty>\nB=megapixels\nC=Aspect\nD=Output\nE=<empty>"
-            ],
-            "widgets_values_named": {
-                "text": "We are using the original resolution reference here and parse it as a spreadsheet (separator=|). Remove the first two header rows and make the columns available as:\nA=<empty>\nB=megapixels\nC=Aspect\nD=Output\nE=<empty>"
-            },
-            "color": "#322",
-            "bgcolor": "#533"
         },
         {
             "id": 157,
@@ -611,7 +425,7 @@
             "inputs": [
                 {
                     "label": "any",
-                    "localized_name": "number",
+                    "localized_name": "any",
                     "name": "number",
                     "type": "*",
                     "link": 279
@@ -640,7 +454,7 @@
                     "shape": 6,
                     "type": "STRING",
                     "links": [
-                        277
+                        292
                     ]
                 },
                 {
@@ -659,204 +473,6 @@
             "bgcolor": "#535"
         },
         {
-            "id": 154,
-            "type": "IterateBegin",
-            "pos": [
-                -2000,
-                4700
-            ],
-            "size": [
-                200,
-                100
-            ],
-            "flags": {},
-            "order": 9,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "datalist",
-                    "localized_name": "datalist",
-                    "name": "datalist",
-                    "type": "*",
-                    "link": 265
-                },
-                {
-                    "label": "_",
-                    "localized_name": "_results",
-                    "name": "_results",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "flow_control",
-                    "name": "flow_control",
-                    "type": "FLOW_CONTROL",
-                    "links": [
-                        266
-                    ]
-                },
-                {
-                    "localized_name": "item",
-                    "name": "item",
-                    "type": "*",
-                    "links": [
-                        269
-                    ]
-                },
-                {
-                    "localized_name": "index",
-                    "name": "index",
-                    "type": "INT",
-                    "links": [
-                        282
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba",
-                "Node name for S&R": "IterateBegin"
-            },
-            "color": "#223",
-            "bgcolor": "#335"
-        },
-        {
-            "id": 148,
-            "type": "SpreadsheetOutputList",
-            "pos": [
-                -2500,
-                4650
-            ],
-            "size": [
-                350,
-                400
-            ],
-            "flags": {},
-            "order": 2,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "rows_and_cols",
-                    "name": "rows_and_cols",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "rows_and_cols"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "header_rows",
-                    "name": "header_rows",
-                    "type": "INT",
-                    "widget": {
-                        "name": "header_rows"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "header_cols",
-                    "name": "header_cols",
-                    "type": "INT",
-                    "widget": {
-                        "name": "header_cols"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "select_nth",
-                    "name": "select_nth",
-                    "type": "INT",
-                    "widget": {
-                        "name": "select_nth"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "separator",
-                    "name": "separator",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "separator"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "string_or_base64",
-                    "name": "string_or_base64",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "string_or_base64"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "list_a",
-                    "name": "list_a",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                },
-                {
-                    "localized_name": "list_b",
-                    "name": "list_b",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                },
-                {
-                    "localized_name": "list_c",
-                    "name": "list_c",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                },
-                {
-                    "localized_name": "list_d",
-                    "name": "list_d",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": [
-                        256,
-                        265
-                    ]
-                },
-                {
-                    "localized_name": "count",
-                    "name": "count",
-                    "type": "INT",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "04696cdbbd50c7b86a9822697cb5303da6d717ab",
-                "Node name for S&R": "SpreadsheetOutputList"
-            },
-            "widgets_values": [
-                "A B C D",
-                2,
-                0,
-                -1,
-                "|",
-                "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |"
-            ],
-            "widgets_values_named": {
-                "rows_and_cols": "A B C D",
-                "header_rows": 2,
-                "header_cols": 0,
-                "select_nth": -1,
-                "separator": "|",
-                "string_or_base64": "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |"
-            },
-            "color": "#232",
-            "bgcolor": "#353"
-        },
-        {
             "id": 165,
             "type": "Note",
             "pos": [
@@ -868,7 +484,7 @@
                 100
             ],
             "flags": {},
-            "order": 3,
+            "order": 1,
             "mode": 0,
             "inputs": [],
             "outputs": [],
@@ -878,32 +494,6 @@
             ],
             "widgets_values_named": {
                 "text": "Build the filepath string from:\nprefix + index + width + height"
-            },
-            "color": "#322",
-            "bgcolor": "#533"
-        },
-        {
-            "id": 162,
-            "type": "Note",
-            "pos": [
-                -1700,
-                4850
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {},
-            "order": 4,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
-            "widgets_values": [
-                "Split the resolution string \"1280x736\" again into its elements (if you have a split string node installed you can use that instead)."
-            ],
-            "widgets_values_named": {
-                "text": "Split the resolution string \"1280x736\" again into its elements (if you have a split string node installed you can use that instead)."
             },
             "color": "#322",
             "bgcolor": "#533"
@@ -920,7 +510,7 @@
                 100
             ],
             "flags": {},
-            "order": 5,
+            "order": 2,
             "mode": 0,
             "inputs": [],
             "outputs": [],
@@ -993,7 +583,7 @@
                 100
             ],
             "flags": {},
-            "order": 6,
+            "order": 3,
             "mode": 0,
             "inputs": [
                 {
@@ -1012,7 +602,7 @@
                     "name": "STRING",
                     "type": "STRING",
                     "links": [
-                        276
+                        291
                     ]
                 }
             ],
@@ -1032,86 +622,6 @@
             "bgcolor": "#353"
         },
         {
-            "id": 159,
-            "type": "FormattedString",
-            "pos": [
-                -600,
-                5600
-            ],
-            "size": [
-                250,
-                150
-            ],
-            "flags": {},
-            "order": 16,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "a",
-                    "localized_name": "a",
-                    "name": "a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 276
-                },
-                {
-                    "label": "b",
-                    "localized_name": "b",
-                    "name": "b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 277
-                },
-                {
-                    "label": "c",
-                    "localized_name": "c",
-                    "name": "c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 278
-                },
-                {
-                    "label": "d",
-                    "localized_name": "d",
-                    "name": "d",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 282
-                },
-                {
-                    "localized_name": "fstring",
-                    "name": "fstring",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "fstring"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "string",
-                    "name": "string",
-                    "type": "STRING",
-                    "links": [
-                        281
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba"
-            },
-            "widgets_values": [
-                "{a}{d:02}_{b}x{c}"
-            ],
-            "widgets_values_named": {
-                "fstring": "{a}{d:02}_{b}x{c}"
-            },
-            "color": "#323",
-            "bgcolor": "#535"
-        },
-        {
             "id": 166,
             "type": "Note",
             "pos": [
@@ -1123,7 +633,7 @@
                 100
             ],
             "flags": {},
-            "order": 7,
+            "order": 4,
             "mode": 0,
             "inputs": [],
             "outputs": [],
@@ -1147,7 +657,7 @@
             ],
             "size": [
                 600,
-                437.1304347826087
+                445.36842105263156
             ],
             "flags": {},
             "order": 17,
@@ -1166,7 +676,7 @@
                     "widget": {
                         "name": "filename_prefix"
                     },
-                    "link": 281
+                    "link": 295
                 },
                 {
                     "localized_name": "format",
@@ -1178,7 +688,7 @@
                     "link": null
                 },
                 {
-                    "localized_name": "format.codec",
+                    "localized_name": "codec",
                     "name": "format.codec",
                     "type": "COMFY_DYNAMICCOMBO_V3",
                     "widget": {
@@ -1226,33 +736,529 @@
             },
             "color": "#432",
             "bgcolor": "#653"
+        },
+        {
+            "id": 161,
+            "type": "Note",
+            "pos": [
+                -2500,
+                5200
+            ],
+            "size": [
+                350,
+                200
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "We are using the original resolution reference here and parse it as a spreadsheet (separator=|). Remove the first two header rows and make the columns available as:\nA=<empty>\nB=megapixels\nC=Aspect\nD=Output\nE=<empty>"
+            ],
+            "widgets_values_named": {
+                "text": "We are using the original resolution reference here and parse it as a spreadsheet (separator=|). Remove the first two header rows and make the columns available as:\nA=<empty>\nB=megapixels\nC=Aspect\nD=Output\nE=<empty>"
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 154,
+            "type": "IterateBegin",
+            "pos": [
+                -2000,
+                4700
+            ],
+            "size": [
+                200,
+                100
+            ],
+            "flags": {},
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+                {
+                    "label": "datalist",
+                    "localized_name": "datalist",
+                    "name": "datalist",
+                    "type": "*",
+                    "link": 296
+                },
+                {
+                    "label": "_",
+                    "localized_name": "_",
+                    "name": "_results",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "flow_control",
+                    "name": "flow_control",
+                    "type": "FLOW_CONTROL",
+                    "links": [
+                        266
+                    ]
+                },
+                {
+                    "localized_name": "item",
+                    "name": "item",
+                    "type": "*",
+                    "links": [
+                        288
+                    ]
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "type": "INT",
+                    "links": [
+                        294
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "3bf2798b97a8f38db6e5986c30bb61778b3b4bba",
+                "Node name for S&R": "IterateBegin"
+            },
+            "color": "#223",
+            "bgcolor": "#335"
+        },
+        {
+            "id": 172,
+            "type": "StringFormat",
+            "pos": [
+                -600,
+                5600
+            ],
+            "size": [
+                250,
+                168
+            ],
+            "flags": {},
+            "order": 16,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 291
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 292
+                },
+                {
+                    "localized_name": "c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 293
+                },
+                {
+                    "localized_name": "d",
+                    "name": "values.d",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 294
+                },
+                {
+                    "localized_name": "e",
+                    "name": "values.e",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "f_string",
+                    "name": "f_string",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "f_string"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        295
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
+            },
+            "widgets_values": [
+                "{a}{d:02}_{b}x{c}"
+            ],
+            "widgets_values_named": {
+                "f_string": "{a}{d:02}_{b}x{c}"
+            }
+        },
+        {
+            "id": 171,
+            "type": "SpreadsheetOutputList",
+            "pos": [
+                -1700,
+                5150
+            ],
+            "size": [
+                250,
+                350
+            ],
+            "flags": {},
+            "order": 10,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "selectors",
+                    "name": "rows_and_cols",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "rows_and_cols"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "separator",
+                    "name": "separator",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "separator"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "direction",
+                    "name": "is_topdown",
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "is_topdown"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "num_headers",
+                    "name": "num_headers",
+                    "type": "INT",
+                    "widget": {
+                        "name": "num_headers"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "select_nth",
+                    "name": "select_nth",
+                    "type": "INT",
+                    "widget": {
+                        "name": "select_nth"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "string_or_base64",
+                    "name": "string_or_base64",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "string_or_base64"
+                    },
+                    "link": 288
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "values_dict",
+                    "name": "values_dict",
+                    "shape": 6,
+                    "type": "DICT",
+                    "links": null
+                },
+                {
+                    "localized_name": "values_list",
+                    "name": "values_list",
+                    "shape": 6,
+                    "type": "ARRAY",
+                    "links": null
+                },
+                {
+                    "localized_name": "item_a",
+                    "name": "item_a",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": [
+                        289
+                    ]
+                },
+                {
+                    "localized_name": "item_b",
+                    "name": "item_b",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": [
+                        290
+                    ]
+                },
+                {
+                    "localized_name": "item_c",
+                    "name": "item_c",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                },
+                {
+                    "localized_name": "item_d",
+                    "name": "item_d",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "04696cdbbd50c7b86a9822697cb5303da6d717ab",
+                "Node name for S&R": "SpreadsheetOutputList"
+            },
+            "widgets_values": [
+                "AxB",
+                "x",
+                true,
+                0,
+                -1,
+                ""
+            ],
+            "widgets_values_named": {
+                "rows_and_cols": "AxB",
+                "separator": "x",
+                "is_topdown": true,
+                "num_headers": 0,
+                "select_nth": -1,
+                "string_or_base64": ""
+            },
+            "color": "#323",
+            "bgcolor": "#535"
+        },
+        {
+            "id": 162,
+            "type": "Note",
+            "pos": [
+                -1700,
+                5000
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "Split the resolution string \"1280x736\" again into its elements"
+            ],
+            "widgets_values_named": {
+                "text": "Split the resolution string \"1280x736\" again into its elements"
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 163,
+            "type": "Note",
+            "pos": [
+                -1350,
+                5000
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "The passtrough on the output is important so it gets displayed on every iteration."
+            ],
+            "widgets_values_named": {
+                "text": "The passtrough on the output is important so it gets displayed on every iteration."
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 168,
+            "type": "SpreadsheetOutputList",
+            "pos": [
+                -2500,
+                4700
+            ],
+            "size": [
+                350,
+                450
+            ],
+            "flags": {},
+            "order": 7,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "selectors",
+                    "name": "rows_and_cols",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "rows_and_cols"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "separator",
+                    "name": "separator",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "separator"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "direction",
+                    "name": "is_topdown",
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "is_topdown"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "num_headers",
+                    "name": "num_headers",
+                    "type": "INT",
+                    "widget": {
+                        "name": "num_headers"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "select_nth",
+                    "name": "select_nth",
+                    "type": "INT",
+                    "widget": {
+                        "name": "select_nth"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "string_or_base64",
+                    "name": "string_or_base64",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "string_or_base64"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "values_dict",
+                    "name": "values_dict",
+                    "shape": 6,
+                    "type": "DICT",
+                    "links": []
+                },
+                {
+                    "localized_name": "values_list",
+                    "name": "values_list",
+                    "shape": 6,
+                    "type": "ARRAY",
+                    "links": null
+                },
+                {
+                    "localized_name": "item_a",
+                    "name": "item_a",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                },
+                {
+                    "localized_name": "item_b",
+                    "name": "item_b",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                },
+                {
+                    "localized_name": "item_c",
+                    "name": "item_c",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": []
+                },
+                {
+                    "localized_name": "item_d",
+                    "name": "item_d",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": [
+                        296,
+                        297
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "9053b9fd394489b1d451854272575abd1a1be1da",
+                "Node name for S&R": "SpreadsheetOutputList"
+            },
+            "widgets_values": [
+                "A|B|C|D",
+                "|",
+                true,
+                2,
+                -1,
+                "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |"
+            ],
+            "widgets_values_named": {
+                "rows_and_cols": "A|B|C|D",
+                "separator": "|",
+                "is_topdown": true,
+                "num_headers": 2,
+                "select_nth": -1,
+                "string_or_base64": "| megapixels | Aspect | Output (multiple=32) |\n|---|---|---|\n| 0.2 | 16:9 | 608 x 352 |\n| 0.3 | 16:9 | 736 x 416 |\n| 0.4 | 16:9 | 864 x 480 |\n| 0.5 | 16:9 | 960 x 544 |\n| 0.6 | 16:9 | 1056 x 608 |\n| 0.7 | 16:9 | 1152 x 640 |\n| 0.8 | 16:9 | 1216 x 672 |\n| 0.9 | 16:9 | 1280 x 736 |"
+            },
+            "color": "#232",
+            "bgcolor": "#353"
         }
     ],
     "links": [
-        [
-            256,
-            148,
-            3,
-            145,
-            0,
-            "STRING"
-        ],
-        [
-            259,
-            149,
-            0,
-            147,
-            0,
-            "STRING"
-        ],
-        [
-            261,
-            149,
-            1,
-            150,
-            0,
-            "STRING"
-        ],
         [
             263,
             152,
@@ -1260,14 +1266,6 @@
             92,
             0,
             "VIDEO"
-        ],
-        [
-            265,
-            148,
-            3,
-            154,
-            0,
-            "STRING"
         ],
         [
             266,
@@ -1286,14 +1284,6 @@
             "VIDEO"
         ],
         [
-            269,
-            154,
-            1,
-            149,
-            5,
-            "STRING"
-        ],
-        [
             271,
             157,
             0,
@@ -1308,30 +1298,6 @@
             152,
             4,
             "INT"
-        ],
-        [
-            276,
-            160,
-            0,
-            159,
-            0,
-            "STRING"
-        ],
-        [
-            277,
-            157,
-            2,
-            159,
-            1,
-            "STRING"
-        ],
-        [
-            278,
-            158,
-            2,
-            159,
-            2,
-            "STRING"
         ],
         [
             279,
@@ -1350,21 +1316,123 @@
             "STRING"
         ],
         [
-            281,
-            159,
+            288,
+            154,
+            1,
+            171,
+            5,
+            "STRING"
+        ],
+        [
+            289,
+            171,
+            3,
+            147,
+            0,
+            "STRING"
+        ],
+        [
+            290,
+            171,
+            4,
+            150,
+            0,
+            "STRING"
+        ],
+        [
+            291,
+            160,
+            0,
+            172,
+            0,
+            "STRING"
+        ],
+        [
+            292,
+            157,
+            2,
+            172,
+            1,
+            "STRING"
+        ],
+        [
+            293,
+            158,
+            2,
+            172,
+            2,
+            "STRING"
+        ],
+        [
+            294,
+            154,
+            2,
+            172,
+            3,
+            "INT"
+        ],
+        [
+            295,
+            172,
             0,
             92,
             1,
             "STRING"
         ],
         [
-            282,
+            296,
+            168,
+            6,
             154,
-            2,
-            159,
-            3,
-            "INT"
+            0,
+            "STRING"
+        ],
+        [
+            297,
+            168,
+            6,
+            145,
+            0,
+            "STRING"
         ]
+    ],
+    "floatingLinks": [
+        {
+            "id": 2,
+            "origin_id": 160,
+            "origin_slot": 0,
+            "target_id": -1,
+            "target_slot": -1,
+            "type": "STRING",
+            "parentId": 3
+        },
+        {
+            "id": 4,
+            "origin_id": 157,
+            "origin_slot": 2,
+            "target_id": -1,
+            "target_slot": -1,
+            "type": "STRING",
+            "parentId": 1
+        },
+        {
+            "id": 6,
+            "origin_id": 158,
+            "origin_slot": 2,
+            "target_id": -1,
+            "target_slot": -1,
+            "type": "STRING",
+            "parentId": 2
+        },
+        {
+            "id": 8,
+            "origin_id": 154,
+            "origin_slot": 2,
+            "target_id": -1,
+            "target_slot": -1,
+            "type": "INT",
+            "parentId": 11
+        }
     ],
     "groups": [],
     "definitions": {
@@ -1374,8 +1442,8 @@
                 "version": 1,
                 "state": {
                     "lastGroupId": 6,
-                    "lastNodeId": 167,
-                    "lastLinkId": 282,
+                    "lastNodeId": 172,
+                    "lastLinkId": 297,
                     "lastRerouteId": 12
                 },
                 "revision": 0,
@@ -2399,14 +2467,13 @@
                         "inputs": [
                             {
                                 "label": "a",
-                                "localized_name": "values.a",
+                                "localized_name": "a",
                                 "name": "values.a",
                                 "type": "FLOAT,INT,BOOLEAN",
                                 "link": 205
                             },
                             {
-                                "label": "b",
-                                "localized_name": "values.b",
+                                "localized_name": "b",
                                 "name": "values.b",
                                 "shape": 7,
                                 "type": "FLOAT,INT,BOOLEAN",
@@ -3307,10 +3374,10 @@
         "VHS_MetadataImage": true,
         "VHS_KeepIntermediate": true,
         "ds": {
-            "scale": 1,
+            "scale": 0.6830134553650705,
             "offset": [
-                2600,
-                -4550
+                1556.5708641194017,
+                -4560.436071905376
             ]
         },
         "reroutes": [
@@ -3321,8 +3388,11 @@
                     5614
                 ],
                 "linkIds": [
-                    277
-                ]
+                    292
+                ],
+                "floating": {
+                    "slotType": "output"
+                }
             },
             {
                 "id": 2,
@@ -3331,8 +3401,11 @@
                     5614
                 ],
                 "linkIds": [
-                    278
-                ]
+                    293
+                ],
+                "floating": {
+                    "slotType": "output"
+                }
             },
             {
                 "id": 3,
@@ -3341,8 +3414,11 @@
                     5514
                 ],
                 "linkIds": [
-                    276
-                ]
+                    291
+                ],
+                "floating": {
+                    "slotType": "output"
+                }
             },
             {
                 "id": 10,
@@ -3351,7 +3427,7 @@
                     5564
                 ],
                 "linkIds": [
-                    281
+                    295
                 ]
             },
             {
@@ -3362,8 +3438,11 @@
                     5664
                 ],
                 "linkIds": [
-                    282
-                ]
+                    294
+                ],
+                "floating": {
+                    "slotType": "output"
+                }
             },
             {
                 "id": 12,
@@ -3372,30 +3451,30 @@
                     4864
                 ],
                 "linkIds": [
-                    282
+                    294
                 ]
             }
         ],
         "linkExtensions": [
             {
-                "id": 276,
+                "id": 291,
                 "parentId": 3
             },
             {
-                "id": 277,
+                "id": 292,
                 "parentId": 1
             },
             {
-                "id": 278,
+                "id": 293,
                 "parentId": 2
             },
             {
-                "id": 281,
-                "parentId": 10
+                "id": 294,
+                "parentId": 11
             },
             {
-                "id": 282,
-                "parentId": 11
+                "id": 295,
+                "parentId": 10
             }
         ]
     },

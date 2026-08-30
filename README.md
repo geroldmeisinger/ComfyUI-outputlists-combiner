@@ -51,7 +51,6 @@ If you find this custom node useful:
 	- [JSON OutputList](#json-outputlist)
 	- [Spreadsheet OutputList](#spreadsheet-outputlist)
 	- [OutputLists Combinations](#outputlists-combinations)
-	- [Formatted String](#formatted-string)
 	- [Convert To Int Float Str](#convert-to-int-float-str)
 	- [XYZ-GridPlot](#xyz-gridplot)
 	- [Load Any File](#load-any-file)
@@ -74,18 +73,18 @@ If you find this custom node useful:
 	- [Iterate checkpoints](#iterate-checkpoints)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
-	- [Baking Values Into Workflow](#baking-values-into-workflow)
 	- [Load all images from grid](#load-all-images-from-grid)
 	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
 	- [Discriminate multiple files](#discriminate-multiple-files)
 	- [Animating LoRA strength](#animating-lora-strength)
 	- [Nested iterate loop nodes](#nested-iterate-loop-nodes)
 - [Examples for Video workflows](#examples-for-video-workflows)
-	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 	- [Iterate durations](#iterate-durations)
 	- [Iterate resolutions](#iterate-resolutions)
 	- [Iterate durations, measure time, write CSV](#iterate-durations-measure-time-write-csv)
 	- [Iterate resolutions, iterate durations, measure time, write CSV](#iterate-resolutions-iterate-durations-measure-time-write-csv)
+	- [Load multiple video files](#load-multiple-video-files)
+	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 - [For-Loops](#for-loops)
 - [Third-party custom nodes](#third-party-custom-nodes)
 	- [Data Lists](#data-lists)
@@ -251,31 +250,35 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 
 (ComfyUI workflow included)
 
-Creates multiple OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
+Creates multiple OutputLists from a spreadsheet (`.csv .tsv .md .ods .xlsx .xls`).
 You can use the `Load any File` node to load a file in base64-encoding.
 Internally uses *pandas* [read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html) and [read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html) to load spreadsheet files.
 All lists use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
+
+Comments that start with `#` character in textfiles are ignored.
 
 ### Inputs
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `rows_and_cols` | `STRING` | Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`). |
-| `header_rows` | `INT` | Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`. |
-| `header_cols` | `INT` | Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`. |
-| `select_nth` | `INT` | Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern. |
-| `separator` | `STRING` | Separator character used for .csv files |
+| `selectors` | `STRING` | A list of selectors separated by `separator` or empty list. The selectors can be names in the headers or column names (`A`, `B`, `C`...`ZZZZ`) or row indices (1...65536). Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`). |
+| `separator` | `STRING` | Separator character used for selectors and data in text files `(.csv .tsv .md)`. Supports escaping, e.g. `	` becomes tab character, `\` becomes backslash. |
+| `direction` | `BOOLEAN` | Direction of iteration is either row-based (top-down) or column-based (left-to-right) |
+| `num_headers` | `INT` | Treat the first x rows (or columns) in the spreadsheet as headers and skip them in the list. Uses the header as reference for row (or column) names. If direction=top-down searches the headers in bottom header row first (left-to-right, then iterating up). If direction=left-to-right searches the headers from rightmost header column first (top-down, then iterating left). |
+| `select_nth` | `INT` | Only select the nth entry (0-based) or ignore if -1. Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern. |
 | `string_or_base64` | `STRING` | CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64. |
 
 ### Outputs
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `list_a` | `STRING 𝌠` |  |
-| `list_b` | `STRING 𝌠` |  |
-| `list_c` | `STRING 𝌠` |  |
-| `list_d` | `STRING 𝌠` |  |
-| `count` | `INT` | Number of items in the longest list. |
+| `count` | `INT` | Number of items in the longest list row (or column). |
+| `values_dict` | `DICT 𝌠` | A dictionary using the selectors as keys and the values of the current row (or column). Useful in combination with `Formatted String` node. Always includes both the selector and column name (or row index) as alias, if there is a header. |
+| `values_list` | `ARRAY 𝌠` | A list of values of the current row (or column) based on the selectors. Useful in combination with `Formatted String` node. |
+| `item_a` | `STRING 𝌠` |  |
+| `item_b` | `STRING 𝌠` |  |
+| `item_c` | `STRING 𝌠` |  |
+| `item_d` | `STRING 𝌠` |  |
 
 ## OutputLists Combinations
 
@@ -316,38 +319,6 @@ Alternative usage: If you connect one list to a unit value it essentially works 
 | `unzip_d` | `* 𝌠` | Value of the combinations corresponding to `list_d`. |
 | `index` | `INT 𝌠` | Range of 0..count which can be used as an index. |
 | `count` | `INT` | Total number of combinations. |
-
-## Formatted String
-
-![Formatted String](/web/docs/FormattedString/FormattedString.png)
-
-(ComfyUI workflow included)
-
-Creates a string that contains placeholder variables and replaces them with their respective values.
-Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .
-* You can use `{a:.2f}` to round off a float to 2 decimals.
-* You can use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.
-* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them: `{{ }}`.
-
-Also applies *search & replace (S&R) syntax* such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`.
-Thus you can also use it as a `GET-node`.
-Note that "search & replace" takes place in Javascript context and runs before node execution.
-
-### Inputs
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `fstring` | `STRING` | Creates a string that contains placeholder variables and replaces them with their respective values.<br>Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .<br>* You can use `{a:.2f}` to round off a float to 2 decimals.<br>* You can use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.<br>* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them: `{{ }}`.<br><br>Also applies *search & replace (S&R) syntax* such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`.<br>Thus you can also use it as a `GET-node`.<br>Note that "search & replace" takes place in Javascript context and runs before node execution. |
-| `a` | `*` | (optional) value that will be as a string at the `{a}` placeholder. |
-| `b` | `*` | (optional) value that will be as a string at the `{b}` placeholder. |
-| `c` | `*` | (optional) value that will be as a string at the `{c}` placeholder. |
-| `d` | `*` | (optional) value that will be as a string at the `{d}` placeholder. |
-
-### Outputs
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `string` | `STRING` | The formatted string with all placeholders replaced with their respective values. |
 
 ## Convert To Int Float Str
 
@@ -715,31 +686,6 @@ Generating a huge grid like this also suffer from [the execution stalling proble
 
 Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
 
-## Baking Values Into Workflow
-
-Custom nodes:
-* [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
-* [Crystools](https://github.com/crystian/ComfyUI-Crystools)
-
-You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. Thus we need store the individual values in the metadata. The following workflow makes use of Crystools' `Save image with Metadata` and `Load image with Metadata` and Impact-Pack's `Select Nth Item`.
-
-![Save Index in Metadata example](/workflows/advanced/IndexInMetadata.png)
-
-(ComfyUI workflow included)
-
-Uses the `index` of the combined list to store it as a JSON. It also uses the `index` of the individual lists combined the same way as the prompts, which gives as the rows and columns, for additional information, including the prompt: `{{ "prompt": "{a}", "index": {b}, "row": {c}, "col": {d} }}`
-
-![Load Index from Metadata example](/workflows/advanced/IndexFromMetadata.png)
-
-(ComfyUI workflow included)
-
-This example reads the index from the metadata with `Load Image with Metadata` and selects the index using `Select Nth Item`.
-
-It's is not perfect because in the end you still have to manually put the image in `Load Image` and hook up the values from `Select Nth Item` to get this one exact image. If you work a lot with image grids you might want to include both of this patterns in one workflow.
-
-- **TODO** This is unsatisfactory and requires a lot of manual work
-- **TODO** If someone knows a native way include metadata please let me know (node expansion?, hidden extra pnginfo?, dynprompt?)!
-
 ## Load all images from grid
 
 Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `cell_{c:02d}-{a}-{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of `Load Any File`,
@@ -800,16 +746,6 @@ Also see
 (ComfyUI workflow included)
 
 # Examples for Video workflows
-
-## XYZ-GridPlots with Videos
-
-![XYZ-GridPlots with Videos example](/workflows/video/XYZGridPlotVideos.png)
-
-(ComfyUI workflow included)
-
-You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
-
-https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
 
 ## Iterate durations
 
@@ -918,6 +854,20 @@ resolution\video length,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0
 ![heatmap resolution x duration](/media/Resolution_Duration_Timer_CSV_heatmap.png)
 
 ![plot resolution x duration](/media/Resolution_Duration_Timer_CSV_plot.png)
+
+## Load multiple video files
+
+
+
+## XYZ-GridPlots with Videos
+
+![XYZ-GridPlots with Videos example](/workflows/video/XYZGridPlotVideos.png)
+
+(ComfyUI workflow included)
+
+You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
+
+https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
 
 # For-Loops
 

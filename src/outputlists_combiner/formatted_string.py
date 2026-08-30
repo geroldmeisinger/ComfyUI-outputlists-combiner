@@ -38,6 +38,7 @@ Note that "search & replace" takes place in Javascript context and runs before n
 			outputs=[
 				io.String.Output("string", display_name="string", is_output_list=False, tooltip="The formatted string with all placeholders replaced with their respective values."),
 			],
+			is_deprecated=True, # use Comfy Core Format Text instead
 		)
 		return ret
 
