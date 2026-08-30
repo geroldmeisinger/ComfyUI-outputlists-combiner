@@ -916,12 +916,12 @@
             "id": 268,
             "type": "ShowText|pysssss",
             "pos": [
-                -3153.1251699115214,
-                4915.664112597928
+                -3150,
+                4900
             ],
             "size": [
                 250,
-                226
+                250
             ],
             "flags": {},
             "order": 18,
@@ -1019,7 +1019,7 @@
             ],
             "size": [
                 250,
-                128
+                150
             ],
             "flags": {},
             "order": 14,
@@ -1091,7 +1091,7 @@
                 100
             ],
             "flags": {},
-            "order": 11,
+            "order": 9,
             "mode": 0,
             "inputs": [
                 {
@@ -1125,6 +1125,568 @@
             ],
             "widgets_values_named": {
                 "value": "index,duration,sampler,decode_video,decode_audio,total,unit\n"
+            }
+        },
+        {
+            "id": 196,
+            "type": "ComfyMathExpression",
+            "pos": [
+                -1600,
+                5100
+            ],
+            "size": [
+                250,
+                200
+            ],
+            "flags": {
+                "collapsed": true
+            },
+            "order": 24,
+            "mode": 0,
+            "inputs": [
+                {
+                    "label": "a",
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": 512
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": 513
+                },
+                {
+                    "localized_name": "c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": 522
+                },
+                {
+                    "localized_name": "d",
+                    "name": "values.d",
+                    "shape": 7,
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": null
+                },
+                {
+                    "localized_name": "expression",
+                    "name": "expression",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "expression"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "FLOAT",
+                    "name": "FLOAT",
+                    "type": "FLOAT",
+                    "links": []
+                },
+                {
+                    "localized_name": "INT",
+                    "name": "INT",
+                    "type": "INT",
+                    "links": [
+                        573
+                    ]
+                },
+                {
+                    "localized_name": "BOOL",
+                    "name": "BOOL",
+                    "type": "BOOLEAN",
+                    "links": null
+                }
+            ],
+            "title": "Total Time",
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.33.0",
+                "Node name for S&R": "ComfyMathExpression"
+            },
+            "widgets_values": [
+                "a + b + c"
+            ],
+            "widgets_values_named": {
+                "expression": "a + b + c"
+            }
+        },
+        {
+            "id": 202,
+            "type": "ComfyMathExpression",
+            "pos": [
+                -1600,
+                5300
+            ],
+            "size": [
+                250,
+                150
+            ],
+            "flags": {
+                "collapsed": true
+            },
+            "order": 22,
+            "mode": 0,
+            "inputs": [
+                {
+                    "label": "a",
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": 529
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": null
+                },
+                {
+                    "localized_name": "expression",
+                    "name": "expression",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "expression"
+                    },
+                    "link": null
+                },
+                {
+                    "label": "c",
+                    "localized_name": "values.c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "FLOAT,INT,BOOLEAN",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "FLOAT",
+                    "name": "FLOAT",
+                    "type": "FLOAT",
+                    "links": []
+                },
+                {
+                    "localized_name": "INT",
+                    "name": "INT",
+                    "type": "INT",
+                    "links": [
+                        574
+                    ]
+                },
+                {
+                    "localized_name": "BOOL",
+                    "name": "BOOL",
+                    "type": "BOOLEAN",
+                    "links": null
+                }
+            ],
+            "title": "Duration to Seconds",
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.33.0",
+                "Node name for S&R": "ComfyMathExpression"
+            },
+            "widgets_values": [
+                "a * 1000"
+            ],
+            "widgets_values_named": {
+                "expression": "a * 1000"
+            }
+        },
+        {
+            "id": 274,
+            "type": "Note",
+            "pos": [
+                -1300,
+                5150
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 10,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "index,duration,sampler,decode_video,decode_audio,total,unit\n"
+            ],
+            "widgets_values_named": {
+                "text": "index,duration,sampler,decode_video,decode_audio,total,unit\n"
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 271,
+            "type": "StringFormat",
+            "pos": [
+                -950,
+                5550
+            ],
+            "size": [
+                250,
+                200
+            ],
+            "flags": {},
+            "order": 23,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 559
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 560
+                },
+                {
+                    "localized_name": "c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 561
+                },
+                {
+                    "localized_name": "d",
+                    "name": "values.d",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "f_string",
+                    "name": "f_string",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "f_string"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        562
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
+            },
+            "widgets_values": [
+                "{c}{b:02}_{a:.2f}s"
+            ],
+            "widgets_values_named": {
+                "f_string": "{c}{b:02}_{a:.2f}s"
+            }
+        },
+        {
+            "id": 205,
+            "type": "Note",
+            "pos": [
+                -950,
+                4950
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 11,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "Write a line to CSV file"
+            ],
+            "widgets_values_named": {
+                "text": "Write a line to CSV file"
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 92,
+            "type": "SaveVideo",
+            "pos": [
+                -350,
+                4900
+            ],
+            "size": [
+                600,
+                150
+            ],
+            "flags": {},
+            "order": 28,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "video",
+                    "name": "video",
+                    "type": "VIDEO",
+                    "link": 542
+                },
+                {
+                    "localized_name": "filename_prefix",
+                    "name": "filename_prefix",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "filename_prefix"
+                    },
+                    "link": 541
+                },
+                {
+                    "localized_name": "format",
+                    "name": "format",
+                    "type": "COMFY_DYNAMICCOMBO_V3",
+                    "widget": {
+                        "name": "format"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "codec",
+                    "name": "format.codec",
+                    "type": "COMFY_DYNAMICCOMBO_V3",
+                    "widget": {
+                        "name": "format.codec"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "codec",
+                    "name": "codec",
+                    "shape": 7,
+                    "type": "COMFY_DYNAMICCOMBO_V3",
+                    "widget": {
+                        "name": "codec"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "video",
+                    "name": "video",
+                    "type": "VIDEO",
+                    "links": [
+                        319
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.33.0",
+                "Node name for S&R": "SaveVideo"
+            },
+            "widgets_values": [
+                "video/MiniMax_H3",
+                "auto",
+                "auto",
+                "auto"
+            ],
+            "widgets_values_named": {
+                "filename_prefix": "video/MiniMax_H3",
+                "format": "auto",
+                "format.codec": "auto",
+                "codec": "auto"
+            },
+            "color": "#432",
+            "bgcolor": "#653"
+        },
+        {
+            "id": 166,
+            "type": "Note",
+            "pos": [
+                -350,
+                4750
+            ],
+            "size": [
+                350,
+                100
+            ],
+            "flags": {},
+            "order": 12,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "title": "IMPORTANT!",
+            "properties": {},
+            "widgets_values": [
+                "THE PASSTHROUGH OF THE OUTPUT IS IMPORTANT!\n\nOtherwise you will only get the first output.\nAn output node will only be executed on every iteration if the data passes through it. "
+            ],
+            "widgets_values_named": {
+                "text": "THE PASSTHROUGH OF THE OUTPUT IS IMPORTANT!\n\nOtherwise you will only get the first output.\nAn output node will only be executed on every iteration if the data passes through it. "
+            },
+            "color": "#322",
+            "bgcolor": "#533"
+        },
+        {
+            "id": 198,
+            "type": "PrimitiveInt",
+            "pos": [
+                -4500,
+                5350
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 13,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "value",
+                    "name": "value",
+                    "type": "INT",
+                    "widget": {
+                        "name": "value"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "INT",
+                    "name": "INT",
+                    "type": "INT",
+                    "links": [
+                        556
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.33.0",
+                "Node name for S&R": "PrimitiveInt"
+            },
+            "widgets_values": [
+                0,
+                "increment"
+            ],
+            "widgets_values_named": {
+                "value": 0,
+                "fixed": "increment"
+            }
+        },
+        {
+            "id": 272,
+            "type": "StringFormat",
+            "pos": [
+                -1300,
+                4900
+            ],
+            "size": [
+                250,
+                250
+            ],
+            "flags": {},
+            "order": 25,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 570
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 571
+                },
+                {
+                    "localized_name": "c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 572
+                },
+                {
+                    "localized_name": "d",
+                    "name": "values.d",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 573
+                },
+                {
+                    "localized_name": "e",
+                    "name": "values.e",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 574
+                },
+                {
+                    "localized_name": "f",
+                    "name": "values.f",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 575
+                },
+                {
+                    "localized_name": "g",
+                    "name": "values.g",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "f_string",
+                    "name": "f_string",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "f_string"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        569
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "StringFormat"
+            },
+            "widgets_values": [
+                "{f},{e:.0f},{a},{b},{c},{d},ms\n"
+            ],
+            "widgets_values_named": {
+                "f_string": "{f},{e:.0f},{a},{b},{c},{d},ms\n"
             }
         },
         {
@@ -1320,568 +1882,6 @@
                 "lora_name": null,
                 "strength_model_1": null,
                 "value_2": null
-            }
-        },
-        {
-            "id": 196,
-            "type": "ComfyMathExpression",
-            "pos": [
-                -1600,
-                5100
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {
-                "collapsed": true
-            },
-            "order": 24,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "a",
-                    "localized_name": "a",
-                    "name": "values.a",
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": 512
-                },
-                {
-                    "localized_name": "b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": 513
-                },
-                {
-                    "localized_name": "c",
-                    "name": "values.c",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": 522
-                },
-                {
-                    "localized_name": "d",
-                    "name": "values.d",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": null
-                },
-                {
-                    "localized_name": "expression",
-                    "name": "expression",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "expression"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "FLOAT",
-                    "name": "FLOAT",
-                    "type": "FLOAT",
-                    "links": []
-                },
-                {
-                    "localized_name": "INT",
-                    "name": "INT",
-                    "type": "INT",
-                    "links": [
-                        573
-                    ]
-                },
-                {
-                    "localized_name": "BOOL",
-                    "name": "BOOL",
-                    "type": "BOOLEAN",
-                    "links": null
-                }
-            ],
-            "title": "Total Time",
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.33.0",
-                "Node name for S&R": "ComfyMathExpression"
-            },
-            "widgets_values": [
-                "a + b + c"
-            ],
-            "widgets_values_named": {
-                "expression": "a + b + c"
-            }
-        },
-        {
-            "id": 202,
-            "type": "ComfyMathExpression",
-            "pos": [
-                -1600,
-                5300
-            ],
-            "size": [
-                250,
-                150
-            ],
-            "flags": {
-                "collapsed": true
-            },
-            "order": 22,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "a",
-                    "localized_name": "a",
-                    "name": "values.a",
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": 529
-                },
-                {
-                    "localized_name": "b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": null
-                },
-                {
-                    "localized_name": "expression",
-                    "name": "expression",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "expression"
-                    },
-                    "link": null
-                },
-                {
-                    "label": "c",
-                    "localized_name": "values.c",
-                    "name": "values.c",
-                    "shape": 7,
-                    "type": "FLOAT,INT,BOOLEAN",
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "FLOAT",
-                    "name": "FLOAT",
-                    "type": "FLOAT",
-                    "links": []
-                },
-                {
-                    "localized_name": "INT",
-                    "name": "INT",
-                    "type": "INT",
-                    "links": [
-                        574
-                    ]
-                },
-                {
-                    "localized_name": "BOOL",
-                    "name": "BOOL",
-                    "type": "BOOLEAN",
-                    "links": null
-                }
-            ],
-            "title": "Duration to Seconds",
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.33.0",
-                "Node name for S&R": "ComfyMathExpression"
-            },
-            "widgets_values": [
-                "a * 1000"
-            ],
-            "widgets_values_named": {
-                "expression": "a * 1000"
-            }
-        },
-        {
-            "id": 274,
-            "type": "Note",
-            "pos": [
-                -1300,
-                5150
-            ],
-            "size": [
-                250,
-                100
-            ],
-            "flags": {},
-            "order": 12,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
-            "widgets_values": [
-                "index,duration,sampler,decode_video,decode_audio,total,unit\n"
-            ],
-            "widgets_values_named": {
-                "text": "index,duration,sampler,decode_video,decode_audio,total,unit\n"
-            },
-            "color": "#322",
-            "bgcolor": "#533"
-        },
-        {
-            "id": 271,
-            "type": "StringFormat",
-            "pos": [
-                -950,
-                5550
-            ],
-            "size": [
-                250,
-                148
-            ],
-            "flags": {},
-            "order": 23,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "a",
-                    "name": "values.a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 559
-                },
-                {
-                    "localized_name": "b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 560
-                },
-                {
-                    "localized_name": "c",
-                    "name": "values.c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 561
-                },
-                {
-                    "localized_name": "d",
-                    "name": "values.d",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "localized_name": "f_string",
-                    "name": "f_string",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "f_string"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "type": "STRING",
-                    "links": [
-                        562
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.34.0",
-                "Node name for S&R": "StringFormat"
-            },
-            "widgets_values": [
-                "{c}{b:02}_{a:.2f}s"
-            ],
-            "widgets_values_named": {
-                "f_string": "{c}{b:02}_{a:.2f}s"
-            }
-        },
-        {
-            "id": 205,
-            "type": "Note",
-            "pos": [
-                -950,
-                4950
-            ],
-            "size": [
-                250,
-                100
-            ],
-            "flags": {},
-            "order": 13,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
-            "widgets_values": [
-                "Write a line to CSV file"
-            ],
-            "widgets_values_named": {
-                "text": "Write a line to CSV file"
-            },
-            "color": "#322",
-            "bgcolor": "#533"
-        },
-        {
-            "id": 92,
-            "type": "SaveVideo",
-            "pos": [
-                -350,
-                4900
-            ],
-            "size": [
-                600,
-                445.36842105263156
-            ],
-            "flags": {},
-            "order": 28,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "video",
-                    "name": "video",
-                    "type": "VIDEO",
-                    "link": 542
-                },
-                {
-                    "localized_name": "filename_prefix",
-                    "name": "filename_prefix",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "filename_prefix"
-                    },
-                    "link": 541
-                },
-                {
-                    "localized_name": "format",
-                    "name": "format",
-                    "type": "COMFY_DYNAMICCOMBO_V3",
-                    "widget": {
-                        "name": "format"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "codec",
-                    "name": "format.codec",
-                    "type": "COMFY_DYNAMICCOMBO_V3",
-                    "widget": {
-                        "name": "format.codec"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "codec",
-                    "name": "codec",
-                    "shape": 7,
-                    "type": "COMFY_DYNAMICCOMBO_V3",
-                    "widget": {
-                        "name": "codec"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "video",
-                    "name": "video",
-                    "type": "VIDEO",
-                    "links": [
-                        319
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.33.0",
-                "Node name for S&R": "SaveVideo"
-            },
-            "widgets_values": [
-                "video/MiniMax_H3",
-                "auto",
-                "auto",
-                "auto"
-            ],
-            "widgets_values_named": {
-                "filename_prefix": "video/MiniMax_H3",
-                "format": "auto",
-                "format.codec": "auto",
-                "codec": "auto"
-            },
-            "color": "#432",
-            "bgcolor": "#653"
-        },
-        {
-            "id": 166,
-            "type": "Note",
-            "pos": [
-                -350,
-                4750
-            ],
-            "size": [
-                350,
-                100
-            ],
-            "flags": {},
-            "order": 9,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "title": "IMPORTANT!",
-            "properties": {},
-            "widgets_values": [
-                "THE PASSTHROUGH OF THE OUTPUT IS IMPORTANT!\n\nOtherwise you will only get the first output.\nAn output node will only be executed on every iteration if the data passes through it. "
-            ],
-            "widgets_values_named": {
-                "text": "THE PASSTHROUGH OF THE OUTPUT IS IMPORTANT!\n\nOtherwise you will only get the first output.\nAn output node will only be executed on every iteration if the data passes through it. "
-            },
-            "color": "#322",
-            "bgcolor": "#533"
-        },
-        {
-            "id": 198,
-            "type": "PrimitiveInt",
-            "pos": [
-                -4500,
-                5350
-            ],
-            "size": [
-                250,
-                100
-            ],
-            "flags": {},
-            "order": 10,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "value",
-                    "name": "value",
-                    "type": "INT",
-                    "widget": {
-                        "name": "value"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "INT",
-                    "name": "INT",
-                    "type": "INT",
-                    "links": [
-                        556
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.33.0",
-                "Node name for S&R": "PrimitiveInt"
-            },
-            "widgets_values": [
-                0,
-                "increment"
-            ],
-            "widgets_values_named": {
-                "value": 0,
-                "fixed": "increment"
-            }
-        },
-        {
-            "id": 272,
-            "type": "StringFormat",
-            "pos": [
-                -1300,
-                4900
-            ],
-            "size": [
-                250,
-                208
-            ],
-            "flags": {},
-            "order": 25,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "a",
-                    "name": "values.a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 570
-                },
-                {
-                    "localized_name": "f_string",
-                    "name": "f_string",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "f_string"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 571
-                },
-                {
-                    "localized_name": "c",
-                    "name": "values.c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 572
-                },
-                {
-                    "localized_name": "d",
-                    "name": "values.d",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 573
-                },
-                {
-                    "localized_name": "e",
-                    "name": "values.e",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 574
-                },
-                {
-                    "localized_name": "f",
-                    "name": "values.f",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 575
-                },
-                {
-                    "localized_name": "g",
-                    "name": "values.g",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "type": "STRING",
-                    "links": [
-                        569
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.34.0",
-                "Node name for S&R": "StringFormat"
-            },
-            "widgets_values": [
-                "{f},{e:.0f},{a},{b},{c},{d},ms\n"
-            ],
-            "widgets_values_named": {
-                "f_string": "{f},{e:.0f},{a},{b},{c},{d},ms\n"
             }
         }
     ],
@@ -2107,7 +2107,7 @@
             152,
             2,
             272,
-            2,
+            1,
             "*"
         ],
         [
@@ -2115,7 +2115,7 @@
             152,
             3,
             272,
-            3,
+            2,
             "INT"
         ],
         [
@@ -2123,7 +2123,7 @@
             196,
             1,
             272,
-            4,
+            3,
             "INT"
         ],
         [
@@ -2131,7 +2131,7 @@
             202,
             1,
             272,
-            5,
+            4,
             "INT"
         ],
         [
@@ -2139,7 +2139,7 @@
             154,
             2,
             272,
-            6,
+            5,
             "INT"
         ]
     ],
@@ -5429,10 +5429,10 @@
             }
         ],
         "ds": {
-            "scale": 0.620921323059155,
+            "scale": 0.6830134553650705,
             "offset": [
-                3251.5586500599134,
-                -4606.0571103284165
+                2648.8416203604384,
+                -4702.803423814524
             ]
         },
         "linkExtensions": [
