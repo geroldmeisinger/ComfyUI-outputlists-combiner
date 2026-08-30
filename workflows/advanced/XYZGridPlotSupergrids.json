@@ -1,8 +1,8 @@
 {
     "id": "409461d3-9236-4d34-bfc6-f50135f49c46",
     "revision": 0,
-    "last_node_id": 134,
-    "last_link_id": 247,
+    "last_node_id": 130,
+    "last_link_id": 238,
     "nodes": [
         {
             "id": 18,
@@ -16,7 +16,7 @@
                 200
             ],
             "flags": {},
-            "order": 0,
+            "order": 3,
             "mode": 0,
             "inputs": [
                 {
@@ -143,10 +143,96 @@
             "bgcolor": "#353"
         },
         {
-            "id": 32,
+            "id": 19,
+            "type": "StringOutputList",
+            "pos": [
+                -300,
+                950
+            ],
+            "size": [
+                250,
+                200
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "separator",
+                    "name": "separator",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "separator"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "values",
+                    "name": "values",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "values"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "value",
+                    "name": "value",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        23,
+                        48
+                    ]
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "inspect_combo",
+                    "name": "inspect_combo",
+                    "type": "COMBO",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "374a1fd7ce526310401ffe0e27d5d90f92060ca6",
+                "Node name for S&R": "StringOutputList",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {},
+                    "version": "7.5.1"
+                }
+            },
+            "widgets_values": [
+                "\\n",
+                "red\ngreen\nblue"
+            ],
+            "widgets_values_named": {
+                "separator": "\\n",
+                "values": "red\ngreen\nblue"
+            },
+            "color": "#232",
+            "bgcolor": "#353"
+        },
+        {
+            "id": 31,
             "type": "XyzGridPlot",
             "pos": [
-                2300,
+                1000,
                 600
             ],
             "size": [
@@ -154,7 +240,7 @@
                 200
             ],
             "flags": {},
-            "order": 11,
+            "order": 7,
             "mode": 0,
             "inputs": [
                 {
@@ -162,7 +248,128 @@
                     "localized_name": "images",
                     "name": "images",
                     "type": "IMAGE",
-                    "link": 245
+                    "link": 236
+                },
+                {
+                    "label": "row_labels",
+                    "localized_name": "row_labels",
+                    "name": "row_labels",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 45
+                },
+                {
+                    "label": "col_labels",
+                    "localized_name": "col_labels",
+                    "name": "col_labels",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 48
+                },
+                {
+                    "localized_name": "gap",
+                    "name": "gap",
+                    "type": "INT",
+                    "widget": {
+                        "name": "gap"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "font_size",
+                    "name": "font_size",
+                    "type": "FLOAT",
+                    "widget": {
+                        "name": "font_size"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "row_label_orientation",
+                    "name": "row_label_orientation",
+                    "type": "COMBO",
+                    "widget": {
+                        "name": "row_label_orientation"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "order",
+                    "name": "order",
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "order"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "output_is_list",
+                    "name": "output_is_list",
+                    "type": "BOOLEAN",
+                    "widget": {
+                        "name": "output_is_list"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "image",
+                    "name": "image",
+                    "shape": 6,
+                    "type": "IMAGE",
+                    "links": [
+                        49
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "e631b1e2593d25745fe9361052fe08fbecd4908a",
+                "Node name for S&R": "XyzGridPlot",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": [
+                0,
+                50,
+                "horizontal",
+                true,
+                true
+            ],
+            "widgets_values_named": {
+                "gap": 0,
+                "font_size": 50,
+                "row_label_orientation": "horizontal",
+                "order": true,
+                "output_is_list": true
+            },
+            "color": "#323",
+            "bgcolor": "#535"
+        },
+        {
+            "id": 32,
+            "type": "XyzGridPlot",
+            "pos": [
+                1350,
+                600
+            ],
+            "size": [
+                250,
+                200
+            ],
+            "flags": {},
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+                {
+                    "label": "images",
+                    "localized_name": "images",
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 49
                 },
                 {
                     "label": "row_labels",
@@ -259,6 +466,98 @@
                 "row_label_orientation": "horizontal",
                 "order": true,
                 "output_is_list": false
+            },
+            "color": "#323",
+            "bgcolor": "#535"
+        },
+        {
+            "id": 34,
+            "type": "FormattedString",
+            "pos": [
+                350,
+                600
+            ],
+            "size": [
+                250,
+                200
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "a",
+                    "name": "values.a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 56
+                },
+                {
+                    "localized_name": "b",
+                    "name": "values.b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 57
+                },
+                {
+                    "localized_name": "c",
+                    "name": "values.c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "dict",
+                    "name": "dict",
+                    "shape": 7,
+                    "type": "DICT",
+                    "link": null
+                },
+                {
+                    "localized_name": "list",
+                    "name": "list",
+                    "shape": 7,
+                    "type": "ARRAY",
+                    "link": null
+                },
+                {
+                    "localized_name": "fstring",
+                    "name": "fstring",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "fstring"
+                    },
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "string",
+                    "name": "string",
+                    "type": "STRING",
+                    "links": [
+                        235
+                    ]
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "17a1d4ca023650f2f278228acd809c63f9ee904e",
+                "Node name for S&R": "FormattedString",
+                "aux_id": "geroldmeisinger/ComfyUI-outputlists-combiner",
+                "ue_properties": {
+                    "widget_ue_connectable": {
+                        "fstring": true
+                    },
+                    "version": "7.5.1",
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": [
+                "a {a} with a {b} hat"
+            ],
+            "widgets_values_named": {
+                "fstring": "a {a} with a {b} hat"
             },
             "color": "#323",
             "bgcolor": "#535"
@@ -369,315 +668,160 @@
             "bgcolor": "#535"
         },
         {
-            "id": 28,
-            "type": "PreviewImage",
+            "id": 129,
+            "type": "af16988f-666d-4649-956b-36b3530af03e",
             "pos": [
-                2650,
-                450
+                650,
+                600
             ],
             "size": [
                 250,
-                700
+                300
             ],
             "flags": {},
-            "order": 12,
+            "order": 6,
             "mode": 0,
             "inputs": [
                 {
-                    "localized_name": "images",
-                    "name": "images",
-                    "type": "IMAGE",
-                    "link": 51
+                    "label": "prompt",
+                    "name": "text",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "text"
+                    },
+                    "link": 235
+                },
+                {
+                    "name": "width",
+                    "type": "INT",
+                    "widget": {
+                        "name": "width"
+                    },
+                    "link": null
+                },
+                {
+                    "name": "height",
+                    "type": "INT",
+                    "widget": {
+                        "name": "height"
+                    },
+                    "link": null
+                },
+                {
+                    "name": "seed",
+                    "type": "INT",
+                    "widget": {
+                        "name": "seed"
+                    },
+                    "link": null
+                },
+                {
+                    "name": "steps",
+                    "type": "INT",
+                    "widget": {
+                        "name": "steps"
+                    },
+                    "link": null
+                },
+                {
+                    "name": "unet_name",
+                    "type": "COMBO",
+                    "widget": {
+                        "name": "unet_name"
+                    },
+                    "link": null
+                },
+                {
+                    "name": "clip_name",
+                    "type": "COMBO",
+                    "widget": {
+                        "name": "clip_name"
+                    },
+                    "link": null
+                },
+                {
+                    "name": "vae_name",
+                    "type": "COMBO",
+                    "widget": {
+                        "name": "vae_name"
+                    },
+                    "link": null
+                },
+                {
+                    "name": "batch_size",
+                    "type": "INT",
+                    "widget": {
+                        "name": "batch_size"
+                    },
+                    "link": 238
                 }
             ],
             "outputs": [
                 {
-                    "localized_name": "images",
-                    "name": "images",
+                    "localized_name": "IMAGE",
+                    "name": "IMAGE",
                     "type": "IMAGE",
-                    "links": null
+                    "links": [
+                        236
+                    ]
                 }
             ],
             "properties": {
                 "cnr_id": "comfy-core",
-                "ver": "0.5.0",
-                "Node name for S&R": "PreviewImage",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {},
-                    "version": "7.5.2"
-                }
-            },
-            "widgets_values": [],
-            "widgets_values_named": {},
-            "color": "#432",
-            "bgcolor": "#653"
-        },
-        {
-            "id": 34,
-            "type": "FormattedString",
-            "pos": [
-                350,
-                600
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {},
-            "order": 5,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "a",
-                    "name": "values.a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 56
-                },
-                {
-                    "localized_name": "b",
-                    "name": "values.b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 57
-                },
-                {
-                    "localized_name": "c",
-                    "name": "values.c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "localized_name": "dict",
-                    "name": "dict",
-                    "shape": 7,
-                    "type": "DICT",
-                    "link": null
-                },
-                {
-                    "localized_name": "list",
-                    "name": "list",
-                    "shape": 7,
-                    "type": "ARRAY",
-                    "link": null
-                },
-                {
-                    "localized_name": "fstring",
-                    "name": "fstring",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "fstring"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "string",
-                    "name": "string",
-                    "type": "STRING",
-                    "links": [
-                        239
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "17a1d4ca023650f2f278228acd809c63f9ee904e",
-                "Node name for S&R": "FormattedString",
-                "aux_id": "geroldmeisinger/ComfyUI-outputlists-combiner",
-                "ue_properties": {
-                    "widget_ue_connectable": {
-                        "fstring": true
-                    },
-                    "version": "7.5.1",
-                    "input_ue_unconnectable": {}
-                }
+                "ver": "0.3.73",
+                "enableTabs": false,
+                "tabWidth": 65,
+                "tabXOffset": 10,
+                "hasSecondTab": false,
+                "secondTabText": "Send Back",
+                "secondTabOffset": 80,
+                "secondTabWidth": 65,
+                "proxyWidgetErrorQuarantine": [
+                    {
+                        "originalEntry": [
+                            "3",
+                            "control_after_generate"
+                        ],
+                        "reason": "missingSubgraphInput",
+                        "attemptedAtVersion": 1
+                    }
+                ],
+                "previewExposures": [
+                    {
+                        "name": "$$canvas-image-preview",
+                        "sourceNodeId": "3",
+                        "sourcePreviewName": "$$canvas-image-preview"
+                    }
+                ]
             },
             "widgets_values": [
-                "a {a} with a {b} hat"
+                "",
+                512,
+                512,
+                1234567890,
+                2,
+                "z_image_turbo_bf16.safetensors",
+                "qwen_3_4b.safetensors",
+                "ae.safetensors",
+                1
             ],
             "widgets_values_named": {
-                "fstring": "a {a} with a {b} hat"
-            },
-            "color": "#323",
-            "bgcolor": "#535"
-        },
-        {
-            "id": 133,
-            "type": "IterateEnd",
-            "pos": [
-                1650,
-                500
-            ],
-            "size": [
-                200,
-                100
-            ],
-            "flags": {},
-            "order": 9,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "flow_control",
-                    "name": "flow_control",
-                    "type": "FLOW_CONTROL",
-                    "link": 243
-                },
-                {
-                    "localized_name": "item",
-                    "name": "item",
-                    "type": "*",
-                    "link": 246
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "datalist",
-                    "name": "datalist",
-                    "shape": 6,
-                    "type": "*",
-                    "links": [
-                        244
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "abd75e98185d07688936e272594f4939d912e588",
-                "Node name for S&R": "IterateEnd"
-            },
-            "color": "#223",
-            "bgcolor": "#335"
-        },
-        {
-            "id": 31,
-            "type": "XyzGridPlot",
-            "pos": [
-                1950,
-                600
-            ],
-            "size": [
-                250,
-                200
-            ],
-            "flags": {},
-            "order": 10,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "images",
-                    "localized_name": "images",
-                    "name": "images",
-                    "type": "IMAGE",
-                    "link": 244
-                },
-                {
-                    "label": "row_labels",
-                    "localized_name": "row_labels",
-                    "name": "row_labels",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 45
-                },
-                {
-                    "label": "col_labels",
-                    "localized_name": "col_labels",
-                    "name": "col_labels",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 48
-                },
-                {
-                    "localized_name": "gap",
-                    "name": "gap",
-                    "type": "INT",
-                    "widget": {
-                        "name": "gap"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "font_size",
-                    "name": "font_size",
-                    "type": "FLOAT",
-                    "widget": {
-                        "name": "font_size"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "row_label_orientation",
-                    "name": "row_label_orientation",
-                    "type": "COMBO",
-                    "widget": {
-                        "name": "row_label_orientation"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "order",
-                    "name": "order",
-                    "type": "BOOLEAN",
-                    "widget": {
-                        "name": "order"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "output_is_list",
-                    "name": "output_is_list",
-                    "type": "BOOLEAN",
-                    "widget": {
-                        "name": "output_is_list"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "image",
-                    "name": "image",
-                    "shape": 6,
-                    "type": "IMAGE",
-                    "links": [
-                        245
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "e631b1e2593d25745fe9361052fe08fbecd4908a",
-                "Node name for S&R": "XyzGridPlot",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {}
-                }
-            },
-            "widgets_values": [
-                0,
-                50,
-                "horizontal",
-                true,
-                true
-            ],
-            "widgets_values_named": {
-                "gap": 0,
-                "font_size": 50,
-                "row_label_orientation": "horizontal",
-                "order": true,
-                "output_is_list": true
-            },
-            "color": "#323",
-            "bgcolor": "#535"
+                "text": "",
+                "width": 512,
+                "height": 512,
+                "seed": 1234567890,
+                "steps": 2,
+                "unet_name": "z_image_turbo_bf16.safetensors",
+                "clip_name": "qwen_3_4b.safetensors",
+                "vae_name": "ae.safetensors",
+                "batch_size": 1
+            }
         },
         {
             "id": 30,
             "type": "StringOutputList",
             "pos": [
-                1950,
+                1000,
                 950
             ],
             "size": [
@@ -759,354 +903,47 @@
             "bgcolor": "#353"
         },
         {
-            "id": 131,
-            "type": "IterateBegin",
+            "id": 28,
+            "type": "PreviewImage",
             "pos": [
-                650,
-                500
-            ],
-            "size": [
-                200,
-                100
-            ],
-            "flags": {},
-            "order": 6,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "datalist",
-                    "name": "datalist",
-                    "type": "*",
-                    "link": 239
-                },
-                {
-                    "localized_name": "_",
-                    "name": "_results",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "flow_control",
-                    "name": "flow_control",
-                    "type": "FLOW_CONTROL",
-                    "links": [
-                        243
-                    ]
-                },
-                {
-                    "localized_name": "item",
-                    "name": "item",
-                    "type": "*",
-                    "links": [
-                        240
-                    ]
-                },
-                {
-                    "localized_name": "index",
-                    "name": "index",
-                    "type": "INT",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "abd75e98185d07688936e272594f4939d912e588",
-                "Node name for S&R": "IterateBegin"
-            },
-            "color": "#223",
-            "bgcolor": "#335"
-        },
-        {
-            "id": 19,
-            "type": "StringOutputList",
-            "pos": [
-                -300,
-                950
+                1700,
+                450
             ],
             "size": [
                 250,
-                200
+                700
             ],
             "flags": {},
-            "order": 3,
+            "order": 9,
             "mode": 0,
             "inputs": [
                 {
-                    "localized_name": "separator",
-                    "name": "separator",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "separator"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "values",
-                    "name": "values",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "values"
-                    },
-                    "link": null
+                    "localized_name": "images",
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 51
                 }
             ],
             "outputs": [
                 {
-                    "localized_name": "value",
-                    "name": "value",
-                    "shape": 6,
-                    "type": "*",
-                    "links": [
-                        23,
-                        48
-                    ]
-                },
-                {
-                    "localized_name": "index",
-                    "name": "index",
-                    "shape": 6,
-                    "type": "INT",
-                    "links": null
-                },
-                {
-                    "localized_name": "count",
-                    "name": "count",
-                    "type": "INT",
-                    "links": null
-                },
-                {
-                    "localized_name": "inspect_combo",
-                    "name": "inspect_combo",
-                    "type": "COMBO",
+                    "localized_name": "images",
+                    "name": "images",
+                    "type": "IMAGE",
                     "links": null
                 }
             ],
             "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "374a1fd7ce526310401ffe0e27d5d90f92060ca6",
-                "Node name for S&R": "StringOutputList",
+                "cnr_id": "comfy-core",
+                "ver": "0.5.0",
+                "Node name for S&R": "PreviewImage",
                 "ue_properties": {
                     "widget_ue_connectable": {},
                     "input_ue_unconnectable": {},
-                    "version": "7.5.1"
+                    "version": "7.5.2"
                 }
             },
-            "widgets_values": [
-                "\\n",
-                "red\ngreen\nblue"
-            ],
-            "widgets_values_named": {
-                "separator": "\\n",
-                "values": "red\ngreen\nblue"
-            },
-            "color": "#232",
-            "bgcolor": "#353"
-        },
-        {
-            "id": 129,
-            "type": "af16988f-666d-4649-956b-36b3530af03e",
-            "pos": [
-                950,
-                600
-            ],
-            "size": [
-                250,
-                300
-            ],
-            "flags": {},
-            "order": 7,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "prompt",
-                    "name": "text",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "text"
-                    },
-                    "link": 240
-                },
-                {
-                    "name": "width",
-                    "type": "INT",
-                    "widget": {
-                        "name": "width"
-                    },
-                    "link": null
-                },
-                {
-                    "name": "height",
-                    "type": "INT",
-                    "widget": {
-                        "name": "height"
-                    },
-                    "link": null
-                },
-                {
-                    "name": "seed",
-                    "type": "INT",
-                    "widget": {
-                        "name": "seed"
-                    },
-                    "link": null
-                },
-                {
-                    "name": "steps",
-                    "type": "INT",
-                    "widget": {
-                        "name": "steps"
-                    },
-                    "link": null
-                },
-                {
-                    "name": "unet_name",
-                    "type": "COMBO",
-                    "widget": {
-                        "name": "unet_name"
-                    },
-                    "link": null
-                },
-                {
-                    "name": "clip_name",
-                    "type": "COMBO",
-                    "widget": {
-                        "name": "clip_name"
-                    },
-                    "link": null
-                },
-                {
-                    "name": "vae_name",
-                    "type": "COMBO",
-                    "widget": {
-                        "name": "vae_name"
-                    },
-                    "link": null
-                },
-                {
-                    "name": "batch_size",
-                    "type": "INT",
-                    "widget": {
-                        "name": "batch_size"
-                    },
-                    "link": 238
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "IMAGE",
-                    "name": "IMAGE",
-                    "type": "IMAGE",
-                    "links": [
-                        247
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.3.73",
-                "enableTabs": false,
-                "tabWidth": 65,
-                "tabXOffset": 10,
-                "hasSecondTab": false,
-                "secondTabText": "Send Back",
-                "secondTabOffset": 80,
-                "secondTabWidth": 65,
-                "proxyWidgetErrorQuarantine": [
-                    {
-                        "originalEntry": [
-                            "3",
-                            "control_after_generate"
-                        ],
-                        "reason": "missingSubgraphInput",
-                        "attemptedAtVersion": 1
-                    }
-                ],
-                "previewExposures": [
-                    {
-                        "name": "$$canvas-image-preview",
-                        "sourceNodeId": "3",
-                        "sourcePreviewName": "$$canvas-image-preview"
-                    }
-                ]
-            },
-            "widgets_values": [
-                "",
-                512,
-                512,
-                1234567890,
-                2,
-                "z_image_turbo_bf16.safetensors",
-                "qwen_3_4b.safetensors",
-                "ae.safetensors",
-                1
-            ],
-            "widgets_values_named": {
-                "text": "",
-                "width": 512,
-                "height": 512,
-                "seed": 1234567890,
-                "steps": 2,
-                "unet_name": "z_image_turbo_bf16.safetensors",
-                "clip_name": "qwen_3_4b.safetensors",
-                "vae_name": "ae.safetensors",
-                "batch_size": 1
-            }
-        },
-        {
-            "id": 134,
-            "type": "SaveImage",
-            "pos": [
-                1250,
-                600
-            ],
-            "size": [
-                300,
-                300
-            ],
-            "flags": {},
-            "order": 8,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "images",
-                    "name": "images",
-                    "type": "IMAGE",
-                    "link": 247
-                },
-                {
-                    "localized_name": "filename_prefix",
-                    "name": "filename_prefix",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "filename_prefix"
-                    },
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "images",
-                    "name": "images",
-                    "type": "IMAGE",
-                    "links": [
-                        246
-                    ]
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.34.0",
-                "Node name for S&R": "SaveImage"
-            },
-            "widgets_values": [
-                "ComfyUI"
-            ],
-            "widgets_values_named": {
-                "filename_prefix": "ComfyUI"
-            },
+            "widgets_values": [],
+            "widgets_values_named": {},
             "color": "#432",
             "bgcolor": "#653"
         }
@@ -1145,6 +982,14 @@
             "*"
         ],
         [
+            49,
+            31,
+            0,
+            32,
+            0,
+            "IMAGE"
+        ],
+        [
             50,
             30,
             0,
@@ -1177,68 +1022,28 @@
             "*"
         ],
         [
+            235,
+            34,
+            0,
+            129,
+            0,
+            "STRING"
+        ],
+        [
+            236,
+            129,
+            0,
+            31,
+            0,
+            "IMAGE"
+        ],
+        [
             238,
             130,
             0,
             129,
             8,
             "INT"
-        ],
-        [
-            239,
-            34,
-            0,
-            131,
-            0,
-            "STRING"
-        ],
-        [
-            240,
-            131,
-            1,
-            129,
-            0,
-            "STRING"
-        ],
-        [
-            243,
-            131,
-            0,
-            133,
-            0,
-            "FLOW_CONTROL"
-        ],
-        [
-            244,
-            133,
-            0,
-            31,
-            0,
-            "IMAGE"
-        ],
-        [
-            245,
-            31,
-            0,
-            32,
-            0,
-            "IMAGE"
-        ],
-        [
-            246,
-            134,
-            0,
-            133,
-            1,
-            "IMAGE"
-        ],
-        [
-            247,
-            129,
-            0,
-            134,
-            0,
-            "IMAGE"
         ]
     ],
     "groups": [],
@@ -1249,8 +1054,8 @@
                 "version": 1,
                 "state": {
                     "lastGroupId": 16,
-                    "lastNodeId": 134,
-                    "lastLinkId": 247,
+                    "lastNodeId": 130,
+                    "lastLinkId": 238,
                     "lastRerouteId": 4
                 },
                 "revision": 0,
@@ -2254,10 +2059,10 @@
     "config": {},
     "extra": {
         "ds": {
-            "scale": 0.6209213230591557,
+            "scale": 0.7513148009015779,
             "offset": [
-                487.00630941468444,
-                -81.96753398118521
+                463.5469010146828,
+                -83.3143477811827
             ]
         },
         "ue_links": [],
@@ -2266,7 +2071,7 @@
             {
                 "id": 2,
                 "pos": [
-                    1850,
+                    950,
                     964
                 ],
                 "linkIds": [
@@ -2276,8 +2081,8 @@
             {
                 "id": 3,
                 "pos": [
-                    1900,
-                    464
+                    900,
+                    454
                 ],
                 "linkIds": [
                     45
@@ -2287,7 +2092,7 @@
                 "id": 4,
                 "pos": [
                     50,
-                    914
+                    864
                 ],
                 "linkIds": [
                     238
