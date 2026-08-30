@@ -1,5 +1,7 @@
 import base64
+import hashlib
 import re
+import time
 from io import BytesIO, StringIO
 
 import pandas as pd
@@ -13,20 +15,22 @@ class SpreadsheetOutputList(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= f"""Creates multiple OutputLists from a spreadsheet (`.csv .tsv .ods .xlsx .xls`).
+			description	= f"""Creates multiple OutputLists from a spreadsheet (`.csv .tsv .md .ods .xlsx .xls`).
 You can use the `Load any File` node to load a file in base64-encoding.
 Internally uses *pandas* [read_excel](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_excel.html) and [read_csv](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html) to load spreadsheet files.
 All lists {OUTPUTLIST_NOTE}
+
+Comments that start with `#` character in textfiles are ignored.
 """,
 			node_id	= "SpreadsheetOutputList",
 			display_name	= "Spreadsheet OutputList",
 			category	= CATEGORY,
 			inputs	= [
-				io.String	.Input("rows_and_cols"	, display_name="rows_and_cols"	, default=	"A B C D"	,	tooltip="Indices and names of rows and columns in the spreadsheet. Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`)."),
-				io.Int	.Input("header_rows"	, display_name="header_rows"	, default=	1, min=	0, max=65535,	tooltip="Ignore the first x rows in the list. Only used if you specify a col in `rows_and_cols`."),
-				io.Int	.Input("header_cols"	, display_name="header_cols"	, default=	1, min=	0, max=65535,	tooltip="Ignore the first x cols in the list. Only used if you specify a row in `rows_and_cols`."),
-				io.Int	.Input("select_nth"	, display_name="select_nth"	, default=	-1, min=	-1, max=65535,	tooltip="Only select the nth entry (0-based). Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern."),
-				io.String	.Input("separator"	, display_name="separator"	, default=	","	,	tooltip="Separator character used for .csv files"),
+				io.String	.Input("rows_and_cols"	, display_name="selectors"	, default=""	, tooltip=f"A list of selectors separated by `separator` or empty list. The selectors can be names in the headers or column names (`A`, `B`, `C`...`ZZZZ`) or row indices (1...{2**16}). Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`).", placeholder="List of selectors, column names or row indices, or select all if empty."),
+				io.String	.Input("separator"	, display_name="separator"	, default=","	, tooltip="Separator character used for selectors and data in text files `(.csv .tsv .md)`. Supports escaping, e.g. `\t` becomes tab character, `\\` becomes backslash."),
+				io.Boolean	.Input("is_topdown"	, display_name="direction"	, default=True	, tooltip="Direction of iteration is either row-based (top-down) or column-based (left-to-right)", label_on="top-down", label_off="left-to-right"),
+				io.Int	.Input("num_headers"	, display_name="num_headers"	, default= 1, min= 0, max=2**16	, tooltip="Treat the first x rows (or columns) in the spreadsheet as headers and skip them in the list. Uses the header as reference for row (or column) names. If direction=top-down searches the headers in bottom header row first (left-to-right, then iterating up). If direction=left-to-right searches the headers from rightmost header column first (top-down, then iterating left)."),
+				io.Int	.Input("select_nth"	, display_name="select_nth"	, default=-1, min=-1, max=2**16	, tooltip="Only select the nth entry (0-based) or ignore if -1. Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern."),
 				io.String	.Input("string_or_base64",
 					display_name	= "string_or_base64",
 					multiline	= True,
@@ -36,98 +40,263 @@ All lists {OUTPUTLIST_NOTE}
 				)
 			],
 			outputs=[
-				io.String	.Output("list_a"	, display_name="list_a"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
-				io.String	.Output("list_b"	, display_name="list_b"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
-				io.String	.Output("list_c"	, display_name="list_c"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
-				io.String	.Output("list_d"	, display_name="list_d"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
-				io.Int	.Output("count"	, display_name="count"	, is_output_list=False	, tooltip="Number of items in the longest list."),
+				io.Int	.Output("count"	, display_name="count"	, is_output_list=False	, tooltip="Number of items in the longest list row (or column)."),
+				io.Dict	.Output("dict"	, display_name="values_dict"	, is_output_list=True	, tooltip=f"A dictionary using the selectors as keys and the values of the current row (or column). Useful in combination with `Formatted String` node. Always includes both the selector and column name (or row index) as alias, if there is a header. {OUTPUTLIST_NOTE}"),
+				io.Array	.Output("values"	, display_name="values_list"	, is_output_list=True	, tooltip=f"A list of values of the current row (or column) based on the selectors. Useful in combination with `Formatted String` node. {OUTPUTLIST_NOTE}"),
+				io.String	.Output("list_a"	, display_name="item_a"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.String	.Output("list_b"	, display_name="item_b"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.String	.Output("list_c"	, display_name="item_c"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.String	.Output("list_d"	, display_name="item_d"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
 			]
 		)
 		return ret
 
-	@staticmethod
-	def is_valid_selector(re: re.Pattern[str], sel: str):
-		ret = re.match(sel) is not None
-		return ret
+	@classmethod
+	def execute(cls, string_or_base64: str, rows_and_cols: str, separator: str, is_topdown: bool, num_headers: int, select_nth: int) -> io.NodeOutput:
+		limit = 4
+		data = string_or_base64.strip()
 
-	@staticmethod
-	def col_to_index(col: str):
-		total = 0
-		for c in col.upper():
-			total = total * 26 + (ord(c) - 64)
-		return total - 1
+		if not data:
+			return io.NodeOutput(0, [], [], [], [], [], [])
+
+		xls = load_spreadsheet(data, separator)
+
+		if not xls:
+			return io.NodeOutput(0, [], [], [], [], [], [])
+
+		sheet_names = list(xls.keys())
+		default_sheet = sheet_names[0]
+		df = xls[default_sheet]
+
+		if df.empty:
+			return io.NodeOutput(0, [], [], [], [], [], [])
+
+		num_headers = min(num_headers, len(df) if is_topdown else len(df.columns))
+		selectors = parse_selectors(rows_and_cols, separator)
+
+		if is_topdown:
+			aliases = build_column_aliases(df, num_headers)
+		else:
+			aliases = build_row_aliases(df, num_headers)
+
+		if not selectors:
+			selectors = get_default_selectors(aliases)
+
+		resolved = []
+
+		for selector in selectors:
+			index = resolve_alias(selector, aliases)
+
+			if index is None:
+				return io.NodeOutput(0, [], [], [], [], [], [])
+
+			resolved.append((selector, index))
+
+		if is_topdown:
+			data_df = df.iloc[num_headers:].reset_index(drop=True)
+			records = list(data_df.iterrows())
+		else:
+			data_df = df.iloc[:, num_headers:]
+			records = list(data_df.items())
+
+		if select_nth >= 0:
+			if select_nth >= len(records):
+				return io.NodeOutput(0, [], [], [], [], [], [])
+
+			records = [records[select_nth]]
+
+		values_dict = []
+		values_list = []
+
+		for _, record in records:
+			current_dict = {}
+			current_values = []
+
+			for selector, index in resolved:
+				if is_topdown:
+					value = normalise_value(record.iloc[index])
+					alias_names = aliases[index]
+				else:
+					value = normalise_value(record.iloc[index])
+					alias_names = aliases[index]
+
+				current_values.append(value)
+
+				for alias in alias_names:
+					current_dict[alias] = value
+
+			values_dict.append(current_dict)
+			values_list.append(current_values)
+
+		count = len(values_dict)
+		lists = []
+
+		for index in range(limit):
+			lists.append([stringify_value(values[index]) for values in values_list] if index < len(resolved) else [])
+
+		return io.NodeOutput(count, values_dict, values_list, lists[0], lists[1], lists[2], lists[3])
+
+	# @classmethod
+	# def fingerprint_inputs(cls, string_or_base64: str, rows_and_cols: str, separator: str, is_topdown: bool, num_headers: int, select_nth: int) -> str:
+	#	if not string_or_base64:
+	#		return str(time.time())  # https://github.com/comfyanonymous/ComfyUI/issues/11017
+	#
+	#	m = hashlib.sha256(string_or_base64.encode())
+	#	ret = m.digest().hex()
+	#	return ret
 
 	@classmethod
-	def execute(self, string_or_base64: str, rows_and_cols: str, header_rows: int, header_cols: int, select_nth: int, separator: str = ","):
-		limit	= 4
-		data	= string_or_base64.strip()
+	def validate_inputs(cls, string_or_base64: str, rows_and_cols: str, separator: str, is_topdown: bool, num_headers: int, select_nth: int) -> bool | str:
+		if not string_or_base64:
+			return True  # https://github.com/comfyanonymous/ComfyUI/issues/11017
 
-		# load spreadsheet with pandas
+		return True
+
+
+def column_to_index(column: str) -> int | None:
+	if not re.fullmatch(r"[A-Z]{1,4}", column):
+		return None
+
+	index = 0
+
+	for char in column:
+		index = index * 26 + ord(char) - ord("A") + 1
+
+	index -= 1
+
+	if index < 0 or index >= 2**16:
+		return None
+
+	return index
+
+
+def column_to_name(index: int) -> str:
+	name = ""
+	index += 1
+
+	while index:
+		index, remainder = divmod(index - 1, 26)
+		name = chr(ord("A") + remainder) + name
+
+	return name
+
+
+def is_column_reference(value: str) -> bool:
+	return column_to_index(value) is not None
+
+
+def is_empty_value(value) -> bool:
+	if value is None:
+		return True
+
+	try:
+		if pd.isna(value):
+			return True
+	except (TypeError, ValueError):
+		pass
+
+	return str(value).strip() == ""
+
+
+def normalise_value(value):
+	if is_empty_value(value):
+		return ""
+
+	if hasattr(value, "item"):
 		try:
-			decoded	= base64.b64decode(data, validate=True)
-			xls	= pd.read_excel(BytesIO(decoded), sheet_name=None, header=None)
-		except Exception:
-			try:
-				df	= pd.read_csv(StringIO(data), sep=separator, engine="python", header=None)
-				xls	= {None: df}
-			except Exception:
-				return ([[] for _ in range(limit)], 0)
+			return value.item()
+		except (ValueError, TypeError):
+			pass
 
-		sheet_names	= list(xls.keys())
-		default_sheet	= sheet_names[0]
+	return value
 
-		# regex to select rows and columns with optional sheet reference (e.g. A, 1, AB, $MySheet.123, $'My Sheet'.ABC)
-		re_sheet_row_and_col = re.compile(r"""
-^(?:\$
-	(?:
-		'([^']+)' |
-		"([^"]+)" |
-		([^.]+)
-	)
-	\.
-)?
-([A-Za-z]+|\d+)
-$""", re.VERBOSE)
 
-		raw = re.split(r"[^A-Za-z0-9$.'\"]+", rows_and_cols or "")
-		raw = [s for s in raw if s]
+def stringify_value(value) -> str:
+	value = normalise_value(value)
+	return "" if value == "" else str(value)
 
-		if not raw:
-			selectors = ["A", "B", "C", "D"][:limit]
-		else:
-			selectors = []
-			for sel in raw:
-				if re_sheet_row_and_col.match(sel) is not None:
-					selectors.append(sel)
-				if len(selectors) >= limit: break
 
-		results = [[] for _ in range(len(selectors))]
+def load_spreadsheet(data: str, separator: str):
+	try:
+		decoded = base64.b64decode(data, validate=True)
+		xls = pd.read_excel(BytesIO(decoded), sheet_name=None, header=None, keep_default_na=False)
 
-		# select lists from rows and columns
-		for i, sel in enumerate(selectors):
-			m = re_sheet_row_and_col.match(sel)
-			if not m: continue
+		if isinstance(xls, dict) and xls:
+			return xls
+	except Exception:
+		pass
 
-			sheet	= m.group(1) or m.group(2) or m.group(3) or default_sheet
-			key	= m.group(4)
+	try:
+		df = pd.read_csv(StringIO(data), sep=separator.encode().decode("unicode_escape"), engine="python", header=None, keep_default_na=False, comment="#")
+		return {None: df}
+	except Exception:
+		return None
 
-			if sheet not in xls: continue
 
-			df = xls[sheet]
-			if key.isdigit(): # select by row
-				row = int(key) - 1 # row selector (1-based)
-				if 0 <= row < df.shape[0]:
-					results[i] = ["" if (x != x or x is None) else str(x) for x in df.iloc[row, header_cols:].tolist()]
-			else: # select by column
-				col = SpreadsheetOutputList.col_to_index(key)
-				if 0 <= col < df.shape[1]:
-					results[i] = ["" if (x != x or x is None) else str(x) for x in df.iloc[header_rows:, col].tolist() ]
+def parse_selectors(rows_and_cols: str, separator: str) -> list[str]:
+	if not rows_and_cols.strip():
+		return []
 
-		lists = (results + [[]] * limit)[:limit] # pad unused slots with empty lists
+	ret = [selector.strip() for selector in re.split(rf"(?<!\\){re.escape(separator)}", rows_and_cols) if selector.strip()]
+	return ret
 
-		# select nth entry if specified
-		if select_nth >= 0: lists = [[lst[select_nth]] if select_nth < len(lst) else [] for lst in lists]
 
-		count = max(map(len, lists), default=0) # longest list
+def find_header(df: pd.DataFrame, index: int, num_headers: int, is_topdown: bool) -> str:
+	if is_topdown:
+		for row_index in range(min(num_headers, len(df)) - 1, -1, -1):
+			value = str(normalise_value(df.iat[row_index, index])).strip()
 
-		return (*lists, count)
+			if value and not re.fullmatch(r":?-{3,}:?", value):
+				return value
+	else:
+		for column_index in range(min(num_headers, len(df.columns)) - 1, -1, -1):
+			value = str(normalise_value(df.iat[index, column_index])).strip()
+
+			if value and not re.fullmatch(r":?-{3,}:?", value):
+				return value
+
+	return ""
+
+
+def build_column_aliases(df: pd.DataFrame, num_headers: int) -> list[list[str]]:
+	aliases = []
+
+	for column_index in range(len(df.columns)):
+		header = find_header(df, column_index, num_headers, True)
+		column_name = column_to_name(column_index)
+		current = [column_name]
+
+		if header and header != column_name:
+			current.insert(0, header)
+
+		aliases.append(current)
+
+	return aliases
+
+
+def build_row_aliases(df: pd.DataFrame, num_headers: int) -> list[list[str]]:
+	aliases = []
+
+	for row_index in range(len(df)):
+		header = find_header(df, row_index, num_headers, False)
+		row_name = str(row_index + 1)
+		current = [row_name]
+
+		if header and header != row_name:
+			current.insert(0, header)
+
+		aliases.append(current)
+
+	return aliases
+
+
+def get_default_selectors(aliases: list[list[str]]) -> list[str]:
+	return [current[0] for current in aliases]
+
+
+def resolve_alias(selector: str, aliases: list[list[str]]) -> int | None:
+	for index, current in enumerate(aliases):
+		if selector in current:
+			return index
+
+	return None
