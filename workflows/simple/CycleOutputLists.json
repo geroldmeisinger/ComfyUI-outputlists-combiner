@@ -1,89 +1,9 @@
 {
     "id": "1d29be08-4b12-4025-a113-38ea46e79c90",
     "revision": 0,
-    "last_node_id": 15,
-    "last_link_id": 14,
+    "last_node_id": 16,
+    "last_link_id": 16,
     "nodes": [
-        {
-            "id": 11,
-            "type": "StringOutputList",
-            "pos": [
-                1300,
-                950
-            ],
-            "size": [
-                210,
-                200
-            ],
-            "flags": {},
-            "order": 4,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "separator",
-                    "name": "separator",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "separator"
-                    },
-                    "link": null
-                },
-                {
-                    "localized_name": "values",
-                    "name": "values",
-                    "type": "STRING",
-                    "widget": {
-                        "name": "values"
-                    },
-                    "link": 11
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "value",
-                    "name": "value",
-                    "shape": 6,
-                    "type": "*",
-                    "links": [
-                        12
-                    ]
-                },
-                {
-                    "localized_name": "index",
-                    "name": "index",
-                    "shape": 6,
-                    "type": "INT",
-                    "links": null
-                },
-                {
-                    "localized_name": "count",
-                    "name": "count",
-                    "type": "INT",
-                    "links": null
-                },
-                {
-                    "localized_name": "inspect_combo",
-                    "name": "inspect_combo",
-                    "type": "COMBO",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "272f15abad5788583ae3bb777e4e586203b4768e",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {}
-                },
-                "Node name for S&R": "StringOutputList"
-            },
-            "widgets_values": [
-                "\\n",
-                "a\nb\nc\n"
-            ],
-            "color": "#323",
-            "bgcolor": "#535"
-        },
         {
             "id": 14,
             "type": "PrimitiveNode",
@@ -92,8 +12,8 @@
                 950
             ],
             "size": [
-                210,
-                82
+                250,
+                100
             ],
             "flags": {},
             "order": 0,
@@ -118,85 +38,12 @@
                 3,
                 "fixed"
             ],
+            "widgets_values_named": {
+                "value": 3,
+                "control_after_generate": "fixed"
+            },
             "color": "#232",
             "bgcolor": "#353"
-        },
-        {
-            "id": 15,
-            "type": "Note",
-            "pos": [
-                600,
-                1200
-            ],
-            "size": [
-                210,
-                88
-            ],
-            "flags": {},
-            "order": 1,
-            "mode": 0,
-            "inputs": [],
-            "outputs": [],
-            "properties": {},
-            "widgets_values": [
-                "You can ignore all other inputs, as we only abuse this node to emit `num` times."
-            ],
-            "color": "#432",
-            "bgcolor": "#653"
-        },
-        {
-            "id": 12,
-            "type": "ShowText|pysssss",
-            "pos": [
-                1650,
-                950
-            ],
-            "size": [
-                210,
-                520.0000000000001
-            ],
-            "flags": {},
-            "order": 5,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "text",
-                    "name": "text",
-                    "type": "STRING",
-                    "link": 12
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfyui-custom-scripts",
-                "ver": "1.2.5",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "input_ue_unconnectable": {}
-                },
-                "Node name for S&R": "ShowText|pysssss"
-            },
-            "widgets_values": [
-                "cat 0",
-                "dog 0",
-                "rat 0",
-                "cat 1",
-                "dog 1",
-                "rat 1",
-                "cat 2",
-                "dog 2",
-                "rat 2"
-            ],
-            "color": "#432",
-            "bgcolor": "#653"
         },
         {
             "id": 8,
@@ -206,8 +53,8 @@
                 950
             ],
             "size": [
-                210,
-                210
+                250,
+                250
             ],
             "flags": {},
             "order": 2,
@@ -256,7 +103,9 @@
                     "name": "int",
                     "shape": 6,
                     "type": "INT",
-                    "links": null
+                    "links": [
+                        16
+                    ]
                 },
                 {
                     "localized_name": "float",
@@ -277,9 +126,7 @@
                     "name": "index",
                     "shape": 6,
                     "type": "INT",
-                    "links": [
-                        10
-                    ]
+                    "links": []
                 },
                 {
                     "localized_name": "count",
@@ -291,11 +138,11 @@
             "properties": {
                 "cnr_id": "ComfyUI-outputlists_combiner",
                 "ver": "272f15abad5788583ae3bb777e4e586203b4768e",
+                "Node name for S&R": "NumberOutputList",
                 "ue_properties": {
                     "widget_ue_connectable": {},
                     "input_ue_unconnectable": {}
-                },
-                "Node name for S&R": "NumberOutputList"
+                }
             },
             "widgets_values": [
                 0,
@@ -303,54 +150,82 @@
                 3,
                 false
             ],
+            "widgets_values_named": {
+                "start": 0,
+                "stop": 0,
+                "num": 3,
+                "endpoint": false
+            },
             "color": "#323",
             "bgcolor": "#535"
         },
         {
-            "id": 9,
+            "id": 15,
+            "type": "Note",
+            "pos": [
+                600,
+                1250
+            ],
+            "size": [
+                250,
+                100
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [],
+            "properties": {},
+            "widgets_values": [
+                "You can ignore all other inputs, as we only abuse this node to emit `num` times."
+            ],
+            "widgets_values_named": {
+                "text": "You can ignore all other inputs, as we only abuse this node to emit `num` times."
+            },
+            "color": "#432",
+            "bgcolor": "#653"
+        },
+        {
+            "id": 16,
             "type": "FormattedString",
             "pos": [
-                950,
+                900,
                 950
             ],
             "size": [
-                210,
-                200
+                250,
+                250
             ],
             "flags": {},
             "order": 3,
             "mode": 0,
             "inputs": [
                 {
-                    "label": "a",
                     "localized_name": "a",
-                    "name": "a",
+                    "name": "values.a",
                     "shape": 7,
                     "type": "*",
-                    "link": 10
+                    "link": 16
                 },
                 {
-                    "label": "b",
                     "localized_name": "b",
-                    "name": "b",
+                    "name": "values.b",
                     "shape": 7,
                     "type": "*",
                     "link": null
                 },
                 {
-                    "label": "c",
-                    "localized_name": "c",
-                    "name": "c",
+                    "localized_name": "dict",
+                    "name": "dict",
                     "shape": 7,
-                    "type": "*",
+                    "type": "DICT",
                     "link": null
                 },
                 {
-                    "label": "d",
-                    "localized_name": "d",
-                    "name": "d",
+                    "localized_name": "list",
+                    "name": "list",
                     "shape": 7,
-                    "type": "*",
+                    "type": "ARRAY",
                     "link": null
                 },
                 {
@@ -369,13 +244,14 @@
                     "name": "string",
                     "type": "STRING",
                     "links": [
-                        11
+                        15
                     ]
                 }
             ],
             "properties": {
                 "cnr_id": "ComfyUI-outputlists_combiner",
                 "ver": "272f15abad5788583ae3bb777e4e586203b4768e",
+                "Node name for S&R": "FormattedString",
                 "ue_properties": {
                     "widget_ue_connectable": {},
                     "input_ue_unconnectable": {}
@@ -384,27 +260,163 @@
             "widgets_values": [
                 "cat {a}\ndog {a}\nrat {a}\n"
             ],
+            "widgets_values_named": {
+                "fstring": "cat {a}\ndog {a}\nrat {a}\n"
+            },
             "color": "#323",
             "bgcolor": "#535"
+        },
+        {
+            "id": 11,
+            "type": "StringOutputList",
+            "pos": [
+                1200,
+                950
+            ],
+            "size": [
+                250,
+                200
+            ],
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "separator",
+                    "name": "separator",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "separator"
+                    },
+                    "link": null
+                },
+                {
+                    "localized_name": "values",
+                    "name": "values",
+                    "type": "STRING",
+                    "widget": {
+                        "name": "values"
+                    },
+                    "link": 15
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "value",
+                    "name": "value",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        12
+                    ]
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "inspect_combo",
+                    "name": "inspect_combo",
+                    "type": "COMBO",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "272f15abad5788583ae3bb777e4e586203b4768e",
+                "Node name for S&R": "StringOutputList",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": [
+                "\\n",
+                "a\nb\nc\n"
+            ],
+            "widgets_values_named": {
+                "separator": "\\n",
+                "values": "a\nb\nc\n"
+            },
+            "color": "#323",
+            "bgcolor": "#535"
+        },
+        {
+            "id": 12,
+            "type": "ShowText|pysssss",
+            "pos": [
+                1500,
+                950
+            ],
+            "size": [
+                250,
+                550
+            ],
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "text",
+                    "name": "text",
+                    "type": "STRING",
+                    "link": 12
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfyui-custom-scripts",
+                "ver": "1.2.5",
+                "Node name for S&R": "ShowText|pysssss",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": [
+                "cat 0",
+                "dog 0",
+                "rat 0",
+                "cat 0",
+                "dog 0",
+                "rat 0",
+                "cat 0",
+                "dog 0",
+                "rat 0"
+            ],
+            "widgets_values_named": {
+                "text_0": "cat 0",
+                "text_1": "dog 0",
+                "text_2": "rat 0",
+                "text_3": "cat 0",
+                "text_4": "dog 0",
+                "text_5": "rat 0",
+                "text_6": "cat 0",
+                "text_7": "dog 0",
+                "text_8": "rat 0"
+            },
+            "color": "#432",
+            "bgcolor": "#653"
         }
     ],
     "links": [
-        [
-            10,
-            8,
-            3,
-            9,
-            0,
-            "INT"
-        ],
-        [
-            11,
-            9,
-            0,
-            11,
-            1,
-            "STRING"
-        ],
         [
             12,
             11,
@@ -420,6 +432,22 @@
             8,
             2,
             "INT"
+        ],
+        [
+            15,
+            16,
+            0,
+            11,
+            1,
+            "STRING"
+        ],
+        [
+            16,
+            8,
+            0,
+            16,
+            0,
+            "INT"
         ]
     ],
     "groups": [],
@@ -429,10 +457,10 @@
         "ue_links": [],
         "links_added_by_ue": [],
         "ds": {
-            "scale": 1,
+            "scale": 0.9090909090909091,
             "offset": [
-                -200,
-                -850
+                -104.26033057851235,
+                -577.3702479338839
             ]
         }
     },

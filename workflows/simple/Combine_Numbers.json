@@ -1,8 +1,8 @@
 {
     "id": "409461d3-9236-4d34-bfc6-f50135f49c46",
     "revision": 0,
-    "last_node_id": 62,
-    "last_link_id": 79,
+    "last_node_id": 69,
+    "last_link_id": 88,
     "nodes": [
         {
             "id": 28,
@@ -119,158 +119,6 @@
             "bgcolor": "#353"
         },
         {
-            "id": 15,
-            "type": "CombineOutputLists",
-            "pos": [
-                0,
-                250
-            ],
-            "size": [
-                250,
-                150
-            ],
-            "flags": {},
-            "order": 2,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "list_a",
-                    "name": "list_a",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 34
-                },
-                {
-                    "localized_name": "list_b",
-                    "name": "list_b",
-                    "shape": 7,
-                    "type": "*",
-                    "link": 35
-                },
-                {
-                    "localized_name": "list_c",
-                    "name": "list_c",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                },
-                {
-                    "localized_name": "list_d",
-                    "name": "list_d",
-                    "shape": 7,
-                    "type": "*",
-                    "link": null
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "unzip_a",
-                    "name": "unzip_a",
-                    "shape": 6,
-                    "type": "*",
-                    "links": [
-                        36,
-                        76
-                    ]
-                },
-                {
-                    "localized_name": "unzip_b",
-                    "name": "unzip_b",
-                    "shape": 6,
-                    "type": "*",
-                    "links": [
-                        38,
-                        77
-                    ]
-                },
-                {
-                    "localized_name": "unzip_c",
-                    "name": "unzip_c",
-                    "shape": 6,
-                    "type": "*",
-                    "links": null
-                },
-                {
-                    "localized_name": "unzip_d",
-                    "name": "unzip_d",
-                    "shape": 6,
-                    "type": "*",
-                    "links": null
-                },
-                {
-                    "localized_name": "index",
-                    "name": "index",
-                    "shape": 6,
-                    "type": "INT",
-                    "links": null
-                },
-                {
-                    "localized_name": "count",
-                    "name": "count",
-                    "type": "INT",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "ComfyUI-outputlists_combiner",
-                "ver": "17a1d4ca023650f2f278228acd809c63f9ee904e",
-                "Node name for S&R": "CombineOutputLists",
-                "aux_id": "geroldmeisinger/ComfyUI-outputlists-combiner",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "version": "7.5.1",
-                    "input_ue_unconnectable": {}
-                }
-            },
-            "color": "#323",
-            "bgcolor": "#535"
-        },
-        {
-            "id": 22,
-            "type": "PreviewImage",
-            "pos": [
-                1350,
-                -50
-            ],
-            "size": [
-                700,
-                700
-            ],
-            "flags": {},
-            "order": 6,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "images",
-                    "name": "images",
-                    "type": "IMAGE",
-                    "link": 78
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "images",
-                    "name": "images",
-                    "type": "IMAGE",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfy-core",
-                "ver": "0.3.70",
-                "Node name for S&R": "PreviewImage",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "version": "7.5.1",
-                    "input_ue_unconnectable": {}
-                }
-            },
-            "widgets_values": [],
-            "widgets_values_named": {},
-            "color": "#432",
-            "bgcolor": "#653"
-        },
-        {
             "id": 27,
             "type": "NumberOutputList",
             "pos": [
@@ -385,81 +233,15 @@
             "bgcolor": "#353"
         },
         {
-            "id": 17,
-            "type": "ShowText|pysssss",
-            "pos": [
-                300,
-                400
-            ],
-            "size": [
-                250,
-                550
-            ],
-            "flags": {},
-            "order": 3,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "text",
-                    "name": "text",
-                    "type": "STRING",
-                    "link": 36
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfyui-custom-scripts",
-                "ver": "1.2.5",
-                "Node name for S&R": "ShowText|pysssss",
-                "ue_properties": {
-                    "widget_ue_connectable": {},
-                    "version": "7.5.1",
-                    "input_ue_unconnectable": {}
-                }
-            },
-            "widgets_values": [
-                256,
-                256,
-                256,
-                512,
-                512,
-                512,
-                768,
-                768,
-                768
-            ],
-            "widgets_values_named": {
-                "text_0": 256,
-                "text_1": 256,
-                "text_2": 256,
-                "text_3": 512,
-                "text_4": 512,
-                "text_5": 512,
-                "text_6": 768,
-                "text_7": 768,
-                "text_8": 768
-            },
-            "color": "#432",
-            "bgcolor": "#653"
-        },
-        {
             "id": 62,
             "type": "be8cfb10-ab36-4bf3-8b1e-0a34b08bc876",
             "pos": [
-                900,
-                -50
+                450,
+                50
             ],
             "size": [
-                350,
-                500
+                250,
+                300
             ],
             "flags": {},
             "order": 5,
@@ -591,25 +373,70 @@
             }
         },
         {
-            "id": 29,
+            "id": 22,
+            "type": "PreviewImage",
+            "pos": [
+                850,
+                50
+            ],
+            "size": [
+                750,
+                750
+            ],
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "images",
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 78
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "images",
+                    "name": "images",
+                    "type": "IMAGE",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.3.70",
+                "Node name for S&R": "PreviewImage",
+                "ue_properties": {
+                    "widget_ue_connectable": {},
+                    "version": "7.5.1",
+                    "input_ue_unconnectable": {}
+                }
+            },
+            "widgets_values": [],
+            "widgets_values_named": {},
+            "color": "#432",
+            "bgcolor": "#653"
+        },
+        {
+            "id": 66,
             "type": "ShowText|pysssss",
             "pos": [
-                600,
-                400
+                300,
+                450
             ],
             "size": [
                 250,
                 550
             ],
             "flags": {},
-            "order": 4,
+            "order": 2,
             "mode": 0,
             "inputs": [
                 {
                     "localized_name": "text",
                     "name": "text",
                     "type": "STRING",
-                    "link": 38
+                    "link": 87
                 }
             ],
             "outputs": [
@@ -624,37 +451,200 @@
             "properties": {
                 "cnr_id": "comfyui-custom-scripts",
                 "ver": "1.2.5",
-                "Node name for S&R": "ShowText|pysssss",
+                "Node name for S&R": "ShowText|pysssss"
+            },
+            "widgets_values": [
+                "256",
+                "256",
+                "256",
+                "512",
+                "512",
+                "512",
+                "768",
+                "768",
+                "768"
+            ],
+            "widgets_values_named": {
+                "text_0": "256",
+                "text_1": "256",
+                "text_2": "256",
+                "text_3": "512",
+                "text_4": "512",
+                "text_5": "512",
+                "text_6": "768",
+                "text_7": "768",
+                "text_8": "768"
+            },
+            "color": "#432",
+            "bgcolor": "#653"
+        },
+        {
+            "id": 69,
+            "type": "ShowText|pysssss",
+            "pos": [
+                550,
+                450
+            ],
+            "size": [
+                250,
+                550
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "text",
+                    "name": "text",
+                    "type": "STRING",
+                    "link": 88
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "shape": 6,
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfyui-custom-scripts",
+                "ver": "1.2.5",
+                "Node name for S&R": "ShowText|pysssss"
+            },
+            "widgets_values": [
+                "256",
+                "512",
+                "768",
+                "256",
+                "512",
+                "768",
+                "256",
+                "512",
+                "768"
+            ],
+            "widgets_values_named": {
+                "text_0": "256",
+                "text_1": "512",
+                "text_2": "768",
+                "text_3": "256",
+                "text_4": "512",
+                "text_5": "768",
+                "text_6": "256",
+                "text_7": "512",
+                "text_8": "768"
+            },
+            "color": "#432",
+            "bgcolor": "#653"
+        },
+        {
+            "id": 15,
+            "type": "CombineOutputLists",
+            "pos": [
+                0,
+                250
+            ],
+            "size": [
+                250,
+                150
+            ],
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "list_a",
+                    "name": "list_a",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 34
+                },
+                {
+                    "localized_name": "list_b",
+                    "name": "list_b",
+                    "shape": 7,
+                    "type": "*",
+                    "link": 35
+                },
+                {
+                    "localized_name": "list_c",
+                    "name": "list_c",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                },
+                {
+                    "localized_name": "list_d",
+                    "name": "list_d",
+                    "shape": 7,
+                    "type": "*",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "unzip_a",
+                    "name": "unzip_a",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        76,
+                        87
+                    ]
+                },
+                {
+                    "localized_name": "unzip_b",
+                    "name": "unzip_b",
+                    "shape": 6,
+                    "type": "*",
+                    "links": [
+                        77,
+                        88
+                    ]
+                },
+                {
+                    "localized_name": "unzip_c",
+                    "name": "unzip_c",
+                    "shape": 6,
+                    "type": "*",
+                    "links": null
+                },
+                {
+                    "localized_name": "unzip_d",
+                    "name": "unzip_d",
+                    "shape": 6,
+                    "type": "*",
+                    "links": null
+                },
+                {
+                    "localized_name": "index",
+                    "name": "index",
+                    "shape": 6,
+                    "type": "INT",
+                    "links": null
+                },
+                {
+                    "localized_name": "count",
+                    "name": "count",
+                    "type": "INT",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "ComfyUI-outputlists_combiner",
+                "ver": "17a1d4ca023650f2f278228acd809c63f9ee904e",
+                "Node name for S&R": "CombineOutputLists",
+                "aux_id": "geroldmeisinger/ComfyUI-outputlists-combiner",
                 "ue_properties": {
                     "widget_ue_connectable": {},
                     "version": "7.5.1",
                     "input_ue_unconnectable": {}
                 }
             },
-            "widgets_values": [
-                256,
-                512,
-                768,
-                256,
-                512,
-                768,
-                256,
-                512,
-                768
-            ],
-            "widgets_values_named": {
-                "text_0": 256,
-                "text_1": 512,
-                "text_2": 768,
-                "text_3": 256,
-                "text_4": 512,
-                "text_5": 768,
-                "text_6": 256,
-                "text_7": 512,
-                "text_8": 768
-            },
-            "color": "#432",
-            "bgcolor": "#653"
+            "color": "#323",
+            "bgcolor": "#535"
         }
     ],
     "links": [
@@ -673,22 +663,6 @@
             15,
             1,
             "INT"
-        ],
-        [
-            36,
-            15,
-            0,
-            17,
-            0,
-            "STRING"
-        ],
-        [
-            38,
-            15,
-            1,
-            29,
-            0,
-            "STRING"
         ],
         [
             76,
@@ -713,6 +687,22 @@
             22,
             0,
             "IMAGE"
+        ],
+        [
+            87,
+            15,
+            0,
+            66,
+            0,
+            "STRING"
+        ],
+        [
+            88,
+            15,
+            1,
+            69,
+            0,
+            "STRING"
         ]
     ],
     "groups": [],
@@ -723,8 +713,8 @@
                 "version": 1,
                 "state": {
                     "lastGroupId": 4,
-                    "lastNodeId": 62,
-                    "lastLinkId": 79,
+                    "lastNodeId": 69,
+                    "lastLinkId": 88,
                     "lastRerouteId": 0
                 },
                 "revision": 0,
@@ -1708,10 +1698,10 @@
     "config": {},
     "extra": {
         "ds": {
-            "scale": 0.620921323059155,
+            "scale": 0.9090909090909092,
             "offset": [
-                448.7102899999989,
-                398.3927600000007
+                387.9900000000001,
+                89.17967999999996
             ]
         },
         "ue_links": [],
