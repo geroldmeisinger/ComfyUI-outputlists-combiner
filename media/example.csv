@@ -1,3 +1,6 @@
+# the first few rows may be used as a comment
+# this line is completely useless
+# headers start in the next row
 id;name;prompt;seed;steps;cfg;sampler
 0;cat;cat with a hat;123;5;1;euler
 1;dog;dog with a hat;234;10;2;dpmpp_2m

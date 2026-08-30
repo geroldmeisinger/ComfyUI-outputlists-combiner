@@ -1,15 +1,5 @@
 # Examples for Video workflows
 
-## XYZ-GridPlots with Videos
-
-![XYZ-GridPlots with Videos example](/workflows/video/XYZGridPlotVideos.png)
-
-(ComfyUI workflow included)
-
-You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
-
-https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
-
 ## Iterate durations
 
 ![Iterate durations video example](/workflows/video/Duration.png)
@@ -117,3 +107,17 @@ resolution\video length,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0
 ![heatmap resolution x duration](/media/Resolution_Duration_Timer_CSV_heatmap.png)
 
 ![plot resolution x duration](/media/Resolution_Duration_Timer_CSV_plot.png)
+
+## Load multiple video files
+
+
+
+## XYZ-GridPlots with Videos
+
+![XYZ-GridPlots with Videos example](/workflows/video/XYZGridPlotVideos.png)
+
+(ComfyUI workflow included)
+
+You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
+
+https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3

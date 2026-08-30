@@ -30,31 +30,6 @@ Generating a huge grid like this also suffer from [the execution stalling proble
 
 Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
 
-## Baking Values Into Workflow
-
-Custom nodes:
-* [Impact-Pack](https://github.com/ltdrdata/ComfyUI-Impact-Pack)
-* [Crystools](https://github.com/crystian/ComfyUI-Crystools)
-
-You may have noticed when you load the workflow from one of the grid images it contains the workflow for the whole grid, not the individual image, but sometimes you want to know which exact prompt or values resulted in this image. Thus we need store the individual values in the metadata. The following workflow makes use of Crystools' `Save image with Metadata` and `Load image with Metadata` and Impact-Pack's `Select Nth Item`.
-
-![Save Index in Metadata example](/workflows/advanced/IndexInMetadata.png)
-
-(ComfyUI workflow included)
-
-Uses the `index` of the combined list to store it as a JSON. It also uses the `index` of the individual lists combined the same way as the prompts, which gives as the rows and columns, for additional information, including the prompt: `{{ "prompt": "{a}", "index": {b}, "row": {c}, "col": {d} }}`
-
-![Load Index from Metadata example](/workflows/advanced/IndexFromMetadata.png)
-
-(ComfyUI workflow included)
-
-This example reads the index from the metadata with `Load Image with Metadata` and selects the index using `Select Nth Item`.
-
-It's is not perfect because in the end you still have to manually put the image in `Load Image` and hook up the values from `Select Nth Item` to get this one exact image. If you work a lot with image grids you might want to include both of this patterns in one workflow.
-
-- **TODO** This is unsatisfactory and requires a lot of manual work
-- **TODO** If someone knows a native way include metadata please let me know (node expansion?, hidden extra pnginfo?, dynprompt?)!
-
 ## Load all images from grid
 
 Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `cell_{c:02d}-{a}-{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of `Load Any File`,

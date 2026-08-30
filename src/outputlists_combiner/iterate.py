@@ -17,34 +17,34 @@ class IterateBegin(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= DESCRIPTION,
-			node_id	= "IterateBegin",
+			description 	= DESCRIPTION,
+			node_id     	= "IterateBegin",
 			display_name	= "Iterate Begin",
-			category	= "Utility",
-			inputs	= [
-				io.AnyType	.Input("datalist"	, display_name="datalist"	, tooltip=f"(optional) {INPUTLIST_NOTE}"),
-				io.AnyType	.Input("_results"	, display_name="_", optional=True	, tooltip="Ignore! Only used internally"),
-				#io.String	.Input("label"	, display_name="label", optional=True	, tooltip=""),
+			category    	= CATEGORY,
+			inputs      	= [
+				io.AnyType	.Input("datalist"	, display_name="datalist"            	, tooltip=f"(optional) {INPUTLIST_NOTE}"),
+				io.AnyType	.Input("_results"	, display_name="_", optional=True    	, tooltip="Ignore! Only used internally"),
+				#io.String	.Input("label"   	, display_name="label", optional=True	, tooltip=""),
 			],
 			outputs=[
 				io.FlowControl	.Output("flow_control"	, display_name="flow_control"	, tooltip=FLOWCONTROL_NOTE	),
-				io.AnyType	.Output("item"	, display_name="item"	, tooltip=""	),
-				io.Int	.Output("index"	, display_name="index"	, tooltip=""	),
+				io.AnyType    	.Output("item"        	, display_name="item"        	, tooltip=""              	),
+				io.Int        	.Output("index"       	, display_name="index"       	, tooltip=""              	),
 			],
-			is_input_list	= True,
+			is_input_list    	= True,
 			accept_all_inputs	= True,
-			hidden	= [io.Hidden.unique_id],
-			#is_output_node	= True,
+			hidden           	= [io.Hidden.unique_id],
+			#is_output_node  	= True,
 		)
 		return ret
 
 	@classmethod
 	def execute(cls, datalist: list, _results: list = [], **kwargs) -> io.NodeOutput:
-		results	= _results[0] if isinstance(_results, list) and len(_results) == 1 else []
+		results     	= _results[0] if isinstance(_results, list) and len(_results) == 1 else []
 		flow_control	= (cls.hidden.unique_id, results, len(datalist))
-		index	= len(results)
-		item	= datalist[index]
-		ret	= io.NodeOutput(flow_control, item, index)
+		index       	= len(results)
+		item        	= datalist[index]
+		ret         	= io.NodeOutput(flow_control, item, index)
 		return ret
 
 
@@ -52,22 +52,22 @@ class IterateEnd(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= DESCRIPTION,
-			node_id	= "IterateEnd",
+			description 	= DESCRIPTION,
+			node_id     	= "IterateEnd",
 			display_name	= "Iterate End",
-			category	= CATEGORY,
-			inputs	= [
-				io.FlowControl	.Input("flow_control"	, display_name="flow_control"	, tooltip="Connect it to a `IterateBegin` node"	),
-				io.AnyType	.Input("item"	, display_name="item"	, tooltip=FLOWCONTROL_NOTE	),
-				#io.String	.Input("label"	, display_name="label", optional=True	, tooltip=""),
+			category    	= CATEGORY,
+			inputs      	= [
+				io.FlowControl	.Input("flow_control"	, display_name="flow_control"        	, tooltip="Connect it to a `IterateBegin` node"	),
+				io.AnyType    	.Input("item"        	, display_name="item"                	, tooltip=FLOWCONTROL_NOTE                     	),
+				#io.String    	.Input("label"       	, display_name="label", optional=True	, tooltip=""),
 			],
 			outputs	= [
 				io.AnyType.Output("datalist", display_name="datalist", is_output_list=True, tooltip=f"{OUTPUTLIST_NOTE}"),
 			],
-			enable_expand	= True,
-			hidden	= [io.Hidden.unique_id, io.Hidden.dynprompt],
+			enable_expand 	= True,
+			hidden        	= [io.Hidden.unique_id, io.Hidden.dynprompt],
 			is_output_node	= True, # always execute this node so users don't have to put an output node afterwards
-			is_input_list	= True, # prevent data lists from executing this node multiple times
+			is_input_list 	= True, # prevent data lists from executing this node multiple times
 		)
 		return ret
 
@@ -141,7 +141,7 @@ class IterateEnd(io.ComfyNode):
 		# END
 
 		iterate_begin_new	= graph.lookup_node(iterate_begin_id)
-		iterate_end_new	= graph.lookup_node("Recurse")
+		iterate_end_new  	= graph.lookup_node("Recurse")
 		iterate_begin_new.set_input("_results", results)
 
 		ret = io.NodeOutput(iterate_end_new.out(0), expand=graph.finalize())

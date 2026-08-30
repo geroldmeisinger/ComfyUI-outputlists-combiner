@@ -43,7 +43,7 @@ Custom nodes with metadata loaders include:
 		return ret
 
 	@classmethod
-	def execute(self, objs_0: list[any] = [], objs_1: list[any] = [], ignore_jsonpaths: list[str] = []):
+	def execute(cls, objs_0: list[any] = [], objs_1: list[any] = [], ignore_jsonpaths: list[str] = []):
 		objs	= [*objs_0, *objs_1]
 		datas	= []
 		for obj in objs:

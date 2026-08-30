@@ -7,7 +7,7 @@ from .util import *
 
 class NumberOutputList(io.ComfyNode):
 	@classmethod
-	def define_schema(self) -> io.Schema:
+	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
 			description=f"""Creates an OutputList with a range of numeric values.
 Uses [numpy.linspace](https://numpy.org/doc/stable/reference/generated/numpy.linspace.html) internally, because it works more reliably with floating-point values.
@@ -33,7 +33,7 @@ If you want to define number lists with arbitrary steps instead check out the JS
 		return ret
 
 	@classmethod
-	def execute(self, start: float, stop: float, num: int, endpoint: bool):
+	def execute(cls, start: float, stop: float, num: int, endpoint: bool):
 		values	= list(numpy.linspace(start, stop, num, endpoint))
 		ints	= [int	(v) for v in values]
 		floats	= [float	(v) for v in values]

@@ -33,7 +33,7 @@ It is required to load videos based on annotated filepaths which are restricted 
 		return io.NodeOutput(InputImpl.VideoFromFile(video_path))
 
 	@classmethod
-	def fingerprint_inputs(s, file):
+	def fingerprint_inputs(cls, file):
 		if not file: return str(time.time()) # https://github.com/comfyanonymous/ComfyUI/issues/11017
 
 		video_path = folder_paths.get_annotated_filepath(file)
@@ -43,7 +43,7 @@ It is required to load videos based on annotated filepaths which are restricted 
 		return mod_time
 
 	@classmethod
-	def validate_inputs(s, file):
+	def validate_inputs(cls, file):
 		if not file: return True # https://github.com/comfyanonymous/ComfyUI/issues/11017
 
 		if not folder_paths.exists_annotated_filepath(file):

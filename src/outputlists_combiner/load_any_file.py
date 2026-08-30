@@ -32,16 +32,16 @@ Internally uses python's [glob.iglob](https://docs.python.org/3/library/glob.htm
 For security reason only the following directories are supported: `[input] [output] [temp]`.
 For performance reasons the number of files are limited to: {MAX_RESULTS}.
 """,
-			node_id     	= "LoadAnyFile",
+			node_id	= "LoadAnyFile",
 			display_name	= "Load Any File",
-			category    	= CATEGORY,
-			inputs      	= [
+			category	= CATEGORY,
+			inputs	= [
 				io.String.Input("annotated_filepath", display_name="filepath"	,  tooltip="Base directory defaults to `[input]` user-directory. Supports glob-pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory."),
 			],
 			outputs	= [
-				io.String	.Output("string"  	, display_name="content" 	, is_output_list=True, tooltip="File content for text files, base64 for binary files."),
-				io.Image 	.Output("image"   	, display_name="image"   	, is_output_list=True, tooltip="Image batch tensor."),
-				io.Mask  	.Output("mask"    	, display_name="mask"    	, is_output_list=True, tooltip="Mask batch tensor."),
+				io.String	.Output("string"	, display_name="content"	, is_output_list=True, tooltip="File content for text files, base64 for binary files."),
+				io.Image	.Output("image"	, display_name="image"	, is_output_list=True, tooltip="Image batch tensor."),
+				io.Mask	.Output("mask"	, display_name="mask"	, is_output_list=True, tooltip="Mask batch tensor."),
 				io.String	.Output("metadata"	, display_name="metadata"	, is_output_list=True, tooltip="Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`."),
 			],
 		)
@@ -54,9 +54,9 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			ret = io.NodeOutput([], [], [], [])
 			return ret
 
-		ret_strings 	= []
-		ret_images  	= []
-		ret_masks   	= []
+		ret_strings	= []
+		ret_images	= []
+		ret_masks	= []
 		ret_metadata	= []
 		file_paths = get_files(annotated_filepath, MAX_RESULTS, False)
 		for file_path in file_paths:
@@ -68,11 +68,11 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 
 			# check if textfile or binary or base64
 			try:
-				result  	= chardet.detect(raw_data[:1024]) # trunc for performance
+				result	= chardet.detect(raw_data[:1024]) # trunc for performance
 				encoding	= result["encoding"]
 				if encoding and result["confidence"] > 0.9:
 					filecontent	= raw_data.decode(encoding)
-					is_binary  	= False
+					is_binary	= False
 
 					# check if base64
 					try:
@@ -90,7 +90,7 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			metadata = "{}"
 			try:
 				with ExifToolHelper() as et:
-					exif    	= et.get_metadata(file_path)[0]
+					exif	= et.get_metadata(file_path)[0]
 					metadata	= dumps(exif, indent=4)
 			except FileNotFoundError: pass # exiftool not found in path
 
@@ -98,8 +98,8 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			pil_img = None
 			if is_binary or is_base64:
 				try:
-					image_data 	= raw_data if is_binary else filecontent
-					pil_img    	= node_helpers.pillow(Image.open, BytesIO(image_data))
+					image_data	= raw_data if is_binary else filecontent
+					pil_img	= node_helpers.pillow(Image.open, BytesIO(image_data))
 					image, mask	= load_image(pil_img)
 
 					if not metadata and pil_img:
@@ -109,23 +109,23 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 							metadata = dumps(pil_img.info, indent=4, default=to_base64)
 				except (UnidentifiedImageError, OSError, ValueError):
 					image	= torch.zeros((1,	64, 64, 3	), dtype=torch.float32, device="cpu")
-					mask 	= torch.zeros((  	64, 64   	), dtype=torch.float32, device="cpu")
+					mask	= torch.zeros((	64, 64	), dtype=torch.float32, device="cpu")
 			else:
 				image	= torch.zeros((1,	64, 64, 3	), dtype=torch.float32, device="cpu")
-				mask 	= torch.zeros((  	64, 64   	), dtype=torch.float32, device="cpu")
+				mask	= torch.zeros((	64, 64	), dtype=torch.float32, device="cpu")
 
 			# try to load preview thumbnail PNG
 			if not pil_img and "File:PreviewPNG" in metadata:
 				try:
 					with ExifTool(encoding=None, common_args=[]) as et:
 						preview_data = et.execute("-b", "-PreviewPNG", file_path, raw_bytes=True)
-						pil_img    	= node_helpers.pillow(Image.open, BytesIO(preview_data))
+						pil_img	= node_helpers.pillow(Image.open, BytesIO(preview_data))
 						image, mask	= load_image(pil_img)
 				except: pass # exiftool not found in path
 
-			ret_strings 	.append(filecontent)
-			ret_images  	.append(image)
-			ret_masks   	.append(mask)
+			ret_strings	.append(filecontent)
+			ret_images	.append(image)
+			ret_masks	.append(mask)
 			ret_metadata	.append(metadata)
 
 		ret = io.NodeOutput(ret_strings, ret_images, ret_masks, ret_metadata)
@@ -161,8 +161,8 @@ def to_base64(data: any) -> str | None:
 # from ComfyUI/nodes.py LoadImage
 def load_image(img: Image) -> tuple[torch.tensor, torch.tensor]:
 	output_images	= []
-	output_masks 	= []
-	w, h         	= None, None
+	output_masks	= []
+	w, h	= None, None
 
 	excluded_formats = ['MPO']
 
@@ -191,13 +191,13 @@ def load_image(img: Image) -> tuple[torch.tensor, torch.tensor]:
 		else:
 			mask = torch.zeros((64,64), dtype=torch.float32, device="cpu")
 		output_images	.append(image)
-		output_masks 	.append(mask.unsqueeze(0))
+		output_masks	.append(mask.unsqueeze(0))
 
 	if len(output_images) > 1 and img.format not in excluded_formats:
 		output_image	= torch.cat(output_images	, dim=0)
-		output_mask 	= torch.cat(output_masks 	, dim=0)
+		output_mask	= torch.cat(output_masks	, dim=0)
 	else:
 		output_image	= output_images[0]
-		output_mask 	= output_masks[0]
+		output_mask	= output_masks[0]
 
 	return (output_image, output_mask)

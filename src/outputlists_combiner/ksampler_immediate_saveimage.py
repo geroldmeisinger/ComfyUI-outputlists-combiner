@@ -44,7 +44,7 @@ This is useful if you want to save the intermediate images for grids immediately
 		)
 
 	@classmethod
-	def execute(self, ckpt_name, positive, negative, latent_image, seed, steps, cfg, sampler_name, scheduler, denoise, filename_prefix):
+	def execute(cls, ckpt_name, positive, negative, latent_image, seed, steps, cfg, sampler_name, scheduler, denoise, filename_prefix):
 		graph	= GraphBuilder()
 		checkpoint	= graph.node("CheckpointLoaderSimple" , ckpt_name=ckpt_name)
 		positive	= graph.node("CLIPTextEncode" , text=positive, clip=checkpoint.out(1))

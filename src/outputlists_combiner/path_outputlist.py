@@ -27,7 +27,7 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 			inputs	= [
 				io.String	.Input("glob",	display_name="glob"	, tooltip="Glob-pattern expansion `subdir/**/*.png` to list directory content. Base directory defaults to `[input]` user-directory. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory."),
 				io.Int	.Input("limit",	display_name="limit", min=-1, default=1024, step=1	, tooltip="Limit maximum number of paths to collect (-1.. unlimited)"),
-				io.Boolean	.Input("bare_strings",	display_name="bare_string", default=True	, tooltip="Decides if path-parts only contain the bare strings versus safe OS compliant definitions, e.g. if True `ext` is `png` vs `.png`, `full_dir` is `examples/animals` vs `examples/animals/`, and `parent_dir` may be a empty string vs `./`. Note that `rel_dir` always defaults to `.`")
+				io.Boolean	.Input("bare_strings",	display_name="bare_strings", default=True	, tooltip="Decides if path-parts only contain the bare strings versus safe OS compliant definitions, e.g. if True `ext` is `png` vs `.png`, `full_dir` is `examples/animals` vs `examples/animals/`, and `parent_dir` may be a empty string vs `./`. Note that `rel_dir` always defaults to `.`")
 			],
 			outputs	= [
 				io.AnyType	.Output("filepath_annotated"	, display_name="filepath+"	, is_output_list=True, tooltip="Full filepath (relative to a ComfyUI directory) including annotations, e.g. `examples/animals/myfile.png [input]`. Recommended if you want to be specific and adhere to ComfyUI's path notation."),

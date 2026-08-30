@@ -7,7 +7,7 @@ from .util import *
 
 class StringOutputList(io.ComfyNode):
 	@classmethod
-	def define_schema(self) -> io.Schema:
+	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
 			description=f"""Creates an OutputList by splitting the string in the textfield with a separator.
 `value` and `index` {OUTPUTLIST_NOTE}
@@ -34,7 +34,7 @@ class StringOutputList(io.ComfyNode):
 		return ret
 
 	@classmethod
-	def execute(self, separator: str, values: Iterable[str]) -> io.NodeOutput:
+	def execute(cls, separator: str, values: Iterable[str]) -> io.NodeOutput:
 		unescaped_separator	= separator.encode().decode('unicode_escape')
 		value	= [s.strip() for s in values.rstrip().split(unescaped_separator)]
 		count	= len(value)

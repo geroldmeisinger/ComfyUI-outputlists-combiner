@@ -31,7 +31,7 @@ Use a string `123;234;345` to quickly generate a list of numbers. Don't use comm
 		return ret
 
 	@classmethod
-	def execute(self, number: any) -> io.NodeOutput:
+	def execute(cls, number: any) -> io.NodeOutput:
 		number_str	= str(number)
 		floats	= nums_from_string.get_nums(number_str)
 		ints	= [int(f) for f in floats]

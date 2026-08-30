@@ -403,7 +403,7 @@ The number of images per cells (including batched images) have to be a multiple 
 		return ret
 
 	@classmethod
-	def execute(self, images: list[torch.tensor], row_labels: list[any] = [], col_labels: list[any] = [], row_label_orientation: str = ["horizontal"], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> io.NodeOutput:
+	def execute(cls, images: list[torch.tensor], row_labels: list[any] = [], col_labels: list[any] = [], row_label_orientation: str = ["horizontal"], gap: list[int] = [0], font_size: list[float] = [FONT_SIZE_MIN], order: list[bool] = ["outside-in"], output_is_list: list[bool] = [False]) -> io.NodeOutput:
 		outputs: list[torch.tensor] = []
 
 		# empty output
