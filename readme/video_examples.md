@@ -31,7 +31,7 @@ Custom nodes:
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools) for `Pipe to` `Pipe from`
 - [KJNodes](https://github.com/kijai/ComfyUI-KJNodes) for `Timer`
 
-Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template before the `KSampler` and `VAE Decode` nodes to measure their execution time. It's important that all dependent nodes are finished before `Timer=start` (otherwise, if we only used the noise seed for example, the timer might start before all the models are loaded). It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node (otherwise, if we made `KSampler.samples` go to `VAE Decode` independently it might run the decoder before stopping the timer). The comma-separated lines for the CSV files are built with a `Formatted String` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
+Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template before the `KSampler` and `VAE Decode` nodes to measure their execution time. It's important that all dependent nodes are finished before `Timer=start` (otherwise, if we only used the noise seed for example, the timer might start before all the models are loaded). It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node (otherwise, if we made `KSampler.samples` go to `VAE Decode` independently it might run the decoder before stopping the timer). The comma-separated lines for the CSV files are built with a `Format Text` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
 
 Example output for duration:
 
@@ -89,7 +89,7 @@ Custom nodes:
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools) for `Pipe to` `Pipe from`
 - [KJNodes](https://github.com/kijai/ComfyUI-KJNodes) for `Timer`
 
-Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template to measure the total execution time (in contrast to the individual times of the sampler and decoder as in the previous example). Note that this also includes the model loading time and will produce wrong results on the first generation. To mitigate this a zero duration run was added. It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node. The comma-separated lines for the CSV files are built with a `Formatted String` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
+Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template to measure the total execution time (in contrast to the individual times of the sampler and decoder as in the previous example). Note that this also includes the model loading time and will produce wrong results on the first generation. To mitigate this a zero duration run was added. It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node. The comma-separated lines for the CSV files are built with a `Format Text` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
 
 Example output
 ```csv
@@ -108,9 +108,30 @@ resolution\video length,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0
 
 ![plot resolution x duration](/media/Resolution_Duration_Timer_CSV_plot.png)
 
-## Load multiple video files
+## Generate multiple videos from spreadsheet
 
+https://github.com/user-attachments/assets/f6705477-ad88-4f23-9178-0ea24362948f
 
+![Generate multiple videos from spreadsheet](/workflows/video/Spreadsheet_Videos.png)
+
+(ComfyUI workflow included)
+
+Makes use of `Load Any File` node to load a `.csv` spreadsheet file and feeds the text content into a `Spreadsheet OutputList`. The spreadsheet separates the data by `separator=;` and provides each line one-by-one as a data list. Here we use `values_dict` as the data list which contains the row as a dictionary of key-value pairs. The data list is forwarded a `Iterate Begin -> workflow -> Iterate End` pattern which is required to make the intermediate results of slow workflows (t2v) available on each iteration. Each row as a dictionary is provided in a `Format Text` where we can access the column via `a[colname]` to construct the prompt which is forwarded to a standard _Text To Video MiniMax H3 template_. Another `Format Text` + `a[name]` is used to construct a readable filename for each video.
+
+`media/example_video.csv` copy to `ComfyUI/input` or copy-paste into the `Spreadsheet OutputList`:
+```csv
+name;description;voice;weapon;killed;enemy;scene;style
+Achilles;a muscular ancient Greek warrior in bronze scale armor and a crested helmet;fierce and booming ancient male voice;a long bronze spear with an ash wood shaft;friend;a tall Trojan prince in ornate silver armor and a plumed helmet holding a bloody sword;windy dusty plains outside the massive stone walls of Troy;epic ancient war blockbuster
+Beowulf;a towering muscular Norse warrior with long blonde braids and chainmail;deep and boastful Scandinavian male voice;a massive iron broadsword with a golden hilt;king;a terrifying pale female swamp monster with glowing eyes and razor-sharp claws;dark misty cavern filled with glowing treasure and muddy water;dark fantasy epic
+King Arthur;a regal middle-aged king in shining silver plate armor and a white tunic;noble and authoritative British male voice;a glowing straight sword with a jeweled crossguard;knight;a young treacherous knight in dark spiked armor with a tattered red cape;foggy muddy battlefield with broken banners and a blood-red sunset;gritty medieval historical drama
+Red Riding Hood;a young girl in a bright red wool hooded cloak and a brown peasant dress;innocent but suddenly furious young female voice;a heavy steel woodsman axe with a long wooden handle;grandmother;a large terrifying wolf walking on two legs wearing a tattered nightgown and cap;dark creepy dense forest with twisted thorny trees and heavy fog;dark gothic fairy tale horror
+Spartacus;a rugged muscular Thracian gladiator in leather straps and bronze arm guards;gritty and passionate Mediterranean male voice;a curved Thracian sica sword with a wide blade;brother;a wealthy arrogant Roman senator in a white toga with a purple border and a golden laurel;blood-stained sandy gladiator arena with towering stone seats and cheering crowds;epic historical sword-and-sandal
+Joan of Arc;a determined teenage girl in custom-fitted silver plate armor and a short black bob haircut;fervent and commanding young French female voice;a steel broadsword with a fleur-de-lis engraved blade;squire;a cruel English bishop in dark flowing ecclesiastical robes and a tall mitre hat;smoky muddy 15th-century battlefield with siege towers and burning wagons;gritty medieval war epic
+Snow White;a beautiful young woman in a yellow skirt blue bodice and a red ribbon with pale skin;soft but suddenly vengeful young female voice;a sharp iron dwarven pickaxe with a leather grip;dwarf;an old wicked queen in a black hooded cloak with a tall spiked collar holding a glowing red apple;snowy pine forest with a small rustic cottage and glowing woodland animals;dark fantasy fairy tale
+Odysseus;a weathered middle-aged Greek king with a curly beard a tattered tunic and a tired expression;cunning and weary ancient male voice;a large wooden recurve bow with a thick animal gut string;dog;a massive one-eyed cyclops with dirty matted hair holding a giant wooden club;cavernous dark limestone cave filled with giant sheep and a massive boulder door;ancient mythological adventure
+Ragnar Lothbrok;a charismatic Viking jarl with long braided blonde hair blue face paint and a fur mantle;intense and raspy Scandinavian male voice;a broad iron Danish axe with a long wooden haft;shieldmaiden;a cruel Northumbrian king in a golden tunic and a heavy iron crown holding a venomous snake;muddy snowy Viking village with longhouses and burning ships;gritty Viking historical drama
+Robin Hood;a cheerful outlaw in Lincoln green tights a brown tunic and a feathered cap;witty and charismatic British male voice;a tall yew longbow with a linen string;peasant;a corrupt wealthy sheriff in a heavy velvet robe a fur collar and a gold chain;lush green Sherwood forest with massive ancient oak trees and dappled sunlight;classic swashbuckling adventure
+```
 
 ## XYZ-GridPlots with Videos
 

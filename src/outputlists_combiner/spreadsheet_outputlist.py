@@ -5,6 +5,7 @@ import time
 from io import BytesIO, StringIO
 
 import pandas as pd
+
 from comfy_api.latest import io
 
 from .util import *
@@ -21,31 +22,31 @@ All lists {OUTPUTLIST_NOTE}
 
 Comments that start with `#` character in textfiles are ignored.
 """,
-			node_id     	= "SpreadsheetOutputList",
+			node_id	= "SpreadsheetOutputList",
 			display_name	= "Spreadsheet OutputList",
-			category    	= CATEGORY,
-			inputs      	= [
-				io.String 	.Input("rows_and_cols"	, display_name="selectors"  	, default=""                   	, tooltip=f"A list of selectors separated by `separator` or empty list. The selectors can be names in the headers or column names (`A`, `B`, `C`...`ZZZZ`) or row indices (1...{2**16}). Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`).", placeholder="List of selectors, column names or row indices, or select all if empty."),
-				io.String 	.Input("separator"    	, display_name="separator"  	, default=","                  	, tooltip="Separator character used for selectors and data in text files `(.csv .tsv .md)`. Supports escaping, e.g. `\t` becomes tab character, `\\` becomes backslash."),
-				io.Boolean	.Input("is_topdown"   	, display_name="direction"  	, default=True                 	, tooltip="Direction of iteration is either row-based (top-down) or column-based (left-to-right)", label_on="top-down", label_off="left-to-right"),
-				io.Int    	.Input("num_headers"  	, display_name="num_headers"	, default= 1, min= 0, max=2**16	, tooltip="Treat the first x rows (or columns) in the spreadsheet as headers and skip them in the list. Uses the header as reference for row (or column) names. If direction=top-down searches the headers in bottom header row first (left-to-right, then iterating up). If direction=left-to-right searches the headers from rightmost header column first (top-down, then iterating left)."),
-				io.Int    	.Input("select_nth"   	, display_name="select_nth" 	, default=-1, min=-1, max=2**16	, tooltip="Only select the nth entry (0-based) or ignore if -1. Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern."),
-				io.String 	.Input("string_or_base64",
+			category	= CATEGORY,
+			inputs	= [
+				io.String	.Input("rows_and_cols"	, display_name="selectors"	, default=""	, tooltip=f"A list of selectors separated by `separator` or empty list. The selectors can be names in the headers or column names (`A`, `B`, `C`...`ZZZZ`) or row indices (1...{2**16}). Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`).", placeholder="List of selectors, column names or row indices, or select all if empty."),
+				io.String	.Input("separator"	, display_name="separator"	, default=","	, tooltip="Separator character used for selectors and data in text files `(.csv .tsv .md)`. Supports escaping, e.g. `\t` becomes tab character, `\\` becomes backslash."),
+				io.Boolean	.Input("is_topdown"	, display_name="direction"	, default=True	, tooltip="Direction of iteration is either row-based (top-down) or column-based (left-to-right)", label_on="top-down", label_off="left-to-right"),
+				io.Int	.Input("num_headers"	, display_name="num_headers"	, default= 1, min= 0, max=2**16	, tooltip="Treat the first x rows (or columns) in the spreadsheet as headers and skip them in the list. Uses the header as reference for row (or column) names. If direction=top-down searches the headers in bottom header row first (left-to-right, then iterating up). If direction=left-to-right searches the headers from rightmost header column first (top-down, then iterating left)."),
+				io.Int	.Input("select_nth"	, display_name="select_nth"	, default=-1, min=-1, max=2**16	, tooltip="Only select the nth entry (0-based) or ignore if -1. Useful in combination with the `PrimitiveInt+control_after_generate=increment` pattern."),
+				io.String	.Input("string_or_base64",
 					display_name	= "string_or_base64",
-					multiline   	= True,
-					default     	= "",
-					placeholder 	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
-					tooltip     	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
+					multiline	= True,
+					default	= "",
+					placeholder	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
+					tooltip	= "CSV/TSV string or spreadsheet file in base64 (for `.ods .xlsx .xls`). Use `Load Any File` node to load a file as base64.",
 				)
 			],
 			outputs=[
-				io.Int   	.Output("count" 	, display_name="count"      	, is_output_list=False	, tooltip="Number of items in the longest list row (or column)."),
-				io.Dict  	.Output("dict"  	, display_name="values_dict"	, is_output_list=True 	, tooltip=f"A dictionary using the selectors as keys and the values of the current row (or column). Useful in combination with `Formatted String` node. Always includes both the selector and column name (or row index) as alias, if there is a header. {OUTPUTLIST_NOTE}"),
-				io.Array 	.Output("values"	, display_name="values_list"	, is_output_list=True 	, tooltip=f"A list of values of the current row (or column) based on the selectors. Useful in combination with `Formatted String` node. {OUTPUTLIST_NOTE}"),
-				io.String	.Output("list_a"	, display_name="item_a"     	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
-				io.String	.Output("list_b"	, display_name="item_b"     	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
-				io.String	.Output("list_c"	, display_name="item_c"     	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
-				io.String	.Output("list_d"	, display_name="item_d"     	, is_output_list=True 	, tooltip=OUTPUTLIST_NOTE),
+				io.Int	.Output("count"	, display_name="count"	, is_output_list=False	, tooltip="Number of items in the longest list row (or column)."),
+				io.Dict	.Output("dict"	, display_name="values_dict"	, is_output_list=True	, tooltip=f"A dictionary using the selectors as keys and the values of the current row (or column). Useful in combination with `Format Text` node. Always includes both the selector and column name (or row index) as alias, if there is a header. {OUTPUTLIST_NOTE}"),
+				io.Array	.Output("values"	, display_name="values_list"	, is_output_list=True	, tooltip=f"A list of values of the current row (or column) based on the selectors. Useful in combination with `Format Text` node. {OUTPUTLIST_NOTE}"),
+				io.String	.Output("list_a"	, display_name="item_a"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.String	.Output("list_b"	, display_name="item_b"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.String	.Output("list_c"	, display_name="item_c"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
+				io.String	.Output("list_d"	, display_name="item_d"	, is_output_list=True	, tooltip=OUTPUTLIST_NOTE),
 			]
 		)
 		return ret
