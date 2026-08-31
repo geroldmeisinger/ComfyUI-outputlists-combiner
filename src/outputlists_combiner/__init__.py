@@ -11,4 +11,5 @@ from .path_outputlist import PathOutputList
 from .spreadsheet_outputlist import SpreadsheetOutputList
 from .string_outputlist import StringOutputList
 from .workflow_discriminator import WorkflowDiscriminator
+from .wormhole import WormholeGet, WormholeSet
 from .xyzgridplot import XyzGridPlot
