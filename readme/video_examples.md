@@ -112,6 +112,8 @@ resolution\video length,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0
 
 https://github.com/user-attachments/assets/f6705477-ad88-4f23-9178-0ea24362948f
 
+Accompanying [reddit discussion](https://www.reddit.com/r/StableDiffusion/s/pYj9KWc8MT)
+
 ![Generate multiple videos from spreadsheet](/workflows/video/Spreadsheet_Videos.png)
 
 (ComfyUI workflow included)

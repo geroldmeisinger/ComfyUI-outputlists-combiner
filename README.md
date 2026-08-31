@@ -23,7 +23,7 @@
 - **[List combinations](#outputlists-combinations)** with native support for [LoRA strength](#compare-lora-model-and-lora-strength), [image size-variants](#combine-numbers), [prompt combinations](#combine-prompts)...
 - **[XYZ-GridPlot](#xyz-gridplot-simple)** perfectly integrates with ComfyUI's paradigm. No weird samplers! No node black magic!
 - **[Inspect combo](#combine-samplers-and-schedulers)** to iterate lists of [LoRAs](#compare-lora-model-and-lora-strength), [samplers/schedulers](#combine-samplers-and-schedulers), [checkpoints](#iterate-checkpoints)...
-- **[Iterator](#iterate-loop-nodes)** to gracefully handle multi asset generaiton...
+- **[Iterator](#iterate-loop-nodes)** to gracefully handle multi asset generation...
 
 https://github.com/user-attachments/assets/766e5802-f382-48d1-b113-9a1ebd7398fd
 
@@ -127,6 +127,7 @@ Newer Skia versions requires `libEGL.so` to be present on Linux hosts, see [offi
 
 # Changelog
 
+- 0.0.14 restructed Spreadsheet OutputList, deprecated Formatted String in favor of Comfy Core Format Text
 - 0.0.13 fixed nested Iterate loop nodes
 - 0.0.12 added Iterate loop nodes, added separator field in SpreadsheetOutputList
 - 0.0.11 fixed understaffed XYZGridPlot, fixed node documentation language codes
@@ -860,6 +861,8 @@ resolution\video length,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0
 ## Generate multiple videos from spreadsheet
 
 https://github.com/user-attachments/assets/f6705477-ad88-4f23-9178-0ea24362948f
+
+Accompanying [reddit discussion](https://www.reddit.com/r/StableDiffusion/s/pYj9KWc8MT)
 
 ![Generate multiple videos from spreadsheet](/workflows/video/Spreadsheet_Videos.png)
 
