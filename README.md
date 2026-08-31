@@ -23,9 +23,11 @@
 - **[List combinations](#outputlists-combinations)** with native support for [LoRA strength](#compare-lora-model-and-lora-strength), [image size-variants](#combine-numbers), [prompt combinations](#combine-prompts)...
 - **[XYZ-GridPlot](#xyz-gridplot-simple)** perfectly integrates with ComfyUI's paradigm. No weird samplers! No node black magic!
 - **[Inspect combo](#combine-samplers-and-schedulers)** to iterate lists of [LoRAs](#compare-lora-model-and-lora-strength), [samplers/schedulers](#combine-samplers-and-schedulers), [checkpoints](#iterate-checkpoints)...
-- **[Formatted strings](#formatted-string)** for flexible and beautiful [filenames](#combine-rowcolumn-for-filename), [labels](#animating-lora-strength), [additional metadata](#workflow-discriminator)...
+- **[Iterator](#iterate-loop-nodes)** to gracefully handle multi asset generaiton...
 
 https://github.com/user-attachments/assets/766e5802-f382-48d1-b113-9a1ebd7398fd
+
+https://github.com/user-attachments/assets/f6705477-ad88-4f23-9178-0ea24362948f
 
 The original repo is located at https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 
@@ -83,7 +85,7 @@ If you find this custom node useful:
 	- [Iterate resolutions](#iterate-resolutions)
 	- [Iterate durations, measure time, write CSV](#iterate-durations-measure-time-write-csv)
 	- [Iterate resolutions, iterate durations, measure time, write CSV](#iterate-resolutions-iterate-durations-measure-time-write-csv)
-	- [Load multiple video files](#load-multiple-video-files)
+	- [Generate multiple videos from spreadsheet](#generate-multiple-videos-from-spreadsheet)
 	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 - [For-Loops](#for-loops)
 - [Third-party custom nodes](#third-party-custom-nodes)
@@ -273,8 +275,8 @@ Comments that start with `#` character in textfiles are ignored.
 | Name | Type | Description |
 | --- | --- | --- |
 | `count` | `INT` | Number of items in the longest list row (or column). |
-| `values_dict` | `DICT 𝌠` | A dictionary using the selectors as keys and the values of the current row (or column). Useful in combination with `Formatted String` node. Always includes both the selector and column name (or row index) as alias, if there is a header. |
-| `values_list` | `ARRAY 𝌠` | A list of values of the current row (or column) based on the selectors. Useful in combination with `Formatted String` node. |
+| `values_dict` | `DICT 𝌠` | A dictionary using the selectors as keys and the values of the current row (or column). Useful in combination with `Format Text` node. Always includes both the selector and column name (or row index) as alias, if there is a header. |
+| `values_list` | `ARRAY 𝌠` | A list of values of the current row (or column) based on the selectors. Useful in combination with `Format Text` node. |
 | `item_a` | `STRING 𝌠` |  |
 | `item_b` | `STRING 𝌠` |  |
 | `item_c` | `STRING 𝌠` |  |
@@ -540,7 +542,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 
 (ComfyUI workflow included)
 
-Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Formatted String`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue] = 3 x 3 = 9`)
+Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Format Text`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue] = 3 x 3 = 9`)
 
 To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as it outputs a new line for each emitted item.
 
@@ -570,7 +572,7 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 
 (ComfyUI workflow included)
 
-Makes use of the `index` combined the same way as the prompts, which gives as the rows and columns. `Formatted String` produces the filename prefix `img_{c:02d}_row_{ad}_col_{b}`.
+Makes use of the `index` combined the same way as the prompts, which gives as the rows and columns. `Format Text` produces the filename prefix `img_{c:02d}_row_{ad}_col_{b}`.
 
 ## Compare LoRA-model and LoRA-strength
 
@@ -585,7 +587,7 @@ Custom LoRAs:
 * [animeoutlineV4_16.safetensors](https://civitai.com/models/16014)
 * [blindbox_v1_mix.safetensors](https://civitai.com/models/25995)
 
-Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
+Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Format Text`.
 
 **If you don't need separate trigger words, just delete the second combination altogether, it's much simpler this way!**
 
@@ -597,7 +599,7 @@ It might be a little confusing why we need two combinations here, but it is impo
 
 (ComfyUI workflow included)
 
-Uses `String OutputLists + OutputLists Combinations + Formatted String` to generate multiple prompts for an image grid. The values of the `String OutputLists` are directly used as labels for the `XYZ-GridPlot` and they also define how the grid should be shaped.
+Uses `String OutputLists + OutputLists Combinations + Format Text` to generate multiple prompts for an image grid. The values of the `String OutputLists` are directly used as labels for the `XYZ-GridPlot` and they also define how the grid should be shaped.
 
 Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` you get a image grid with the batch as sub-grids. If you also set `output_is_list=True` the sub-images will not be arranged together but you will get 4 separate images instead.
 
@@ -690,7 +692,7 @@ Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `fl
 
 Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `cell_{c:02d}-{a}-{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of `Load Any File`,
 
-![Load Image with Formatted String](/workflows/advanced/LoadWithFormattedString.png)
+![Load Image with Format Text](/workflows/advanced/LoadWithFormattedString.png)
 
 (ComfyUI workflow included)
 
@@ -731,7 +733,7 @@ Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
 (ComfyUI workflow included)
 
-Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Formatted String` with `{0:0.2f]` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
+Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Format Text` with `{0:0.2f}` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
 
 https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
 
@@ -778,7 +780,7 @@ Custom nodes:
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools) for `Pipe to` `Pipe from`
 - [KJNodes](https://github.com/kijai/ComfyUI-KJNodes) for `Timer`
 
-Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template before the `KSampler` and `VAE Decode` nodes to measure their execution time. It's important that all dependent nodes are finished before `Timer=start` (otherwise, if we only used the noise seed for example, the timer might start before all the models are loaded). It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node (otherwise, if we made `KSampler.samples` go to `VAE Decode` independently it might run the decoder before stopping the timer). The comma-separated lines for the CSV files are built with a `Formatted String` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
+Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template before the `KSampler` and `VAE Decode` nodes to measure their execution time. It's important that all dependent nodes are finished before `Timer=start` (otherwise, if we only used the noise seed for example, the timer might start before all the models are loaded). It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node (otherwise, if we made `KSampler.samples` go to `VAE Decode` independently it might run the decoder before stopping the timer). The comma-separated lines for the CSV files are built with a `Format Text` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
 
 Example output for duration:
 
@@ -836,7 +838,7 @@ Custom nodes:
 - [Crystools](https://github.com/crystian/ComfyUI-Crystools) for `Pipe to` `Pipe from`
 - [KJNodes](https://github.com/kijai/ComfyUI-KJNodes) for `Timer`
 
-Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template to measure the total execution time (in contrast to the individual times of the sampler and decoder as in the previous example). Note that this also includes the model loading time and will produce wrong results on the first generation. To mitigate this a zero duration run was added. It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node. The comma-separated lines for the CSV files are built with a `Formatted String` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
+Make sure you understand the simpler examples above, how `Iterate Begin/End` works and also how execution order works in ComfyUI (see [explanation from rgthree](https://github.com/rgthree/rgthree-comfy#a-powerful-combination-using-context-context-switch--fast-muter)). In this example some `Pipe from -> Timer -> Pipe to` patterns were added to the MinimaxH3 default template to measure the total execution time (in contrast to the individual times of the sampler and decoder as in the previous example). Note that this also includes the model loading time and will produce wrong results on the first generation. To mitigate this a zero duration run was added. It's also important that the output passes through the `Timer=stop` and that this is the only source for any downstreams node. The comma-separated lines for the CSV files are built with a `Format Text` and written using `save STRING to file` (in the  subgraph `append STRING to file`). There are additional notes in the workflow to explain specific parts.
 
 Example output
 ```csv
@@ -855,9 +857,30 @@ resolution\video length,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0
 
 ![plot resolution x duration](/media/Resolution_Duration_Timer_CSV_plot.png)
 
-## Load multiple video files
+## Generate multiple videos from spreadsheet
 
+https://github.com/user-attachments/assets/f6705477-ad88-4f23-9178-0ea24362948f
 
+![Generate multiple videos from spreadsheet](/workflows/video/Spreadsheet_Videos.png)
+
+(ComfyUI workflow included)
+
+Makes use of `Load Any File` node to load a `.csv` spreadsheet file and feeds the text content into a `Spreadsheet OutputList`. The spreadsheet separates the data by `separator=;` and provides each line one-by-one as a data list. Here we use `values_dict` as the data list which contains the row as a dictionary of key-value pairs. The data list is forwarded a `Iterate Begin -> workflow -> Iterate End` pattern which is required to make the intermediate results of slow workflows (t2v) available on each iteration. Each row as a dictionary is provided in a `Format Text` where we can access the column via `a[colname]` to construct the prompt which is forwarded to a standard _Text To Video MiniMax H3 template_. Another `Format Text` + `a[name]` is used to construct a readable filename for each video.
+
+`media/example_video.csv` copy to `ComfyUI/input` or copy-paste into the `Spreadsheet OutputList`:
+```csv
+name;description;voice;weapon;killed;enemy;scene;style
+Achilles;a muscular ancient Greek warrior in bronze scale armor and a crested helmet;fierce and booming ancient male voice;a long bronze spear with an ash wood shaft;friend;a tall Trojan prince in ornate silver armor and a plumed helmet holding a bloody sword;windy dusty plains outside the massive stone walls of Troy;epic ancient war blockbuster
+Beowulf;a towering muscular Norse warrior with long blonde braids and chainmail;deep and boastful Scandinavian male voice;a massive iron broadsword with a golden hilt;king;a terrifying pale female swamp monster with glowing eyes and razor-sharp claws;dark misty cavern filled with glowing treasure and muddy water;dark fantasy epic
+King Arthur;a regal middle-aged king in shining silver plate armor and a white tunic;noble and authoritative British male voice;a glowing straight sword with a jeweled crossguard;knight;a young treacherous knight in dark spiked armor with a tattered red cape;foggy muddy battlefield with broken banners and a blood-red sunset;gritty medieval historical drama
+Red Riding Hood;a young girl in a bright red wool hooded cloak and a brown peasant dress;innocent but suddenly furious young female voice;a heavy steel woodsman axe with a long wooden handle;grandmother;a large terrifying wolf walking on two legs wearing a tattered nightgown and cap;dark creepy dense forest with twisted thorny trees and heavy fog;dark gothic fairy tale horror
+Spartacus;a rugged muscular Thracian gladiator in leather straps and bronze arm guards;gritty and passionate Mediterranean male voice;a curved Thracian sica sword with a wide blade;brother;a wealthy arrogant Roman senator in a white toga with a purple border and a golden laurel;blood-stained sandy gladiator arena with towering stone seats and cheering crowds;epic historical sword-and-sandal
+Joan of Arc;a determined teenage girl in custom-fitted silver plate armor and a short black bob haircut;fervent and commanding young French female voice;a steel broadsword with a fleur-de-lis engraved blade;squire;a cruel English bishop in dark flowing ecclesiastical robes and a tall mitre hat;smoky muddy 15th-century battlefield with siege towers and burning wagons;gritty medieval war epic
+Snow White;a beautiful young woman in a yellow skirt blue bodice and a red ribbon with pale skin;soft but suddenly vengeful young female voice;a sharp iron dwarven pickaxe with a leather grip;dwarf;an old wicked queen in a black hooded cloak with a tall spiked collar holding a glowing red apple;snowy pine forest with a small rustic cottage and glowing woodland animals;dark fantasy fairy tale
+Odysseus;a weathered middle-aged Greek king with a curly beard a tattered tunic and a tired expression;cunning and weary ancient male voice;a large wooden recurve bow with a thick animal gut string;dog;a massive one-eyed cyclops with dirty matted hair holding a giant wooden club;cavernous dark limestone cave filled with giant sheep and a massive boulder door;ancient mythological adventure
+Ragnar Lothbrok;a charismatic Viking jarl with long braided blonde hair blue face paint and a fur mantle;intense and raspy Scandinavian male voice;a broad iron Danish axe with a long wooden haft;shieldmaiden;a cruel Northumbrian king in a golden tunic and a heavy iron crown holding a venomous snake;muddy snowy Viking village with longhouses and burning ships;gritty Viking historical drama
+Robin Hood;a cheerful outlaw in Lincoln green tights a brown tunic and a feathered cap;witty and charismatic British male voice;a tall yew longbow with a linen string;peasant;a corrupt wealthy sheriff in a heavy velvet robe a fur collar and a gold chain;lush green Sherwood forest with massive ancient oak trees and dappled sunlight;classic swashbuckling adventure
+```
 
 ## XYZ-GridPlots with Videos
 

@@ -27,8 +27,8 @@ Comments that start with `#` character in textfiles are ignored.
 | Name | Type | Description |
 | --- | --- | --- |
 | `count` | `INT` | Number of items in the longest list row (or column). |
-| `values_dict` | `DICT 𝌠` | A dictionary using the selectors as keys and the values of the current row (or column). Useful in combination with `Formatted String` node. Always includes both the selector and column name (or row index) as alias, if there is a header. |
-| `values_list` | `ARRAY 𝌠` | A list of values of the current row (or column) based on the selectors. Useful in combination with `Formatted String` node. |
+| `values_dict` | `DICT 𝌠` | A dictionary using the selectors as keys and the values of the current row (or column). Useful in combination with `Format Text` node. Always includes both the selector and column name (or row index) as alias, if there is a header. |
+| `values_list` | `ARRAY 𝌠` | A list of values of the current row (or column) based on the selectors. Useful in combination with `Format Text` node. |
 | `item_a` | `STRING 𝌠` |  |
 | `item_b` | `STRING 𝌠` |  |
 | `item_c` | `STRING 𝌠` |  |

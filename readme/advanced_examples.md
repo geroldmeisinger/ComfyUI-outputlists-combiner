@@ -34,7 +34,7 @@ Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `fl
 
 Let's say you generated a lot of images for your grid and (hopefully) stored them with some clever naming scheme, e.g. `cell_{c:02d}-{a}-{b}` like in the previous example. Now you need to load them from the output folder, without accidentally loading any other images. This uses the same prompt combination as before but uses the string to load the image filename. The following workflow makes use of `Load Any File`,
 
-![Load Image with Formatted String](/workflows/advanced/LoadWithFormattedString.png)
+![Load Image with Format Text](/workflows/advanced/LoadWithFormattedString.png)
 
 (ComfyUI workflow included)
 
@@ -75,7 +75,7 @@ Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
 (ComfyUI workflow included)
 
-Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Formatted String` with `{0:0.2f]` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
+Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Format Text` with `{0:0.2f}` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
 
 https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
 

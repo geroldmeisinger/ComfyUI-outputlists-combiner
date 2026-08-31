@@ -14,7 +14,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 
 (ComfyUI workflow included)
 
-Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Formatted String`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue] = 3 x 3 = 9`)
+Combines two `String OutputList` with a `OutputList Combinations` and merges them into the prompt with `Format Text`. It iterates over all combinations of `[cat, dog, rat] x [red, green, blue] = 3 x 3 = 9`)
 
 To debug strings it's recommended to use comfyui-custom-scripts `Show Text` as it outputs a new line for each emitted item.
 
@@ -44,7 +44,7 @@ Makes use of `inspect_combo` to populate the `String OutputList` (unneeded entri
 
 (ComfyUI workflow included)
 
-Makes use of the `index` combined the same way as the prompts, which gives as the rows and columns. `Formatted String` produces the filename prefix `img_{c:02d}_row_{ad}_col_{b}`.
+Makes use of the `index` combined the same way as the prompts, which gives as the rows and columns. `Format Text` produces the filename prefix `img_{c:02d}_row_{ad}_col_{b}`.
 
 ## Compare LoRA-model and LoRA-strength
 
@@ -59,7 +59,7 @@ Custom LoRAs:
 * [animeoutlineV4_16.safetensors](https://civitai.com/models/16014)
 * [blindbox_v1_mix.safetensors](https://civitai.com/models/25995)
 
-Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Formatted String`.
+Makes use of `inspect_combo` to populate the `String OutputList` with the model names (unneeded entries were deleted), and a corresponding `String OutputList` with the trigger words. Both OutputLists are combined with a `Number OutputList` each to iterate over all combinations of `[modelA, modelB, modelC] x [0.4, 0.7, 1.0] = 3 x 3 = 9` and `[triggerA, triggerB, triggerC] x [0.4, 0.7, 1.0] = 3 x 3 = 9`, so they are in-sync. The `LoRA filename` and `LoRA strength` are connected with the `LoRA Model Loader`, and the `trigger word` is used to construct a prompt in `Format Text`.
 
 **If you don't need separate trigger words, just delete the second combination altogether, it's much simpler this way!**
 
@@ -71,7 +71,7 @@ It might be a little confusing why we need two combinations here, but it is impo
 
 (ComfyUI workflow included)
 
-Uses `String OutputLists + OutputLists Combinations + Formatted String` to generate multiple prompts for an image grid. The values of the `String OutputLists` are directly used as labels for the `XYZ-GridPlot` and they also define how the grid should be shaped.
+Uses `String OutputLists + OutputLists Combinations + Format Text` to generate multiple prompts for an image grid. The values of the `String OutputLists` are directly used as labels for the `XYZ-GridPlot` and they also define how the grid should be shaped.
 
 Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` you get a image grid with the batch as sub-grids. If you also set `output_is_list=True` the sub-images will not be arranged together but you will get 4 separate images instead.
 
