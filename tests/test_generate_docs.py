@@ -127,6 +127,7 @@ nodes = [
 	ConvertNumberToIntFloatStr(),
 	XyzGridPlot(),
 	LoadAnyFile(),
+	LoadAnyVideo(),
 	IterateBegin(),
 	IterateEnd(),
 	WorkflowDiscriminator(),
@@ -276,7 +277,7 @@ def test_generate_docs():
 	<img src="/media/promo.png" alt="OutputLists Combiner Promo" width="600" />
 </div>
 
-<h2 align="center">Supercharge multiprompts and grid control!</h2>
+<h2 align="center">Supercharge multi-asset generation!</h2>
 """
 ]
 

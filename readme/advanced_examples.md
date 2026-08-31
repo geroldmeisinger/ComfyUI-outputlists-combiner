@@ -68,8 +68,7 @@ Similar to the basic `Workflow Discriminator` example, but uses a `Load Any File
 ## Animating LoRA strength
 
 Custom nodes: [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
-
-Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
+Custom LoRA: [Z-Image Turbo - Realistic Snapshot v5](https://civitai.com/models/2268008/realistic-snapshot-z-image-turbo-krea-2?modelVersionId=2617751)
 
 ![Animating LoRA strength example](/workflows/advanced/AnimatingLoRAStrength.png)
 
@@ -77,11 +76,17 @@ Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
 Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Format Text` with `{0:0.2f}` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
 
-https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
+https://github.com/user-attachments/assets/da707caa-6342-40db-9f48-4b8384b55867
 
 Also see
 * [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
 * [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
+
+Old Stable Diffusion 1.5 example:
+
+https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
+
+Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
 ## Nested iterate loop nodes
 

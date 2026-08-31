@@ -4,7 +4,7 @@
 	<img src="/media/promo.png" alt="OutputLists Combiner Promo" width="600" />
 </div>
 
-<h2 align="center">Supercharge multiprompts and grid control!</h2>
+<h2 align="center">Supercharge multi-asset generation!</h2>
 
 <h3 align="center">
 	<a href="#installation"	target="_blank">Installation	</a> ·
@@ -56,6 +56,7 @@ If you find this custom node useful:
 	- [Convert To Int Float Str](#convert-to-int-float-str)
 	- [XYZ-GridPlot](#xyz-gridplot)
 	- [Load Any File](#load-any-file)
+	- [Load Any Video](#load-any-video)
 	- [Iterate Begin](#iterate-begin)
 	- [Iterate End](#iterate-end)
 	- [Workflow Discriminator](#workflow-discriminator)
@@ -84,8 +85,9 @@ If you find this custom node useful:
 	- [Iterate durations](#iterate-durations)
 	- [Iterate resolutions](#iterate-resolutions)
 	- [Iterate durations, measure time, write CSV](#iterate-durations-measure-time-write-csv)
-	- [Iterate resolutions, iterate durations, measure time, write CSV](#iterate-resolutions-iterate-durations-measure-time-write-csv)
 	- [Generate multiple videos from spreadsheet](#generate-multiple-videos-from-spreadsheet)
+	- [Load multiple video files from disk](#load-multiple-video-files-from-disk)
+	- [Iterate resolutions, iterate durations, measure time, write CSV](#iterate-resolutions-iterate-durations-measure-time-write-csv)
 	- [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos)
 - [For-Loops](#for-loops)
 - [Third-party custom nodes](#third-party-custom-nodes)
@@ -438,6 +440,27 @@ For performance reasons the number of files are limited to: 1024.
 | `mask` | `MASK 𝌠` | Mask batch tensor. |
 | `metadata` | `STRING 𝌠` | Exif data from ExifTool. Requires `exiftool` command to be available in `PATH`. |
 
+## Load Any Video
+
+![Load Any Video](/web/docs/LoadAnyVideo/LoadAnyVideo.png)
+
+(ComfyUI workflow included)
+
+This node is a duplicate of nodes_video.py LoadVideo except with the fix included from [issue#11017](https://github.com/comfyanonymous/ComfyUI/issues/11017)
+It is required to load videos based on annotated filepaths which are restricted to user directories.
+
+### Inputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `file` | `STRING` |  |
+
+### Outputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `None` | `VIDEO` |  |
+
 ## Iterate Begin
 
 ![Iterate Begin](/web/docs/IterateBegin/IterateBegin.png)
@@ -727,8 +750,7 @@ Similar to the basic `Workflow Discriminator` example, but uses a `Load Any File
 ## Animating LoRA strength
 
 Custom nodes: [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
-
-Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
+Custom LoRA: [Z-Image Turbo - Realistic Snapshot v5](https://civitai.com/models/2268008/realistic-snapshot-z-image-turbo-krea-2?modelVersionId=2617751)
 
 ![Animating LoRA strength example](/workflows/advanced/AnimatingLoRAStrength.png)
 
@@ -736,11 +758,17 @@ Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
 Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Format Text` with `{0:0.2f}` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
 
-https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
+https://github.com/user-attachments/assets/da707caa-6342-40db-9f48-4b8384b55867
 
 Also see
 * [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
 * [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
+
+Old Stable Diffusion 1.5 example:
+
+https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
+
+Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
 ## Nested iterate loop nodes
 
@@ -824,6 +852,48 @@ index,resolution,sampler,decode_video,decode_audio,total,MP
 ![plot step resolution](/media/Duration_Timer_CSV_plot_resolution.png)
 
 
+## Generate multiple videos from spreadsheet
+
+https://github.com/user-attachments/assets/f6705477-ad88-4f23-9178-0ea24362948f
+
+Accompanying [reddit discussion](https://www.reddit.com/r/StableDiffusion/s/pYj9KWc8MT)
+
+![Generate multiple videos from spreadsheet](/workflows/video/Spreadsheet_Videos.png)
+
+(ComfyUI workflow included)
+
+Makes use of `Load Any File` node to load a `.csv` spreadsheet file and feeds the text content into a `Spreadsheet OutputList`. The spreadsheet separates the data by `separator=;` and provides each line one-by-one as a data list. `selectors` are empty which means every column is selected. The workflow uses `values_dict` as the data list which contains the row as a dictionary of key-value pairs. The data list is forwarded to a `Iterate Begin -> workflow -> Iterate End` pattern which is required to make the intermediate results of slow workflows (t2v) available on each iteration. Each row is a dictionary and is provided in `Format Text` where we can access the column via `{a[colname]}` to construct the prompt. The prompt is then forwarded to a standard _Text To Video MiniMax H3 template_ for generation. Another `Format Text` + `{a[name]}` is used to construct a readable filename for each video.
+
+`media/example_video.csv`:
+```csv
+name;description;voice;weapon;killed;enemy;scene;style
+Achilles;a muscular ancient Greek warrior in bronze scale armor and a crested helmet;fierce and booming ancient male voice;a long bronze spear with an ash wood shaft;friend;a tall Trojan prince in ornate silver armor and a plumed helmet holding a bloody sword;windy dusty plains outside the massive stone walls of Troy;epic ancient war blockbuster
+Beowulf;a towering muscular Norse warrior with long blonde braids and chainmail;deep and boastful Scandinavian male voice;a massive iron broadsword with a golden hilt;king;a terrifying pale female swamp monster with glowing eyes and razor-sharp claws;dark misty cavern filled with glowing treasure and muddy water;dark fantasy epic
+King Arthur;a regal middle-aged king in shining silver plate armor and a white tunic;noble and authoritative British male voice;a glowing straight sword with a jeweled crossguard;knight;a young treacherous knight in dark spiked armor with a tattered red cape;foggy muddy battlefield with broken banners and a blood-red sunset;gritty medieval historical drama
+Red Riding Hood;a young girl in a bright red wool hooded cloak and a brown peasant dress;innocent but suddenly furious young female voice;a heavy steel woodsman axe with a long wooden handle;grandmother;a large terrifying wolf walking on two legs wearing a tattered nightgown and cap;dark creepy dense forest with twisted thorny trees and heavy fog;dark gothic fairy tale horror
+Spartacus;a rugged muscular Thracian gladiator in leather straps and bronze arm guards;gritty and passionate Mediterranean male voice;a curved Thracian sica sword with a wide blade;brother;a wealthy arrogant Roman senator in a white toga with a purple border and a golden laurel;blood-stained sandy gladiator arena with towering stone seats and cheering crowds;epic historical sword-and-sandal
+Joan of Arc;a determined teenage girl in custom-fitted silver plate armor and a short black bob haircut;fervent and commanding young French female voice;a steel broadsword with a fleur-de-lis engraved blade;squire;a cruel English bishop in dark flowing ecclesiastical robes and a tall mitre hat;smoky muddy 15th-century battlefield with siege towers and burning wagons;gritty medieval war epic
+Snow White;a beautiful young woman in a yellow skirt blue bodice and a red ribbon with pale skin;soft but suddenly vengeful young female voice;a sharp iron dwarven pickaxe with a leather grip;dwarf;an old wicked queen in a black hooded cloak with a tall spiked collar holding a glowing red apple;snowy pine forest with a small rustic cottage and glowing woodland animals;dark fantasy fairy tale
+Odysseus;a weathered middle-aged Greek king with a curly beard a tattered tunic and a tired expression;cunning and weary ancient male voice;a large wooden recurve bow with a thick animal gut string;dog;a massive one-eyed cyclops with dirty matted hair holding a giant wooden club;cavernous dark limestone cave filled with giant sheep and a massive boulder door;ancient mythological adventure
+Ragnar Lothbrok;a charismatic Viking jarl with long braided blonde hair blue face paint and a fur mantle;intense and raspy Scandinavian male voice;a broad iron Danish axe with a long wooden haft;shieldmaiden;a cruel Northumbrian king in a golden tunic and a heavy iron crown holding a venomous snake;muddy snowy Viking village with longhouses and burning ships;gritty Viking historical drama
+Robin Hood;a cheerful outlaw in Lincoln green tights a brown tunic and a feathered cap;witty and charismatic British male voice;a tall yew longbow with a linen string;peasant;a corrupt wealthy sheriff in a heavy velvet robe a fur collar and a gold chain;lush green Sherwood forest with massive ancient oak trees and dappled sunlight;classic swashbuckling adventure
+```
+
+Either copy to `ComfyUI/input` or copy-paste directly into the `Spreadsheet OutputList`.
+
+
+## Load multiple video files from disk
+
+![Load multiple video files](/workflows/video/LoadMultipleVideos.png)
+
+(ComfyUI workflow included)
+
+Makes use of the `Path OutputList` to generate a data list of filepaths in the output directory. For each iteration the filepath is used in `Load Any Video` to load the video file and forwarded to the default _Minimax H3 reference2video_ workflow to put the fennec fox girl in the reference video.
+
+Notes:
+* The only reason the `Load Any Video` exists is because the official node [doesn't support dynamic inputs](https://github.com/comfyanonymous/ComfyUI/issues/11017). * If you want to iterate over ALL videos in a directory (instead of a glob) you can use the Comfy Core `Load Video (from Folder)` instead.
+* The `Iterate Begin -> workflow -> Iterate End` pattern is only required to make the intermediate results of slow workflows (ref2v) available on each iteration.
+
 ## Iterate resolutions, iterate durations, measure time, write CSV
 
 The following workflow is a extension of "Iterate durations, measure time, write CSV", it generations multiple videos for each combination of resolution x durations, measures the time and writes it to a CSV file.
@@ -857,33 +927,6 @@ resolution\video length,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0
 ![heatmap resolution x duration](/media/Resolution_Duration_Timer_CSV_heatmap.png)
 
 ![plot resolution x duration](/media/Resolution_Duration_Timer_CSV_plot.png)
-
-## Generate multiple videos from spreadsheet
-
-https://github.com/user-attachments/assets/f6705477-ad88-4f23-9178-0ea24362948f
-
-Accompanying [reddit discussion](https://www.reddit.com/r/StableDiffusion/s/pYj9KWc8MT)
-
-![Generate multiple videos from spreadsheet](/workflows/video/Spreadsheet_Videos.png)
-
-(ComfyUI workflow included)
-
-Makes use of `Load Any File` node to load a `.csv` spreadsheet file and feeds the text content into a `Spreadsheet OutputList`. The spreadsheet separates the data by `separator=;` and provides each line one-by-one as a data list. Here we use `values_dict` as the data list which contains the row as a dictionary of key-value pairs. The data list is forwarded a `Iterate Begin -> workflow -> Iterate End` pattern which is required to make the intermediate results of slow workflows (t2v) available on each iteration. Each row as a dictionary is provided in a `Format Text` where we can access the column via `a[colname]` to construct the prompt which is forwarded to a standard _Text To Video MiniMax H3 template_. Another `Format Text` + `a[name]` is used to construct a readable filename for each video.
-
-`media/example_video.csv` copy to `ComfyUI/input` or copy-paste into the `Spreadsheet OutputList`:
-```csv
-name;description;voice;weapon;killed;enemy;scene;style
-Achilles;a muscular ancient Greek warrior in bronze scale armor and a crested helmet;fierce and booming ancient male voice;a long bronze spear with an ash wood shaft;friend;a tall Trojan prince in ornate silver armor and a plumed helmet holding a bloody sword;windy dusty plains outside the massive stone walls of Troy;epic ancient war blockbuster
-Beowulf;a towering muscular Norse warrior with long blonde braids and chainmail;deep and boastful Scandinavian male voice;a massive iron broadsword with a golden hilt;king;a terrifying pale female swamp monster with glowing eyes and razor-sharp claws;dark misty cavern filled with glowing treasure and muddy water;dark fantasy epic
-King Arthur;a regal middle-aged king in shining silver plate armor and a white tunic;noble and authoritative British male voice;a glowing straight sword with a jeweled crossguard;knight;a young treacherous knight in dark spiked armor with a tattered red cape;foggy muddy battlefield with broken banners and a blood-red sunset;gritty medieval historical drama
-Red Riding Hood;a young girl in a bright red wool hooded cloak and a brown peasant dress;innocent but suddenly furious young female voice;a heavy steel woodsman axe with a long wooden handle;grandmother;a large terrifying wolf walking on two legs wearing a tattered nightgown and cap;dark creepy dense forest with twisted thorny trees and heavy fog;dark gothic fairy tale horror
-Spartacus;a rugged muscular Thracian gladiator in leather straps and bronze arm guards;gritty and passionate Mediterranean male voice;a curved Thracian sica sword with a wide blade;brother;a wealthy arrogant Roman senator in a white toga with a purple border and a golden laurel;blood-stained sandy gladiator arena with towering stone seats and cheering crowds;epic historical sword-and-sandal
-Joan of Arc;a determined teenage girl in custom-fitted silver plate armor and a short black bob haircut;fervent and commanding young French female voice;a steel broadsword with a fleur-de-lis engraved blade;squire;a cruel English bishop in dark flowing ecclesiastical robes and a tall mitre hat;smoky muddy 15th-century battlefield with siege towers and burning wagons;gritty medieval war epic
-Snow White;a beautiful young woman in a yellow skirt blue bodice and a red ribbon with pale skin;soft but suddenly vengeful young female voice;a sharp iron dwarven pickaxe with a leather grip;dwarf;an old wicked queen in a black hooded cloak with a tall spiked collar holding a glowing red apple;snowy pine forest with a small rustic cottage and glowing woodland animals;dark fantasy fairy tale
-Odysseus;a weathered middle-aged Greek king with a curly beard a tattered tunic and a tired expression;cunning and weary ancient male voice;a large wooden recurve bow with a thick animal gut string;dog;a massive one-eyed cyclops with dirty matted hair holding a giant wooden club;cavernous dark limestone cave filled with giant sheep and a massive boulder door;ancient mythological adventure
-Ragnar Lothbrok;a charismatic Viking jarl with long braided blonde hair blue face paint and a fur mantle;intense and raspy Scandinavian male voice;a broad iron Danish axe with a long wooden haft;shieldmaiden;a cruel Northumbrian king in a golden tunic and a heavy iron crown holding a venomous snake;muddy snowy Viking village with longhouses and burning ships;gritty Viking historical drama
-Robin Hood;a cheerful outlaw in Lincoln green tights a brown tunic and a feathered cap;witty and charismatic British male voice;a tall yew longbow with a linen string;peasant;a corrupt wealthy sheriff in a heavy velvet robe a fur collar and a gold chain;lush green Sherwood forest with massive ancient oak trees and dappled sunlight;classic swashbuckling adventure
-```
 
 ## XYZ-GridPlots with Videos
 

@@ -30,14 +30,15 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 				io.Boolean	.Input("bare_strings",	display_name="bare_strings", default=True	, tooltip="Decides if path-parts only contain the bare strings versus safe OS compliant definitions, e.g. if True `ext` is `png` vs `.png`, `full_dir` is `examples/animals` vs `examples/animals/`, and `parent_dir` may be a empty string vs `./`. Note that `rel_dir` always defaults to `.`")
 			],
 			outputs	= [
-				io.AnyType	.Output("filepath_annotated"	, display_name="filepath+"	, is_output_list=True, tooltip="Full filepath (relative to a ComfyUI directory) including annotations, e.g. `examples/animals/myfile.png [input]`. Recommended if you want to be specific and adhere to ComfyUI's path notation."),
-				io.String	.Output("filepath_rel"	, display_name="filepath"	, is_output_list=True, tooltip="Full filepath (relative to a ComfyUI directory) without annotations, e.g. `examples/animals/myfile.png`. Recommended if you only load files from input directory anways."),
-				io.String	.Output("filename"	, display_name="filename"	, is_output_list=True, tooltip="Full filename, e.g. `myfile.png`"),
-				io.String	.Output("basename"	, display_name="basename"	, is_output_list=True, tooltip="Basename part of the file without extension, e.g. `myfile`"),
-				io.String	.Output("ext"	, display_name="ext"	, is_output_list=True, tooltip="Extension (e.g. `png` if `bare_strings=True` else `.png'). Note that hidden-files (e.g. `.bashrc`) are considered files without a extension."),
-				io.String	.Output("dir_rel"	, display_name="full_dir"	, is_output_list=True, tooltip="Full directory of the file (relative to a ComfyUI directory), e.g. `examples/animals` if `bare_strings=True` else `examples/animals/` (note the trailing slash)"),
-				io.String	.Output("dir_parent"	, display_name="parent_dir"	, is_output_list=True, tooltip="Immediate parent directory of the file, e.g. `animals` or empty for empty parent if `bare_strings=True` else `./`"),
-				io.String	.Output("annotation"	, display_name="annotation"	, is_output_list=True, tooltip="Annotation to reference the ComfyUI user directory, e.g. `input` if `bare_strings=True` else ` [input]` (note the leading whitespace)"),
+				io.AnyType	.Output("filepath_annotated"	, display_name="filepath+"	, is_output_list=True	, tooltip="Full filepath (relative to a ComfyUI directory) including annotations, e.g. `examples/animals/myfile.png [input]`. Recommended if you want to be specific and adhere to ComfyUI's path notation."),
+				io.String	.Output("filepath_rel"	, display_name="filepath"	, is_output_list=True	, tooltip="Full filepath (relative to a ComfyUI directory) without annotations, e.g. `examples/animals/myfile.png`. Recommended if you only load files from input directory anways."),
+				io.String	.Output("filename"	, display_name="filename"	, is_output_list=True	, tooltip="Full filename, e.g. `myfile.png`"),
+				io.String	.Output("basename"	, display_name="basename"	, is_output_list=True	, tooltip="Basename part of the file without extension, e.g. `myfile`"),
+				io.String	.Output("ext"	, display_name="ext"	, is_output_list=True	, tooltip="Extension (e.g. `png` if `bare_strings=True` else `.png'). Note that hidden-files (e.g. `.bashrc`) are considered files without a extension."),
+				io.String	.Output("dir_rel"	, display_name="full_dir"	, is_output_list=True	, tooltip="Full directory of the file (relative to a ComfyUI directory), e.g. `examples/animals` if `bare_strings=True` else `examples/animals/` (note the trailing slash)"),
+				io.String	.Output("dir_parent"	, display_name="parent_dir"	, is_output_list=True	, tooltip="Immediate parent directory of the file, e.g. `animals` or empty for empty parent if `bare_strings=True` else `./`"),
+				io.String	.Output("annotation"	, display_name="annotation"	, is_output_list=True	, tooltip="Annotation to reference the ComfyUI user directory, e.g. `input` if `bare_strings=True` else ` [input]` (note the leading whitespace)"),
+				io.Int	.Output("count"	, display_name="count"	, is_output_list=False	, tooltip="Total number of files."),
 			],
 		)
 		return ret
@@ -46,12 +47,12 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 	def execute(cls, glob: str, limit: int = 1024, bare_strings: bool = True) -> io.NodeOutput:
 		# https://github.com/comfyanonymous/ComfyUI/issues/11017
 		if not glob:
-			ret = io.NodeOutput([], [], [], [], [], [], [])
+			ret = io.NodeOutput([], [], [], [], [], [], [], 0)
 			return ret
 
 		filepaths = get_files(glob, limit, False)
 		if len(filepaths) == 0:
-			ret = io.NodeOutput([], [], [], [], [], [], [])
+			ret = io.NodeOutput([], [], [], [], [], [], [], 0)
 			return ret
 
 		_, annotation	= get_annotation_from_path(glob)
@@ -67,6 +68,7 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 			ret["dir_rel"],
 			ret["dir_parent"],
 			ret["annotation"],
+			len(filepaths),
 			)
 
 	@classmethod

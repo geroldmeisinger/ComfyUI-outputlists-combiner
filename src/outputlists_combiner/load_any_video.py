@@ -19,10 +19,10 @@ It is required to load videos based on annotated filepaths which are restricted 
 			display_name="Load Any Video",
 			category=CATEGORY,
 			inputs=[
-				io.String.Input("file"),
+				io.String.Input("file", tooltip=""),
 			],
 			outputs=[
-				io.Video.Output(),
+				io.Video.Output(tooltip=""),
 			],
 			is_experimental	= True,
 		)
