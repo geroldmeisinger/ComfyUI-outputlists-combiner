@@ -1,0 +1,9 @@
+{
+	"python.testing.pytestEnabled": true,
+	"python.testing.unittestEnabled": false,
+	"python.testing.pytestArgs": [
+		"custom_nodes/ComfyUI-outputlists-combiner/tests"
+	],
+	"python.testing.cwd": "${workspaceFolder}",
+	"python.envFile": "${workspaceFolder}/.venv"
+}

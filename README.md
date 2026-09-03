@@ -95,6 +95,10 @@ If you find this custom node useful:
 	- [Multi-Prompts](#multi-prompts)
 	- [List-like types](#list-like-types)
 	- [XYZ-GridPlots](#xyz-gridplots)
+- [Development](#development)
+	- [This node pack](#this-node-pack)
+	- [Tools](#tools)
+	- [Custom node development](#custom-node-development)
 - [Credits](#credits)
 
 # Installation
@@ -161,6 +165,10 @@ https://github.com/user-attachments/assets/303115d3-7c28-42e8-bb52-d02e7cc1022b
 Yeah, I didn't know about it either. Apparently everytime you see the symbol `𝌠` it's an [output list](https://docs.comfy.org/custom-nodes/backend/lists). This feature is very underutilized but it allows you to be process sequentially without weird workarounds (like for-loops, increment counters or external python scripts) and makes it perfect for prompt combinations and XYZ-gridplots. I always found grids a hazzle in ComfyUI whereas they were straightforward in Automatic1111. Most custom nodes either require a lot of manual work or you have to use some extra-special nodes (like custom KSamplers). This project tries to make good use of output lists, integrate well with the ComfyUI's paradigm and finally make XYZ-gridplots easy to use again.
 
 **Make sure you understand what's happening in this example as it's crucial to work with the following nodes!**
+
+* batch: All images are guaranteed to be of the same size. Used to generate multiple image at once in the KSampler more effectively. Also useful for videos because of the same-size guarantee.
+* data list: A special type in ComfyUI which causes downstream nodes to process multiple times.
+* LIST: A custom type in most third-party nodes which are passed around as one item which contains a python list.
 
 # Nodes
 ## String OutputList
@@ -979,7 +987,7 @@ Also note that most loop nodes want to support some form of feedback cycle and u
 **Alternative loop variants**
 
 * [KJTensorLoop pullrequest](https://github.com/kijai/ComfyUI/blob/2bf117a8257a3a1351d7f8db55a9f2ade8870277/comfy_extras/nodes_looping.py)
-* [rattus128 Generic Loops](https://github.com/Comfy-Org/ComfyUI/pull/15923) ([code](https://github.com/rattus128/ComfyUI/blob/9334c13639d854e9034d5f119213c40106747f8c/comfy_extras/nodes_loop.py))
+* [rattus128 Generic Loops I](https://github.com/Comfy-Org/ComfyUI/pull/15923) [Generic Loops II](https://github.com/Comfy-Org/ComfyUI/pull/15999) ([code1](https://github.com/rattus128/ComfyUI/blob/9334c13639d854e9034d5f119213c40106747f8c/comfy_extras/nodes_loop.py)
 * [Execution Inversion Demo](https://github.com/BadCafeCode/execution-inversion-demo-comfyui) ([code1](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/flow_control.py) [code2](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/utility_nodes.py))
 * [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use) ([code](https://github.com/yolain/ComfyUI-Easy-Use/blob/4de1ab3b66e48da916b6f263bacd001df53a2720/py/nodes/logic.py#L591))
 * [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) ([Hidden example](https://github.com/ltdrdata/ComfyUI-Impact-Pack/issues/824#issuecomment-2493301831)) ([code](https://github.com/ltdrdata/ComfyUI-Inspire-Pack/blob/d23db9aa544de9a6d4c609cb7005fa9e0d42031d/inspire/list_nodes.py#L82))
@@ -1019,7 +1027,7 @@ I consider the following custom nodes essential for any ComfyUI installation and
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
 - [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
 
-Remember that the core feature of OutputLists Combiner revolves around [data lists](https://docs.comfy.org/custom-nodes/backend/lists). One of my design goals was to introduce new custom nodes only if they are necessary in every common use-case and avoid cluttering with more duplicate functionality that is already available in other essential nodes. The following is a reference of useful third-party custom nodes which support the use of data lists, multi-prompting or XYZ-GridPlots. The list is opionated and incomplete on purpose. I left out: specializations (string lists, mask lists), niche-uses, endless list manipulation variants, and unpopular custom node packs.
+Remember that the core feature of OutputLists Combiner revolves around [data lists](https://docs.comfy.org/custom-nodes/backend/lists). One of my design goals is to introduce new custom nodes only if they are necessary in the most common use-cases and avoid cluttering with more duplicate functionality that is already available in other essential nodes. The following is a reference of useful third-party custom nodes which support the use of data lists, multi-prompting or XYZ-GridPlots. The list is opionated and incomplete on purpose. I left out: specializations (string lists, mask lists), niche-uses, endless list manipulation variants, and unpopular custom node packs.
 
 Many custom nodes provide some support for data lists, multi-prompting and XYZ-GridPlots but always lack some essential features, resort to black magic or are not thought all the way through. I also want use this reference to discuss some shortcomings of other nodes and make some arguments why the OutputLists Combiner was necessary.
 
@@ -1334,6 +1342,36 @@ When you open the node searchbox and filter by types you often stumble upon list
 [qq-nodes](https://github.com/kenjiqq/qq-nodes-comfyui)
 
 - requires multiple round-trip black magic to populate the grid
+
+# Development
+
+## This node pack
+
+* Node interface design: the core feature of OutputLists Combiner revolves around [data lists](https://docs.comfy.org/custom-nodes/backend/lists). One of my design goals is to introduce new custom nodes only if they are necessary in the most common use-cases and avoid cluttering with more duplicate functionality that is already available in other essential nodes, see [third-party nodes](#third-party-custom-nodes).
+* Research: I try to research the ecosystem and honor existing solutions first before implementing something new.
+* Tutorials: I try to provide documentation and examples for every node and use-case, because I hate that in other nodes packs. If you find anything to be unclear, please let me know!
+* Documentation: is generated from /readme via a pytest `test_generate_docs.py` (it's akward, I know, but I get the ComfyUI API in code this way).
+* Debugging: launch ComfyUI via [vscode launch](/.vscode/launch.json) and then just set breakpoints in code.
+* Code style: I use [Elastic Tabstops Redux for vscode](https://marketplace.visualstudio.com/items?itemName=gerold-meisinger.elastic-tabstops-lite-redux).
+
+## Tools
+
+* To export workflow images I use [Workflow-Image-Export](https://github.com/nomadoor/ComfyUI-Workflow-Image-Export) which has many useful options like transparent background and cropping, but doesn't always work [on some output nodes](https://github.com/nomadoor/ComfyUI-Workflow-Image-Export/issues).
+* I used to use pythongosssss' custom script [export worfklow image](https://github.com/pythongosssss/ComfyUI-Custom-Scripts) with [a specialized theme](/docs/dark_exportworkflow.json) that has a transparent background image, but has some other quirks.
+* [workflow extract script](/docs/workflow_extract.nemo_action) to get the workflow JSON out of a image (my [feature request](https://github.com/Comfy-Org/comfy-cli/issues/341) to get this function Comfy CLI was declined).
+* [workflow reinsert script](workflow_reinsert.nemo_action) to get the workflow JSON back into a image after I have made changes to it (cropping, annotations, adding outputs manually).
+* For translation I use [md-translator](https://github.com/rockbenben/md-translator) any Qwen 9B (supports [most languages](/docs/qwen3_languages.csv) as of 2025) via [Unsloth Studio](https://unsloth.ai)
+
+## Custom node development
+
+* [official docs](https://docs.comfy.org/custom-nodes/intro)
+  * [data types](https://docs.comfy.org/custom-nodes/backend/datatypes)
+  * [data list](https://docs.comfy.org/custom-nodes/backend/lists)
+  * [Schema v3](https://docs.comfy.org/custom-nodes/v3_migration)
+  * [node expansion](https://docs.comfy.org/custom-nodes/backend/expansion)
+* [chrisgoringe - Comfy Custom Node How-To](https://github.com/chrisgoringe/Comfy-Custom-Node-How-To/wiki)
+* [Suzie1 ComfyUI - Guide To Making Custom Nodes](https://github.com/Suzie1/ComfyUI_Guide_To_Making_Custom_Nodes/wiki)
+* and inspecting other third-party nodes
 
 # Credits
 

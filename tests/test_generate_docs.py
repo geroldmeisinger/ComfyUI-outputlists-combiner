@@ -147,6 +147,7 @@ chapters = [
 	"video_examples",
 	"for_loops",
 	"thirdparty",
+	"development",
 	"credits",
 ]
 

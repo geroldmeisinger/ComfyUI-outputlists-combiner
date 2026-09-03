@@ -39,7 +39,7 @@ Also note that most loop nodes want to support some form of feedback cycle and u
 **Alternative loop variants**
 
 * [KJTensorLoop pullrequest](https://github.com/kijai/ComfyUI/blob/2bf117a8257a3a1351d7f8db55a9f2ade8870277/comfy_extras/nodes_looping.py)
-* [rattus128 Generic Loops](https://github.com/Comfy-Org/ComfyUI/pull/15923) ([code](https://github.com/rattus128/ComfyUI/blob/9334c13639d854e9034d5f119213c40106747f8c/comfy_extras/nodes_loop.py))
+* [rattus128 Generic Loops I](https://github.com/Comfy-Org/ComfyUI/pull/15923) [Generic Loops II](https://github.com/Comfy-Org/ComfyUI/pull/15999) ([code1](https://github.com/rattus128/ComfyUI/blob/9334c13639d854e9034d5f119213c40106747f8c/comfy_extras/nodes_loop.py)
 * [Execution Inversion Demo](https://github.com/BadCafeCode/execution-inversion-demo-comfyui) ([code1](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/flow_control.py) [code2](https://github.com/BadCafeCode/execution-inversion-demo-comfyui/blob/main/utility_nodes.py))
 * [Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use) ([code](https://github.com/yolain/ComfyUI-Easy-Use/blob/4de1ab3b66e48da916b6f263bacd001df53a2720/py/nodes/logic.py#L591))
 * [Inspire-Pack](https://github.com/ltdrdata/ComfyUI-Inspire-Pack) ([Hidden example](https://github.com/ltdrdata/ComfyUI-Impact-Pack/issues/824#issuecomment-2493301831)) ([code](https://github.com/ltdrdata/ComfyUI-Inspire-Pack/blob/d23db9aa544de9a6d4c609cb7005fa9e0d42031d/inspire/list_nodes.py#L82))
