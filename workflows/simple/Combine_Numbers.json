@@ -1,19 +1,19 @@
 {
     "id": "409461d3-9236-4d34-bfc6-f50135f49c46",
     "revision": 0,
-    "last_node_id": 69,
-    "last_link_id": 88,
+    "last_node_id": 71,
+    "last_link_id": 92,
     "nodes": [
         {
             "id": 28,
             "type": "NumberOutputList",
             "pos": [
-                -300,
-                450
+                -315,
+                441
             ],
             "size": [
-                250,
-                250
+                252,
+                252
             ],
             "flags": {},
             "order": 0,
@@ -122,12 +122,12 @@
             "id": 27,
             "type": "NumberOutputList",
             "pos": [
-                -300,
-                50
+                -315,
+                42
             ],
             "size": [
-                250,
-                250
+                252,
+                252
             ],
             "flags": {},
             "order": 1,
@@ -236,12 +236,12 @@
             "id": 62,
             "type": "be8cfb10-ab36-4bf3-8b1e-0a34b08bc876",
             "pos": [
-                450,
-                50
+                441,
+                42
             ],
             "size": [
-                250,
-                300
+                252,
+                315
             ],
             "flags": {},
             "order": 5,
@@ -270,7 +270,7 @@
                     "widget": {
                         "name": "height"
                     },
-                    "link": 77
+                    "link": 91
                 },
                 {
                     "name": "seed",
@@ -376,12 +376,12 @@
             "id": 22,
             "type": "PreviewImage",
             "pos": [
-                850,
-                50
+                861,
+                42
             ],
             "size": [
-                750,
-                750
+                756,
+                756
             ],
             "flags": {},
             "order": 6,
@@ -418,140 +418,18 @@
             "bgcolor": "#653"
         },
         {
-            "id": 66,
-            "type": "ShowText|pysssss",
-            "pos": [
-                300,
-                450
-            ],
-            "size": [
-                250,
-                550
-            ],
-            "flags": {},
-            "order": 2,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "text",
-                    "name": "text",
-                    "type": "STRING",
-                    "link": 87
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfyui-custom-scripts",
-                "ver": "1.2.5",
-                "Node name for S&R": "ShowText|pysssss"
-            },
-            "widgets_values": [
-                "256",
-                "256",
-                "256",
-                "512",
-                "512",
-                "512",
-                "768",
-                "768",
-                "768"
-            ],
-            "widgets_values_named": {
-                "text_0": "256",
-                "text_1": "256",
-                "text_2": "256",
-                "text_3": "512",
-                "text_4": "512",
-                "text_5": "512",
-                "text_6": "768",
-                "text_7": "768",
-                "text_8": "768"
-            },
-            "color": "#432",
-            "bgcolor": "#653"
-        },
-        {
-            "id": 69,
-            "type": "ShowText|pysssss",
-            "pos": [
-                550,
-                450
-            ],
-            "size": [
-                250,
-                550
-            ],
-            "flags": {},
-            "order": 3,
-            "mode": 0,
-            "inputs": [
-                {
-                    "localized_name": "text",
-                    "name": "text",
-                    "type": "STRING",
-                    "link": 88
-                }
-            ],
-            "outputs": [
-                {
-                    "localized_name": "STRING",
-                    "name": "STRING",
-                    "shape": 6,
-                    "type": "STRING",
-                    "links": null
-                }
-            ],
-            "properties": {
-                "cnr_id": "comfyui-custom-scripts",
-                "ver": "1.2.5",
-                "Node name for S&R": "ShowText|pysssss"
-            },
-            "widgets_values": [
-                "256",
-                "512",
-                "768",
-                "256",
-                "512",
-                "768",
-                "256",
-                "512",
-                "768"
-            ],
-            "widgets_values_named": {
-                "text_0": "256",
-                "text_1": "512",
-                "text_2": "768",
-                "text_3": "256",
-                "text_4": "512",
-                "text_5": "768",
-                "text_6": "256",
-                "text_7": "512",
-                "text_8": "768"
-            },
-            "color": "#432",
-            "bgcolor": "#653"
-        },
-        {
             "id": 15,
             "type": "CombineOutputLists",
             "pos": [
                 0,
-                250
+                252
             ],
             "size": [
-                250,
-                150
+                252,
+                168
             ],
             "flags": {},
-            "order": 4,
+            "order": 2,
             "mode": 0,
             "inputs": [
                 {
@@ -591,7 +469,7 @@
                     "type": "*",
                     "links": [
                         76,
-                        87
+                        92
                     ]
                 },
                 {
@@ -600,8 +478,8 @@
                     "shape": 6,
                     "type": "*",
                     "links": [
-                        77,
-                        88
+                        90,
+                        91
                     ]
                 },
                 {
@@ -645,6 +523,86 @@
             },
             "color": "#323",
             "bgcolor": "#535"
+        },
+        {
+            "id": 71,
+            "type": "PreviewAny",
+            "pos": [
+                567,
+                441
+            ],
+            "size": [
+                210,
+                357
+            ],
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "source",
+                    "name": "source",
+                    "type": "*",
+                    "link": 90
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "PreviewAny"
+            },
+            "widgets_values": [],
+            "widgets_values_named": {},
+            "color": "#432",
+            "bgcolor": "#653"
+        },
+        {
+            "id": 70,
+            "type": "PreviewAny",
+            "pos": [
+                315,
+                441
+            ],
+            "size": [
+                210,
+                357
+            ],
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+                {
+                    "localized_name": "source",
+                    "name": "source",
+                    "type": "*",
+                    "link": 92
+                }
+            ],
+            "outputs": [
+                {
+                    "localized_name": "STRING",
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "cnr_id": "comfy-core",
+                "ver": "0.34.0",
+                "Node name for S&R": "PreviewAny"
+            },
+            "widgets_values": [],
+            "widgets_values_named": {},
+            "color": "#432",
+            "bgcolor": "#653"
         }
     ],
     "links": [
@@ -673,14 +631,6 @@
             "INT"
         ],
         [
-            77,
-            15,
-            1,
-            62,
-            2,
-            "INT"
-        ],
-        [
             78,
             62,
             0,
@@ -689,20 +639,28 @@
             "IMAGE"
         ],
         [
-            87,
-            15,
-            0,
-            66,
-            0,
-            "STRING"
-        ],
-        [
-            88,
+            90,
             15,
             1,
-            69,
+            71,
             0,
-            "STRING"
+            "*"
+        ],
+        [
+            91,
+            15,
+            1,
+            62,
+            2,
+            "INT"
+        ],
+        [
+            92,
+            15,
+            0,
+            70,
+            0,
+            "*"
         ]
     ],
     "groups": [],
@@ -713,9 +671,9 @@
                 "version": 1,
                 "state": {
                     "lastGroupId": 4,
-                    "lastNodeId": 69,
-                    "lastLinkId": 88,
-                    "lastRerouteId": 0
+                    "lastNodeId": 71,
+                    "lastLinkId": 92,
+                    "lastRerouteId": 3
                 },
                 "revision": 0,
                 "config": {},
@@ -859,12 +817,12 @@
                         "id": 30,
                         "type": "CLIPLoader",
                         "pos": [
-                            50,
-                            400
+                            42,
+                            399
                         ],
                         "size": [
-                            300,
-                            150
+                            315,
+                            168
                         ],
                         "flags": {},
                         "order": 4,
@@ -943,12 +901,12 @@
                         "id": 31,
                         "type": "VAELoader",
                         "pos": [
-                            50,
-                            650
+                            42,
+                            651
                         ],
                         "size": [
-                            300,
-                            150
+                            315,
+                            168
                         ],
                         "flags": {},
                         "order": 5,
@@ -1004,12 +962,12 @@
                         "id": 33,
                         "type": "ConditioningZeroOut",
                         "pos": [
-                            650,
-                            950
+                            651,
+                            945
                         ],
                         "size": [
-                            250,
-                            100
+                            252,
+                            105
                         ],
                         "flags": {},
                         "order": 6,
@@ -1049,12 +1007,12 @@
                         "id": 8,
                         "type": "VAEDecode",
                         "pos": [
-                            1300,
-                            250
+                            1302,
+                            252
                         ],
                         "size": [
-                            250,
-                            100
+                            252,
+                            105
                         ],
                         "flags": {},
                         "order": 1,
@@ -1101,12 +1059,12 @@
                         "id": 34,
                         "type": "UNETLoader",
                         "pos": [
-                            50,
-                            250
+                            42,
+                            252
                         ],
                         "size": [
-                            300,
-                            150
+                            315,
+                            168
                         ],
                         "flags": {},
                         "order": 7,
@@ -1173,12 +1131,12 @@
                         "id": 35,
                         "type": "CLIPTextEncode",
                         "pos": [
-                            400,
-                            250
+                            399,
+                            252
                         ],
                         "size": [
-                            450,
-                            650
+                            462,
+                            651
                         ],
                         "flags": {},
                         "order": 8,
@@ -1234,12 +1192,12 @@
                         "id": 13,
                         "type": "EmptySD3LatentImage",
                         "pos": [
-                            50,
-                            900
+                            42,
+                            903
                         ],
                         "size": [
-                            300,
-                            200
+                            315,
+                            210
                         ],
                         "flags": {},
                         "order": 3,
@@ -1311,12 +1269,12 @@
                         "id": 11,
                         "type": "ModelSamplingAuraFlow",
                         "pos": [
-                            950,
-                            250
+                            945,
+                            252
                         ],
                         "size": [
-                            350,
-                            150
+                            357,
+                            168
                         ],
                         "flags": {},
                         "order": 2,
@@ -1372,12 +1330,12 @@
                         "id": 3,
                         "type": "KSampler",
                         "pos": [
-                            950,
-                            400
+                            945,
+                            399
                         ],
                         "size": [
-                            350,
-                            350
+                            357,
+                            357
                         ],
                         "flags": {},
                         "order": 0,
@@ -1511,7 +1469,7 @@
                         "title": "Step2 - Image size",
                         "bounding": [
                             0,
-                            800,
+                            798,
                             320,
                             280
                         ],
@@ -1522,8 +1480,8 @@
                         "id": 3,
                         "title": "Step3 - Prompt",
                         "bounding": [
-                            350,
-                            150,
+                            357,
+                            147,
                             530,
                             970
                         ],
@@ -1535,7 +1493,7 @@
                         "title": "Step1 - Load models",
                         "bounding": [
                             0,
-                            150,
+                            147,
                             330,
                             660
                         ],
@@ -1698,14 +1656,67 @@
     "config": {},
     "extra": {
         "ds": {
-            "scale": 0.9090909090909092,
+            "scale": 0.7513148009015777,
             "offset": [
-                387.9900000000001,
-                89.17967999999996
+                710.1481692507318,
+                260.10340777815804
             ]
         },
         "ue_links": [],
-        "links_added_by_ue": []
+        "links_added_by_ue": [],
+        "reroutes": [
+            {
+                "id": 1,
+                "parentId": 2,
+                "pos": [
+                    525,
+                    392
+                ],
+                "linkIds": [
+                    90
+                ]
+            },
+            {
+                "id": 2,
+                "pos": [
+                    315,
+                    287
+                ],
+                "linkIds": [
+                    90,
+                    91
+                ]
+            },
+            {
+                "id": 3,
+                "pos": [
+                    273,
+                    266
+                ],
+                "linkIds": [
+                    76,
+                    92
+                ]
+            }
+        ],
+        "linkExtensions": [
+            {
+                "id": 76,
+                "parentId": 3
+            },
+            {
+                "id": 90,
+                "parentId": 1
+            },
+            {
+                "id": 91,
+                "parentId": 2
+            },
+            {
+                "id": 92,
+                "parentId": 3
+            }
+        ]
     },
     "version": 0.4
 }
