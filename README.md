@@ -59,6 +59,7 @@ If you find this custom node useful:
 	- [Load Any Video](#load-any-video)
 	- [Iterate Begin](#iterate-begin)
 	- [Iterate End](#iterate-end)
+	- [Bake String](#bake-string)
 	- [Workflow Discriminator](#workflow-discriminator)
 - [Examples](#examples)
 	- [Simple OutputList](#simple-outputlist)
@@ -532,6 +533,35 @@ Internally uses the node expansion mechanism which duplicates the sub-workflow m
 | --- | --- | --- |
 | `datalist` | `* 𝌠` |  |
 
+## Bake String
+
+![Bake String](/web/docs/BakeString/BakeString.png)
+
+(ComfyUI workflow included)
+
+Works as a simple string passthrough first but 'bakes' the string into the `override` field of the workflow JSON and then uses this value instead.
+
+This node may seem strange but it allows to add additional infos on how a specific image was created in a multi-asset workflow.
+
+* Use-case 1 "per-image paramters": If multiple images are created from an output list, the same workflow is stored for ALL images. This node allows to bake the specific string into the workflow JSON for the very string that was used in a individual image.
+* Use-case 2 "include image": img2img and controlnet workflows require an input image. Used together with a base64 string the full image can be baked into the workflow JSON.
+
+### Inputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `string` | `STRING` | The string that will be passed through unless `override` is set (lazy=True which means upstream nodes won't be executed if `override` is set) |
+| `override` | `STRING` | If set, will always output this string instead. Used by `Save Image` (and other save nodes) to bake the value into the workflow JSON. |
+| `limit` | `INT` | Limit of characters which will be baked into the field. |
+| `trim` | `BOOLEAN` | Trims the `override` string of whitespace characters (like spaces and new lines) before doing the override-check. This prevents triggering the override when a new line was entered by accident. Only disable it if you actually need a whitespace string as an override. |
+
+### Outputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `string` | `STRING` | If `override` is set, will use `override`, otherwise it's a passtrough of `string`. |
+| `is_override` | `BOOLEAN` | A bool indicating if the override was used. Useful for If/Else Switches and Execution Blockers. |
+
 ## Workflow Discriminator
 
 ![Workflow Discriminator](/web/docs/WorkflowDiscriminator/WorkflowDiscriminator.png)
@@ -776,7 +806,7 @@ External custom nodes which support image loading via path:
 
 If multiple images are created from an output list, the same workflow is stored for ALL images. This workflows allows to bake the specific string into the workflow JSON for the very string that was used in a individual image.
 
-[Bake String Iterate Loop Nodes before](/workflows/advanced/BakeStringIterateLoopNodes_0.png)
+![Bake String Iterate Loop Nodes before](/workflows/advanced/BakeStringIterateLoopNodes_0.png)
 
 (ComfyUI workflow included)
 
@@ -784,7 +814,7 @@ Makes use of `Bake String` which works as a string passthrough during the workfl
 
 When you drag an output image onto the workspace you get the following:
 
-[Bake String Iterate Loop Nodes after](/workflows/advanced/BakeStringIterateLoopNodes_1.png)
+![Bake String Iterate Loop Nodes after](/workflows/advanced/BakeStringIterateLoopNodes_1.png)
 
 (e.g. `dog`, which was on the second iteration)
 
@@ -794,13 +824,13 @@ Here you can see that the string `dog` is baked into the `override` field.
 
 This workflow lets you use the same workflow to either re-generate the individual image or the original workflow for all images. FOr example when generating a XYZ GridPlot you want know which parameter was used for an individual image but also re-generate the whole grid again.
 
-[Bake String in XYZ GridPlot before](/workflows/advanced/BakeStringXYZGridPlot_0.png)
+![Bake String in XYZ GridPlot before](/workflows/advanced/BakeStringXYZGridPlotSupergrids_0.png)
 
 This workflow is an expansion of [bake values into workflows]](#bake-values-into-workflows) and the [XYZ GridPlot](#xyz-gridplot). Makes use of an `Bake String` node for the whole workflow (the outer) and one `Bake String` for the iterated workflow (the inner in `Iterate Begin -> worklfow -> Iterate End`). To check if this workflow is baked or not the outer `Bake String.is_override` is used together with a `If/Else Switch` to either use the original list (not baked) or use only one item (baked), which will be overriden by the sub-sequent inner `Bake String`. Hence, if the workflow is not baked, the list items will be used as is, otherwise the list collapses to one item which gets overriden by the inner string and only executes once. Because the downstream nodes for `XYZ GridPlot` don't make sense for a single item we block further execution with a `Execution Blocker` based on the outer `Bake String.is_override`.
 
 When you drag an individual output image into the workspace you get the following:
 
-[Bake String in XYZ GridPlot after](/workflows/advanced/BakeStringXYZGridPlot_1.png)
+![Bake String in XYZ GridPlot after](/workflows/advanced/BakeStringXYZGridPlotSupergrids_1.png)
 
 Here you can see that the string `a dog with a green hat` is baked into the `override` field and when you execute the workflow again it generates the image again of which this individual image was a part of. If you clear the outer and inner `override` strings you can generate the full image grid again.
 
@@ -808,17 +838,19 @@ Here you can see that the string `a dog with a green hat` is baked into the `ove
 
 This allows to ship input images with the workflow. Useful for img2img or Control-Net workflows.
 
-[Bake String in Load Any File before](/workflows/advanced/BakeStringLoadAnyFile_0.png)
+![Bake String in Load Any File before](/workflows/advanced/BakeStringLoadAnyFile_0.png)
 
 (ComfyUI workflow included)
 
-Makes use of `Load Any File` (1st) to load a image file as a base64 string and `Bake String` to insert this string as the `override` value into the workflow (once the image save in `Save Image`). Another `Load Any File` (2nd) loads the same image (again!) from the base64 string and passes it on to a img2img workflow. Hence, if the file exists, it will be loaded from disk, otherwise the base64 string will be used instead. When you drag the output image into your workspace you should see the following:
+Makes use of `Load Any File` (1st) to load a image file as a base64 string and `Bake String` to insert this string as the `override` value into the workflow (once the image save in `Save Image`). Another `Load Any File` (2nd) loads the same image (again!) from the base64 string and passes it on to a img2img workflow. Hence, if the file exists, it will be loaded from disk, otherwise the base64 string will be used instead. When you drag the following output image into your workspace:
 
-[Bake String example_baked.png](/tests/imgs/example_baked.png)
+![Bake String example_baked.png](/tests/imgs/example_baked.png)
 
 (This file has ~600 KiB because the image diffusion introduced a lot of noise which PNG doesn't like. The workflow only increased by about 2x18 KiB due to the base64 input image.)
 
-[Bake String in Load Any File after](/workflows/advanced/BakeStringLoadAnyFile_1.png)
+you should see the following worfklow (note the base64 string in `Bake String`):
+
+![Bake String in Load Any File after](/workflows/advanced/BakeStringLoadAnyFile_1.png)
 
 If you are asking _"Do we really insert a wasteful base64 cleartext version of a binary PNG file into the workflow JSON as a string?"_ the answer is: _"Yes!"_. It's a _image-in-a-JSON-in-a-image_ :) base64 uses up about +33% more space, so it's okay. Here is what it will look like to take the `example.png` resized to 16x16 (374bytes) and encoded as base64 (500bytes) in the workflow json:
 ```json

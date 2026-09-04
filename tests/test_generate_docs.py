@@ -130,6 +130,7 @@ nodes = [
 	LoadAnyVideo(),
 	IterateBegin(),
 	IterateEnd(),
+	BakeString(),
 	WorkflowDiscriminator(),
 	KSamplerImmediateSave(),
 ]
