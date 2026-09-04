@@ -36,7 +36,8 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			display_name	= "Load Any File",
 			category	= CATEGORY,
 			inputs	= [
-				io.String.Input("annotated_filepath", display_name="filepath"	,  tooltip="Base directory defaults to `[input]` user-directory. Supports glob-pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory."),
+				io.String	.Input("annotated_filepath"	, display_name="filepath"	,  tooltip="Base directory defaults to `[input]` user-directory. Supports glob-pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory."),
+				io.String	.Input("extra"	, display_name="_extra", optional=True, default="", force_input=True	, tooltip="(optional) try to load additional file from string (plaintext or base64)")
 			],
 			outputs	= [
 				io.String	.Output("string"	, display_name="content"	, is_output_list=True, tooltip="File content for text files, base64 for binary files."),
@@ -48,9 +49,9 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 		return ret
 
 	@classmethod
-	def execute(cls, annotated_filepath: str) -> io.NodeOutput:
+	def execute(cls, annotated_filepath: str, extra: str = "") -> io.NodeOutput:
 		# https://github.com/comfyanonymous/ComfyUI/issues/11017
-		if not annotated_filepath:
+		if not annotated_filepath and not extra:
 			ret = io.NodeOutput([], [], [], [])
 			return ret
 
@@ -58,10 +59,16 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 		ret_images	= []
 		ret_masks	= []
 		ret_metadata	= []
-		file_paths = get_files(annotated_filepath, MAX_RESULTS, False)
+		file_paths	= get_files(annotated_filepath, MAX_RESULTS, False) if annotated_filepath else []
+		if extra: file_paths.append("\0")
 		for file_path in file_paths:
-			with open(file_path, "rb") as f:
-				raw_data = f.read()
+			if file_path != "\0":
+				#try:
+					with open(file_path, "rb") as f:
+						raw_data = f.read()
+				#except: continue
+			else:
+				raw_data = extra.encode('utf-8')
 
 			is_binary = True
 			is_base64 = False
@@ -88,24 +95,25 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 
 			# run exiftool
 			metadata = "{}"
-			try:
-				with ExifToolHelper() as et:
-					exif	= et.get_metadata(file_path)[0]
-					metadata	= dumps(exif, indent=4)
-			except FileNotFoundError: pass # exiftool not found in path
+			if file_path != "\0":
+				try:
+					with ExifToolHelper() as et:
+						exif	= et.get_metadata(file_path)[0]
+						metadata	= dumps(exif, indent=4)
+				except FileNotFoundError: pass # exiftool not found in path
 
 			# try to load binary or base64 as image
 			pil_img = None
 			if is_binary or is_base64:
 				try:
-					image_data	= raw_data if is_binary else filecontent
+					image_data	= raw_data if is_binary else base64.b64decode(filecontent)
 					pil_img	= node_helpers.pillow(Image.open, BytesIO(image_data))
 					image, mask	= load_image(pil_img)
 
 					if not metadata and pil_img:
 						# get info from standard PNG otherwise fall back to exiftool
 						if hasattr(pil_img, "info") and pil_img.info and not "exif" in pil_img.info:
-							pil_img.info["SourceFile"] = file_path
+							pil_img.info["SourceFile"] = file_path if file_path != "\0" else "\0<input>"
 							metadata = dumps(pil_img.info, indent=4, default=to_base64)
 				except (UnidentifiedImageError, OSError, ValueError):
 					image	= torch.zeros((1,	64, 64, 3	), dtype=torch.float32, device="cpu")
@@ -116,12 +124,13 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 
 			# try to load preview thumbnail PNG
 			if not pil_img and "File:PreviewPNG" in metadata:
-				try:
-					with ExifTool(encoding=None, common_args=[]) as et:
-						preview_data = et.execute("-b", "-PreviewPNG", file_path, raw_bytes=True)
-						pil_img	= node_helpers.pillow(Image.open, BytesIO(preview_data))
-						image, mask	= load_image(pil_img)
-				except: pass # exiftool not found in path
+				if file_path != "\0":
+					try:
+						with ExifTool(encoding=None, common_args=[]) as et:
+							preview_data = et.execute("-b", "-PreviewPNG", file_path, raw_bytes=True)
+							pil_img	= node_helpers.pillow(Image.open, BytesIO(preview_data))
+							image, mask	= load_image(pil_img)
+					except: pass # exiftool not found in path
 
 			ret_strings	.append(filecontent)
 			ret_images	.append(image)
@@ -132,24 +141,31 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 		return ret
 
 	@classmethod
-	def fingerprint_inputs(cls, annotated_filepath: str) -> str:
-		if not annotated_filepath: return str(time.time()) # https://github.com/comfyanonymous/ComfyUI/issues/11017
+	def fingerprint_inputs(cls, annotated_filepath: str, extra: str = "") -> str:
+		if not annotated_filepath and not extra: return str(time.time()) # https://github.com/comfyanonymous/ComfyUI/issues/11017
 
 		m	= hashlib.sha256()
 		file_paths = get_files(annotated_filepath, MAX_RESULTS, False)
+		if extra: file_paths.append("\0")
 		for file_path in file_paths:
-			with open(file_path, 'rb') as f:
-				m.update(f.read())
+			if file_path != "\0":
+				try:
+					with open(file_path, 'rb') as f:
+						m.update(f.read())
+				except: continue # skip non-existing files
+			else:
+				m.update(extra.encode('utf-8'))
 		ret = m.digest().hex()
 		return ret
 
 	@classmethod
-	def validate_inputs(cls, annotated_filepath: str) -> bool | str:
-		if not annotated_filepath: return True # https://github.com/comfyanonymous/ComfyUI/issues/11017
+	def validate_inputs(cls, annotated_filepath: str, extra: str = "") -> bool | str:
+		if not annotated_filepath and not extra: return True # https://github.com/comfyanonymous/ComfyUI/issues/11017
 
-		file_paths = get_files(annotated_filepath, MAX_RESULTS, False)
-		if len(file_paths) == 0:
-			return f"No files found in '{annotated_filepath}'"
+		# skip non-existing files check to work together with Bake String
+		# file_paths = get_files(annotated_filepath, MAX_RESULTS, False)
+		# if len(file_paths) == 0:
+		#	return f"No files found in '{annotated_filepath}'"
 
 		return True
 

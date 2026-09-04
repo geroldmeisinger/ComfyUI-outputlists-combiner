@@ -20,6 +20,7 @@ For performance reasons the number of files are limited to: 1024.
 | Name | Type | Description |
 | --- | --- | --- |
 | `filepath` | `STRING` | Base directory defaults to `[input]` user-directory. Supports glob-pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory. |
+| `_extra` | `STRING` | (optional) try to load additional file from string (plaintext or base64) |
 
 ### Outputs
 

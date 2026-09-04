@@ -12,7 +12,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 
 * [ComfyUI Batch Workflow Tutorial: Automate Testing + XYZ Grid Plots (Part 1)](https://www.youtube.com/watch?v=eyxDY8jIZJ8)
 * [ComfyUI Batch Workflow Tutorial: Automate Testing + XYZ Grid Plots (Part 2)](https://www.youtube.com/watch?v=YUhPTwOxAq8)
-* [The 3-Minute Node - The Cleanest Way to XY Plot in ComfyUI: No Custom KSamplers! (ComfyUI Deep Dive)](https://www.youtube.com/watch?v=MGGDePr69FI)
+* [The 3-Minute Node - The Cleanest Way to XY Plot in ComfyUI: No Custom KSamplers! (ComfyUI Deep Dive)](https://www.youtube.com/watch?v=MGGDePr69FI) _A brilliant suite of custom nodes by developer Gerold Meisinger called ComfyUI outputlists combine[r]. This suite is incredibly well written and meticulously documented, which is a massive breath of fresh air in the custom node ecosystem._ My name is Gerold Meisinger and I approve this comment! :)
 
 ## Combine prompts
 
@@ -83,6 +83,8 @@ Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` y
 
 https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
 
+Also see [video tutorials](#video-tutorials) for an introduction into XYZ-GridPlots.
+
 ## Load multiple files with different formats
 
 ![Load multiple files example](/workflows/simple/LoadMultipleFiles.png)
@@ -114,7 +116,7 @@ The reason is that ComfyUI process the data list in node-major mode (one node pr
 
 (ComfyUI workflow included)
 
-Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
+Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except this one here works with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
 
 (if you want to understand how this works internally see the section [for-loops](#for-loops))
 

@@ -23,6 +23,7 @@ async def comfy_entrypoint() -> ComfyExtension:
 				PathOutputList,
 				KSamplerImmediateSave,
 				IterateBegin, IterateEnd,
+				BakeString,
 			]
 
 	return OutputListsCombiner()

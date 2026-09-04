@@ -1,3 +1,4 @@
+from .bake_string import BakeString
 from .combine_outputlists import CombineOutputLists
 from .convert_to_intfloatstr import ConvertNumberToIntFloatStr
 from .formatted_string import FormattedString

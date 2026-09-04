@@ -38,6 +38,7 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 				io.String	.Output("dir_rel"	, display_name="full_dir"	, is_output_list=True	, tooltip="Full directory of the file (relative to a ComfyUI directory), e.g. `examples/animals` if `bare_strings=True` else `examples/animals/` (note the trailing slash)"),
 				io.String	.Output("dir_parent"	, display_name="parent_dir"	, is_output_list=True	, tooltip="Immediate parent directory of the file, e.g. `animals` or empty for empty parent if `bare_strings=True` else `./`"),
 				io.String	.Output("annotation"	, display_name="annotation"	, is_output_list=True	, tooltip="Annotation to reference the ComfyUI user directory, e.g. `input` if `bare_strings=True` else ` [input]` (note the leading whitespace)"),
+				io.Int	.Output("index"	, display_name="index"	, is_output_list=True	, tooltip=f"Range of 0..count. You can use this as an index. {OUTPUTLIST_NOTE}"	),
 				io.Int	.Output("count"	, display_name="count"	, is_output_list=False	, tooltip="Total number of files."),
 			],
 		)
@@ -47,12 +48,12 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 	def execute(cls, glob: str, limit: int = 1024, bare_strings: bool = True) -> io.NodeOutput:
 		# https://github.com/comfyanonymous/ComfyUI/issues/11017
 		if not glob:
-			ret = io.NodeOutput([], [], [], [], [], [], [], 0)
+			ret = io.NodeOutput([], [], [], [], [], [], [], [], 0)
 			return ret
 
 		filepaths = get_files(glob, limit, False)
 		if len(filepaths) == 0:
-			ret = io.NodeOutput([], [], [], [], [], [], [], 0)
+			ret = io.NodeOutput([], [], [], [], [], [], [], [], 0)
 			return ret
 
 		_, annotation	= get_annotation_from_path(glob)
@@ -68,6 +69,7 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 			ret["dir_rel"],
 			ret["dir_parent"],
 			ret["annotation"],
+			range(len(filepaths)),
 			len(filepaths),
 			)
 

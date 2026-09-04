@@ -74,14 +74,17 @@ If you find this custom node useful:
 	- [Cycle OutputLists](#cycle-outputlists)
 	- [The execution stalling problem](#the-execution-stalling-problem)
 - [Advanced Examples](#advanced-examples)
+	- [Animating LoRA strength](#animating-lora-strength)
 	- [Iterate checkpoints](#iterate-checkpoints)
 	- [XYZ-GridPlots with Supergrids](#xyz-gridplots-with-supergrids)
 	- [Immediately save intermediate images of image grid](#immediately-save-intermediate-images-of-image-grid)
 	- [Load all images from grid](#load-all-images-from-grid)
-	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
+	- [Bake values into workflows](#bake-values-into-workflows)
+	- [Bake values into flexible workflows](#bake-values-into-flexible-workflows)
+	- [Bake images into workflows](#bake-images-into-workflows)
 	- [Discriminate multiple files](#discriminate-multiple-files)
-	- [Animating LoRA strength](#animating-lora-strength)
 	- [Nested iterate loop nodes](#nested-iterate-loop-nodes)
+	- [Iterate prompts from PromptManager](#iterate-prompts-from-promptmanager)
 - [Examples for Video workflows](#examples-for-video-workflows)
 	- [Iterate durations](#iterate-durations)
 	- [Iterate resolutions](#iterate-resolutions)
@@ -575,7 +578,7 @@ Just uses a `String OutputList` to separate a string and produce 4 images in one
 
 * [ComfyUI Batch Workflow Tutorial: Automate Testing + XYZ Grid Plots (Part 1)](https://www.youtube.com/watch?v=eyxDY8jIZJ8)
 * [ComfyUI Batch Workflow Tutorial: Automate Testing + XYZ Grid Plots (Part 2)](https://www.youtube.com/watch?v=YUhPTwOxAq8)
-* [The 3-Minute Node - The Cleanest Way to XY Plot in ComfyUI: No Custom KSamplers! (ComfyUI Deep Dive)](https://www.youtube.com/watch?v=MGGDePr69FI)
+* [The 3-Minute Node - The Cleanest Way to XY Plot in ComfyUI: No Custom KSamplers! (ComfyUI Deep Dive)](https://www.youtube.com/watch?v=MGGDePr69FI) _A brilliant suite of custom nodes by developer Gerold Meisinger called ComfyUI outputlists combine[r]. This suite is incredibly well written and meticulously documented, which is a massive breath of fresh air in the custom node ecosystem._ My name is Gerold Meisinger and I approve this comment! :)
 
 ## Combine prompts
 
@@ -646,6 +649,8 @@ Note that `batch_size=1` and `output_is_list=False`. If you set `batch_size=4` y
 
 https://github.com/user-attachments/assets/a649b701-58a5-47a8-b697-e2a34a39c999
 
+Also see [video tutorials](#video-tutorials) for an introduction into XYZ-GridPlots.
+
 ## Load multiple files with different formats
 
 ![Load multiple files example](/workflows/simple/LoadMultipleFiles.png)
@@ -677,7 +682,7 @@ The reason is that ComfyUI process the data list in node-major mode (one node pr
 
 (ComfyUI workflow included)
 
-Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except that they work with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
+Makes use of `Iterate Begin` and `Iterate End` to mark the nodes between the `flow_control` as a "sequential group". This works similar to other loop nodes except this one here works with output lists. It's important to use a output node with passthrough to see the intermediate results, otherwise they will only act upon the first item. Newer ComfyUI versions already have them.
 
 (if you want to understand how this works internally see the section [for-loops](#for-loops))
 
@@ -698,6 +703,29 @@ Another solution is node expansion in code but you literally have to rebuild a p
 **Deprecated**: If you want to save the intermediate images after each step you can use the `KSampler immediate Save Image` beta-node. For this node to be visible in the node searchbox you need to activate `Settings -> Comfy -> Show experimental nodes in search`.
 
 # Advanced Examples
+
+## Animating LoRA strength
+
+* Custom nodes: [KJNodes](https://github.com/kijai/ComfyUI-KJNodes) (only to put the label into a image)
+* Custom LoRA: [Z-Image Turbo - Realistic Snapshot v5](https://civitai.com/models/2268008/realistic-snapshot-z-image-turbo-krea-2?modelVersionId=2617751)
+
+![Animating LoRA strength example](/workflows/advanced/AnimatingLoRAStrength.png)
+
+(ComfyUI workflow included)
+
+Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Format Text` with `{0:0.2f}` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
+
+https://github.com/user-attachments/assets/da707caa-6342-40db-9f48-4b8384b55867
+
+Also see
+* [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
+* [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
+
+Old Stable Diffusion 1.5 example:
+
+https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
+
+* Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
 
 ## Iterate checkpoints
 
@@ -742,6 +770,81 @@ External custom nodes which support image loading via path:
 * [VideoHelperSuite](https://github.com/KosinkadinkComfyUI-VideoHelperSuite)
 * [ComfyUI-RMBG](https://github.com/1038lab/ComfyUI-RMBG)
 
+
+## Bake values into workflows
+
+If multiple images are created from an output list, the same workflow is stored for ALL images. This workflows allows to bake the specific string into the workflow JSON for the very string that was used in a individual image.
+
+[Bake String Iterate Loop Nodes before](/workflows/advanced/BakeStringIterateLoopNodes_0.png)
+
+(ComfyUI workflow included)
+
+Makes use of `Bake String` which works as a string passthrough during the workflow phase but on `Save Image` stores the string in `override` field. It's important to use the `Iterate Begin -> worklfow -> Iterate End` pattern here and use the `Bake String` in a passthrough so it gets executed on every iteration, otherwise it will only be execute once (for `cat`) and all images use the same string. The `Bake String` output is hooked on a `OutputLists Combinations` which we exploit as a on-signal node, because it needs to be part of the execution. The actual value is used from `Iterate Begin`, otherwise - when you drag the output image into the workspace - will use the same string for all images. To fix this, see the next example.
+
+When you drag an output image onto the workspace you get the following:
+
+[Bake String Iterate Loop Nodes after](/workflows/advanced/BakeStringIterateLoopNodes_1.png)
+
+(e.g. `dog`, which was on the second iteration)
+
+Here you can see that the string `dog` is baked into the `override` field.
+
+## Bake values into flexible workflows
+
+This workflow lets you use the same workflow to either re-generate the individual image or the original workflow for all images. FOr example when generating a XYZ GridPlot you want know which parameter was used for an individual image but also re-generate the whole grid again.
+
+[Bake String in XYZ GridPlot before](/workflows/advanced/BakeStringXYZGridPlot_0.png)
+
+This workflow is an expansion of [bake values into workflows]](#bake-values-into-workflows) and the [XYZ GridPlot](#xyz-gridplot). Makes use of an `Bake String` node for the whole workflow (the outer) and one `Bake String` for the iterated workflow (the inner in `Iterate Begin -> worklfow -> Iterate End`). To check if this workflow is baked or not the outer `Bake String.is_override` is used together with a `If/Else Switch` to either use the original list (not baked) or use only one item (baked), which will be overriden by the sub-sequent inner `Bake String`. Hence, if the workflow is not baked, the list items will be used as is, otherwise the list collapses to one item which gets overriden by the inner string and only executes once. Because the downstream nodes for `XYZ GridPlot` don't make sense for a single item we block further execution with a `Execution Blocker` based on the outer `Bake String.is_override`.
+
+When you drag an individual output image into the workspace you get the following:
+
+[Bake String in XYZ GridPlot after](/workflows/advanced/BakeStringXYZGridPlot_1.png)
+
+Here you can see that the string `a dog with a green hat` is baked into the `override` field and when you execute the workflow again it generates the image again of which this individual image was a part of. If you clear the outer and inner `override` strings you can generate the full image grid again.
+
+## Bake images into workflows
+
+This allows to ship input images with the workflow. Useful for img2img or Control-Net workflows.
+
+[Bake String in Load Any File before](/workflows/advanced/BakeStringLoadAnyFile_0.png)
+
+(ComfyUI workflow included)
+
+Makes use of `Load Any File` (1st) to load a image file as a base64 string and `Bake String` to insert this string as the `override` value into the workflow (once the image save in `Save Image`). Another `Load Any File` (2nd) loads the same image (again!) from the base64 string and passes it on to a img2img workflow. Hence, if the file exists, it will be loaded from disk, otherwise the base64 string will be used instead. When you drag the output image into your workspace you should see the following:
+
+[Bake String example_baked.png](/tests/imgs/example_baked.png)
+
+(This file has ~600 KiB because the image diffusion introduced a lot of noise which PNG doesn't like. The workflow only increased by about 2x18 KiB due to the base64 input image.)
+
+[Bake String in Load Any File after](/workflows/advanced/BakeStringLoadAnyFile_1.png)
+
+If you are asking _"Do we really insert a wasteful base64 cleartext version of a binary PNG file into the workflow JSON as a string?"_ the answer is: _"Yes!"_. It's a _image-in-a-JSON-in-a-image_ :) base64 uses up about +33% more space, so it's okay. Here is what it will look like to take the `example.png` resized to 16x16 (374bytes) and encoded as base64 (500bytes) in the workflow json:
+```json
+"widgets_values": [
+	"",
+	"iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IB2cksfwAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAN9JREFUKM+tkjEKgzAUhn+1ToJDF88knqFVqIOi0BMU6R0i7aCgOPQE4pm6dCgoQpB2SKrRilTov+SF9/0vLy+R9uSFNdoAyAMAoHUIQNWIHY+IPACtQ1UjAOwYMlsYRBWraavECXs6ccKmrVjMGEls6XLgObUrWUAVC4Cfmj0ji6f7qal2Jae708Q8Yxgk0G5GlgxuRhjhFsYEZRrdIdndeeHyAYBaW16lMEZjHcoXBgIvvx35Vo8+meuXIfCWXkvIygt0f9T40su1ZwwrJf/SxvTziWKjdPUoeZ7/09Ib1L5LGKJX9wUAAAAASUVORK5CYII=",
+	10240,
+	true
+],
+```
+
+You find the original `example_bat.png` in `tests/imgs`.
+
+## Discriminate multiple files
+
+![Iterate checkpoints example](/workflows/advanced/DiscriminateMultipleFiles.png)
+
+(ComfyUI workflow included)
+
+Similar to the basic `Workflow Discriminator` example, but uses a `Load Any File` with a glob pattern expansion to load multiple files, where all files are discriminated against.
+
+## Nested iterate loop nodes
+
+![Nested iterate loop nodes example](/workflows/advanced/NestedIterateLoopNodes.png)
+
+(ComfyUI workflow included)
+
 ## Iterate prompts from PromptManager
 
 Custom nodes:
@@ -755,43 +858,6 @@ PromptManager keeps track of all the prompt you generated in a database which yo
 (ComfyUI workflow included)
 
 Makes use of ComfyUI-HTTP's `HTTP GET Request` to call PromptManager's search API route at `http://127.0.0.1:8188/prompt_manager/search` and `JSON OutputList` to extract the `text` field using a JSONPath. The prompts are emitted as an OutputList and will be processed sequentially.
-
-## Discriminate multiple files
-
-![Iterate checkpoints example](/workflows/advanced/DiscriminateMultipleFiles.png)
-
-(ComfyUI workflow included)
-
-Similar to the basic `Workflow Discriminator` example, but uses a `Load Any File` with a glob pattern expansion to load multiple files, where all files are discriminated against.
-
-## Animating LoRA strength
-
-Custom nodes: [KJNodes](https://github.com/kijai/ComfyUI-KJNodes)
-Custom LoRA: [Z-Image Turbo - Realistic Snapshot v5](https://civitai.com/models/2268008/realistic-snapshot-z-image-turbo-krea-2?modelVersionId=2617751)
-
-![Animating LoRA strength example](/workflows/advanced/AnimatingLoRAStrength.png)
-
-(ComfyUI workflow included)
-
-Makes use of a `Number OutputList` to iterate over the range `0.0..1.0`. Note that num is `+1` because we to split it into well-formed floatingpoint values and `endpoint=True` to include `1.00` in the values. Also uses `Format Text` with `{0:0.2f}` and KJNodes's `Add Label` to add the strength information as well-formatted label into the image itself. Note that the images are rebatched into `batch_size=count` because `Create Video` expects batches.
-
-https://github.com/user-attachments/assets/da707caa-6342-40db-9f48-4b8384b55867
-
-Also see
-* [XYZ-GridPlots with Videos](#xyz-gridplots-with-videos) if you want to compare multiple subjects next to each other in a video
-* [Compare LoRA-model and LoRA-strength](#compare-lora-model-and-lora-strength) if you want to compare multiple models with different trigger words
-
-Old Stable Diffusion 1.5 example:
-
-https://github.com/user-attachments/assets/59220dec-bafc-4abc-9294-ae76e3372da8
-
-Custom LoRAs: [MoXinV1.safetensors](https://civitai.com/models/12597)
-
-## Nested iterate loop nodes
-
-![Nested iterate loop nodes example](/workflows/advanced/NestedIterateLoopNodes.png)
-
-(ComfyUI workflow included)
 
 # Examples for Video workflows
 
