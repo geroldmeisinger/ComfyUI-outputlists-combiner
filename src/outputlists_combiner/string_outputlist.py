@@ -16,7 +16,7 @@ class StringOutputList(io.ComfyNode):
 			display_name	= "String OutputList",
 			category	= CATEGORY,
 			inputs	= [
-				io.String.Input("separator", display_name="separator", default="\\n", tooltip="The string used to split the textfield values by."),
+				io.String.Input("separator", display_name="separator", default="\\n", tooltip="The string used to split the textfield values by. Supports character escaping like `\\n` (newline), `\\n\\n` (two new lines), ¸`\\t` (tabcharacter) etc."),
 				io.String.Input("values",
 					display_name	= "values",
 					multiline	= True,

@@ -8,6 +8,12 @@
 
 Just uses a `String OutputList` to separate a string and produce 4 images in one run.
 
+## Video Tutorials
+
+* [ComfyUI Batch Workflow Tutorial: Automate Testing + XYZ Grid Plots (Part 1)](https://www.youtube.com/watch?v=eyxDY8jIZJ8)
+* [ComfyUI Batch Workflow Tutorial: Automate Testing + XYZ Grid Plots (Part 2)](https://www.youtube.com/watch?v=YUhPTwOxAq8)
+* [The 3-Minute Node - The Cleanest Way to XY Plot in ComfyUI: No Custom KSamplers! (ComfyUI Deep Dive)](https://www.youtube.com/watch?v=MGGDePr69FI)
+
 ## Combine prompts
 
 ![Combine prompts example](/workflows/simple/Combine_Prompts.png)

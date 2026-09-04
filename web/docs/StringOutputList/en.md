@@ -11,7 +11,7 @@ Creates an OutputList by splitting the string in the textfield with a separator.
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `separator` | `STRING` | The string used to split the textfield values by. |
+| `separator` | `STRING` | The string used to split the textfield values by. Supports character escaping like `\n` (newline), `\n\n` (two new lines), ¸`\t` (tabcharacter) etc. |
 | `values` | `STRING` | The text you want to split into a list. Note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed of whitespace. |
 
 ### Outputs

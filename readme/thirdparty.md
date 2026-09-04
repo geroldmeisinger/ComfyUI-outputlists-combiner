@@ -326,3 +326,8 @@ When you open the node searchbox and filter by types you often stumble upon list
 [qq-nodes](https://github.com/kenjiqq/qq-nodes-comfyui)
 
 - requires multiple round-trip black magic to populate the grid
+
+## Cross-integration
+
+[FranckyB - FBnodes](https://github.com/FranckyB/ComfyUI-FBnodes)
+* "LoRA List+: Utility node for testing LoRAs, allows adding LoRAs to a list from anywhere on disk. Used with Outputlists-Combiner"

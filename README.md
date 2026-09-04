@@ -62,6 +62,7 @@ If you find this custom node useful:
 	- [Workflow Discriminator](#workflow-discriminator)
 - [Examples](#examples)
 	- [Simple OutputList](#simple-outputlist)
+	- [Video Tutorials](#video-tutorials)
 	- [Combine prompts](#combine-prompts)
 	- [Combine numbers](#combine-numbers)
 	- [Combine samplers and schedulers](#combine-samplers-and-schedulers)
@@ -95,6 +96,7 @@ If you find this custom node useful:
 	- [Multi-Prompts](#multi-prompts)
 	- [List-like types](#list-like-types)
 	- [XYZ-GridPlots](#xyz-gridplots)
+	- [Cross-integration](#cross-integration)
 - [Development](#development)
 	- [This node pack](#this-node-pack)
 	- [Tools](#tools)
@@ -184,7 +186,7 @@ Creates an OutputList by splitting the string in the textfield with a separator.
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `separator` | `STRING` | The string used to split the textfield values by. |
+| `separator` | `STRING` | The string used to split the textfield values by. Supports character escaping like `\n` (newline), `\n\n` (two new lines), ¸`\t` (tabcharacter) etc. |
 | `values` | `STRING` | The text you want to split into a list. Note that the string is trimmed of trailing newlines before splitting, and each item is again trimmed of whitespace. |
 
 ### Outputs
@@ -438,6 +440,7 @@ For performance reasons the number of files are limited to: 1024.
 | Name | Type | Description |
 | --- | --- | --- |
 | `filepath` | `STRING` | Base directory defaults to `[input]` user-directory. Supports glob-pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory. |
+| `_extra` | `STRING` | (optional) try to load additional file from string (plaintext or base64) |
 
 ### Outputs
 
@@ -567,6 +570,12 @@ Custom nodes with metadata loaders include:
 (ComfyUI workflow included)
 
 Just uses a `String OutputList` to separate a string and produce 4 images in one run.
+
+## Video Tutorials
+
+* [ComfyUI Batch Workflow Tutorial: Automate Testing + XYZ Grid Plots (Part 1)](https://www.youtube.com/watch?v=eyxDY8jIZJ8)
+* [ComfyUI Batch Workflow Tutorial: Automate Testing + XYZ Grid Plots (Part 2)](https://www.youtube.com/watch?v=YUhPTwOxAq8)
+* [The 3-Minute Node - The Cleanest Way to XY Plot in ComfyUI: No Custom KSamplers! (ComfyUI Deep Dive)](https://www.youtube.com/watch?v=MGGDePr69FI)
 
 ## Combine prompts
 
@@ -1342,6 +1351,11 @@ When you open the node searchbox and filter by types you often stumble upon list
 [qq-nodes](https://github.com/kenjiqq/qq-nodes-comfyui)
 
 - requires multiple round-trip black magic to populate the grid
+
+## Cross-integration
+
+[FranckyB - FBnodes](https://github.com/FranckyB/ComfyUI-FBnodes)
+* "LoRA List+: Utility node for testing LoRAs, allows adding LoRAs to a list from anywhere on disk. Used with Outputlists-Combiner"
 
 # Development
 
