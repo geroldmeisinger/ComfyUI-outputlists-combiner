@@ -138,6 +138,7 @@ Newer Skia versions requires `libEGL.so` to be present on Linux hosts, see [offi
 
 # Changelog
 
+- 0.0.15 added Bake String node
 - 0.0.14 restructed Spreadsheet OutputList, deprecated Formatted String in favor of Comfy Core Format Text
 - 0.0.13 fixed nested Iterate loop nodes
 - 0.0.12 added Iterate loop nodes, added separator field in SpreadsheetOutputList
