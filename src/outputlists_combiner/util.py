@@ -76,14 +76,11 @@ def get_files(annotated_filepath: str, limit: int = -1, rel_path: bool = True) -
 					results.append(p)
 					count += 1
 
-				if limit >= 0 and count >= limit: break
-
-		return sorted(results)
+		ret = sorted(results)[:limit]
+		return ret
 
 	# Glob path - streamed
 	for match in glob.iglob(full_pattern, recursive=recursive):
-		if limit >= 0 and count >= limit: break
-
 		# Skip directories early
 		try:
 			if not os.path.isfile(match): continue
@@ -95,7 +92,8 @@ def get_files(annotated_filepath: str, limit: int = -1, rel_path: bool = True) -
 		results.append(p)
 		count += 1
 
-	return sorted(results)
+	ret = sorted(results)[:limit]
+	return ret
 
 def get_annotation_from_path(annotated_filepath: str) -> tuple[str, str]:
     if	annotated_filepath.endswith(" [output]"	): return (annotated_filepath[:-len("output"	)], "output")
