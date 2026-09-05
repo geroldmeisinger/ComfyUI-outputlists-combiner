@@ -1007,7 +1007,8 @@ Either copy to `ComfyUI/input` or copy-paste directly into the `Spreadsheet Outp
 Makes use of the `Path OutputList` to generate a data list of filepaths in the output directory. For each iteration the filepath is used in `Load Any Video` to load the video file and forwarded to the default _Minimax H3 reference2video_ workflow to put the fennec fox girl in the reference video.
 
 Notes:
-* The only reason the `Load Any Video` exists is because the official node [doesn't support dynamic inputs](https://github.com/comfyanonymous/ComfyUI/issues/11017). * If you want to iterate over ALL videos in a directory (instead of a glob) you can use the Comfy Core `Load Video (from Folder)` instead.
+* The only reason the `Load Any Video` exists is because the official node [doesn't support dynamic inputs](https://github.com/comfyanonymous/ComfyUI/issues/11017).
+* If you want to iterate over ALL videos in a directory (instead of a glob) you can use the Comfy Core `Load Video (from Folder)` instead.
 * The `Iterate Begin -> workflow -> Iterate End` pattern is only required to make the intermediate results of slow workflows (ref2v) available on each iteration.
 
 ## Iterate resolutions, iterate durations, measure time, write CSV
@@ -1046,13 +1047,64 @@ resolution\video length,0.0,1.0,2.0,3.0,4.0,5.0,6.0,7.0
 
 ## XYZ-GridPlots with Videos
 
-![XYZ-GridPlots with Videos example](/workflows/video/XYZGridPlotVideos.png)
+This workflow is based on _Iterate resolutions, iterate durations_ and the video files generated from their and puts all video files into a XYZ GridPlot.
+
+https://github.com/user-attachments/assets/f925e59e-c420-49aa-b75a-fd970e35f5c6
+
+![XYZ-GridPlots with Videos example](/workflows/video/XYZGridPlotVideo.png)
 
 (ComfyUI workflow included)
 
-You can ignore the subgraph on the left, it's just used  to create 9 ad-hoc videos of animals with colorful hats rotating. Makes use of `Get Video Components` to split a video into individual frames. The `XYZ-GridPlot` is set to `output_is_list` so we get individual frames of whole grid images. These need to be collected with `Image List to Image Batch` first before creating the video in the `Create Video` node (otherwise it would grid n videos with 1 frame).
+Custom nodes:
+* [Basic Data Handling](https://github.com/StableLlama/ComfyUI-basic_data_handling) (for multiple list operations)
+* [ComfyUI Essentials](https://github.com/cubiq/ComfyUI_essentials) (for `Image Expand Batch`)
 
-https://github.com/user-attachments/assets/efc43311-1052-4832-8486-66b938a5d5f3
+Uses the same `Number OutputList` for durations and `Spreadsheet OutputList` for resolutions as before. They are connected such that the same file names are built again. Then uses `Load Any Video` to load a video file based on a dynamic string. For all used resolutions we do some calculation to fit the final video into 1920x1080 (plus some label area) and scale then scale all videoframes down accordingly. We also have to find the longest video length and pad missing frames in shorter videos with essentials' `Image Expand Batch`. Finally all the individual frames are fed into the `XYZ GridPlot` which has `is_output_list=True`, so all the image batches become the individual frames of the grid video.
+
+For the file list we assume:
+
+```text
+00_608 x 352_0.00_00001_.mp4
+00_608 x 352_2.00_00001_.mp4
+00_608 x 352_3.00_00001_.mp4
+00_608 x 352_4.00_00001_.mp4
+00_608 x 352_5.00_00001_.mp4
+01_736 x 416_0.00_00001_.mp4
+01_736 x 416_2.00_00001_.mp4
+01_736 x 416_3.00_00001_.mp4
+01_736 x 416_4.00_00001_.mp4
+01_736 x 416_5.00_00001_.mp4
+02_864 x 480_0.00_00001_.mp4
+02_864 x 480_2.00_00001_.mp4
+02_864 x 480_3.00_00001_.mp4
+02_864 x 480_4.00_00001_.mp4
+02_864 x 480_5.00_00001_.mp4
+03_960 x 544_0.00_00001_.mp4
+03_960 x 544_2.00_00001_.mp4
+03_960 x 544_3.00_00001_.mp4
+03_960 x 544_4.00_00001_.mp4
+03_960 x 544_5.00_00001_.mp4
+04_1056 x 608_0.00_00001_.mp4
+04_1056 x 608_2.00_00001_.mp4
+04_1056 x 608_3.00_00001_.mp4
+04_1056 x 608_4.00_00001_.mp4
+04_1056 x 608_5.00_00001_.mp4
+05_1152 x 640_0.00_00001_.mp4
+05_1152 x 640_2.00_00001_.mp4
+05_1152 x 640_3.00_00001_.mp4
+05_1152 x 640_4.00_00001_.mp4
+05_1152 x 640_5.00_00001_.mp4
+06_1216 x 672_0.00_00001_.mp4
+06_1216 x 672_2.00_00001_.mp4
+06_1216 x 672_3.00_00001_.mp4
+06_1216 x 672_4.00_00001_.mp4
+06_1216 x 672_5.00_00001_.mp4
+07_1280 x 736_0.00_00001_.mp4
+07_1280 x 736_2.00_00001_.mp4
+07_1280 x 736_3.00_00001_.mp4
+07_1280 x 736_4.00_00001_.mp4
+07_1280 x 736_5.00_00001_.mp4
+```
 
 # For-Loops
 
@@ -1498,6 +1550,8 @@ When you open the node searchbox and filter by types you often stumble upon list
 - [WAS Node Suite](https://github.com/ltdrdata/was-node-suite-comfyui) [(old)](https://github.com/WASasquatch/was-node-suite-comfyui)
 - [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
 - [Simple Readable Metadata](https://github.com/ShammiG/ComfyUI-Simple_Readable_Metadata-SG)
+
+In 2026-09-02 I stumbled upon [M1kep - KepListStuff](https://github.com/M1kep/Comfy_KepListStuff) which is a genuine spiritual predecessor to this node suite. It had everything from list generators to native XY grids already. Unfortunately the terms _xy_, _grid_ or _plot_ don't appear anywhere on the frontpage and that's probably why it's so hard to find.
 
 <a href="https://www.star-history.com/?repos=geroldmeisinger%2FComfyUI-outputlists-combiner&type=date&legend=top-left">
  <picture>

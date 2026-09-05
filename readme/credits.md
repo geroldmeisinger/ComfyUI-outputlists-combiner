@@ -11,6 +11,8 @@
 - [Custom Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
 - [Simple Readable Metadata](https://github.com/ShammiG/ComfyUI-Simple_Readable_Metadata-SG)
 
+In 2026-09-02 I stumbled upon [M1kep - KepListStuff](https://github.com/M1kep/Comfy_KepListStuff) which is a genuine spiritual predecessor to this node suite. It had everything from list generators to native XY grids already. Unfortunately the terms _xy_, _grid_ or _plot_ don't appear anywhere on the frontpage and that's probably why it's so hard to find.
+
 <a href="https://www.star-history.com/?repos=geroldmeisinger%2FComfyUI-outputlists-combiner&type=date&legend=top-left">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=geroldmeisinger/ComfyUI-outputlists-combiner&type=date&theme=dark&legend=top-left&sealed_token=O_fzwwpfYfiDJD0lGW8DWEo0HzVwS7H1PWWSOMjKP0EGtrR7B_ERdL4w5Jb-97wz1i0kR5mDToKVTPNlvQQR3UGu4tamtdMLAvC-1yesfB84l1pJLPmRvk5QCDH0-4hI0ioByj3bdN8HRyvT6KkK_kD3ZRoP88hukJYn2BadCgvIb6bmQ2XHTpfyoaMq" />
