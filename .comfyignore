@@ -1,6 +1,7 @@
 /docs
 /media
+/readme
 /tests
 /.github
-/.vscode
 /.local
+/.vscode
