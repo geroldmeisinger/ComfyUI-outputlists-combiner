@@ -7,6 +7,7 @@
 * Tutorials: I try to provide documentation and examples for every node and use-case, because I hate that in other nodes packs. If you find anything to be unclear, please let me know!
 * Documentation: is generated from /readme via a pytest `test_generate_docs.py` (it's akward, I know, but I get the ComfyUI API in code this way).
 * Debugging: launch ComfyUI via [vscode launch](/.vscode/launch.json) and then just set breakpoints in code.
+* Filestructure: I put this repo as a symlink in `ComfyUI/custom_nodes`. This lets me keep the files separate while still allowing me to start it with Comfy. Also I can `comfy-cli node publish` within my Comfy installation.
 * Code style: I use [Elastic Tabstops Redux for vscode](https://marketplace.visualstudio.com/items?itemName=gerold-meisinger.elastic-tabstops-lite-redux).
 
 ## Tools

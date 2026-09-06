@@ -12,7 +12,7 @@ Custom nodes:
 
 **For-Loop over images**
 
-![For-Loop images example](/workflows/ExampleAdv_08a_ForLoops_Images.png)
+![For-Loop images example](/workflows/advanced/ForLoopsImages.png)
 
 (ComfyUI workflow included)
 
@@ -20,7 +20,7 @@ This workflow makes use of Easy-Use's `For Loop Start`+`For Loop End` and `Index
 
 **For-Loop over checkpoints**
 
-![For-Loop checkpoints example](/workflows/ExampleAdv_08b_ForLoops_Checkpoints.png)
+![For-Loop checkpoints example](/workflows/advanced/ForLoopsCheckpoints.png)
 
 (ComfyUI workflow included)
 
