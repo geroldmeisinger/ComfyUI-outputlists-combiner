@@ -60,7 +60,7 @@ disable_error_code	= "attr-defined"
 [tool.ruff]
 # extend-exclude	= ["static", "ci/templates"]
 line-length	= 140
-src	= ["src", "tests"]
+src	= ["src"] #, "tests"]
 target-version	= "py39"
 
 # Add rules to ban exec/eval
