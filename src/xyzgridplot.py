@@ -3,9 +3,8 @@ from typing import Iterable
 
 import nums_from_string
 import skia
-from skia import textlayout as tl
-
 from comfy_api.latest import io
+from skia import textlayout as tl
 
 from .util import *
 
@@ -54,8 +53,12 @@ def get_texts_type(label_infos: Iterable[tuple[str, int, tl.ParagraphStyle]]) ->
 	is_numeric = True
 	for text, *_ in label_infos:
 		tokens = nums_from_string.get_numeric_string_tokens(text)
-		if len(tokens) != 1	: is_numeric = False; break
-		if not text.rstrip().endswith(tokens[0])	: is_numeric = False; break
+		if len(tokens) != 1:
+			is_numeric = False
+			break
+		if not text.rstrip().endswith(tokens[0]):
+			is_numeric = False
+			break
 
 	if is_numeric: return "numeric"
 
