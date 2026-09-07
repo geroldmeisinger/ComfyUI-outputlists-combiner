@@ -4,7 +4,7 @@ build-backend	= "setuptools.build_meta"
 
 [project]
 name	= "ComfyUI-outputlists_combiner"
-version	= "0.0.18"
+version	= "0.0.19"
 description	= """Multi prompt, multi image generation & video batch processing in a single run to sequentially process multiple assets at once
 The only clean and correct solution of XY grid plots based on data lists works with every workflow. NO weird custom KSamplers! NO black magic! XYZ super grid plots and video grids for Minimax H3, WAN and LTX
 Generate prompt lists and text combinations to combine prompts and resolution variants
