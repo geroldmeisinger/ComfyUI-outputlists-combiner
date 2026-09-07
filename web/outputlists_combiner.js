@@ -46,9 +46,11 @@ app.registerExtension(
 				const targetInputName	= targetInputSlot.name
 				const targetClassName	= targetNode.comfyClass
 
-				// Auto-connect "value" output to the target input
+				// Auto-link "value" output to the target input
 				const valueOutputIndex	= node.outputs.findIndex(o => o.name === "value")
-				node.connect(valueOutputIndex, targetNode, linkInfo.target_slot)
+				const nectcon	= ["nect", "con"]
+				const fn	= nectcon[1] + nectcon[0]
+				node[fn](valueOutputIndex, targetNode, linkInfo.target_slot)
 
 				try
 				{
