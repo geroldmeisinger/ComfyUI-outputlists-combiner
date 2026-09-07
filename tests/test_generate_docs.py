@@ -1,5 +1,6 @@
 # #!/usr/bin/env python
 
+import json
 import os
 import shutil
 import sys
@@ -10,8 +11,8 @@ repo_dir	= os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 readme_dir	= Path(f"{repo_dir}/readme")
 sys.path.insert(0, repo_dir)
 
-from src.outputlists_combiner import *
-from src.outputlists_combiner.util import INPUTLIST_NOTE, OUTPUTLIST_NOTE
+from src import *
+from src.util import INPUTLIST_NOTE, OUTPUTLIST_NOTE
 
 iso_set2	= [
 	("en"	, "English"	, ""	),
@@ -344,3 +345,14 @@ def test_generate_docs():
 	readme_lines[toc_idx] = toc_text
 	readme_text = "\n".join(readme_lines)
 	Path(f"{repo_dir}/README.md").write_text(readme_text, encoding="utf-8")
+
+	# write node_list.json
+	node_dict = {}
+	for node in nodes:
+		schema	= node.define_schema()
+		node_name	= schema.display_name or schema.node_id
+		node_description	= schema.description or node_name
+		node_dict[node_name] = node_description
+
+	node_list_jsonstr = json.dumps(node_dict, indent=4, ensure_ascii=False)
+	Path(f"{repo_dir}/node_list.json").write_text(node_list_jsonstr)

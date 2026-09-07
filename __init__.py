@@ -1,20 +1,6 @@
 #from comfy_api.latest import ComfyExtension, io
 
-from .src.bake_string import BakeString
-from .src.combine_outputlists import CombineOutputLists
-from .src.convert_to_intfloatstr import ConvertNumberToIntFloatStr
-from .src.formatted_string import FormattedString
-from .src.iterate import IterateBegin, IterateEnd
-from .src.json_outputlist import JSONOutputList
-from .src.ksampler_immediate_saveimage import KSamplerImmediateSave
-from .src.load_any_file import LoadAnyFile
-from .src.load_any_video import LoadAnyVideo
-from .src.number_outputlist import NumberOutputList
-from .src.path_outputlist import PathOutputList
-from .src.spreadsheet_outputlist import SpreadsheetOutputList
-from .src.string_outputlist import StringOutputList
-from .src.workflow_discriminator import WorkflowDiscriminator
-from .src.xyzgridplot import XyzGridPlot
+from .src import *
 
 # async def comfy_entrypoint() -> ComfyExtension:
 # class OutputListsCombiner(ComfyExtension):

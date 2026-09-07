@@ -2,14 +2,12 @@
 
 """Tests for `outputlists_combiner` package."""
 
-import colorsys
+import pytest
+from PIL import Image
+from src.xyzgridplot import *
 
 import node_helpers
-import pytest
 from comfy_extras.nodes_dataset import pil_to_tensor, tensor_to_pil
-from PIL import Image, ImageDraw, ImageFont
-
-from src.outputlists_combiner.xyzgridplot import *
 
 LABELS_INT_SHORT	= [1, 2, 3]
 LABELS_INT_LONG	= [1234567890, 42, 3141592]
