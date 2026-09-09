@@ -8,7 +8,7 @@
 * Documentation: is generated from /readme via a pytest `test_generate_docs.py` (it's akward, I know, but I get the ComfyUI API in code this way).
 * Debugging: launch ComfyUI via [vscode launch](/.vscode/launch.json) and then just set breakpoints in code.
 * Filestructure: I put this repo as a symlink in `ComfyUI/custom_nodes`. This lets me keep the files separate while still allowing me to start it with Comfy. Also I can `comfy-cli node publish` within my Comfy installation.
-* Code style: I use [Elastic Tabstops Redux for vscode](https://marketplace.visualstudio.com/items?itemName=gerold-meisinger.elastic-tabstops-lite-redux).
+* Code style: I use [Elastic Tabstops Redux for vscode](https://marketplace.visualstudio.com/items?itemName=gerold-meisinger.elastic-tabstops-lite-redux). There are `git filter clean` which can be added with `git config --local filter.removeAlignmentSpaces.clean '"elastic-tabstops -r"'`.
 
 ## Tools
 
