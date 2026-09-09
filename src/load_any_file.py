@@ -36,7 +36,7 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 			display_name	= "Load Any File",
 			category	= CATEGORY,
 			inputs	= [
-				io.String	.Input("annotated_filepath"	, display_name="filepath"	,  tooltip="Base directory defaults to `[input]` user-directory. Supports glob-pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory."),
+				io.String	.Input("annotated_filepath"	, display_name="filepath"	, tooltip="Base directory defaults to `[input]` user-directory. Supports glob-pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory."),
 				io.String	.Input("extra"	, display_name="_extra", optional=True, default="", force_input=True	, tooltip="(optional) try to load additional file from string (plaintext or base64)")
 			],
 			outputs	= [

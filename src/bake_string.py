@@ -30,8 +30,8 @@ This node may seem strange but it allows to add additional infos on how a specif
 					placeholder	= "<EMPTY STRING>",
 					tooltip	= "If set, will always output this string instead. Used by `Save Image` (and other save nodes) to bake the value into the workflow JSON.",
 				),
-				io.Int	.Input("limit", display_name="limit", default=10240, min=0, max=2**32, tooltip="Limit of characters which will be baked into the field."),
-				io.Boolean	.Input("trim", display_name="trim", default=True, tooltip="Trims the `override` string of whitespace characters (like spaces and new lines) before doing the override-check. This prevents triggering the override when a new line was entered by accident. Only disable it if you actually need a whitespace string as an override."),
+				io.Int	.Input("limit"	, display_name="limit"	, default=10240, min=0, max=2**32	, tooltip="Limit of characters which will be baked into the field."),
+				io.Boolean	.Input("trim"	, display_name="trim"	, default=True	, tooltip="Trims the `override` string of whitespace characters (like spaces and new lines) before doing the override-check. This prevents triggering the override when a new line was entered by accident. Only disable it if you actually need a whitespace string as an override."),
 			],
 			outputs=[
 				io.String	.Output("string"	, display_name="string"	, is_output_list=False, tooltip="If `override` is set, will use `override`, otherwise it's a passtrough of `string`."),

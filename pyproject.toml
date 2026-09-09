@@ -5,21 +5,22 @@ build-backend	= "setuptools.build_meta"
 [project]
 name	= "ComfyUI-outputlists_combiner"
 version	= "0.0.19"
-description	= """Multi prompt, multi image generation & video batch processing in a single run to sequentially process multiple assets at once
-The only clean and correct solution of XY grid plots based on data lists works with every workflow. NO weird custom KSamplers! NO black magic! XYZ super grid plots and video grids for Minimax H3, WAN and LTX
-Generate prompt lists and text combinations to combine prompts and resolution variants
-Inspect combo tool to retrieve a list of models. Compare LoRA models, LoRa strength and trigger words. Compare samplers and schedulers
-Supports spreadsheets for batch processing (Microsoft Office Excel LibreOffice Calc CSV TSV markdown tables)
-Load any file from disk (plaintext base64 binary jsonpath http api) with directory listing and path glob patterns, load video file and metadata
-Iterator loop nodes to foreach outputlist items simpler than for-loops and while-loops
-Integrates well with list handling nodes like basic data Crystools ImpactPack KJNodes EasyUse tinyterra"""
+description	= """Multi-prompt, multi image generation & video batch processing in a single run to sequentially process multiple assets at once!
+Includes the only clean correct and customizable XY grid plots for ComfyUI based on data lists. Works with every workflow. XY images XYZ super grid plots & video grids for Minimax H3 WAN LTX & Hunyuan 3D
+Generator for multiple prompt lists & text combinations to combine prompts & resolutions variants + ChatGPT Claude LLM
+Inspect combo tool to retrieve a list of models. Combine LoRA models strength & trigger words
+Compare samplers & schedulers of Flux Krea Zit Turbo
+Spreadsheets for batch processing (Microsoft Office Excel LibreOffice Calc CSV TSV markdown tables)
+Load any file from disk (plaintext base64 binary jsonpath http api) directory listing & path glob patterns, load video file & metadata
+Iterator nodes to foreach lists simpler than for-loops & while-loops for efficiency
+Integrates well with essentials like Crystools ImpactPack KJNodes EasyUse tinyterra"""
 
 authors	= [{name = "Gerold Meisinger"}]
 readme	= "README.md"
 license	= { text="GNU General Public License v3" }
 requires-python	= ">=3.10"
 classifiers	= []
-dependencies	= []
+dependencies	= ["nums-from-string", "fastnumbers", "jsonpath_ng", "pandas", "odfpy", "openpyxl", "xlrd", "pyxlsb", "chardet", "skia-python", "pyexiftool", "deepdiff"]
 
 [project.optional-dependencies]
 dev = [
