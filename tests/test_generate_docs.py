@@ -129,6 +129,7 @@ nodes = [
 	XyzGridPlot(),
 	LoadAnyFile(),
 	LoadAnyVideo(),
+	PathOutputList(),
 	IterateBegin(),
 	IterateEnd(),
 	BakeString(),

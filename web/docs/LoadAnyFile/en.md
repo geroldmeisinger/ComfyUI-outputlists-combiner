@@ -12,6 +12,8 @@ Internally uses python's [glob.iglob](https://docs.python.org/3/library/glob.htm
 
 `metadata` calls `exiftool`, if it's installed and available at `PATH`, otherwise uses `PIL.Image.info` as a fallback.
 
+If you need more control over the paths use it together with `Path OutputList`.
+
 For security reason only the following directories are supported: `[input] [output] [temp]`.
 For performance reasons the number of files are limited to: 1024.
 

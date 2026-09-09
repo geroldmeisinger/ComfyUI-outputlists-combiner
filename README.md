@@ -57,6 +57,7 @@ If you find this custom node useful:
 	- [XYZ-GridPlot](#xyz-gridplot)
 	- [Load Any File](#load-any-file)
 	- [Load Any Video](#load-any-video)
+	- [Path OutputList](#path-outputlist)
 	- [Iterate Begin](#iterate-begin)
 	- [Iterate End](#iterate-end)
 	- [Bake String](#bake-string)
@@ -139,6 +140,7 @@ Newer Skia versions requires `libEGL.so` to be present on Linux hosts, see [offi
 
 # Changelog
 
+- 0.0.19 fixed file glob limit in Load Any File, cleanup node promotion
 - 0.0.15 added Bake String node
 - 0.0.14 restructed Spreadsheet OutputList, deprecated Formatted String in favor of Comfy Core Format Text
 - 0.0.13 fixed nested Iterate loop nodes
@@ -437,6 +439,8 @@ Internally uses python's [glob.iglob](https://docs.python.org/3/library/glob.htm
 
 `metadata` calls `exiftool`, if it's installed and available at `PATH`, otherwise uses `PIL.Image.info` as a fallback.
 
+If you need more control over the paths use it together with `Path OutputList`.
+
 For security reason only the following directories are supported: `[input] [output] [temp]`.
 For performance reasons the number of files are limited to: 1024.
 
@@ -463,7 +467,7 @@ For performance reasons the number of files are limited to: 1024.
 (ComfyUI workflow included)
 
 This node is a duplicate of nodes_video.py LoadVideo except with the fix included from [issue#11017](https://github.com/comfyanonymous/ComfyUI/issues/11017)
-It is required to load videos based on annotated filepaths which are restricted to user directories.
+It is required to load videos based on annotated filepaths which are restricted to user directories: `[input] [output] [temp]`..
 
 ### Inputs
 
@@ -476,6 +480,45 @@ It is required to load videos based on annotated filepaths which are restricted 
 | Name | Type | Description |
 | --- | --- | --- |
 | `None` | `VIDEO` |  |
+
+## Path OutputList
+
+![Path OutputList](/web/docs/PathOutputList/PathOutputList.png)
+
+(ComfyUI workflow included)
+
+List directory content via glob patterns and split each filepath into it's parts.
+
+`filepath` supports ComfyUI's annotated filepaths `[input]` `[output]` or `[temp]`.
+`filepath` also support glob-pattern expansions `subdir/**/*.png`.
+Internally uses python's [glob.iglob](https://docs.python.org/3/library/glob.html#glob.iglob).
+
+`bare_strings` is intended for different styles of path recombinations, e.g. "{fulldir}/{basename}.{ext}" vs "{fulldir}{basename}{ext}"
+
+As a design choice the ComfyUI user directory annotation is used in the glob pattern (to allow more flexible patterns) insted of providing a separate variable (in a combo box).
+
+### Inputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `glob` | `STRING` | Glob-pattern expansion `subdir/**/*.png` to list directory content. Base directory defaults to `[input]` user-directory. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory. |
+| `limit` | `INT` | Limit maximum number of paths to collect (-1.. unlimited) |
+| `bare_strings` | `BOOLEAN` | Decides if path-parts only contain the bare strings versus safe OS compliant definitions, e.g. if True `ext` is `png` vs `.png`, `full_dir` is `examples/animals` vs `examples/animals/`, and `parent_dir` may be a empty string vs `./`. Note that `rel_dir` always defaults to `.` |
+
+### Outputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `filepath+` | `* 𝌠` | Full filepath (relative to a ComfyUI directory) including annotations, e.g. `examples/animals/myfile.png [input]`. Recommended if you want to be specific and adhere to ComfyUI's path notation. |
+| `filepath` | `STRING 𝌠` | Full filepath (relative to a ComfyUI directory) without annotations, e.g. `examples/animals/myfile.png`. Recommended if you only load files from input directory anways. |
+| `filename` | `STRING 𝌠` | Full filename, e.g. `myfile.png` |
+| `basename` | `STRING 𝌠` | Basename part of the file without extension, e.g. `myfile` |
+| `ext` | `STRING 𝌠` | Extension (e.g. `png` if `bare_strings=True` else `.png'). Note that hidden-files (e.g. `.bashrc`) are considered files without a extension. |
+| `full_dir` | `STRING 𝌠` | Full directory of the file (relative to a ComfyUI directory), e.g. `examples/animals` if `bare_strings=True` else `examples/animals/` (note the trailing slash) |
+| `parent_dir` | `STRING 𝌠` | Immediate parent directory of the file, e.g. `animals` or empty for empty parent if `bare_strings=True` else `./` |
+| `annotation` | `STRING 𝌠` | Annotation to reference the ComfyUI user directory, e.g. `input` if `bare_strings=True` else ` [input]` (note the leading whitespace) |
+| `index` | `INT 𝌠` | Range of 0..count. You can use this as an index. |
+| `count` | `INT` | Total number of files. |
 
 ## Iterate Begin
 
@@ -1518,7 +1561,7 @@ When you open the node searchbox and filter by types you often stumble upon list
 * Documentation: is generated from /readme via a pytest `test_generate_docs.py` (it's akward, I know, but I get the ComfyUI API in code this way).
 * Debugging: launch ComfyUI via [vscode launch](/.vscode/launch.json) and then just set breakpoints in code.
 * Filestructure: I put this repo as a symlink in `ComfyUI/custom_nodes`. This lets me keep the files separate while still allowing me to start it with Comfy. Also I can `comfy-cli node publish` within my Comfy installation.
-* Code style: I use [Elastic Tabstops Redux for vscode](https://marketplace.visualstudio.com/items?itemName=gerold-meisinger.elastic-tabstops-lite-redux).
+* Code style: I use [Elastic Tabstops Redux for vscode](https://marketplace.visualstudio.com/items?itemName=gerold-meisinger.elastic-tabstops-lite-redux). There are `git filter clean` which can be added with `git config --local filter.removeAlignmentSpaces.clean '"elastic-tabstops -r"'`.
 
 ## Tools
 

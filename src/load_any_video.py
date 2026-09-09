@@ -12,7 +12,7 @@ class LoadAnyVideo(io.ComfyNode):
 	def define_schema(cls):
 		return io.Schema(
 			description="""This node is a duplicate of nodes_video.py LoadVideo except with the fix included from [issue#11017](https://github.com/comfyanonymous/ComfyUI/issues/11017)
-It is required to load videos based on annotated filepaths which are restricted to user directories.
+It is required to load videos based on annotated filepaths which are restricted to user directories: `[input] [output] [temp]`..
 """,
 			node_id="LoadAnyVideo",
 			search_aliases=["import any video", "open any video", "video any file"],
