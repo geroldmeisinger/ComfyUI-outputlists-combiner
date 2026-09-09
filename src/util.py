@@ -76,7 +76,8 @@ def get_files(annotated_filepath: str, limit: int = -1, rel_path: bool = True) -
 					results.append(p)
 					count += 1
 
-		ret = sorted(results)[:limit]
+		ret = sorted(results)
+		if limit >= 0: ret = ret[:limit]
 		return ret
 
 	# Glob path - streamed

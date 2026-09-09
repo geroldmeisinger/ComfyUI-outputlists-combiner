@@ -26,13 +26,13 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `filepath+` | `* 𝌠` | Full filepath (relative to a ComfyUI directory) including annotations, e.g. `examples/animals/myfile.png [input]`. Recommended if you want to be specific and adhere to ComfyUI's path notation. |
-| `filepath` | `STRING 𝌠` | Full filepath (relative to a ComfyUI directory) without annotations, e.g. `examples/animals/myfile.png`. Recommended if you only load files from input directory anways. |
-| `filename` | `STRING 𝌠` | Full filename, e.g. `myfile.png` |
-| `basename` | `STRING 𝌠` | Basename part of the file without extension, e.g. `myfile` |
-| `ext` | `STRING 𝌠` | Extension (e.g. `png` if `bare_strings=True` else `.png'). Note that hidden-files (e.g. `.bashrc`) are considered files without a extension. |
-| `full_dir` | `STRING 𝌠` | Full directory of the file (relative to a ComfyUI directory), e.g. `examples/animals` if `bare_strings=True` else `examples/animals/` (note the trailing slash) |
-| `parent_dir` | `STRING 𝌠` | Immediate parent directory of the file, e.g. `animals` or empty for empty parent if `bare_strings=True` else `./` |
-| `annotation` | `STRING 𝌠` | Annotation to reference the ComfyUI user directory, e.g. `input` if `bare_strings=True` else ` [input]` (note the leading whitespace) |
+| `filepath+` | `* 𝌠` | Full filepath (relative to a ComfyUI directory) including annotations. Recommended if you want to be specific and adhere to ComfyUI's path notation.<br>e.g. `examples/animals/myfile.png [input]` |
+| `filepath` | `STRING 𝌠` | Full filepath (relative to a ComfyUI directory) without annotations. Recommended if you only load files from input directory anways.<br>e.g. `examples/animals/myfile.png` |
+| `filename` | `STRING 𝌠` | Full filename<br>e.g. `myfile.png` |
+| `basename` | `STRING 𝌠` | Basename part of the file without extension<br>e.g. `myfile` |
+| `ext` | `STRING 𝌠` | Extension. Note that hidden-files (e.g. `.bashrc`) are considered files without a extension.<br>`png` if `bare_strings=True` else `.png` |
+| `full_dir` | `STRING 𝌠` | Full directory of the file (relative to a ComfyUI directory)<br>e.g. `examples/animals` if `bare_strings=True` else `examples/animals/` (note the trailing slash) |
+| `parent_dir` | `STRING 𝌠` | Immediate parent directory of the file<br>e.g. `animals` or empty for empty parent if `bare_strings=True` else `./` |
+| `annotation` | `STRING 𝌠` | Annotation to reference the ComfyUI user directory<br>`input` if `bare_strings=True` else ` [input]` (note the leading whitespace) |
 | `index` | `INT 𝌠` | Range of 0..count. You can use this as an index. |
 | `count` | `INT` | Total number of files. |
