@@ -87,11 +87,11 @@ Here you can see that the string `dog` is baked into the `override` field.
 
 ## Bake values into flexible workflows
 
-This workflow lets you use the same workflow to either re-generate the individual image or the original workflow for all images. FOr example when generating a XYZ GridPlot you want know which parameter was used for an individual image but also re-generate the whole grid again.
+This workflow lets you use the same workflow to either re-generate the individual image or the original workflow for all images. For example when generating a XYZ GridPlot you want know which parameter was used for an individual image but also re-generate the whole grid again.
 
 ![Bake String in XYZ GridPlot before](/workflows/advanced/BakeStringXYZGridPlotSupergrids_0.png)
 
-This workflow is an expansion of [bake values into workflows]](#bake-values-into-workflows) and the [XYZ GridPlot](#xyz-gridplot). Makes use of an `Bake String` node for the whole workflow (the outer) and one `Bake String` for the iterated workflow (the inner in `Iterate Begin -> worklfow -> Iterate End`). To check if this workflow is baked or not the outer `Bake String.is_override` is used together with a `If/Else Switch` to either use the original list (not baked) or use only one item (baked), which will be overriden by the sub-sequent inner `Bake String`. Hence, if the workflow is not baked, the list items will be used as is, otherwise the list collapses to one item which gets overriden by the inner string and only executes once. Because the downstream nodes for `XYZ GridPlot` don't make sense for a single item we block further execution with a `Execution Blocker` based on the outer `Bake String.is_override`.
+This workflow is an expansion of [bake values into workflows](#bake-values-into-workflows) and the [XYZ GridPlot](#xyz-gridplot). Makes use of an `Bake String` node for the whole workflow (the outer) and one `Bake String` for the iterated workflow (the inner in `Iterate Begin -> worklfow -> Iterate End`). To check if this workflow is baked or not the outer `Bake String.is_override` is used together with a `If/Else Switch` to either use the original list (not baked) or use only one item (baked), which will be overriden by the sub-sequent inner `Bake String`. Hence, if the workflow is not baked, the list items will be used as is, otherwise the list collapses to one item which gets overriden by the inner string and only executes once. Because the downstream nodes for `XYZ GridPlot` don't make sense for a single item we block further execution with a `Execution Blocker` based on the outer `Bake String.is_override`.
 
 When you drag an individual output image into the workspace you get the following:
 
