@@ -5,6 +5,8 @@ from .util import *
 
 class FormattedString(io.ComfyNode):
 	DESCRIPTION = """Creates a string that contains placeholder variables and replaces them with their respective values.
+**[DEPRECATED]** Use Comfy Core's `Format Text` instead. You can still use this one if you want to use the S&R replacements.
+
 Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .
 * You can use `{a:.2f}` to round off a float to 2 decimals.
 * You can use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.

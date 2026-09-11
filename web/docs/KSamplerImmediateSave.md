@@ -5,9 +5,9 @@
 (ComfyUI workflow included)
 
 Node expansion of default `CheckpointLoader`, `KSampler`, `VAE Decode` and `Save Image` to process as one.
-This is useful if you want to save the intermediate images for grids immediately.
+**[DEPRECATED]** Use `Iterate Begin -> workflow -> Iterate End` pattern instead.
 
-*"A custom KSampler just to save an image? Now I have become the very thing I sought to destroy!"*
+This is useful if you want to save the intermediate images for grids immediately.
 
 ### Inputs
 

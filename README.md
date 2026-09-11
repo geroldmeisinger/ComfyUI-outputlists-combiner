@@ -10,7 +10,7 @@
 	<a href="#installation"	target="_blank">Installation	</a> ·
 	<a href="#changelog"	target="_blank">Changelog	</a> ·
 	<a href="#nodes"	target="_blank">Nodes	</a> ·
-	<a href="#examples"	target="_blank">Examples	</a>
+	<a href="#deprecated-nodes"	target="_blank">Deprecated nodes	</a>
 </h3>
 
 <div align="center">
@@ -59,9 +59,11 @@ If you find this custom node useful:
 	- [Load Any Video](#load-any-video)
 	- [Path OutputList](#path-outputlist)
 	- [Iterate Begin](#iterate-begin)
-	- [Iterate End](#iterate-end)
 	- [Bake String](#bake-string)
 	- [Workflow Discriminator](#workflow-discriminator)
+- [Deprecated nodes](#deprecated-nodes)
+	- [Formatted String](#formatted-string)
+	- [KSampler Immediate Save](#ksampler-immediate-save)
 - [Examples](#examples)
 	- [Simple OutputList](#simple-outputlist)
 	- [Video Tutorials](#video-tutorials)
@@ -140,6 +142,7 @@ Newer Skia versions requires `libEGL.so` to be present on Linux hosts, see [offi
 
 # Changelog
 
+- 0.0.20 release for [OpenManager](https://github.com/WASasquatch/open-manager-comfyui)
 - 0.0.19 fixed file glob limit in Load Any File, cleanup node promotion
 - 0.0.15 added Bake String node
 - 0.0.14 restructed Spreadsheet OutputList, deprecated Formatted String in favor of Comfy Core Format Text
@@ -180,6 +183,7 @@ Yeah, I didn't know about it either. Apparently everytime you see the symbol `�
 * LIST: A custom type in most third-party nodes which are passed around as one item which contains a python list.
 
 # Nodes
+
 ## String OutputList
 
 ![String OutputList](/web/docs/StringOutputList/StringOutputList.png)
@@ -549,33 +553,6 @@ Internally uses the node expansion mechanism which duplicates the sub-workflow m
 | `item` | `*` |  |
 | `index` | `INT` |  |
 
-## Iterate End
-
-![Iterate End](/web/docs/IterateEnd/IterateEnd.png)
-
-(ComfyUI workflow included)
-
-Iterate a sub-workflow by executing it from a data list sequentially in item-major order (as opposed to node-major)."
-You need to connect the `flow_control` from a `IterateBegin` to a `IterateEnd` node.
-Only use this if a sub-workflow takes a long time to process without any visible progress (see [execution stalling problem](https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner#the-execution-stalling-problem)).
-Make sure to use the passthrough output slots on output nodes (`Preview Image`, `Save Image` etc.) so the intermediate results are visible.
-Internally uses the node expansion mechanism which duplicates the sub-workflow multiple times for each list item.
-
-`lists` use(s) `is_output_list=True` (indicated by the symbol `𝌠`) and will be processed sequentially by corresponding nodes.
-
-### Inputs
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `flow_control` | `FLOW_CONTROL` | Connect it to a `IterateBegin` node |
-| `item` | `*` | You need to connect the `flow_control` from a `IterateBegin` to a `IterateEnd` node. |
-
-### Outputs
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `datalist` | `* 𝌠` |  |
-
 ## Bake String
 
 ![Bake String](/web/docs/BakeString/BakeString.png)
@@ -636,6 +613,75 @@ Custom nodes with metadata loaders include:
 | `list_c` | `* 𝌠` |  |
 | `list_d` | `* 𝌠` |  |
 | `jsonpaths` | `STRING 𝌠` |  |
+
+# Deprecated nodes
+
+## Formatted String
+
+![Formatted String](/web/docs/FormattedString/FormattedString.png)
+
+(ComfyUI workflow included)
+
+Creates a string that contains placeholder variables and replaces them with their respective values.
+**[DEPRECATED]** Use Comfy Core's `Format Text` instead. You can still use this one if you want to use the S&R replacements.
+
+Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .
+* You can use `{a:.2f}` to round off a float to 2 decimals.
+* You can use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.
+* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them: `{{ }}`.
+
+Also applies *search & replace (S&R) syntax* such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`.
+Thus you can also use it as a `GET-node`.
+Note that "search & replace" takes place in Javascript context and runs before node execution.
+
+### Inputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `fstring` | `STRING` | Creates a string that contains placeholder variables and replaces them with their respective values.<br>**[DEPRECATED]** Use Comfy Core's `Format Text` instead. You can still use this one if you want to use the S&R replacements.<br><br>Uses python `str.format()` internally, see [Python - Format String Syntax](https://docs.python.org/3/library/string.html#format-string-syntax) .<br>* You can use `{a:.2f}` to round off a float to 2 decimals.<br>* You can use `{a:05d}` to pad up to 5 leading zeros to fit with comfys filename suffix `ComfyUI_00001_.png`.<br>* If you want to write `{ }` within your strings (e.g. for JSONs) you have to double them: `{{ }}`.<br><br>Also applies *search & replace (S&R) syntax* such as `%date:yyyy-MM-dd hh:mm:ss%` and `%KSampler.seed%`.<br>Thus you can also use it as a `GET-node`.<br>Note that "search & replace" takes place in Javascript context and runs before node execution. |
+| `a` | `*` | (optional) value that will be as a string at the `{a}` placeholder. |
+| `b` | `*` | (optional) value that will be as a string at the `{b}` placeholder. |
+| `c` | `*` | (optional) value that will be as a string at the `{c}` placeholder. |
+| `d` | `*` | (optional) value that will be as a string at the `{d}` placeholder. |
+
+### Outputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `string` | `STRING` | The formatted string with all placeholders replaced with their respective values. |
+
+## KSampler Immediate Save
+
+![KSampler Immediate Save](/web/docs/KSamplerImmediateSave/KSamplerImmediateSave.png)
+
+(ComfyUI workflow included)
+
+Node expansion of default `CheckpointLoader`, `KSampler`, `VAE Decode` and `Save Image` to process as one.
+**[DEPRECATED]** Use `Iterate Begin -> workflow -> Iterate End` pattern instead.
+
+This is useful if you want to save the intermediate images for grids immediately.
+
+### Inputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `cpkt_name` | `COMBO` | The name of the checkpoint (model) to load. |
+| `positive` | `STRING` | The conditioning describing the attributes you want to include in the image. |
+| `negative` | `STRING` | The conditioning describing the attributes you want to exclude from the image. |
+| `latent_image` | `LATENT` | The latent image to denoise. |
+| `seed` | `INT` | The random seed used for creating the noise. |
+| `steps` | `INT` | The number of steps used in the denoising process. |
+| `cfg` | `FLOAT` | The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality. |
+| `sampler_name` | `COMBO` | The algorithm used when sampling , this can affect the quality , speed , and style of the generated output. |
+| `scheduler` | `COMBO` | The scheduler controls how noise is gradually removed to form the image. |
+| `denoise` | `FLOAT` | The amount of denoising applied , lower values will maintain the structure of the initial image allowing for image to image sampling. |
+| `filename_prefix` | `STRING` | The prefix for the file to save. This may include formatting information such as %date :yyyy-MM-dd% or %Empty Latent Image.width% to include values from nodes. |
+
+### Outputs
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `image` | `IMAGE` | The decoded image. |
 
 
 # Examples

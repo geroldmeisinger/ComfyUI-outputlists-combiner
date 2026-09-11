@@ -28,32 +28,24 @@ dependencies	= ["nums-from-string", "fastnumbers", "jsonpath_ng", "pandas", "odf
 # branch = "main"                                 # default branch to install from
 docs = "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"               # documentation URL
 funding = "https://buymeacoffee.com/geroldmeisinger"               # funding URL
-release_note = """* 0.0.19 fixed file glob limit in Load Any File, cleanup node promotion
-*  0.0.15 added Bake String node
-*  0.0.14 restructed Spreadsheet OutputList, deprecated Formatted String in favor of Comfy Core Format Text
-*  0.0.13 fixed nested Iterate loop nodes
-*  0.0.12 added Iterate loop nodes, added separator field in SpreadsheetOutputList
-*  0.0.11 fixed understaffed XYZGridPlot, fixed node documentation language codes
-*  0.0.10 fixed font_size in XYZGridPlot, fixed Load Any File, translated node documentation
-*  0.0.8 more flexible XYZGridPlot, better label rendering in XYZGridPlot, WorkflowDiscriminator node, node documentation
-*  0.0.6 SpreadsheetOutputList, XYZGridPlot
-*  0.0.4 restructured outputs, JsonOutputList,
-*  0.0.3 ConvertAnyToIntFloatString, KSamplerImmediateSave
-*  0.0.2 restructured outputs
-*  0.0.1 StringOutputList, NumberOutputList, CombineOutputLists, FormattedString
-
-Multi-prompt, multi image generation & video batch processing in a single run to sequentially process multiple assets at once!
-Includes the only clean correct and customizable XY grid plots for ComfyUI based on data lists. Works with every workflow. XY images XYZ super grid plots & video grids for Minimax H3 WAN LTX & Hunyuan 3D
-Generator for multiple prompt lists & text combinations to combine prompts & resolutions variants + ChatGPT Claude LLM
-Inspect combo tool to retrieve a list of models. Combine LoRA models strength & trigger words
-Compare samplers & schedulers of Flux Krea Zit Turbo
-Spreadsheets for batch processing (Microsoft Office Excel LibreOffice Calc CSV TSV markdown tables)
-Load any file from disk (plaintext base64 binary jsonpath http api) directory listing & path glob patterns, load video file & metadata
-Iterator nodes to foreach lists simpler than for-loops & while-loops for efficiency
-Integrates well with essentials like Crystools ImpactPack KJNodes EasyUse tinyterra
-"""         # your note on the current release, 600 chars
-example_workflows = ["examples/interp.json"]    # list example workflows to load
+release_note = """0.0.19 fixed file glob limit in Load Any File, cleanup node promotion
+0.0.15 added Bake String node
+0.0.14 restructed Spreadsheet OutputList, deprecated Formatted String in favor of Comfy Core Format Text
+0.0.13 fixed nested Iterate loop nodes
+0.0.12 added Iterate loop nodes, added separator field in SpreadsheetOutputList
+0.0.11 fixed understaffed XYZGridPlot, fixed node documentation language codes
+0.0.10 fixed font_size in XYZGridPlot, fixed Load Any File, translated node documentation""" # your note on the current release, 600 chars
+example_workflows = ["workflows/01S_Simple_OutputList.json", "workflows/02S_Combine_Prompts.json", "workflows/03S_Combine_Numbers.json", "workflows/04S_Combine_Samplers_Schedulers.json", "workflows/05S_Combine_RowCol_Filename.json", "workflows/06S_Compare_LoRAModel_LoRAStrength.json", "workflows/07S_XYZ-GridPlot.json", "workflows/08S_LoadMultipleFiles.json", "workflows/09S_IterateLoopNodes.json", "workflows/10S_RepeatOutputLists.json", "workflows/11S_CycleOutputLists.json", "workflows/12A_AnimatingLoRAStrength.json", "workflows/13A_CheckpointsImmediateSave.json", "workflows/14A_XYZGridPlotSupergrids.json", "workflows/15A_XYZGridPlotImmediateSave.json", "workflows/16A_LoadWithFormattedString.json", "workflows/17A_BakeStringIterateLoopNodes.json", "workflows/18A_BakeStringXYZGridPlotSupergrids.json", "workflows/19A_BakeStringLoadAnyFile.json", "workflows/20A_DiscriminateMultipleFiles.json", "workflows/21A_NestedIterateLoopNodes.json", "workflows/22V_Duration.json", "workflows/23V_Resolution.json", "workflows/24V_Duration_Timer_CSV.json", "workflows/25V_Spreadsheet_Videos.json", "workflows/26V_LoadMultipleVideos.json", "workflows/27V_Resolution_Duration_Timer_CSV.json", "workflows/28V_XYZGridPlotVideo.json"] # list example workflows to load
 # themes = ["themes/my-theme.json"]               # list themes to offer
+gallery = [                                     # images to show off the pack, up to 24, `png`, `jpg`, `jpeg`, `gif`, `webp` and `avif`
+	"example_pusher.gif",
+	"media/promo.png",
+	"media/promo.webp",
+	"media/promo.avif",
+	"media/promo.mp4"
+#  "docs/before.png",                            #   a path in your repository
+#  "https://cdn.example.com/after.webp",         #   or an image hosted anywhere
+]
 
 [project.optional-dependencies]
 dev = [
@@ -72,8 +64,8 @@ Documentation	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 
 [tool.comfy]
 PublisherId	= "geroldmeisinger"
-DisplayName	= "OutputLists Combiner"
-Icon	= "https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/logo.png"
+DisplayName	= "! OutputLists Combiner"
+Icon	= "https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/media/Crystools_Pipe.png"
 Tags	= []
 Repository	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"
 includes	= []

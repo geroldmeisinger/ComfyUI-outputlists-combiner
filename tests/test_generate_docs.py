@@ -134,7 +134,8 @@ nodes = [
 	IterateEnd(),
 	BakeString(),
 	WorkflowDiscriminator(),
-	KSamplerImmediateSave(),
+	FormattedString(), # deprecated
+	KSamplerImmediateSave(), # deprecated
 ]
 
 chapters = [
@@ -223,11 +224,17 @@ def test_generate_docs():
 	nodes_dir	= Path(f"{repo_dir}/web/docs/")
 	nodes_dir.mkdir(parents=True, exist_ok=True)
 
-	nodes_lines = ["# Nodes"]
-	for node in nodes:
+	idx_deprecated = next((i for i, node in enumerate(nodes) if node.define_schema().is_deprecated), -1)
+
+	nodes_lines = ["# Nodes\n"]
+	for n, node in enumerate(nodes):
 		node_lines	= []
 		schema	= node.define_schema()
 		node_name	= schema.display_name or schema.node_id
+
+		if node_name.endswith(" End"): continue # don't write Iterator End into readme
+		if n == idx_deprecated:
+			nodes_lines.append("# Deprecated nodes\n")
 
 		node_lines.append(f"## {node_name}\n")
 		#md_lines.append("### Description\n")
@@ -267,7 +274,7 @@ def test_generate_docs():
 		# rewrite image path relative to repo root for readme.md
 		node_lines[node_lines_img_idx] = f"![{node_name}](/web/docs/{schema.node_id}/{schema.node_id}.png)\n\n(ComfyUI workflow included)\n"
 
-		if schema.node_id == "KSamplerImmediateSave": continue
+		#if schema.node_id == "KSamplerImmediateSave": continue
 
 		nodes_lines.extend(node_lines)
 

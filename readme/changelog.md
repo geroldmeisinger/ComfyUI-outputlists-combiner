@@ -1,5 +1,6 @@
 # Changelog
 
+- 0.0.20 release for [OpenManager](https://github.com/WASasquatch/open-manager-comfyui)
 - 0.0.19 fixed file glob limit in Load Any File, cleanup node promotion
 - 0.0.15 added Bake String node
 - 0.0.14 restructed Spreadsheet OutputList, deprecated Formatted String in favor of Comfy Core Format Text
