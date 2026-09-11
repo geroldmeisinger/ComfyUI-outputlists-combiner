@@ -35,16 +35,47 @@ release_note = """0.0.19 fixed file glob limit in Load Any File, cleanup node pr
 0.0.12 added Iterate loop nodes, added separator field in SpreadsheetOutputList
 0.0.11 fixed understaffed XYZGridPlot, fixed node documentation language codes
 0.0.10 fixed font_size in XYZGridPlot, fixed Load Any File, translated node documentation""" # your note on the current release, 600 chars
-example_workflows = ["workflows/01S_Simple_OutputList.json", "workflows/02S_Combine_Prompts.json", "workflows/03S_Combine_Numbers.json", "workflows/04S_Combine_Samplers_Schedulers.json", "workflows/05S_Combine_RowCol_Filename.json", "workflows/06S_Compare_LoRAModel_LoRAStrength.json", "workflows/07S_XYZ-GridPlot.json", "workflows/08S_LoadMultipleFiles.json", "workflows/09S_IterateLoopNodes.json", "workflows/10S_RepeatOutputLists.json", "workflows/11S_CycleOutputLists.json", "workflows/12A_AnimatingLoRAStrength.json", "workflows/13A_CheckpointsImmediateSave.json", "workflows/14A_XYZGridPlotSupergrids.json", "workflows/15A_XYZGridPlotImmediateSave.json", "workflows/16A_LoadWithFormattedString.json", "workflows/17A_BakeStringIterateLoopNodes.json", "workflows/18A_BakeStringXYZGridPlotSupergrids.json", "workflows/19A_BakeStringLoadAnyFile.json", "workflows/20A_DiscriminateMultipleFiles.json", "workflows/21A_NestedIterateLoopNodes.json", "workflows/22V_Duration.json", "workflows/23V_Resolution.json", "workflows/24V_Duration_Timer_CSV.json", "workflows/25V_Spreadsheet_Videos.json", "workflows/26V_LoadMultipleVideos.json", "workflows/27V_Resolution_Duration_Timer_CSV.json", "workflows/28V_XYZGridPlotVideo.json"] # list example workflows to load
-# themes = ["themes/my-theme.json"]               # list themes to offer
-gallery = [                                     # images to show off the pack, up to 24, `png`, `jpg`, `jpeg`, `gif`, `webp` and `avif`
-	"example_pusher.gif",
-	"media/promo.png",
-	"media/promo.webp",
-	"media/promo.avif",
-	"media/promo.mp4"
-#  "docs/before.png",                            #   a path in your repository
-#  "https://cdn.example.com/after.webp",         #   or an image hosted anywhere
+example_workflows = [ # list example workflows to load
+	"workflows/01S_Simple_OutputList.json",
+	"workflows/02S_Combine_Prompts.json",
+	"workflows/03S_Combine_Numbers.json",
+	"workflows/04S_Combine_Samplers_Schedulers.json",
+	"workflows/05S_Combine_RowCol_Filename.json",
+	"workflows/06S_Compare_LoRAModel_LoRAStrength.json",
+	"workflows/07S_XYZ-GridPlot.json",
+	"workflows/08S_LoadMultipleFiles.json",
+	"workflows/09S_IterateLoopNodes.json",
+	"workflows/10S_RepeatOutputLists.json",
+	"workflows/11S_CycleOutputLists.json",
+	"workflows/12A_AnimatingLoRAStrength.json",
+	"workflows/13A_CheckpointsImmediateSave.json",
+	"workflows/14A_XYZGridPlotSupergrids.json",
+	"workflows/15A_XYZGridPlotImmediateSave.json",
+	"workflows/16A_LoadWithFormattedString.json",
+	"workflows/17A_BakeStringIterateLoopNodes.json",
+	"workflows/18A_BakeStringXYZGridPlotSupergrids.json",
+	"workflows/19A_BakeStringLoadAnyFile.json",
+	"workflows/20A_DiscriminateMultipleFiles.json",
+	"workflows/21A_NestedIterateLoopNodes.json",
+	"workflows/22A_PromptManager.json",
+	"workflows/23V_Duration.json",
+	"workflows/24V_Resolution.json",
+	"workflows/25V_Duration_Timer_CSV.json",
+	"workflows/26V_Spreadsheet_Videos.json",
+	"workflows/27V_LoadMultipleVideos.json",
+	"workflows/28V_Resolution_Duration_Timer_CSV.json",
+	"workflows/29V_XYZGridPlotVideo.json"
+]
+# themes = ["themes/my-theme.json"]	# list themes to offer
+gallery = [	# images to show off the pack, up to 24, `png`, `jpg`, `jpeg`, `gif`, `webp` and `avif`
+	"https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/gallery/01_Promo.mp4",
+	"https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/gallery/02_XYZ-GridPlot.mp4",
+	"https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/gallery/03_AnimatingLoRAStrength.mp4",
+	"https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/gallery/04_OutputLists.mp4",
+	"https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/gallery/05_Spreadsheet_Video.mp4",
+	"https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/gallery/06_InspectCombo_All.mp4"
+	#  "docs/before.png",                            #   a path in your repository
+	#  "https://cdn.example.com/after.webp",         #   or an image hosted anywhere
 ]
 
 [project.optional-dependencies]
@@ -65,7 +96,8 @@ Documentation	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner
 [tool.comfy]
 PublisherId	= "geroldmeisinger"
 DisplayName	= "! OutputLists Combiner"
-Icon	= "https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/media/Crystools_Pipe.png"
+Icon	= "https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/icon.gif" # File types: SVG, PNG, JPG, or GIF, Maximum resolution: 400px x 400px, Aspect ratio should be square
+Banner	= "https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/banner.png" # URL to a larger banner image that will be displayed on the ComfyUI Registry and ComfyUI-Manager. File types: SVG, PNG, JPG, or GIF, Aspect ratio: 21:9
 Tags	= []
 Repository	= "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"
 includes	= []
