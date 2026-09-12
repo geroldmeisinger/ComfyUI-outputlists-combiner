@@ -563,7 +563,7 @@ Works as a simple string passthrough first but 'bakes' the string into the `over
 
 This node may seem strange but it allows to add additional infos on how a specific image was created in a multi-asset workflow.
 
-* Use-case 1 "per-image paramters": If multiple images are created from an output list, the same workflow is stored for ALL images. This node allows to bake the specific string into the workflow JSON for the very string that was used in a individual image.
+* Use-case 1 "per-image parameters": If multiple images are created from an output list, the same workflow is stored for ALL images. This node allows to bake the specific string into the workflow JSON for the very string that was used in a individual image.
 * Use-case 2 "include image": img2img and controlnet workflows require an input image. Used together with a base64 string the full image can be baked into the workflow JSON.
 
 ### Inputs

@@ -143,7 +143,7 @@ chapters = [
 	"badges",
 	"toc",
 	"installation",
-	"changelog",
+	"../CHANGELOG",
 	"background",
 	"nodes",
 	"examples",
