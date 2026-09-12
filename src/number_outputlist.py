@@ -16,6 +16,7 @@ If you want to define number lists with arbitrary steps instead check out the JS
 """,
 			node_id	= "NumberOutputList",
 			display_name	= "Number OutputList",
+			search_aliases	= ["number data list", "number range", "float range", "int range", "float data list", "int data list"],
 			category	= CATEGORY,
 			inputs	= [
 				io.Float	.Input("start"	, display_name="start"	, default=	0	,	tooltip="Start value to generate the range from."	),

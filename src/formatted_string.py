@@ -23,6 +23,7 @@ Note that "search & replace" takes place in Javascript context and runs before n
 			description	= FormattedString.DESCRIPTION,
 			node_id	= "FormattedString",
 			display_name	= "Formatted String",
+			search_aliases	= ["Formatted Text", "Format String", "f-string", "fstring", "string with variable placeholders", "string with search & replace (S&R)", "str.format", "Format Text"],
 			category	= CATEGORY,
 			inputs	= [
 				io.String.Input("fstring",

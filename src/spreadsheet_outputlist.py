@@ -24,6 +24,7 @@ Comments that start with `#` character in textfiles are ignored.
 """,
 			node_id	= "SpreadsheetOutputList",
 			display_name	= "Spreadsheet OutputList",
+			search_aliases	= ["Spreadsheet data list", "csv", "comma-separated values", "tsv", "markdown table", "xls", "xlsx", "ods", "Microsoft Office Excel", "LibreOffice Calc", "Pandas", "prompt manager"],
 			category	= CATEGORY,
 			inputs	= [
 				io.String	.Input("rows_and_cols"	, display_name="selectors"	, default=""	, tooltip=f"A list of selectors separated by `separator` or empty list. The selectors can be names in the headers or column names (`A`, `B`, `C`...`ZZZZ`) or row indices (1...{2**16}). Note that in spreadsheets rows start at 1, columns start at A, whereas OutputLists are 0-based (in `select-nth`).", placeholder="List of selectors, column names or row indices, or select all if empty."),

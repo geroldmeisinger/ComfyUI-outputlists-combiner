@@ -3,8 +3,9 @@ from typing import Iterable
 
 import nums_from_string
 import skia
-from comfy_api.latest import io
 from skia import textlayout as tl
+
+from comfy_api.latest import io
 
 from .util import *
 
@@ -387,6 +388,7 @@ The number of images per cells (including batched images) have to be a multiple 
 """,
 			node_id	= "XyzGridPlot",
 			display_name	= "XYZ-GridPlot",
+			search_aliases	= ["XY grid plot", "XY plot grid", "XY grid image", "XY image grid", "XY plot image", "XY image plot", "XYZ grid plot", "XYZ plot grid", "XYZ grid image", "XYZ image grid", "XYZ plot image", "XYZ image plot", "XYZ super grid", "XYZ supergrid", "compare images", "image table", "images columns", "images rows", "xyAny", "xyPlot", "xy input", "XY annotation", "XY Model", "XY Prompt SR", "XY seed", "XY List", "XY String", "XY Folder Images", "XY Upload Image", "XY List Collector", "XY Grid Helper", "grid accumulator", "d2", "efficiency", "tinyterra", "easy", "qq", "compare samplers & schedulers", "compare LoRA model & LoRA strength"],
 			category	= CATEGORY,
 			is_input_list	= True,
 			inputs=[

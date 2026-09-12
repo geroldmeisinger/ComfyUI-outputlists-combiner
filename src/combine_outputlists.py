@@ -26,6 +26,7 @@ Alternative usage: If you connect one list to a unit value it essentially works 
 			node_id	= "CombineOutputLists",
 			display_name	= "OutputLists Combinations",
 			category	= CATEGORY,
+			search_aliases	= ["Data List Combinations", "combine outputlists", "combine prompts", "mix prompts", "prompts combiner", "cartesian product", "compare samplers & schedulers", "compare LoRA model & LoRA strength"],
 			is_input_list	= True,
 			inputs=[
 				io.AnyType.Input("list_a", display_name="list_a", optional=True, tooltip=f"(optional) {INPUTLIST_NOTE}"),

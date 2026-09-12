@@ -16,6 +16,7 @@ Use a string `123;234;345` to quickly generate a list of numbers. Don't use comm
 """,
 			node_id	= "ConvertNumberToIntFloatStr",
 			display_name	= "Convert To Int Float Str",
+			search_aliases	= ["convert to integer", "convert to float", "convert to number", "convert string to", "nums_from_string", "get_nums"],
 			category	= CATEGORY,
 			is_input_list=True,
 			inputs=[

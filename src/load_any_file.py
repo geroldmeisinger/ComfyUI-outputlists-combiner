@@ -36,6 +36,7 @@ For performance reasons the number of files are limited to: {MAX_RESULTS}.
 """,
 			node_id	= "LoadAnyFile",
 			display_name	= "Load Any File",
+			search_aliases	= ["Open Any File", "Read Any File", "Import Any File", "file from disk", "directory from disk", "folder from disk", "base64 file", "binary file", "glob", "metadata", "filepath"],
 			category	= CATEGORY,
 			inputs	= [
 				io.String	.Input("annotated_filepath"	, display_name="filepath"	, tooltip="Base directory defaults to `[input]` user-directory. Supports glob-pattern expansion `subdir/**/*.png`. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory."),

@@ -23,6 +23,7 @@ As a design choice the ComfyUI user directory annotation is used in the glob pat
 # TODO: For security reason only the following directories are supported: `[input] [output] [temp]`.
 			node_id	= "PathOutputList",
 			display_name	= "Path OutputList",
+			search_aliases	= ["Path data list", "filepaths", "file extension", "file basename", "glob", "directory listing", "directory from disk", "folder from disk", "parent directory", "parent folder"],
 			category	= CATEGORY,
 			inputs	= [
 				io.String	.Input("glob",	display_name="glob"	, tooltip="Glob-pattern expansion `subdir/**/*.png` to list directory content. Base directory defaults to `[input]` user-directory. Use suffix ` [input]` ` [output]` or ` [temp]` (mind the leading whitespace!) to specify a different ComfyUI user-directory."),

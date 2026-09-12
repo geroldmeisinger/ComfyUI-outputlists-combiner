@@ -20,6 +20,7 @@ You can also use this node to create objects from literal strings like `[1, 2, 3
 """,
 			node_id	= "JSONOutputList",
 			display_name	= "JSON OutputList",
+			search_aliases	= ["JSON data list", "jsonpath"],
 			category	= CATEGORY,
 			inputs	= [
 				io.String.Input("jsonpath", display_name="jsonpath", default="$.dict", tooltip="JSONPath used to extract the values."),

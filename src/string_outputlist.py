@@ -14,6 +14,7 @@ class StringOutputList(io.ComfyNode):
 """,
 			node_id	= "StringOutputList",
 			display_name	= "String OutputList",
+			search_aliases	= ["String data list", "Text OutputList", "Text data list", "prompt list", "prompt generator", "split text", "split strings", "make list", "list of any", "multi prompts", "liststring", "compare samplers & schedulers", "compare LoRA model & LoRA strength", "inspect combo"],
 			category	= CATEGORY,
 			inputs	= [
 				io.String.Input("separator", display_name="separator", default="\\n", tooltip="The string used to split the textfield values by. Supports character escaping like `\\n` (newline), `\\n\\n` (two new lines), ¸`\\t` (tabcharacter) etc."),

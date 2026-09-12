@@ -24,6 +24,7 @@ Custom nodes with metadata loaders include:
 """,
 			node_id	= "WorkflowDiscriminator",
 			display_name	= "Workflow Discriminator",
+			search_aliases	= ["diff workflows", "compare workflows", "discriminate workflows", "extract from workflow metadata"],
 			category	= CATEGORY,
 			is_input_list	= True,
 			inputs=[
