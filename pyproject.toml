@@ -26,7 +26,7 @@ dependencies	= ["nums-from-string", "fastnumbers", "jsonpath_ng", "pandas", "odf
 # incompatible = ["numpy>=2.0"]                   # declare known conflicts with other packages
 # source = "github"                               # prefer installing from the repository
 # branch = "main"                                 # default branch to install from
-docs = "https://github.com/geroldmeisinger/ComfyUI-outputlists-combiner"               # documentation URL
+#docs = ""                # documentation URL, fallsback to [project.urls]Documentation
 funding = "https://buymeacoffee.com/geroldmeisinger"               # funding URL
 release_note = """0.0.19 fixed file glob limit in Load Any File, cleanup node promotion
 0.0.15 added Bake String node
@@ -35,37 +35,7 @@ release_note = """0.0.19 fixed file glob limit in Load Any File, cleanup node pr
 0.0.12 added Iterate loop nodes, added separator field in SpreadsheetOutputList
 0.0.11 fixed understaffed XYZGridPlot, fixed node documentation language codes
 0.0.10 fixed font_size in XYZGridPlot, fixed Load Any File, translated node documentation""" # your note on the current release, 600 chars
-example_workflows = [ # list example workflows to load
-	"workflows/01S_Simple_OutputList.json",
-	"workflows/02S_Combine_Prompts.json",
-	"workflows/03S_Combine_Numbers.json",
-	"workflows/04S_Combine_Samplers_Schedulers.json",
-	"workflows/05S_Combine_RowCol_Filename.json",
-	"workflows/06S_Compare_LoRAModel_LoRAStrength.json",
-	"workflows/07S_XYZ-GridPlot.json",
-	"workflows/08S_LoadMultipleFiles.json",
-	"workflows/09S_IterateLoopNodes.json",
-	"workflows/10S_RepeatOutputLists.json",
-	"workflows/11S_CycleOutputLists.json",
-	"workflows/12A_AnimatingLoRAStrength.json",
-	"workflows/13A_CheckpointsImmediateSave.json",
-	"workflows/14A_XYZGridPlotSupergrids.json",
-	"workflows/15A_XYZGridPlotImmediateSave.json",
-	"workflows/16A_LoadWithFormattedString.json",
-	"workflows/17A_BakeStringIterateLoopNodes.json",
-	"workflows/18A_BakeStringXYZGridPlotSupergrids.json",
-	"workflows/19A_BakeStringLoadAnyFile.json",
-	"workflows/20A_DiscriminateMultipleFiles.json",
-	"workflows/21A_NestedIterateLoopNodes.json",
-	"workflows/22A_PromptManager.json",
-	"workflows/23V_Duration.json",
-	"workflows/24V_Resolution.json",
-	"workflows/25V_Duration_Timer_CSV.json",
-	"workflows/26V_Spreadsheet_Videos.json",
-	"workflows/27V_LoadMultipleVideos.json",
-	"workflows/28V_Resolution_Duration_Timer_CSV.json",
-	"workflows/29V_XYZGridPlotVideo.json"
-]
+#example_workflows = [] # list example workflows to load, fallsback to examples/
 # themes = ["themes/my-theme.json"]	# list themes to offer
 gallery = [	# images to show off the pack, up to 24, `png`, `jpg`, `jpeg`, `gif`, `webp` and `avif`
 	"https://raw.githubusercontent.com/geroldmeisinger/ComfyUI-outputlists-combiner/refs/heads/main/gallery/01_Promo.mp4",
