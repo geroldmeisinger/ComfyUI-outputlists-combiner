@@ -132,6 +132,8 @@ nodes = [
 	PathOutputList(),
 	IterateBegin(),
 	IterateEnd(),
+	FileWatcherBegin(),
+	FileWatcherEnd(),
 	BakeString(),
 	WorkflowDiscriminator(),
 	FormattedString(), # deprecated
