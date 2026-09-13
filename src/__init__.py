@@ -1,6 +1,7 @@
 from .bake_string import BakeString
 from .combine_outputlists import CombineOutputLists
 from .convert_to_intfloatstr import ConvertNumberToIntFloatStr
+from .file_watcher import FileWatcherBegin, FileWatcherEnd
 from .formatted_string import FormattedString
 from .iterate import IterateBegin, IterateEnd
 from .json_outputlist import JSONOutputList
