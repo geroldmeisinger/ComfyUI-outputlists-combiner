@@ -1,6 +1,5 @@
 import fnmatch
 import os
-import queue
 import time
 
 from comfy_api.latest import io
@@ -9,18 +8,8 @@ from comfy_execution.graph_utils import GraphBuilder, is_link
 from .util import *
 
 try:
-	# optional dependency: pip install watchdog
-	# gives us real OS-level notifications (inotify / FSEvents / ReadDirectoryChangesW)
-	# instead of pure polling.
-	from watchdog.events import FileSystemEventHandler
-	from watchdog.observers import Observer
-	_HAS_WATCHDOG = True
-except ImportError:
-	_HAS_WATCHDOG = False
-
-try:
 	# lets the user actually stop the watch loop by hitting "Cancel" in the UI,
-	# instead of it looping forever until the server is killed.
+	# instead of it looping forever until the server process is killed.
 	from comfy.model_management import \
 	    throw_exception_if_processing_interrupted as _check_interrupted
 except ImportError:
@@ -31,9 +20,9 @@ except ImportError:
 FLOWCONTROL_NOTE = "You need to connect the `flow_control` from a `FileWatcherBegin` to a `FileWatcherEnd` node."
 DESCRIPTION = f"""Watch a directory for new files and run a sub-workflow once for every file that shows up, one at a time, forever.
 {FLOWCONTROL_NOTE}
-Unlike `IterateBegin`/`IterateEnd`, this does not iterate a fixed, pre-existing list: it blocks and waits (using an OS-level filesystem notification if the `watchdog` package is installed, otherwise by polling) until a new file appears in `directory`, then runs the sub-workflow on it.
+Unlike `IterateBegin`/`IterateEnd`, this does not iterate a fixed, pre-existing list: it polls `directory` and waits until a new file's size and modification time have stopped changing for `stability_delay` seconds (i.e. it looks fully written), then runs the sub-workflow on it. A file whose name was already processed is picked up again if it later shows up with a different size, modification time, or creation date (e.g. it got overwritten or recreated).
 Internally uses the node expansion mechanism which duplicates the sub-workflow again after every processed file, so the loop never really "ends" on its own - cancel the queued prompt to stop it.
-Make sure to use the passthrough output slots on output nodes (`Preview Image`, `Save Image` etc.) so the intermediate results are visible.
+On `FileWatcherEnd`, connect every passthrough/output node of the sub-workflow (`Preview Image`, `Save Image`, etc.) into a `termination` slot so the loop only advances once the whole sub-workflow has actually finished running.
 """
 
 
@@ -41,154 +30,176 @@ class FileWatcherBegin(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
 		ret = io.Schema(
-			description	= DESCRIPTION,
-			node_id		= "FileWatcherBegin",
-			display_name	= "File Watch Begin",
-			search_aliases	= ["Watch Folder Begin", "Watch Directory Begin", "File Watcher Begin", "Directory Watch Begin", "New File Begin"],
-			category	= CATEGORY,
-			inputs		= [
-				io.String	.Input("directory"	, display_name="directory"	, tooltip="Folder to watch for new files."),
-				io.String	.Input("file_pattern"	, display_name="file_pattern"	, default="*" , optional=True, tooltip="Only files whose name matches this glob pattern are considered, e.g. `*.png`."),
-				io.Float	.Input("poll_interval"	, display_name="poll_interval"	, default=1.0 , min=0.05, max=60.0, optional=True, tooltip="Seconds between checks when no OS-level notification fires (and a safety-net rescan interval even when it does)."),
-				io.Float	.Input("stability_delay"	, display_name="stability_delay"	, default=1.0 , min=0.0 , max=60.0, optional=True, tooltip="Seconds a candidate file's size must stay unchanged before it's considered fully written and safe to hand off. Set to 0 to disable."),
-				io.AnyType	.Input("_processed"	, display_name="_"	, optional=True, tooltip="Ignore! Only used internally"),
+			description   	= DESCRIPTION,
+			node_id       		= "FileWatcherBegin",
+			display_name  	= "File Watcher Begin",
+			search_aliases	= ["Watch Folder Begin", "Watch Directory Begin", "File Watch Begin", "Directory Watch Begin", "New File Begin"],
+			category      	= CATEGORY,
+			inputs        		= [
+				io.String 	.Input("directory"      	, display_name="directory"      	, tooltip="Folder to watch for new files."),
+				io.String 	.Input("file_pattern"   	, display_name="file_pattern"   	, default="*" , optional=True, tooltip="Only files whose name matches this glob pattern are considered, e.g. `*.png`."),
+				io.Float  	.Input("poll_interval"  	, display_name="poll_interval"  	, default=1.0 , min=0.05, max=60.0, optional=True, tooltip="Maximum seconds between directory rescans. Also caps how long a single wait can be, even if a file looks like it needs longer to stabilize."),
+				io.Float  	.Input("stability_delay"	, display_name="stability_delay"	, default=1.0 , min=0.0 , max=60.0, optional=True, tooltip="Seconds a file's size must stay unchanged before it's considered fully written and safe to hand off. Set to 0 to disable and grab files as soon as they're seen."),
+				io.AnyType	.Input("_tracked"       	, display_name="_"              	, optional=True, tooltip="Ignore! Only used internally"),
 			],
 			outputs=[
 				io.FlowControl	.Output("flow_control"	, display_name="flow_control"	, tooltip=FLOWCONTROL_NOTE),
-				io.String	.Output("filepath"	, display_name="filepath"	, tooltip="Full path of the new file."),
-				io.Int	.Output("index"	, display_name="index"	, tooltip="How many files have been fully processed so far (0-based)."),
-				io.AnyType	.Output("file_info"	, display_name="file_info"	, tooltip="dict with ctime/mtime/atime of the file at the moment it was picked up. Note: st_ctime is creation time on Windows but inode-change time on Linux/Mac."),
+				io.String     	.Output("filepath"    	, display_name="filepath"    	, tooltip="Full path of the new file."),
+				io.Int        	.Output("index"       	, display_name="index"       	, tooltip="How many files have been claimed so far (0-based)."),
+				io.AnyType    	.Output("file_info"   	, display_name="file_info"   	, tooltip="dict with ctime/mtime/atime of the file at the moment it was picked up. Note: st_ctime is creation time on Windows but inode-change time on Linux/Mac."),
 			],
 			is_input_list	= True,
-			hidden		= [io.Hidden.unique_id],
+			hidden       		= [io.Hidden.unique_id],
 		)
 		return ret
 
 	@staticmethod
 	def _unwrap(value, default):
 		# every input arrives as a list of length 1 because of is_input_list=True,
-		# except _processed on the very first (unconnected) call, which is just None.
+		# except _tracked on the very first (unconnected) call, which is just None.
 		if isinstance(value, list):
 			return value[0] if len(value) else default
 		return value if value is not None else default
 
 	@staticmethod
-	def _list_candidates(directory, processed, pattern):
+	def _scan(directory, tracked, pattern, stability_delay, now):
+		"""One non-blocking pass over `directory`.
+
+		Every file we've ever seen gets an entry in `tracked` (mutated in place): its last known
+		`size`, `mtime` and `ctime`, the timestamp it was last seen changing (`last_checked`), and
+		whether it has already been claimed (`is_processed`). A file becomes a "stable" candidate
+		once all three have stayed the same for at least `stability_delay` seconds - measured by
+		wall-clock time elapsed since `last_checked`, not by blocking here, so scanning a big
+		backlog of files costs one pass, not one `stability_delay` sleep per file.
+
+		A file whose name we've already processed is re-queued instead of skipped if its size,
+		mtime, or ctime no longer match what they were when it was claimed - i.e. it was
+		overwritten, or recreated, with a new version since. (Note: ctime is the creation time on
+		Windows but the inode-change time on Linux/Mac, so there it also flags e.g. permission or
+		metadata changes, not just content changes.)
+
+		Returns (stable_candidates, min_wait): stable_candidates is a list of paths ready to be
+		claimed (oldest-stabilized first); min_wait is the shortest remaining time before any
+		still-settling file might become stable (or None if there's nothing to wait on).
+		"""
 		try:
 			names = os.listdir(directory)
 		except OSError:
-			return []
-		candidates = []
+			return [], None
+
+		seen      = set()
+		stable    = []
+		min_wait  = None
+
 		for name in names:
 			if not fnmatch.fnmatch(name, pattern):
 				continue
 			full = os.path.join(directory, name)
-			if not os.path.isfile(full) or full in processed:
+			if not os.path.isfile(full):
 				continue
+			seen.add(full)
+
 			try:
-				st = os.stat(full)
+				size  = os.path.getsize(full)
+				mtime = os.path.getmtime(full)
+				ctime = os.stat(full).st_ctime
 			except OSError:
 				continue
-			candidates.append((full, st))
-		candidates.sort(key=lambda c: c[1].st_mtime) # oldest first -> FIFO processing order
-		return candidates
 
-	@staticmethod
-	def _is_stable(path, stability_delay):
-		if stability_delay <= 0:
-			return True
-		try:
-			size_before = os.path.getsize(path)
-		except OSError:
-			return False
-		_check_interrupted()
-		time.sleep(stability_delay)
-		try:
-			size_after = os.path.getsize(path)
-		except OSError:
-			return False
-		return size_before == size_after
+			entry = tracked.get(full)
+			if entry is not None and entry["is_processed"]:
+				if size == entry["size"] and mtime == entry["mtime"] and ctime == entry["ctime"]:
+					continue # unchanged since it was last processed - stays skipped
+				entry = None # overwritten/recreated with a new version since - treat like a brand new file
 
-	@staticmethod
-	def _wait_for_activity(directory, poll_interval):
-		"""Block until something changes in `directory`, or `poll_interval` elapses - whichever comes first."""
-		if _HAS_WATCHDOG:
-			event_queue = queue.Queue()
+			if entry is None or size != entry["size"] or mtime != entry["mtime"] or ctime != entry["ctime"]:
+				# first time we've seen it, or it's still being written (or was just overwritten) - (re)start its timer
+				tracked[full] = {"size": size, "mtime": mtime, "ctime": ctime, "last_checked": now, "is_processed": False}
+				min_wait = stability_delay if min_wait is None else min(min_wait, stability_delay)
+				continue
 
-			class _Handler(FileSystemEventHandler):
-				def on_any_event(self, event):
-					event_queue.put(True)
+			remaining = stability_delay - (now - entry["last_checked"])
+			if remaining <= 0:
+				stable.append(full)
+			else:
+				min_wait = remaining if min_wait is None else min(min_wait, remaining)
 
-			observer = None
-			try:
-				observer = Observer()
-				observer.schedule(_Handler(), directory, recursive=False)
-				observer.start()
-			except Exception:
-				observer = None # e.g. directory doesn't exist yet - fall back to polling below
+		# drop bookkeeping for anything that vanished before it was ever claimed (renamed mid-copy, etc.)
+		for path in list(tracked.keys()):
+			if path not in seen and not tracked[path]["is_processed"]:
+				del tracked[path]
 
-			if observer is not None:
-				try:
-					event_queue.get(timeout=poll_interval)
-				except queue.Empty:
-					pass
-				finally:
-					observer.stop()
-					observer.join(timeout=poll_interval)
-				return
-
-		_check_interrupted()
-		time.sleep(poll_interval)
+		stable.sort(key=lambda p: tracked[p]["last_checked"]) # first to go stable, served first
+		return stable, min_wait
 
 	@classmethod
-	def execute(cls, directory, file_pattern=None, poll_interval=None, stability_delay=None, _processed=None, **kwargs) -> io.NodeOutput:
-		directory	= cls._unwrap(directory	, None)
-		file_pattern	= cls._unwrap(file_pattern	, "*")
-		poll_interval	= cls._unwrap(poll_interval	, 1.0)
+	def execute(cls, directory, file_pattern=None, poll_interval=None, stability_delay=None, _tracked=None, **kwargs) -> io.NodeOutput:
+		directory      	= cls._unwrap(directory      	, None)
+		file_pattern   	= cls._unwrap(file_pattern   	, "*")
+		poll_interval  	= cls._unwrap(poll_interval  	, 1.0)
 		stability_delay	= cls._unwrap(stability_delay	, 1.0)
-		processed	= cls._unwrap(_processed	, {})
-		if not isinstance(processed, dict):
-			processed = {}
+		tracked        	= cls._unwrap(_tracked       	, {})
+		if not isinstance(tracked, dict):
+			tracked = {}
+		tracked = dict(tracked) # this node's own claim below must not leak into anyone else's copy
 
-		candidate = None
-		while candidate is None:
+		claimed = None
+		while claimed is None:
 			_check_interrupted()
-			for full, _ in cls._list_candidates(directory, processed, file_pattern):
-				if cls._is_stable(full, stability_delay):
-					candidate = (full, os.stat(full)) # re-stat: it just proved stable, get a fresh timestamp
-					break
-			if candidate is None:
-				cls._wait_for_activity(directory, poll_interval)
+			now = time.time()
+			stable, min_wait = cls._scan(directory, tracked, file_pattern, stability_delay, now)
+			if stable:
+				claimed = stable[0]
+				break
+			wait_time = poll_interval if min_wait is None else min(poll_interval, max(0.0, min_wait))
+			_check_interrupted()
+			time.sleep(wait_time)
 
-		filepath, st = candidate
-		file_info    = {"path": filepath, "ctime": st.st_ctime, "mtime": st.st_mtime, "atime": st.st_atime}
-		flow_control = (cls.hidden.unique_id, processed)
-		index        = len(processed)
+		st       	= os.stat(claimed)
+		file_info	= {"path": claimed, "ctime": st.st_ctime, "mtime": st.st_mtime, "atime": st.st_atime}
 
-		ret = io.NodeOutput(flow_control, filepath, index, file_info)
+		# Claim the file right here, not in FileWatcherEnd: FileWatcherEnd only sees generic
+		# passthrough/trigger values from the sub-workflow, which can't be trusted to still be (or
+		# contain) this filepath. FileWatcherBegin is the only place that reliably knows it, so
+		# `tracked` must already mark it processed before it's handed off to the sub-workflow -
+		# otherwise every re-expansion would rediscover the same file and loop on it forever.
+		# size/mtime/ctime are kept even once processed so a later overwrite of this same filename
+		# can still be detected and re-queued (see _scan).
+		tracked[claimed] = {"size": tracked[claimed]["size"], "mtime": file_info["mtime"], "ctime": file_info["ctime"], "last_checked": time.time(), "is_processed": True, **file_info}
+
+		flow_control	= (cls.hidden.unique_id, tracked)
+		index       	= sum(1 for entry in tracked.values() if entry["is_processed"]) - 1
+
+		ret = io.NodeOutput(flow_control, claimed, index, file_info)
 		return ret
 
 
 class FileWatcherEnd(io.ComfyNode):
 	@classmethod
 	def define_schema(cls) -> io.Schema:
+		terminations_template = io.Autogrow.TemplatePrefix(
+			input 	= io.AnyType.Input("termination", tooltip="Connect a passthrough/output node here (Preview Image, Save Image, etc). Its value is discarded - it's only used to force that branch of the sub-workflow to finish before the next file is picked up."),
+			prefix	= "termination",
+			min   	= 0,
+			max   	= 50,
+		)
 		ret = io.Schema(
-			description	= DESCRIPTION,
-			node_id		= "FileWatcherEnd",
-			display_name	= "File Watch End",
-			search_aliases	= ["Watch Folder End", "Watch Directory End", "File Watcher End", "Directory Watch End", "New File End"],
-			category	= CATEGORY,
-			inputs		= [
+			description   	= DESCRIPTION,
+			node_id       		= "FileWatcherEnd",
+			display_name  	= "File Watcher End",
+			search_aliases	= ["Watch Folder End", "Watch Directory End", "File Watch End", "Directory Watch End", "New File End"],
+			category      	= CATEGORY,
+			inputs        		= [
 				io.FlowControl	.Input("flow_control"	, display_name="flow_control"	, tooltip="Connect it to a `FileWatcherBegin` node"),
-				io.AnyType	.Input("item"	, display_name="item"	, tooltip="Connect the (pass-through) result of the sub-workflow here. Its value isn't used for anything except forcing the sub-workflow to finish before the next file is picked up."),
+				io.Autogrow   	.Input("terminations"	, template=terminations_template, optional=True, tooltip="(optional, but you almost always want at least one) Connect every branch of the sub-workflow that must finish before watching for the next file, e.g. both a `Save Image` and a `Preview Image` passthrough. With nothing connected here, the loop may advance before the sub-workflow has actually finished running."),
 			],
 			outputs		= [
-				io.Int	.Output("processed_count", display_name="processed_count", tooltip="How many files have been fully processed so far. This value is only ever seen by nodes outside the loop, which never actually fire since the loop never ends."),
+				io.Int	.Output("processed_count", display_name="processed_count", tooltip="How many files have been claimed so far. Only ever seen by nodes outside the loop, which never actually fire since the loop never ends on its own."),
 			],
-			enable_expand	= True,
-			hidden		= [io.Hidden.unique_id, io.Hidden.dynprompt],
+			enable_expand 	= True,
+			hidden        		= [io.Hidden.unique_id, io.Hidden.dynprompt],
 			is_output_node	= True, # always execute this node so users don't have to put an output node afterwards; this is also what keeps the watch loop alive
-			is_input_list	= True, # prevent data lists from executing this node multiple times
+			is_input_list 	= True, # prevent data lists from executing this node multiple times
 		)
 		return ret
 
@@ -217,20 +228,11 @@ class FileWatcherEnd(io.ComfyNode):
 				FileWatcherEnd._collect_contained(child_id, upstream, contained)
 
 	@classmethod
-	def execute(cls, flow_control, item, **kwargs):
-		filewatch_begin_id, processed_prev = flow_control[0]
-		filepath = item[0] if isinstance(item, list) and len(item) else item
+	def execute(cls, flow_control, **terminations):
+		# terminations are pure triggers - we never look at their values, only rely on ComfyUI not
+		# scheduling this node until every connected one of them has produced something.
+		filewatcher_begin_id, tracked = flow_control[0]
 
-		# mark this file as done - record ctime/mtime/atime at completion time
-		processed = dict(processed_prev)
-		if isinstance(filepath, str) and filepath:
-			try:
-				st = os.stat(filepath)
-				processed[filepath] = {"ctime": st.st_ctime, "mtime": st.st_mtime, "atime": st.st_atime}
-			except OSError:
-				processed[filepath] = {"ctime": None, "mtime": None, "atime": None}
-
-		# no termination condition: always clone the sub-workflow and keep watching
 		# from nodes_looping -> _WhileLoopClose
 		# BEGIN
 		dynprompt = cls.hidden.dynprompt
@@ -240,9 +242,9 @@ class FileWatcherEnd(io.ComfyNode):
 		cls._explore_dependencies(unique_id, dynprompt, upstream)
 
 		contained = {}
-		cls._collect_contained(filewatch_begin_id, upstream, contained)
+		cls._collect_contained(filewatcher_begin_id, upstream, contained)
 		contained[unique_id] = True
-		contained[filewatch_begin_id] = True
+		contained[filewatcher_begin_id] = True
 
 		graph = GraphBuilder()
 
@@ -263,9 +265,9 @@ class FileWatcherEnd(io.ComfyNode):
 					node.set_input(name, value)
 		# END
 
-		filewatch_begin_new = graph.lookup_node(filewatch_begin_id)
-		filewatch_end_new   = graph.lookup_node("Recurse")
-		filewatch_begin_new.set_input("_processed", processed)
+		filewatcher_begin_new = graph.lookup_node(filewatcher_begin_id)
+		filewatcher_end_new   = graph.lookup_node("Recurse")
+		filewatcher_begin_new.set_input("_tracked", tracked)
 
-		ret = io.NodeOutput(filewatch_end_new.out(0), expand=graph.finalize())
+		ret = io.NodeOutput(filewatcher_end_new.out(0), expand=graph.finalize())
 		return ret
