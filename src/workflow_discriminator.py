@@ -38,7 +38,7 @@ Custom nodes with metadata loaders include:
 				io.AnyType	.Output("list_b"	, display_name="list_b", is_output_list=True	, tooltip=""),
 				io.AnyType	.Output("list_c"	, display_name="list_c", is_output_list=True	, tooltip=""),
 				io.AnyType	.Output("list_d"	, display_name="list_d", is_output_list=True	, tooltip=""),
-				io.String	.Output("jsonpaths"	, display_name="jsonpaths", is_output_list=True	, tooltip=""),
+				io.String	.Output("jsonpaths"	, display_name="jsonpaths", is_output_list=False	, tooltip=""),
 			],
 		)
 		return ret
@@ -77,6 +77,7 @@ def deepdiff_path_to_jsonpath(path: str) -> str:
 	return jsonpath
 
 def extract_top_changes(objs: list[any], top_n: int, ignore_jsonpaths: list[str] = []):
+	if len(objs) == 0: return [] * top_n
 	baseline	= objs[0]
 	objs_n	= len(objs)
 
